@@ -12,7 +12,6 @@ class OnboardingViewController: UIViewController {
 
   // MARK: - Handlers
   @IBAction func createNewAccount(_ sender: UIButton) {
-
     let account = AccountService.createNewAccount()
     // Track and Store currentAccount
     Global.currentAccount = account
@@ -22,6 +21,10 @@ class OnboardingViewController: UIViewController {
       showInformedAlert(withTitle: "Error", message: e.localizedDescription)
     }
 
-    print(account)
+    // Redirect to Main Screen
+    present(
+      UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()!,
+      animated: true, completion: nil
+    )
   }
 }
