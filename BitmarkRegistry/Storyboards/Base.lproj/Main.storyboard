@@ -303,7 +303,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mzl-Or-CG4" userLabel="CoverView">
-                                                            <rect key="frame" x="-50" y="0.0" width="150" height="50"/>
+                                                            <rect key="frame" x="-35" y="0.0" width="120" height="50"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ih-Jj-mgG">
                                                                     <rect key="frame" x="0.0" y="0.0" width="26" height="50"/>
@@ -332,7 +332,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EXm-bm-8Yy">
-                                                                    <rect key="frame" x="33" y="16" width="117" height="18"/>
+                                                                    <rect key="frame" x="33" y="16" width="87" height="18"/>
                                                                     <attributedString key="attributedText">
                                                                         <fragment content="Label">
                                                                             <attributes>
@@ -351,7 +351,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                                                 <constraint firstAttribute="trailing" secondItem="EXm-bm-8Yy" secondAttribute="trailing" id="bDM-TS-QcO"/>
                                                                 <constraint firstItem="0ih-Jj-mgG" firstAttribute="leading" secondItem="Mzl-Or-CG4" secondAttribute="leading" id="eFq-ar-MuI"/>
                                                                 <constraint firstItem="EXm-bm-8Yy" firstAttribute="leading" secondItem="0ih-Jj-mgG" secondAttribute="trailing" constant="7" id="kzp-CH-f0C"/>
-                                                                <constraint firstAttribute="width" constant="150" id="pZf-cr-2I9"/>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="pZf-cr-2I9"/>
                                                                 <constraint firstItem="0ih-Jj-mgG" firstAttribute="top" secondItem="Mzl-Or-CG4" secondAttribute="top" id="qUQ-qL-Qcn"/>
                                                             </constraints>
                                                         </view>
@@ -422,6 +422,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                         <viewLayoutGuide key="safeArea" id="7Ap-Ok-rYd"/>
                     </view>
                     <connections>
+                        <outlet property="recoveryPhraseCollectionView" destination="sX8-Yc-P0V" id="j9p-Fe-Xgq"/>
                         <outlet property="recoveryPhraseCollectionViewHeight" destination="GPi-qP-Tb6" id="164-3d-ubS"/>
                     </connections>
                 </viewController>
