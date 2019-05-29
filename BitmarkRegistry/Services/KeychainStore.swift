@@ -22,4 +22,13 @@ class KeychainStore {
   static func saveToKeychain(_ seedCore: Data) throws {
     try keychain.set(seedCore, key: bitmarkSeedCoreKey)
   }
+
+  static func getSeedDataFromKeychain() -> Data? {
+    do {
+      return try keychain.getData(bitmarkSeedCoreKey)
+    } catch let e {
+      print(e.localizedDescription)
+      return nil
+    }
+  }
 }

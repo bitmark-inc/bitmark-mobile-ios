@@ -18,6 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // init BitmarkSDK environment & api_token
     BitmarkService.initialize()
 
+    // Redirect Screen for new user / existing user
+    window = UIWindow(frame: UIScreen.main.bounds)
+    window?.makeKeyAndVisible()
+    let storyboardName = AccountService.existsCurrentAccount() ? "Main" : "Onboarding"
+    let initialVC = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController()
+    window?.rootViewController = initialVC
+
     return true
   }
 

@@ -14,4 +14,23 @@ class AccountService {
   static func createNewAccount() -> Account {
     return try! Account()
   }
+
+  static func existsCurrentAccount() -> Bool {
+    return getCurrentAccount() != nil
+  }
+
+  static func getCurrentAccount() -> Account? {
+    var account: Account? = nil
+    let seedCore = KeychainStore.getSeedDataFromKeychain()
+    if let seedCore = seedCore {
+      do {
+        let seed = try Seed.fromCore(seedCore, version: .v2)
+        account = try Account(seed: seed)
+      } catch let e {
+        print(e.localizedDescription)
+      }
+    }
+    Global.currentAccount = account
+    return account
+  }
 }
