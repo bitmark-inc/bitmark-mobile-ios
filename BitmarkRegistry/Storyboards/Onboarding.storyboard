@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="A9W-Ss-WgV">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Onboarding View Controller-->
+        <scene sceneID="u79-Ly-WH5">
+            <objects>
+                <viewController id="A9W-Ss-WgV" customClass="OnboardingViewController" customModule="BitmarkRegistry" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kER-Oh-3x1">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OdZ-GY-sCJ">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wxf-5l-VDc">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="728"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Bitmark_Logo-8" translatesAutoresizingMaskIntoConstraints="NO" id="gDZ-y3-dhq">
+                                                <rect key="frame" x="64.5" y="340" width="285" height="48"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="gDZ-y3-dhq" firstAttribute="centerX" secondItem="wxf-5l-VDc" secondAttribute="centerX" id="FSw-qv-Lec"/>
+                                            <constraint firstItem="gDZ-y3-dhq" firstAttribute="centerY" secondItem="wxf-5l-VDc" secondAttribute="centerY" id="ShA-wL-3tK"/>
+                                        </constraints>
+                                    </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JDp-gU-QB7">
+                                        <rect key="frame" x="0.0" y="728" width="414" height="90"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2sX-ru-YR6">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
+                                                <color key="backgroundColor" red="0.0" green="0.37647058823529411" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="45" id="coS-Gu-eje"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                                                <state key="normal" title="CREATE NEW ACCOUNT">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CgA-27-GfY">
+                                                <rect key="frame" x="0.0" y="45" width="414" height="45"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                                                <state key="normal" title="ACCESS EXISTING ACCOUNT"/>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="CgA-27-GfY" firstAttribute="height" secondItem="2sX-ru-YR6" secondAttribute="height" id="ae2-ZJ-B0S"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="JDp-gU-QB7" secondAttribute="trailing" id="bhj-RS-nse"/>
+                                    <constraint firstItem="JDp-gU-QB7" firstAttribute="leading" secondItem="OdZ-GY-sCJ" secondAttribute="leading" id="emc-2e-pDQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="wxf-5l-VDc" secondAttribute="trailing" id="fxz-Er-59D"/>
+                                    <constraint firstItem="wxf-5l-VDc" firstAttribute="leading" secondItem="OdZ-GY-sCJ" secondAttribute="leading" id="krP-WP-Son"/>
+                                    <constraint firstAttribute="bottom" secondItem="JDp-gU-QB7" secondAttribute="bottom" id="lMS-hp-Kvm"/>
+                                    <constraint firstItem="JDp-gU-QB7" firstAttribute="top" secondItem="wxf-5l-VDc" secondAttribute="bottom" id="pyc-0o-xe9"/>
+                                    <constraint firstItem="wxf-5l-VDc" firstAttribute="top" secondItem="OdZ-GY-sCJ" secondAttribute="top" id="zVF-gD-G5e"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RLv-Kw-3OE" firstAttribute="trailing" secondItem="OdZ-GY-sCJ" secondAttribute="trailing" id="4ds-f6-3Dz"/>
+                            <constraint firstItem="OdZ-GY-sCJ" firstAttribute="leading" secondItem="RLv-Kw-3OE" secondAttribute="leading" id="Eta-ds-S5D"/>
+                            <constraint firstItem="OdZ-GY-sCJ" firstAttribute="top" secondItem="RLv-Kw-3OE" secondAttribute="top" id="Jgu-CN-3M1"/>
+                            <constraint firstItem="RLv-Kw-3OE" firstAttribute="bottom" secondItem="OdZ-GY-sCJ" secondAttribute="bottom" id="Kiu-xT-wI3"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="RLv-Kw-3OE"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4lz-Mb-GCL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="104" y="46"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Bitmark_Logo-8" width="285" height="48"/>
+    </resources>
+</document>
