@@ -92,6 +92,9 @@
                                                 <state key="normal" title="WRITE DOWN RECOVERY PHRASE »">
                                                     <color key="titleColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <segue destination="gdC-Tg-1OJ" kind="show" id="tvh-AK-IMf"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Na-zZ-32g">
                                                 <rect key="frame" x="0.0" y="32" width="374" height="32"/>
@@ -141,7 +144,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="ACCOUNT" id="naF-ur-pPS"/>
+                    <navigationItem key="navigationItem" title="ACCOUNT" id="naF-ur-pPS">
+                        <barButtonItem key="backBarButtonItem" title=" " id="M73-Tu-JK2"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="accountNumberLabel" destination="vC4-vj-Nhr" id="vR0-r3-g7G"/>
                         <outlet property="copiedToClipboardNotifier" destination="QMZ-qg-O5B" id="2gF-bQ-Zaw"/>
@@ -150,6 +155,106 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1952.1739130434785" y="138.61607142857142"/>
+        </scene>
+        <!--RECOVERY PHRASE-->
+        <scene sceneID="rSB-hi-ZZ0">
+            <objects>
+                <viewController title="RECOVERY PHRASE" id="gdC-Tg-1OJ" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tBx-G4-yLp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ElF-CV-wgb">
+                                <rect key="frame" x="20" y="108" width="374" height="660"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0f-eE-QbK" userLabel="Title View">
+                                        <rect key="frame" x="112" y="30" width="150" height="36"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WARNING!" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4T-Tw-GVN">
+                                                <rect key="frame" x="36" y="6" width="114" height="24"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="17"/>
+                                                <color key="textColor" red="1" green="0.0" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Polygon" translatesAutoresizingMaskIntoConstraints="NO" id="pGq-C4-FKX">
+                                                <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="36" id="VNk-zR-5CH"/>
+                                                    <constraint firstAttribute="height" constant="36" id="o5J-hj-kKt"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="pGq-C4-FKX" firstAttribute="centerY" secondItem="o0f-eE-QbK" secondAttribute="centerY" id="1Hm-d0-wME"/>
+                                            <constraint firstItem="pGq-C4-FKX" firstAttribute="leading" secondItem="o0f-eE-QbK" secondAttribute="leading" id="DTN-u4-ISv"/>
+                                            <constraint firstAttribute="height" secondItem="pGq-C4-FKX" secondAttribute="height" id="JWg-Af-HJT"/>
+                                            <constraint firstItem="b4T-Tw-GVN" firstAttribute="leading" secondItem="pGq-C4-FKX" secondAttribute="trailing" id="UHa-Dp-nuo"/>
+                                            <constraint firstItem="b4T-Tw-GVN" firstAttribute="centerY" secondItem="o0f-eE-QbK" secondAttribute="centerY" id="dYN-nD-rTd"/>
+                                            <constraint firstAttribute="trailing" secondItem="b4T-Tw-GVN" secondAttribute="trailing" id="ioA-c9-ioA"/>
+                                            <constraint firstAttribute="width" constant="150" id="ych-1S-L4f"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxr-up-9Ej">
+                                        <rect key="frame" x="0.0" y="81" width="374" height="203"/>
+                                        <attributedString key="attributedText">
+                                            <fragment>
+                                                <string key="content">Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.
+
+We will show you a list of words to write down on a piece of paper and keep safe. 
+
+</string>
+                                                <attributes>
+                                                    <font key="NSFont" size="17" name="Avenir-Book"/>
+                                                </attributes>
+                                            </fragment>
+                                            <fragment content="Make sure you are in a private location before writing down your recovery phrase.">
+                                                <attributes>
+                                                    <font key="NSFont" size="17" name="Avenir-Book"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="20" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="cxr-up-9Ej" firstAttribute="top" secondItem="o0f-eE-QbK" secondAttribute="bottom" constant="15" id="Mqu-RR-Ryv"/>
+                                    <constraint firstItem="cxr-up-9Ej" firstAttribute="leading" secondItem="ElF-CV-wgb" secondAttribute="leading" id="Pd7-2D-IPb"/>
+                                    <constraint firstItem="o0f-eE-QbK" firstAttribute="top" secondItem="ElF-CV-wgb" secondAttribute="top" constant="30" id="VSY-WN-zfA"/>
+                                    <constraint firstAttribute="trailing" secondItem="cxr-up-9Ej" secondAttribute="trailing" id="nad-Gb-BaZ"/>
+                                    <constraint firstItem="o0f-eE-QbK" firstAttribute="centerX" secondItem="ElF-CV-wgb" secondAttribute="centerX" id="v5u-C7-mT8"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1A4-ap-Ats">
+                                <rect key="frame" x="0.0" y="768" width="414" height="45"/>
+                                <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="rP7-Qd-U1o"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                                <state key="normal" title="WRITE DOWN RECOVERY PHRASE">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Geb-zU-bXe" firstAttribute="bottom" secondItem="1A4-ap-Ats" secondAttribute="bottom" id="C1X-Su-bN2"/>
+                            <constraint firstItem="1A4-ap-Ats" firstAttribute="leading" secondItem="Geb-zU-bXe" secondAttribute="leading" id="Kfv-sK-1th"/>
+                            <constraint firstItem="ElF-CV-wgb" firstAttribute="leading" secondItem="Geb-zU-bXe" secondAttribute="leading" constant="20" id="N4G-66-3Uk"/>
+                            <constraint firstItem="1A4-ap-Ats" firstAttribute="trailing" secondItem="Geb-zU-bXe" secondAttribute="trailing" id="VaS-41-wXZ"/>
+                            <constraint firstItem="1A4-ap-Ats" firstAttribute="top" secondItem="ElF-CV-wgb" secondAttribute="bottom" id="dKV-p5-3qi"/>
+                            <constraint firstItem="ElF-CV-wgb" firstAttribute="top" secondItem="Geb-zU-bXe" secondAttribute="top" constant="20" id="jeG-cV-ydf"/>
+                            <constraint firstItem="Geb-zU-bXe" firstAttribute="trailing" secondItem="ElF-CV-wgb" secondAttribute="trailing" constant="20" id="wWu-fD-kdz"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Geb-zU-bXe"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FkD-Hg-F6s" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2940.579710144928" y="138.61607142857142"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="oDH-ZA-iHh">
@@ -192,5 +297,6 @@
     <resources>
         <image name="Account-inactive" width="19" height="25"/>
         <image name="AccountSelected" width="19" height="25"/>
+        <image name="Polygon" width="30" height="25"/>
     </resources>
 </document>
