@@ -1,0 +1,25 @@
+PODS:
+  - BitmarkSDK (2.5.1):
+    - KeychainAccess
+    - TweetNacl
+  - KeychainAccess (3.2.0)
+  - TweetNacl (1.0.1)
+
+DEPENDENCIES:
+  - BitmarkSDK
+  - KeychainAccess
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - BitmarkSDK
+    - KeychainAccess
+    - TweetNacl
+
+SPEC CHECKSUMS:
+  BitmarkSDK: 4cb6539495e03956c7eeca6a5f6fc11c524a7088
+  KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
+  TweetNacl: ea279cd32bffee69c59c73631470d3419db675df
+
+PODFILE CHECKSUM: c7e3962d1f4932433a7008a582f9bfee9b95bcdd
+
+COCOAPODS: 1.5.3
