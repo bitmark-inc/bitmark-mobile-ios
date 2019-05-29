@@ -47,6 +47,9 @@
                                                 <state key="normal" title="CREATE NEW ACCOUNT">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="createNewAccount:" destination="A9W-Ss-WgV" eventType="touchUpInside" id="Tdu-k6-bjh"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CgA-27-GfY">
                                                 <rect key="frame" x="0.0" y="45" width="414" height="45"/>
