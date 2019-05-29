@@ -9,4 +9,25 @@
 import UIKit
 
 class AccountViewController: UIViewController {
+
+  // MARK: - Properties
+  @IBOutlet weak var accountNumberLabel: UIButton!
+  @IBOutlet weak var copiedToClipboardNotifier: UILabel!
+
+  // MARK: - Init
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    loadData()
+  }
+
+  // MARK: - Handlers
+  @IBAction func tapToCopyAccountNumber(_ sender: UIButton) {
+    UIPasteboard.general.string = accountNumberLabel.currentTitle
+    copiedToClipboardNotifier.showIn(period: 1.2)
+  }
+
+  // MARK: UI Elements
+  private func loadData() {
+    accountNumberLabel.setTitle(Global.currentAccount?.accountNumber, for: .normal)
+  }
 }
