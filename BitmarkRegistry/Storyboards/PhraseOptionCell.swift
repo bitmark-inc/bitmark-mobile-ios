@@ -21,7 +21,6 @@ class PhraseOptionCell: UICollectionViewCell {
 
   // MARK: - Handlers
   @IBAction func selectPhraseOption(_ sender: UIButton) {
-    isHidden = true
     delegate?.selectPhraseOptionCell(self)
   }
 }
