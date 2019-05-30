@@ -468,7 +468,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recoveryPhraseCell" id="yyQ-rB-5HA" customClass="RecoveryPhraseCell" customModule="BitmarkRegistry" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="center" reuseIdentifier="recoveryPhraseCell" id="yyQ-rB-5HA" customClass="RecoveryPhraseCell" customModule="BitmarkRegistry" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -509,7 +509,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                                                     <attributedString key="attributedText">
                                                                         <fragment content="Label">
                                                                             <attributes>
-                                                                                <color key="NSColor" red="0.0" green="0.37647058823529411" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <color key="NSColor" red="0.50980392156862742" green="0.50980392156862742" blue="0.50980392156862742" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <font key="NSFont" size="15" name="Avenir-Book"/>
                                                                                 <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="18" tighteningFactorForTruncation="0.0"/>
                                                                             </attributes>
@@ -517,22 +517,27 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                                                     </attributedString>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="llk-2q-UE5">
+                                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jk8-gH-bCO">
                                                                     <rect key="frame" x="33" y="0.0" width="87" height="50"/>
-                                                                    <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                </button>
+                                                                    <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                            <color key="value" red="0.97934550050000002" green="0.10955855690000001" blue="0.1226316386" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </view>
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstAttribute="trailing" secondItem="qpC-Hh-Hrh" secondAttribute="trailing" id="9YL-1g-Ng3"/>
                                                                 <constraint firstItem="qpC-Hh-Hrh" firstAttribute="leading" secondItem="TFh-Ai-xlN" secondAttribute="trailing" constant="7" id="Cu9-Pg-TCq"/>
-                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="height" secondItem="410-d0-q6b" secondAttribute="height" id="GRk-T2-dKb"/>
+                                                                <constraint firstItem="jk8-gH-bCO" firstAttribute="top" secondItem="410-d0-q6b" secondAttribute="top" id="E1p-Mq-JbT"/>
+                                                                <constraint firstItem="jk8-gH-bCO" firstAttribute="leading" secondItem="qpC-Hh-Hrh" secondAttribute="leading" id="FD9-V3-q2M"/>
+                                                                <constraint firstItem="jk8-gH-bCO" firstAttribute="height" secondItem="410-d0-q6b" secondAttribute="height" id="GXN-JT-N2v"/>
                                                                 <constraint firstItem="TFh-Ai-xlN" firstAttribute="leading" secondItem="410-d0-q6b" secondAttribute="leading" id="JbW-qV-CR7"/>
                                                                 <constraint firstItem="qpC-Hh-Hrh" firstAttribute="centerY" secondItem="410-d0-q6b" secondAttribute="centerY" id="VPy-eh-MTj"/>
-                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="leading" secondItem="qpC-Hh-Hrh" secondAttribute="leading" id="YMZ-UP-Y0C"/>
                                                                 <constraint firstAttribute="bottom" secondItem="TFh-Ai-xlN" secondAttribute="bottom" id="irP-oZ-wiQ"/>
-                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="trailing" secondItem="qpC-Hh-Hrh" secondAttribute="trailing" id="rYD-NQ-o9i"/>
+                                                                <constraint firstItem="jk8-gH-bCO" firstAttribute="trailing" secondItem="qpC-Hh-Hrh" secondAttribute="trailing" id="jRp-e0-kvl"/>
                                                                 <constraint firstItem="TFh-Ai-xlN" firstAttribute="top" secondItem="410-d0-q6b" secondAttribute="top" id="spP-ae-tR0"/>
-                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="top" secondItem="410-d0-q6b" secondAttribute="top" id="tjk-DK-B9j"/>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="vaF-75-9Ob"/>
                                                             </constraints>
                                                         </view>
@@ -544,7 +549,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                                     <constraint firstItem="410-d0-q6b" firstAttribute="centerX" secondItem="yyQ-rB-5HA" secondAttribute="centerX" id="pzg-Aa-O9V"/>
                                                 </constraints>
                                                 <connections>
-                                                    <outlet property="hiddenPhraseBox" destination="llk-2q-UE5" id="XjE-78-roV"/>
+                                                    <outlet property="hiddenPhraseBox" destination="jk8-gH-bCO" id="B3c-x8-rjq"/>
                                                     <outlet property="noLabel" destination="qoX-4v-YEX" id="WAl-Dp-97u"/>
                                                     <outlet property="phraseLabel" destination="qpC-Hh-Hrh" id="EOs-jz-QkS"/>
                                                 </connections>
@@ -555,13 +560,81 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                             <outlet property="delegate" destination="z6k-Sg-bE4" id="QVm-Ze-GC4"/>
                                         </connections>
                                     </collectionView>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Z0s-kY-qWC">
+                                        <rect key="frame" x="0.0" y="391" width="374" height="296"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qJJ-Ud-H5N">
+                                            <size key="itemSize" width="50" height="50"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="phraseOptionCell" id="BjO-i5-4XT" customClass="PhraseOptionCell" customModule="BitmarkRegistry" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KZv-S2-gzX" userLabel="Cover View">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                            <subviews>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qLy-9g-cpc">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                                    <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
+                                                                    <state key="normal" title="Button"/>
+                                                                    <connections>
+                                                                        <action selector="selectPhraseOption:" destination="BjO-i5-4XT" eventType="touchUpInside" id="OUG-G7-DAK"/>
+                                                                    </connections>
+                                                                </button>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="qLy-9g-cpc" secondAttribute="trailing" id="g1L-oE-kTk"/>
+                                                                <constraint firstItem="qLy-9g-cpc" firstAttribute="leading" secondItem="KZv-S2-gzX" secondAttribute="leading" id="j5r-RT-c5a"/>
+                                                                <constraint firstAttribute="bottom" secondItem="qLy-9g-cpc" secondAttribute="bottom" id="jh0-mu-TS1"/>
+                                                                <constraint firstItem="qLy-9g-cpc" firstAttribute="top" secondItem="KZv-S2-gzX" secondAttribute="top" id="u4B-TO-rA0"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                    <color key="value" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                                    <real key="value" value="0.5"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                    </subviews>
+                                                </view>
+                                                <gestureRecognizers/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="KZv-S2-gzX" secondAttribute="trailing" id="3UR-8w-MqN"/>
+                                                    <constraint firstItem="KZv-S2-gzX" firstAttribute="top" secondItem="BjO-i5-4XT" secondAttribute="top" id="adG-ox-bb9"/>
+                                                    <constraint firstItem="KZv-S2-gzX" firstAttribute="leading" secondItem="BjO-i5-4XT" secondAttribute="leading" id="e4N-0L-YQx"/>
+                                                    <constraint firstAttribute="bottom" secondItem="KZv-S2-gzX" secondAttribute="bottom" id="guO-b9-ETJ"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="phraseOptionBox" destination="qLy-9g-cpc" id="uBe-it-syo"/>
+                                                </connections>
+                                            </collectionViewCell>
+                                        </cells>
+                                        <connections>
+                                            <outlet property="dataSource" destination="z6k-Sg-bE4" id="rFe-ph-wkr"/>
+                                            <outlet property="delegate" destination="z6k-Sg-bE4" id="tFg-4u-oen"/>
+                                        </connections>
+                                    </collectionView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Z0s-kY-qWC" secondAttribute="bottom" id="162-Jb-HfC"/>
+                                    <constraint firstItem="Z0s-kY-qWC" firstAttribute="leading" secondItem="5Zz-0u-ybf" secondAttribute="leading" id="4lf-eM-Lzo"/>
                                     <constraint firstAttribute="trailing" secondItem="S1h-wI-yG9" secondAttribute="trailing" id="5fM-Fi-Ix7"/>
                                     <constraint firstItem="S1h-wI-yG9" firstAttribute="top" secondItem="5Zz-0u-ybf" secondAttribute="top" id="A22-ev-CbX"/>
                                     <constraint firstItem="S1h-wI-yG9" firstAttribute="leading" secondItem="5Zz-0u-ybf" secondAttribute="leading" id="ND3-oL-6eO"/>
+                                    <constraint firstAttribute="trailing" secondItem="Z0s-kY-qWC" secondAttribute="trailing" id="Nhc-8p-VPM"/>
                                     <constraint firstItem="FaH-qX-xdL" firstAttribute="top" secondItem="S1h-wI-yG9" secondAttribute="bottom" constant="24" id="UnO-I7-EjN"/>
+                                    <constraint firstItem="Z0s-kY-qWC" firstAttribute="top" secondItem="FaH-qX-xdL" secondAttribute="bottom" constant="27" id="rvt-6X-u1b"/>
                                     <constraint firstItem="FaH-qX-xdL" firstAttribute="leading" secondItem="5Zz-0u-ybf" secondAttribute="leading" id="tcd-fU-Q7r"/>
                                     <constraint firstAttribute="trailing" secondItem="FaH-qX-xdL" secondAttribute="trailing" id="zQx-Ob-aym"/>
                                 </constraints>
@@ -577,13 +650,20 @@ We will show you a list of words to write down on a piece of paper and keep safe
                         <viewLayoutGuide key="safeArea" id="xpx-uT-YKh"/>
                     </view>
                     <connections>
+                        <outlet property="phraseOptionCollectionView" destination="Z0s-kY-qWC" id="Ty3-kE-t9u"/>
                         <outlet property="recoveryPhraseCollectionView" destination="FaH-qX-xdL" id="amg-Bi-NVG"/>
                         <outlet property="recoveryPhraseCollectionViewHeight" destination="1DN-qL-wfP" id="DRo-ji-3qP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdn-li-4Qp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="30o-4l-EN1" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="UAQ-CM-kIB">
+                    <connections>
+                        <action selector="tapToSelectPhrase:" destination="30o-4l-EN1" id="DR7-da-hgw"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="5032" y="137"/>
+            <point key="canvasLocation" x="5031.884057971015" y="136.60714285714286"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="oDH-ZA-iHh">

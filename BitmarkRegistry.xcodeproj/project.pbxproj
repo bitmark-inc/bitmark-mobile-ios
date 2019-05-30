@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
 		E2587515229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2587514229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift */; };
+		E258751B229F7F8B00AED94D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E258751A229F7F8B00AED94D /* UIView+Extension.swift */; };
+		E258751D229FA5FA00AED94D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E258751C229FA5FA00AED94D /* UIColor+Extension.swift */; };
+		E2587525229FB73500AED94D /* PhraseOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2587524229FB73500AED94D /* PhraseOptionCell.swift */; };
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E27CD241229E5C6B00503D6A /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD240229E5C6B00503D6A /* RecoveryPhraseViewController.swift */; };
 		E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD242229E5DF200503D6A /* RecoveryPhraseCell.swift */; };
@@ -33,6 +36,9 @@
 		416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
 		57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BitmarkRegistry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2587514229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecoveryPhraseCollectionViewController.swift; sourceTree = "<group>"; };
+		E258751A229F7F8B00AED94D /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		E258751C229FA5FA00AED94D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		E2587524229FB73500AED94D /* PhraseOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseOptionCell.swift; sourceTree = "<group>"; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E27CD240229E5C6B00503D6A /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E27CD242229E5DF200503D6A /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
@@ -143,6 +149,8 @@
 			children = (
 				E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */,
 				E27CD23D229E407C00503D6A /* UILabel+Extension.swift */,
+				E258751A229F7F8B00AED94D /* UIView+Extension.swift */,
+				E258751C229FA5FA00AED94D /* UIColor+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -173,6 +181,7 @@
 				E2E798D5229E1ED400508B69 /* Onboarding.storyboard */,
 				E2E798BD229E189E00508B69 /* Main.storyboard */,
 				E27CD242229E5DF200503D6A /* RecoveryPhraseCell.swift */,
+				E2587524229FB73500AED94D /* PhraseOptionCell.swift */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -339,9 +348,12 @@
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E27CD241229E5C6B00503D6A /* RecoveryPhraseViewController.swift in Sources */,
+				E258751D229FA5FA00AED94D /* UIColor+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
+				E2587525229FB73500AED94D /* PhraseOptionCell.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */,
+				E258751B229F7F8B00AED94D /* UIView+Extension.swift in Sources */,
 				E27CD245229E7CF700503D6A /* TestRecoveryPhraseViewController.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
