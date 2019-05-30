@@ -15,8 +15,8 @@ class BaseRecoveryPhraseCollectionViewController: UIViewController, UICollection
   @IBOutlet weak var recoveryPhraseCollectionViewHeight: NSLayoutConstraint!
   
   private let sectionInsets = UIEdgeInsets(top: 5.0, left: 10.0, bottom: 0.0, right: 0.0)
-  private let paddingCollectionView: CGFloat = 40.0
-  private let heightPerRecoveryPhraseItem: CGFloat = 25.0
+  private let collectionViewPadding: CGFloat = 40.0
+  private let heightPerRecoveryPhraseItem: CGFloat = 22.0
   private let screenHeightLimitationForRecoveryPhase: CGFloat = 600
   private var columns: CGFloat!
   private let numberOfPhrases: CGFloat = 12
@@ -44,7 +44,7 @@ class BaseRecoveryPhraseCollectionViewController: UIViewController, UICollection
 
   // MARK: - UICollectionViewDelegateFlowLayout
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    let paddingSpace = sectionInsets.left * (columns - 1) + paddingCollectionView
+    let paddingSpace = sectionInsets.left * (columns - 1) + collectionViewPadding
     let availableWidth = view.frame.width - paddingSpace
     let widthPerItem = availableWidth / columns
     return CGSize(width: widthPerItem, height: heightPerRecoveryPhraseItem)
