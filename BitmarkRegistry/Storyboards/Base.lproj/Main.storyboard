@@ -322,7 +322,6 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                     </subviews>
-                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <constraints>
                                                                         <constraint firstItem="nK9-eJ-Bmt" firstAttribute="height" secondItem="0ih-Jj-mgG" secondAttribute="height" id="Cw9-7C-Dkl"/>
                                                                         <constraint firstItem="nK9-eJ-Bmt" firstAttribute="centerY" secondItem="0ih-Jj-mgG" secondAttribute="centerY" id="I99-V3-fpQ"/>
@@ -397,6 +396,9 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                         <state key="normal" title="TEST RECOVERY PHRASE">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <segue destination="z6k-Sg-bE4" kind="show" id="yIW-41-FKT"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9N1-wW-2S1">
                                         <rect key="frame" x="0.0" y="45" width="414" height="45"/>
@@ -429,6 +431,159 @@ We will show you a list of words to write down on a piece of paper and keep safe
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UnQ-kG-HOM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4045" y="137"/>
+        </scene>
+        <!--Test Recovery Phrase View Controller-->
+        <scene sceneID="4nH-Pv-cXl">
+            <objects>
+                <viewController id="z6k-Sg-bE4" customClass="TestRecoveryPhraseViewController" customModule="BitmarkRegistry" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZAy-1z-WOS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Zz-0u-ybf" userLabel="Content View">
+                                <rect key="frame" x="20" y="126" width="374" height="687"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S1h-wI-yG9">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="40"/>
+                                        <attributedString key="attributedText">
+                                            <fragment content="Tap the words to put them in the correct order for your recovery phrase:">
+                                                <attributes>
+                                                    <font key="NSFont" size="17" name="Avenir-Book"/>
+                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="20" tighteningFactorForTruncation="0.0"/>
+                                                </attributes>
+                                            </fragment>
+                                        </attributedString>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FaH-qX-xdL">
+                                        <rect key="frame" x="0.0" y="64" width="374" height="300"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="300" id="1DN-qL-wfP"/>
+                                        </constraints>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SbG-WF-yW0">
+                                            <size key="itemSize" width="50" height="50"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recoveryPhraseCell" id="yyQ-rB-5HA" customClass="RecoveryPhraseCell" customModule="BitmarkRegistry" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="410-d0-q6b" userLabel="CoverView">
+                                                            <rect key="frame" x="-35" y="0.0" width="120" height="50"/>
+                                                            <subviews>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TFh-Ai-xlN">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="26" height="50"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qoX-4v-YEX">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="26" height="50"/>
+                                                                            <attributedString key="attributedText">
+                                                                                <fragment content="Label">
+                                                                                    <attributes>
+                                                                                        <color key="NSColor" red="0.83137254901960778" green="0.83137254901960778" blue="0.83137254901960778" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                        <font key="NSFont" size="15" name="Avenir-Book"/>
+                                                                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="18" tighteningFactorForTruncation="0.0"/>
+                                                                                    </attributes>
+                                                                                </fragment>
+                                                                            </attributedString>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" constant="26" id="Agk-WZ-XZm"/>
+                                                                        <constraint firstItem="qoX-4v-YEX" firstAttribute="centerY" secondItem="TFh-Ai-xlN" secondAttribute="centerY" id="Fe5-8Q-ht7"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="qoX-4v-YEX" secondAttribute="trailing" id="H3u-2d-aCg"/>
+                                                                        <constraint firstItem="qoX-4v-YEX" firstAttribute="height" secondItem="TFh-Ai-xlN" secondAttribute="height" id="I8e-FQ-1rc"/>
+                                                                        <constraint firstItem="qoX-4v-YEX" firstAttribute="leading" secondItem="TFh-Ai-xlN" secondAttribute="leading" id="Vnk-9h-ILW"/>
+                                                                    </constraints>
+                                                                </view>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qpC-Hh-Hrh">
+                                                                    <rect key="frame" x="33" y="16" width="87" height="18"/>
+                                                                    <attributedString key="attributedText">
+                                                                        <fragment content="Label">
+                                                                            <attributes>
+                                                                                <color key="NSColor" red="0.0" green="0.37647058823529411" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                                <font key="NSFont" size="15" name="Avenir-Book"/>
+                                                                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="18" tighteningFactorForTruncation="0.0"/>
+                                                                            </attributes>
+                                                                        </fragment>
+                                                                    </attributedString>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="llk-2q-UE5">
+                                                                    <rect key="frame" x="33" y="0.0" width="87" height="50"/>
+                                                                    <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </button>
+                                                            </subviews>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="qpC-Hh-Hrh" secondAttribute="trailing" id="9YL-1g-Ng3"/>
+                                                                <constraint firstItem="qpC-Hh-Hrh" firstAttribute="leading" secondItem="TFh-Ai-xlN" secondAttribute="trailing" constant="7" id="Cu9-Pg-TCq"/>
+                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="height" secondItem="410-d0-q6b" secondAttribute="height" id="GRk-T2-dKb"/>
+                                                                <constraint firstItem="TFh-Ai-xlN" firstAttribute="leading" secondItem="410-d0-q6b" secondAttribute="leading" id="JbW-qV-CR7"/>
+                                                                <constraint firstItem="qpC-Hh-Hrh" firstAttribute="centerY" secondItem="410-d0-q6b" secondAttribute="centerY" id="VPy-eh-MTj"/>
+                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="leading" secondItem="qpC-Hh-Hrh" secondAttribute="leading" id="YMZ-UP-Y0C"/>
+                                                                <constraint firstAttribute="bottom" secondItem="TFh-Ai-xlN" secondAttribute="bottom" id="irP-oZ-wiQ"/>
+                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="trailing" secondItem="qpC-Hh-Hrh" secondAttribute="trailing" id="rYD-NQ-o9i"/>
+                                                                <constraint firstItem="TFh-Ai-xlN" firstAttribute="top" secondItem="410-d0-q6b" secondAttribute="top" id="spP-ae-tR0"/>
+                                                                <constraint firstItem="llk-2q-UE5" firstAttribute="top" secondItem="410-d0-q6b" secondAttribute="top" id="tjk-DK-B9j"/>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="vaF-75-9Ob"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                </view>
+                                                <constraints>
+                                                    <constraint firstItem="410-d0-q6b" firstAttribute="height" secondItem="yyQ-rB-5HA" secondAttribute="height" id="Lgv-vF-vWz"/>
+                                                    <constraint firstItem="410-d0-q6b" firstAttribute="top" secondItem="yyQ-rB-5HA" secondAttribute="top" id="T8j-Go-iFX"/>
+                                                    <constraint firstItem="410-d0-q6b" firstAttribute="centerX" secondItem="yyQ-rB-5HA" secondAttribute="centerX" id="pzg-Aa-O9V"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="hiddenPhraseBox" destination="llk-2q-UE5" id="XjE-78-roV"/>
+                                                    <outlet property="noLabel" destination="qoX-4v-YEX" id="WAl-Dp-97u"/>
+                                                    <outlet property="phraseLabel" destination="qpC-Hh-Hrh" id="EOs-jz-QkS"/>
+                                                </connections>
+                                            </collectionViewCell>
+                                        </cells>
+                                        <connections>
+                                            <outlet property="dataSource" destination="z6k-Sg-bE4" id="oHK-cE-vtH"/>
+                                            <outlet property="delegate" destination="z6k-Sg-bE4" id="QVm-Ze-GC4"/>
+                                        </connections>
+                                    </collectionView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="S1h-wI-yG9" secondAttribute="trailing" id="5fM-Fi-Ix7"/>
+                                    <constraint firstItem="S1h-wI-yG9" firstAttribute="top" secondItem="5Zz-0u-ybf" secondAttribute="top" id="A22-ev-CbX"/>
+                                    <constraint firstItem="S1h-wI-yG9" firstAttribute="leading" secondItem="5Zz-0u-ybf" secondAttribute="leading" id="ND3-oL-6eO"/>
+                                    <constraint firstItem="FaH-qX-xdL" firstAttribute="top" secondItem="S1h-wI-yG9" secondAttribute="bottom" constant="24" id="UnO-I7-EjN"/>
+                                    <constraint firstItem="FaH-qX-xdL" firstAttribute="leading" secondItem="5Zz-0u-ybf" secondAttribute="leading" id="tcd-fU-Q7r"/>
+                                    <constraint firstAttribute="trailing" secondItem="FaH-qX-xdL" secondAttribute="trailing" id="zQx-Ob-aym"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="5Zz-0u-ybf" firstAttribute="leading" secondItem="xpx-uT-YKh" secondAttribute="leading" constant="20" id="2xH-Ou-H73"/>
+                            <constraint firstItem="xpx-uT-YKh" firstAttribute="bottom" secondItem="5Zz-0u-ybf" secondAttribute="bottom" id="3Cw-Ro-wRL"/>
+                            <constraint firstItem="5Zz-0u-ybf" firstAttribute="top" secondItem="xpx-uT-YKh" secondAttribute="top" constant="38" id="JNO-oN-pRY"/>
+                            <constraint firstItem="xpx-uT-YKh" firstAttribute="trailing" secondItem="5Zz-0u-ybf" secondAttribute="trailing" constant="20" id="WCt-6e-O7m"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="xpx-uT-YKh"/>
+                    </view>
+                    <connections>
+                        <outlet property="recoveryPhraseCollectionView" destination="FaH-qX-xdL" id="amg-Bi-NVG"/>
+                        <outlet property="recoveryPhraseCollectionViewHeight" destination="1DN-qL-wfP" id="DRo-ji-3qP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xdn-li-4Qp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5032" y="137"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="oDH-ZA-iHh">
@@ -471,6 +626,6 @@ We will show you a list of words to write down on a piece of paper and keep safe
     <resources>
         <image name="Account-inactive" width="19" height="25"/>
         <image name="AccountSelected" width="19" height="25"/>
-        <image name="Polygon" width="30" height="25"/>
+        <image name="Warning" width="36" height="36"/>
     </resources>
 </document>

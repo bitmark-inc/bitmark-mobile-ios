@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
+		E2587515229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2587514229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift */; };
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E27CD241229E5C6B00503D6A /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD240229E5C6B00503D6A /* RecoveryPhraseViewController.swift */; };
 		E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD242229E5DF200503D6A /* RecoveryPhraseCell.swift */; };
+		E27CD245229E7CF700503D6A /* TestRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD244229E7CF700503D6A /* TestRecoveryPhraseViewController.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
 		E2E798BF229E189E00508B69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
@@ -30,9 +32,11 @@
 /* Begin PBXFileReference section */
 		416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
 		57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BitmarkRegistry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2587514229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecoveryPhraseCollectionViewController.swift; sourceTree = "<group>"; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E27CD240229E5C6B00503D6A /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E27CD242229E5DF200503D6A /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
+		E27CD244229E7CF700503D6A /* TestRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,7 +89,9 @@
 			isa = PBXGroup;
 			children = (
 				E2E798D8229E238900508B69 /* AccountViewController.swift */,
+				E2587514229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift */,
 				E27CD240229E5C6B00503D6A /* RecoveryPhraseViewController.swift */,
+				E27CD244229E7CF700503D6A /* TestRecoveryPhraseViewController.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -336,11 +342,13 @@
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */,
+				E27CD245229E7CF700503D6A /* TestRecoveryPhraseViewController.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkService.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
+				E2587515229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
