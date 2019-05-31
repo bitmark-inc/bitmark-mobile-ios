@@ -44,6 +44,14 @@ class RecoveryPhraseCell: UICollectionViewCell {
     self.matchingTestPhraseCell = matchingTestPhraseCell
   }
 
+  func setErrorStyle() {
+    phraseLabel.textColor = UIColor.red
+  }
+
+  func reloadStyle(_ isPhraseHidden: Bool) {
+    phraseLabel.textColor = isPhraseHidden ? .mainBlueColor : .mainGrayColor
+  }
+
   override var isSelected: Bool {
     didSet {
       hiddenPhraseBox?.layer.borderWidth = isSelected ? 1 : 0

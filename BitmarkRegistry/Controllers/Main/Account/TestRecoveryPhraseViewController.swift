@@ -14,6 +14,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseCollectionViewControll
   @IBOutlet weak var phraseOptionCollectionView: UICollectionView!
   @IBOutlet weak var successResultView: UIView!
   @IBOutlet weak var errorResultView: UIView!
+  @IBOutlet weak var resultBoxHeightConstraint: NSLayoutConstraint!
 
   private let reuseIdentifier = "recoveryPhraseCell"
   private var recoveryPhrases = [String]()
@@ -27,6 +28,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseCollectionViewControll
     return hiddenPhraseIndexes.sorted()
   }()
   private let heightPerPhraseOptionItem: CGFloat = 25.0
+  private let resultBoxHeight: CGFloat = 130
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -36,6 +38,9 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseCollectionViewControll
 
   // MARK: Load Data
   private func loadData() {
+    // avoid result box hide phraseOptionCollectionView in short height screen
+    resultBoxHeightConstraint.constant = 0
+
     loadRecoveryPhrases(&recoveryPhrases)
     hiddenPhraseIndexes = randomHiddenIndexes()
   }
@@ -70,6 +75,8 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseCollectionViewControll
     errorResultView.isHidden = true
     phraseOptionCollectionView.isHidden = false
     setupDefaultSelectHiddenRecoveryPhraseBox()
+    setStyleForRecoveryPhraseCell(isError: false)
+    resultBoxHeightConstraint.constant = 0
   }
 }
 
@@ -118,7 +125,6 @@ extension TestRecoveryPhraseViewController: UICollectionViewDataSource, SelectPh
       - 5. if user finish to test recovery phrases, check the result
    */
   func selectPhraseOptionCell(_ phraseOptionCell: PhraseOptionCell) {
-
     let selectedHiddenPhraseBoxCell = recoveryPhraseCollectionView.cellForItem(at: selectedHiddenPhraseBoxIndexPath) as! RecoveryPhraseCell
 
     phraseOptionCell.isHidden = true // 1
@@ -130,7 +136,13 @@ extension TestRecoveryPhraseViewController: UICollectionViewDataSource, SelectPh
       selectedHiddenPhraseBoxIndexPath = nextSelectedHiddenIndexPath
     } else { // 5
       phraseOptionCollectionView.isHidden = true
-      (isResultCorrect() ? successResultView : errorResultView).isHidden = false
+      if isResultCorrect() {
+        successResultView.isHidden = false
+      } else {
+        errorResultView.isHidden = false
+        setStyleForRecoveryPhraseCell(isError: true)
+      }
+      resultBoxHeightConstraint.constant = resultBoxHeight
     }
   }
 
@@ -198,5 +210,17 @@ extension TestRecoveryPhraseViewController {
       }
     }
     return true
+  }
+
+  func setStyleForRecoveryPhraseCell(isError: Bool) {
+    for index in (0..<numberOfPhrases) {
+      let cell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: index, section: 0)) as! RecoveryPhraseCell
+      if isError {
+        cell.setErrorStyle()
+      } else {
+        let isPhraseHidden = hiddenPhraseIndexes.firstIndex(of: index) != nil
+        cell.reloadStyle(isPhraseHidden)
+      }
+    }
   }
 }
