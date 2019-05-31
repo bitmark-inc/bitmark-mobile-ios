@@ -441,7 +441,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Zz-0u-ybf" userLabel="Content View">
-                                <rect key="frame" x="20" y="126" width="374" height="502"/>
+                                <rect key="frame" x="20" y="126" width="374" height="547"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S1h-wI-yG9">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="40"/>
@@ -456,7 +456,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FaH-qX-xdL">
-                                        <rect key="frame" x="0.0" y="64" width="374" height="300"/>
+                                        <rect key="frame" x="0.0" y="55" width="374" height="300"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="1DN-qL-wfP"/>
@@ -561,7 +561,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                         </connections>
                                     </collectionView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Z0s-kY-qWC">
-                                        <rect key="frame" x="0.0" y="391" width="374" height="111"/>
+                                        <rect key="frame" x="0.0" y="382" width="374" height="165"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qJJ-Ud-H5N">
                                             <size key="itemSize" width="50" height="50"/>
@@ -633,17 +633,17 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                     <constraint firstItem="S1h-wI-yG9" firstAttribute="top" secondItem="5Zz-0u-ybf" secondAttribute="top" id="A22-ev-CbX"/>
                                     <constraint firstItem="S1h-wI-yG9" firstAttribute="leading" secondItem="5Zz-0u-ybf" secondAttribute="leading" id="ND3-oL-6eO"/>
                                     <constraint firstAttribute="trailing" secondItem="Z0s-kY-qWC" secondAttribute="trailing" id="Nhc-8p-VPM"/>
-                                    <constraint firstItem="FaH-qX-xdL" firstAttribute="top" secondItem="S1h-wI-yG9" secondAttribute="bottom" constant="24" id="UnO-I7-EjN"/>
+                                    <constraint firstItem="FaH-qX-xdL" firstAttribute="top" secondItem="S1h-wI-yG9" secondAttribute="bottom" constant="15" id="UnO-I7-EjN"/>
                                     <constraint firstItem="Z0s-kY-qWC" firstAttribute="top" secondItem="FaH-qX-xdL" secondAttribute="bottom" constant="27" id="rvt-6X-u1b"/>
                                     <constraint firstItem="FaH-qX-xdL" firstAttribute="leading" secondItem="5Zz-0u-ybf" secondAttribute="leading" id="tcd-fU-Q7r"/>
                                     <constraint firstAttribute="trailing" secondItem="FaH-qX-xdL" secondAttribute="trailing" id="zQx-Ob-aym"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ovJ-Yg-60i" userLabel="Success Result View">
-                                <rect key="frame" x="0.0" y="663" width="414" height="150"/>
+                                <rect key="frame" x="0.0" y="693" width="414" height="120"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d0a-mV-T8W">
-                                        <rect key="frame" x="20" y="0.0" width="374" height="105"/>
+                                        <rect key="frame" x="20" y="0.0" width="374" height="75"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ok6-co-xki">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="18"/>
@@ -677,7 +677,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOb-nr-cAh">
-                                        <rect key="frame" x="0.0" y="105" width="414" height="45"/>
+                                        <rect key="frame" x="0.0" y="75" width="414" height="45"/>
                                         <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="CCf-M6-Bx9"/>
@@ -695,7 +695,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="ZOb-nr-cAh" secondAttribute="bottom" id="5rH-X4-Y4h"/>
                                     <constraint firstAttribute="trailing" secondItem="d0a-mV-T8W" secondAttribute="trailing" constant="20" id="GmI-Hk-iY3"/>
-                                    <constraint firstAttribute="height" constant="150" id="MHw-Qd-63b"/>
+                                    <constraint firstAttribute="height" constant="120" id="MHw-Qd-63b"/>
                                     <constraint firstItem="ZOb-nr-cAh" firstAttribute="leading" secondItem="ovJ-Yg-60i" secondAttribute="leading" id="WCt-5Q-clc"/>
                                     <constraint firstItem="d0a-mV-T8W" firstAttribute="top" secondItem="ovJ-Yg-60i" secondAttribute="top" id="dLR-N5-efX"/>
                                     <constraint firstItem="ZOb-nr-cAh" firstAttribute="top" secondItem="d0a-mV-T8W" secondAttribute="bottom" id="dvP-jz-Z4R"/>
@@ -704,10 +704,10 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DXT-Cj-XvQ" userLabel="Error Result View">
-                                <rect key="frame" x="0.0" y="663" width="414" height="150"/>
+                                <rect key="frame" x="0.0" y="693" width="414" height="120"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Wc-Nn-snK">
-                                        <rect key="frame" x="20" y="0.0" width="374" height="105"/>
+                                        <rect key="frame" x="20" y="0.0" width="374" height="75"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EUC-ZM-vqc">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="18"/>
@@ -741,7 +741,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x3v-ML-eTP">
-                                        <rect key="frame" x="0.0" y="105" width="414" height="45"/>
+                                        <rect key="frame" x="0.0" y="75" width="414" height="45"/>
                                         <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="gKd-Xg-QV8"/>
@@ -763,7 +763,6 @@ We will show you a list of words to write down on a piece of paper and keep safe
                                     <constraint firstItem="2Wc-Nn-snK" firstAttribute="top" secondItem="DXT-Cj-XvQ" secondAttribute="top" id="KS6-AR-rK4"/>
                                     <constraint firstAttribute="trailing" secondItem="2Wc-Nn-snK" secondAttribute="trailing" constant="20" id="aYu-hl-hbD"/>
                                     <constraint firstAttribute="bottom" secondItem="x3v-ML-eTP" secondAttribute="bottom" id="lPj-Wa-8Kw"/>
-                                    <constraint firstAttribute="height" constant="150" id="sXE-hK-l8T"/>
                                     <constraint firstItem="x3v-ML-eTP" firstAttribute="leading" secondItem="DXT-Cj-XvQ" secondAttribute="leading" id="vHl-lT-Sv8"/>
                                 </constraints>
                             </view>
@@ -772,14 +771,15 @@ We will show you a list of words to write down on a piece of paper and keep safe
                         <constraints>
                             <constraint firstItem="DXT-Cj-XvQ" firstAttribute="trailing" secondItem="xpx-uT-YKh" secondAttribute="trailing" id="0ek-Mb-4Ys"/>
                             <constraint firstItem="5Zz-0u-ybf" firstAttribute="leading" secondItem="xpx-uT-YKh" secondAttribute="leading" constant="20" id="2xH-Ou-H73"/>
+                            <constraint firstItem="DXT-Cj-XvQ" firstAttribute="firstBaseline" secondItem="ovJ-Yg-60i" secondAttribute="firstBaseline" id="Chr-Us-1hr"/>
                             <constraint firstItem="DXT-Cj-XvQ" firstAttribute="leading" secondItem="xpx-uT-YKh" secondAttribute="leading" id="DLh-Xs-OOv"/>
-                            <constraint firstItem="ovJ-Yg-60i" firstAttribute="top" secondItem="5Zz-0u-ybf" secondAttribute="bottom" constant="35" id="FhO-DE-vlW"/>
+                            <constraint firstItem="ovJ-Yg-60i" firstAttribute="top" secondItem="5Zz-0u-ybf" secondAttribute="bottom" constant="20" id="FhO-DE-vlW"/>
                             <constraint firstItem="5Zz-0u-ybf" firstAttribute="top" secondItem="xpx-uT-YKh" secondAttribute="top" constant="38" id="JNO-oN-pRY"/>
                             <constraint firstItem="xpx-uT-YKh" firstAttribute="trailing" secondItem="5Zz-0u-ybf" secondAttribute="trailing" constant="20" id="WCt-6e-O7m"/>
                             <constraint firstItem="xpx-uT-YKh" firstAttribute="trailing" secondItem="ovJ-Yg-60i" secondAttribute="trailing" id="akv-HE-QzL"/>
                             <constraint firstItem="xpx-uT-YKh" firstAttribute="bottom" secondItem="ovJ-Yg-60i" secondAttribute="bottom" id="eDq-8X-B6P"/>
                             <constraint firstItem="xpx-uT-YKh" firstAttribute="bottom" secondItem="DXT-Cj-XvQ" secondAttribute="bottom" id="hhA-QU-Hhf"/>
-                            <constraint firstItem="DXT-Cj-XvQ" firstAttribute="top" secondItem="5Zz-0u-ybf" secondAttribute="bottom" constant="35" id="prw-yW-nlf"/>
+                            <constraint firstItem="DXT-Cj-XvQ" firstAttribute="height" secondItem="ovJ-Yg-60i" secondAttribute="height" id="kcE-ZH-qkK"/>
                             <constraint firstItem="ovJ-Yg-60i" firstAttribute="leading" secondItem="xpx-uT-YKh" secondAttribute="leading" id="uZY-MG-7OG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xpx-uT-YKh"/>
@@ -789,6 +789,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
                         <outlet property="phraseOptionCollectionView" destination="Z0s-kY-qWC" id="Ty3-kE-t9u"/>
                         <outlet property="recoveryPhraseCollectionView" destination="FaH-qX-xdL" id="amg-Bi-NVG"/>
                         <outlet property="recoveryPhraseCollectionViewHeight" destination="1DN-qL-wfP" id="DRo-ji-3qP"/>
+                        <outlet property="resultBoxHeightConstraint" destination="MHw-Qd-63b" id="xu2-2b-Dfn"/>
                         <outlet property="successResultView" destination="ovJ-Yg-60i" id="QLG-n6-uDY"/>
                     </connections>
                 </viewController>

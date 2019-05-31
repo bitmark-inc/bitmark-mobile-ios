@@ -19,7 +19,7 @@ class BaseRecoveryPhraseCollectionViewController: UIViewController, UICollection
   private let heightPerRecoveryPhraseItem: CGFloat = 22.0
   private let screenHeightLimitationForRecoveryPhase: CGFloat = 600
   private var columns: CGFloat!
-  private let numberOfPhrases: CGFloat = 12
+  let numberOfPhrases = 12
 
   // MARK: - Data Handlers
   func loadRecoveryPhrases(_ phrases: inout [String]) {
@@ -36,7 +36,7 @@ class BaseRecoveryPhraseCollectionViewController: UIViewController, UICollection
 
     // adjust number of columns: 2 columns for iphone 4'; other should be 1 column
     columns = view.frame.height > screenHeightLimitationForRecoveryPhase ? 1 : 2
-    recoveryPhraseCollectionViewHeight.constant = numberOfPhrases / columns * (heightPerRecoveryPhraseItem + sectionInsets.top)
+    recoveryPhraseCollectionViewHeight.constant = CGFloat(numberOfPhrases) / columns * (heightPerRecoveryPhraseItem + sectionInsets.top)
     let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
     recoveryPhraseCollectionView.collectionViewLayout = layout
