@@ -16,6 +16,8 @@
 		E27CD241229E5C6B00503D6A /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD240229E5C6B00503D6A /* RecoveryPhraseViewController.swift */; };
 		E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD242229E5DF200503D6A /* RecoveryPhraseCell.swift */; };
 		E27CD245229E7CF700503D6A /* TestRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD244229E7CF700503D6A /* TestRecoveryPhraseViewController.swift */; };
+		E287210822A0C980004BD9BD /* PropertiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E287210722A0C980004BD9BD /* PropertiesViewController.swift */; };
+		E287210A22A0CD8F004BD9BD /* PropertySegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E287210922A0CD8F004BD9BD /* PropertySegment.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
 		E2E798BF229E189E00508B69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
@@ -43,6 +45,8 @@
 		E27CD240229E5C6B00503D6A /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E27CD242229E5DF200503D6A /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
 		E27CD244229E7CF700503D6A /* TestRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
+		E287210722A0C980004BD9BD /* PropertiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesViewController.swift; sourceTree = "<group>"; };
+		E287210922A0CD8F004BD9BD /* PropertySegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertySegment.swift; sourceTree = "<group>"; };
 		E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +106,14 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
+		E287210622A0C94B004BD9BD /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				E287210722A0C980004BD9BD /* PropertiesViewController.swift */,
+			);
+			path = Properties;
+			sourceTree = "<group>";
+		};
 		E2E798AD229E189E00508B69 = {
 			isa = PBXGroup;
 			children = (
@@ -159,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E798DC229E25E200508B69 /* Credential.swift */,
+				E287210922A0CD8F004BD9BD /* PropertySegment.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -214,6 +227,7 @@
 		E2E798D7229E237500508B69 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				E287210622A0C94B004BD9BD /* Properties */,
 				E27CD23F229E5C5100503D6A /* Account */,
 			);
 			path = Main;
@@ -350,6 +364,7 @@
 				E27CD241229E5C6B00503D6A /* RecoveryPhraseViewController.swift in Sources */,
 				E258751D229FA5FA00AED94D /* UIColor+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
+				E287210A22A0CD8F004BD9BD /* PropertySegment.swift in Sources */,
 				E2587525229FB73500AED94D /* PhraseOptionCell.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */,
@@ -362,6 +377,7 @@
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
 				E2587515229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
+				E287210822A0C980004BD9BD /* PropertiesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -156,6 +156,157 @@
             </objects>
             <point key="canvasLocation" x="1952.1739130434785" y="138.61607142857142"/>
         </scene>
+        <!--PROPERTIES-->
+        <scene sceneID="iTR-td-cNj">
+            <objects>
+                <viewController id="bwA-jh-XJN" customClass="PropertiesViewController" customModule="BitmarkRegistry" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jhl-tV-GEF">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aSW-Th-sBl">
+                                <rect key="frame" x="0.0" y="88" width="414" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="Eez-UE-5Pg"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="YOURS"/>
+                                    <segment title="TRACKED"/>
+                                    <segment title="GLOBAL"/>
+                                </segments>
+                                <connections>
+                                    <action selector="propertySegmentTapped:" destination="bwA-jh-XJN" eventType="valueChanged" id="b7B-qi-jHo"/>
+                                </connections>
+                            </segmentedControl>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FOF-0n-SWe" userLabel="Main View">
+                                <rect key="frame" x="0.0" y="123" width="414" height="690"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pba-Tf-VD8" userLabel="Yours View">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="690"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mGl-iO-Yim" userLabel="Empty View">
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="690"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0by-T7-BmR">
+                                                        <rect key="frame" x="20" y="25" width="374" height="595"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WELCOME TO BITMARK!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ts-BK-PKp">
+                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="23.333333333333332"/>
+                                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                                                                <color key="textColor" red="0.0" green="0.37647058823529411" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Wf-s5-aXx">
+                                                                <rect key="frame" x="0.0" y="51.333333333333343" width="374" height="40"/>
+                                                                <attributedString key="attributedText">
+                                                                    <fragment content="Register, track, and trade property rights for your digital assets.">
+                                                                        <attributes>
+                                                                            <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <font key="NSFont" size="17" name="Avenir-Book"/>
+                                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="20" tighteningFactorForTruncation="0.0"/>
+                                                                        </attributes>
+                                                                    </fragment>
+                                                                </attributedString>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstItem="2ts-BK-PKp" firstAttribute="top" secondItem="0by-T7-BmR" secondAttribute="top" id="4N0-t8-CAD"/>
+                                                            <constraint firstItem="2Wf-s5-aXx" firstAttribute="top" secondItem="2ts-BK-PKp" secondAttribute="bottom" constant="28" id="atL-6q-1wk"/>
+                                                            <constraint firstAttribute="trailing" secondItem="2Wf-s5-aXx" secondAttribute="trailing" id="ccA-WL-YQ2"/>
+                                                            <constraint firstItem="2Wf-s5-aXx" firstAttribute="leading" secondItem="0by-T7-BmR" secondAttribute="leading" id="e3u-rS-PDg"/>
+                                                            <constraint firstItem="2ts-BK-PKp" firstAttribute="leading" secondItem="0by-T7-BmR" secondAttribute="leading" id="tHw-6w-V0t"/>
+                                                            <constraint firstAttribute="trailing" secondItem="2ts-BK-PKp" secondAttribute="trailing" id="zpN-i5-j3o"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o1s-pL-vCq">
+                                                        <rect key="frame" x="0.0" y="645" width="414" height="45"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="45" id="reD-Gb-nIc"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                                                        <state key="normal" title="CREATE FIRST PROPERTY">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="o1s-pL-vCq" firstAttribute="top" secondItem="0by-T7-BmR" secondAttribute="bottom" constant="25" id="0mL-Vd-3kk"/>
+                                                    <constraint firstItem="o1s-pL-vCq" firstAttribute="leading" secondItem="mGl-iO-Yim" secondAttribute="leading" id="Ror-rG-IJ7"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0by-T7-BmR" secondAttribute="trailing" constant="20" id="X0i-LE-FHD"/>
+                                                    <constraint firstItem="0by-T7-BmR" firstAttribute="top" secondItem="mGl-iO-Yim" secondAttribute="top" constant="25" id="Ybg-K6-rab"/>
+                                                    <constraint firstItem="0by-T7-BmR" firstAttribute="leading" secondItem="mGl-iO-Yim" secondAttribute="leading" constant="20" id="b1D-S6-58J"/>
+                                                    <constraint firstAttribute="bottom" secondItem="o1s-pL-vCq" secondAttribute="bottom" id="jp0-m1-1m9"/>
+                                                    <constraint firstAttribute="trailing" secondItem="o1s-pL-vCq" secondAttribute="trailing" id="vTX-WU-IVy"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="mGl-iO-Yim" secondAttribute="bottom" id="W7q-tZ-GV2"/>
+                                            <constraint firstAttribute="trailing" secondItem="mGl-iO-Yim" secondAttribute="trailing" id="oZC-u4-dB4"/>
+                                            <constraint firstItem="mGl-iO-Yim" firstAttribute="top" secondItem="Pba-Tf-VD8" secondAttribute="top" id="sQP-l9-jWr"/>
+                                            <constraint firstItem="mGl-iO-Yim" firstAttribute="leading" secondItem="Pba-Tf-VD8" secondAttribute="leading" id="xG2-5J-dg7"/>
+                                        </constraints>
+                                    </view>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QCg-Xx-2ta" userLabel="Tracked Segment">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="690"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s6b-cF-gzm" userLabel="Global Segment">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="690"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Pba-Tf-VD8" secondAttribute="trailing" id="4m6-P2-HSL"/>
+                                    <constraint firstItem="QCg-Xx-2ta" firstAttribute="top" secondItem="FOF-0n-SWe" secondAttribute="top" id="Hec-Or-j1A"/>
+                                    <constraint firstAttribute="bottom" secondItem="QCg-Xx-2ta" secondAttribute="bottom" id="KmT-Ej-zb0"/>
+                                    <constraint firstItem="QCg-Xx-2ta" firstAttribute="leading" secondItem="FOF-0n-SWe" secondAttribute="leading" id="h8E-aA-Wxw"/>
+                                    <constraint firstAttribute="bottom" secondItem="Pba-Tf-VD8" secondAttribute="bottom" id="lUj-jc-9wx"/>
+                                    <constraint firstAttribute="trailing" secondItem="QCg-Xx-2ta" secondAttribute="trailing" id="rmz-a5-dGq"/>
+                                    <constraint firstItem="Pba-Tf-VD8" firstAttribute="top" secondItem="FOF-0n-SWe" secondAttribute="top" id="x2o-eV-5l9"/>
+                                    <constraint firstItem="Pba-Tf-VD8" firstAttribute="leading" secondItem="FOF-0n-SWe" secondAttribute="leading" id="xum-gO-bjQ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="HX2-kt-yEc" firstAttribute="bottom" secondItem="FOF-0n-SWe" secondAttribute="bottom" id="ES5-lQ-gdA"/>
+                            <constraint firstItem="HX2-kt-yEc" firstAttribute="trailing" secondItem="aSW-Th-sBl" secondAttribute="trailing" id="KKH-Wx-GBX"/>
+                            <constraint firstItem="FOF-0n-SWe" firstAttribute="leading" secondItem="HX2-kt-yEc" secondAttribute="leading" id="UDq-VQ-p3L"/>
+                            <constraint firstItem="HX2-kt-yEc" firstAttribute="trailing" secondItem="FOF-0n-SWe" secondAttribute="trailing" id="fje-mD-d4V"/>
+                            <constraint firstItem="aSW-Th-sBl" firstAttribute="leading" secondItem="HX2-kt-yEc" secondAttribute="leading" id="gtK-ge-ODv"/>
+                            <constraint firstItem="FOF-0n-SWe" firstAttribute="top" secondItem="aSW-Th-sBl" secondAttribute="bottom" id="jQB-jL-uSs"/>
+                            <constraint firstItem="aSW-Th-sBl" firstAttribute="top" secondItem="HX2-kt-yEc" secondAttribute="top" id="y1z-Ms-y60"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="HX2-kt-yEc"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="PROPERTIES" id="GXN-jB-3Bo">
+                        <barButtonItem key="backBarButtonItem" title=" " id="nrW-vc-xcM"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="globalSegment" destination="s6b-cF-gzm" id="paD-bm-Ced"/>
+                        <outlet property="segmentControl" destination="aSW-Th-sBl" id="3do-Au-p0s"/>
+                        <outlet property="trackedSegment" destination="QCg-Xx-2ta" id="R3Q-Uj-yAB"/>
+                        <outlet property="yoursSegment" destination="Pba-Tf-VD8" id="0sY-bV-rEm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jZH-Uz-PGT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1950.7246376811595" y="862.5"/>
+        </scene>
+            <objects>
+                <viewControllerPlaceholder id="QGf-Ri-ws0" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7WY-uy-QWO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2560.144927536232" y="917.41071428571422"/>
+        </scene>
         <!--RECOVERY PHRASE-->
         <scene sceneID="rSB-hi-ZZ0">
             <objects>
@@ -814,12 +965,13 @@ We will show you a list of words to write down on a piece of paper and keep safe
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="XVg-Kx-Mm5" kind="relationship" relationship="viewControllers" id="45Q-8Q-hLn"/>
+                        <segue destination="GHM-28-nQg" kind="relationship" relationship="viewControllers" id="Bci-28-Jx2"/>
+                        <segue destination="XVg-Kx-Mm5" kind="relationship" relationship="viewControllers" id="b2U-F8-GGg"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="atP-XO-3OS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="131.8840579710145" y="138.61607142857142"/>
+            <point key="canvasLocation" x="93" y="755"/>
         </scene>
         <!--Account-->
         <scene sceneID="Y9k-dL-BKD">
@@ -840,10 +992,31 @@ We will show you a list of words to write down on a piece of paper and keep safe
             </objects>
             <point key="canvasLocation" x="1042.0289855072465" y="138.61607142857142"/>
         </scene>
+        <!--Properties-->
+        <scene sceneID="Cbh-2q-kgI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GHM-28-nQg" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Properties" image="Properties - inactive" selectedImage="Properties - selected" id="90m-Fl-v0w"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="FLW-2c-D2X">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="bwA-jh-XJN" kind="relationship" relationship="rootViewController" id="Bb0-rn-4ia"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Ho-rQ-Ia5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1040.5797101449275" y="862.5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Account-inactive" width="19" height="25"/>
         <image name="AccountSelected" width="19" height="25"/>
+        <image name="Properties - inactive" width="25" height="25"/>
+        <image name="Properties - selected" width="25" height="25"/>
         <image name="Warning" width="36" height="36"/>
     </resources>
 </document>
