@@ -27,6 +27,7 @@
 		E287211022A10CA8004BD9BD /* PropertyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E287210F22A10CA8004BD9BD /* PropertyService.swift */; };
 		E287211222A133D5004BD9BD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E287211122A133D5004BD9BD /* Constant.swift */; };
 		E296A17E22A516760041CFF3 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296A17D22A516760041CFF3 /* UIButton+Extension.swift */; };
+		E2A6C1D022A5596400121197 /* BlurSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A6C1CF22A5596400121197 /* BlurSupportView.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
 		E2E798BF229E189E00508B69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		E287210F22A10CA8004BD9BD /* PropertyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyService.swift; sourceTree = "<group>"; };
 		E287211122A133D5004BD9BD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		E296A17D22A516760041CFF3 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		E2A6C1CF22A5596400121197 /* BlurSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurSupportView.swift; sourceTree = "<group>"; };
 		E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 		E2E798CC229E1CA900508B69 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E2A6C1CF22A5596400121197 /* BlurSupportView.swift */,
 				E2EF761322A4CFDB00416860 /* DesignedTextField.swift */,
 				E296A17D22A516760041CFF3 /* UIButton+Extension.swift */,
 				E258751C229FA5FA00AED94D /* UIColor+Extension.swift */,
@@ -412,6 +415,7 @@
 				E2EF761422A4CFDB00416860 /* DesignedTextField.swift in Sources */,
 				E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */,
 				E25F9C2022A28DDE00635AA8 /* KeyboardObserver.swift in Sources */,
+				E2A6C1D022A5596400121197 /* BlurSupportView.swift in Sources */,
 				E287211222A133D5004BD9BD /* Constant.swift in Sources */,
 				E258751B229F7F8B00AED94D /* UIView+Extension.swift in Sources */,
 				E27CD245229E7CF700503D6A /* TestRecoveryPhraseViewController.swift in Sources */,

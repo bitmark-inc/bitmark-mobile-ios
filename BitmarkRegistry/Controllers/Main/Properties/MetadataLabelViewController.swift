@@ -17,6 +17,7 @@ class MetadataLabelViewController: UIViewController {
   // MARK: - Properties
   @IBOutlet weak var labelTextField: UITextField!
   @IBOutlet weak var suggestedLabelTableView: UITableView!
+  @IBOutlet weak var blurSupportView: BlurSupportView!
 
   var metadataLabel: String!
   var delegate: MetadataLabelUpdationDelegate?
@@ -51,10 +52,21 @@ class MetadataLabelViewController: UIViewController {
   @IBAction func filterSuggestedLabels(_ textfield: UITextField) {
     if let filterText = textfield.text, filterText != "" {
       suggestedLabels = defaultSuggestedLabels.filter({ $0.contains(filterText.lowercased()) })
+      textfield.rightViewMode = .always
     } else {
       suggestedLabels = defaultSuggestedLabels
+      textfield.rightViewMode = .never
     }
     suggestedLabelTableView.reloadData()
+  }
+
+  @IBAction func beginEditing(_ textfield: UITextField) {
+    blurSupportView.visible()
+  }
+
+  @IBAction func tapPiece(_ recognizer: UITapGestureRecognizer) {
+    blurSupportView.isHidden = true
+    view.endEditing(true)
   }
 
   private func doneUpdate(with label: String) {
@@ -88,10 +100,19 @@ extension MetadataLabelViewController: UITableViewDelegate {
   }
 }
 
+extension MetadataLabelViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+}
+
 // MARK: - Configure UI
 extension MetadataLabelViewController {
   func configureUI() {
-    suggestedLabelTableView.contentInset = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+    // Remove left offset in suggestedLabelTableView
+    suggestedLabelTableView.contentInset = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+    suggestedLabelTableView.layoutMargins = UIEdgeInsets.zero
     suggestedLabelTableView.separatorStyle = .none
   }
 }
