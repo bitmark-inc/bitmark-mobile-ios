@@ -513,7 +513,7 @@
                                                         </attributedString>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3SS-2i-jSu">
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3SS-2i-jSu">
                                                         <rect key="frame" x="0.0" y="55" width="374" height="0.0"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
@@ -528,10 +528,10 @@
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3vE-r5-4Aq">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="374" height="74.666666666666671"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="374" height="75"/>
                                                                             <subviews>
                                                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eU8-PQ-Eqc" userLabel="Delete View">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="74.666666666666671"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="75"/>
                                                                                     <subviews>
                                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XLK-rJ-x7v">
                                                                                             <rect key="frame" x="0.0" y="0.0" width="30" height="22"/>
@@ -550,13 +550,13 @@
                                                                                     </constraints>
                                                                                 </view>
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="fAC-CB-5ZO">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="74.666666666666671"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="75"/>
                                                                                     <subviews>
                                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sqt-tB-sY7">
                                                                                             <rect key="frame" x="0.0" y="0.0" width="374" height="14"/>
                                                                                             <subviews>
                                                                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="LABEL 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QgF-Yj-TXZ" customClass="DesignedTextField" customModule="BitmarkRegistry" customModuleProvider="target">
-                                                                                                    <rect key="frame" x="0.0" y="-2" width="374" height="16"/>
+                                                                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="14"/>
                                                                                                     <nil key="textColor"/>
                                                                                                     <fontDescription key="fontDescription" name="AndaleMono" family="Andale Mono" pointSize="13"/>
                                                                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
@@ -572,25 +572,35 @@
                                                                                                         <action selector="changeTextField:" destination="IUg-8A-ALd" eventType="editingChanged" id="Cxt-Nx-xxT"/>
                                                                                                         <action selector="endEditingMetadata:" destination="IUg-8A-ALd" eventType="editingDidEnd" id="XPN-Ge-4oS"/>
                                                                                                         <action selector="startEditingMetadata:" destination="IUg-8A-ALd" eventType="editingDidBegin" id="Y2N-Sf-UHM"/>
-                                                                                                        <action selector="tapToUpdateLabel:" destination="IUg-8A-ALd" eventType="editingDidBegin" id="Q8g-O1-rpz"/>
-                                                                                                        <action selector="tapToUpdateLabel:" destination="IUg-8A-ALd" eventType="touchUpInside" id="Rxe-bV-dV5"/>
+                                                                                                        <outlet property="delegate" destination="IUg-8A-ALd" id="8dO-xY-agH"/>
                                                                                                     </connections>
                                                                                                 </textField>
+                                                                                                <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5dV-Kk-wYr">
+                                                                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="14"/>
+                                                                                                    <connections>
+                                                                                                        <action selector="tapToUpdateLabel:" destination="IUg-8A-ALd" eventType="touchUpInside" id="4Tx-pZ-n2j"/>
+                                                                                                    </connections>
+                                                                                                </button>
                                                                                             </subviews>
                                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                             <gestureRecognizers/>
                                                                                             <constraints>
+                                                                                                <constraint firstItem="5dV-Kk-wYr" firstAttribute="bottom" secondItem="QgF-Yj-TXZ" secondAttribute="bottom" id="3J0-5E-AEe"/>
+                                                                                                <constraint firstItem="5dV-Kk-wYr" firstAttribute="leading" secondItem="QgF-Yj-TXZ" secondAttribute="leading" id="6aK-tu-zl0"/>
+                                                                                                <constraint firstItem="5dV-Kk-wYr" firstAttribute="trailing" secondItem="QgF-Yj-TXZ" secondAttribute="trailing" id="AZb-3o-QQP"/>
                                                                                                 <constraint firstAttribute="trailing" secondItem="QgF-Yj-TXZ" secondAttribute="trailing" id="DaF-8P-pcF"/>
+                                                                                                <constraint firstItem="5dV-Kk-wYr" firstAttribute="top" secondItem="QgF-Yj-TXZ" secondAttribute="top" id="H6F-dk-J0F"/>
                                                                                                 <constraint firstAttribute="height" constant="14" id="Otw-eB-du0"/>
                                                                                                 <constraint firstAttribute="bottom" secondItem="QgF-Yj-TXZ" secondAttribute="bottom" id="rie-yN-q0A"/>
                                                                                                 <constraint firstItem="QgF-Yj-TXZ" firstAttribute="leading" secondItem="sqt-tB-sY7" secondAttribute="leading" id="uqB-J8-zrf"/>
+                                                                                                <constraint firstItem="5dV-Kk-wYr" firstAttribute="height" secondItem="sqt-tB-sY7" secondAttribute="height" id="vKs-5w-Ze0"/>
                                                                                             </constraints>
                                                                                         </view>
                                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JaY-2k-t4r">
-                                                                                            <rect key="frame" x="0.0" y="39" width="374" height="35.666666666666657"/>
+                                                                                            <rect key="frame" x="0.0" y="39" width="374" height="36"/>
                                                                                             <subviews>
                                                                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="DESCRIPTION" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="F8a-Ts-vPE" customClass="DesignedTextField" customModule="BitmarkRegistry" customModuleProvider="target">
-                                                                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="16"/>
+                                                                                                    <rect key="frame" x="0.0" y="0.0" width="374" height="14"/>
                                                                                                     <fontDescription key="fontDescription" name="AndaleMono" family="Andale Mono" pointSize="13"/>
                                                                                                     <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                                                                                     <userDefinedRuntimeAttributes>
@@ -618,6 +628,7 @@
                                                                                         </view>
                                                                                     </subviews>
                                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                    <gestureRecognizers/>
                                                                                     <constraints>
                                                                                         <constraint firstItem="F8a-Ts-vPE" firstAttribute="height" secondItem="QgF-Yj-TXZ" secondAttribute="height" id="L9G-vh-WkP"/>
                                                                                     </constraints>
@@ -642,6 +653,7 @@
                                                                         <constraint firstItem="3vE-r5-4Aq" firstAttribute="top" secondItem="74w-O1-FIQ" secondAttribute="top" id="msz-3f-cmc"/>
                                                                     </constraints>
                                                                 </tableViewCellContentView>
+                                                                <gestureRecognizers/>
                                                                 <connections>
                                                                     <outlet property="contentCellLeadingConstraint" destination="KL6-n3-GFi" id="oMT-YN-lxK"/>
                                                                     <outlet property="deleteView" destination="eU8-PQ-Eqc" id="LTo-Al-r9Q"/>
@@ -712,7 +724,7 @@
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NDm-kD-CEB">
-                                                        <rect key="frame" x="0.0" y="94" width="374" height="0.0"/>
+                                                        <rect key="frame" x="0.0" y="91" width="374" height="0.0"/>
                                                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                         <color key="textColor" red="1" green="0.0" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -720,7 +732,7 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="NDm-kD-CEB" firstAttribute="top" secondItem="IG4-E7-bJP" secondAttribute="bottom" constant="6" id="BXr-Hh-vrs"/>
+                                                    <constraint firstItem="NDm-kD-CEB" firstAttribute="top" secondItem="IG4-E7-bJP" secondAttribute="bottom" constant="3" id="BXr-Hh-vrs"/>
                                                     <constraint firstItem="NDm-kD-CEB" firstAttribute="leading" secondItem="GCg-Sx-0Wb" secondAttribute="leading" id="DJq-XN-XFu"/>
                                                     <constraint firstItem="3SS-2i-jSu" firstAttribute="top" secondItem="qgO-7a-xf2" secondAttribute="bottom" constant="15" id="FI4-jW-JnR"/>
                                                     <constraint firstAttribute="trailing" secondItem="IG4-E7-bJP" secondAttribute="trailing" id="GLy-QG-nGa"/>
@@ -857,7 +869,7 @@
                                     <constraint firstItem="WXx-fx-rif" firstAttribute="leading" secondItem="fLk-hz-mrm" secondAttribute="leading" constant="20" id="sX5-lF-XPL"/>
                                 </constraints>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="1lL-M7-fm2" appends="YES" id="ghq-Wb-7RH"/>
+                                    <outletCollection property="gestureRecognizers" destination="EKY-YL-dvG" appends="YES" id="Uz2-K9-ARB"/>
                                 </connections>
                             </scrollView>
                         </subviews>
@@ -894,9 +906,9 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ell-zO-vxj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="1lL-M7-fm2">
+                <tapGestureRecognizer id="EKY-YL-dvG">
                     <connections>
-                        <action selector="tapPiece:" destination="CbQ-at-KiS" id="KYI-GI-7o3"/>
+                        <action selector="tapPiece:" destination="CbQ-at-KiS" id="kas-Id-YGL"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -913,23 +925,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bcs-jK-0Sf">
                                 <rect key="frame" x="20" y="113" width="374" height="680"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" placeholder="SELECT OR CREATE A NEW LABEL" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zs6-o6-9ha">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="21"/>
-                                        <attributedString key="attributedText"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="filterSuggestedLabels:" destination="LHa-of-g1b" eventType="editingChanged" id="9VQ-Ao-OMS"/>
-                                        </connections>
-                                    </textField>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FUS-C8-niy" userLabel="Separate Line">
-                                        <rect key="frame" x="0.0" y="23" width="374" height="1"/>
-                                        <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="FUF-Fh-26R"/>
-                                        </constraints>
-                                    </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="aKW-ru-Hzk">
-                                        <rect key="frame" x="0.0" y="34" width="374" height="646"/>
+                                        <rect key="frame" x="0.0" y="33" width="374" height="647"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="suggestedLabelReuseIdentifier" id="2Lo-RM-EKg">
@@ -960,18 +957,49 @@
                                             <outlet property="delegate" destination="LHa-of-g1b" id="vKA-1w-kRN"/>
                                         </connections>
                                     </tableView>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Db4-eu-wIN" customClass="BlurSupportView" customModule="BitmarkRegistry" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="680"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <gestureRecognizers/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="visibleAlpha">
+                                                <real key="value" value="0.10000000000000001"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="oOB-3s-NdN" appends="YES" id="0kG-Da-pbt"/>
+                                        </connections>
+                                    </view>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="SELECT OR CREATE A NEW LABEL" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zs6-o6-9ha" customClass="DesignedTextField" customModule="BitmarkRegistry" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="18"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" name="AndaleMono" family="Andale Mono" pointSize="15"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="deleteTextImage" value="blue-delete-label"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderLineColor">
+                                                <color key="value" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="beginEditing:" destination="LHa-of-g1b" eventType="editingDidBegin" id="hMM-Sn-Oj5"/>
+                                            <action selector="filterSuggestedLabels:" destination="LHa-of-g1b" eventType="editingChanged" id="9VQ-Ao-OMS"/>
+                                            <outlet property="delegate" destination="LHa-of-g1b" id="4HX-Jp-T7q"/>
+                                        </connections>
+                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="FUS-C8-niy" secondAttribute="trailing" id="5FS-KA-K2f"/>
+                                    <constraint firstAttribute="bottom" secondItem="Db4-eu-wIN" secondAttribute="bottom" id="3IZ-n0-ayk"/>
+                                    <constraint firstAttribute="trailing" secondItem="Db4-eu-wIN" secondAttribute="trailing" id="3NL-Za-rEn"/>
                                     <constraint firstAttribute="trailing" secondItem="zs6-o6-9ha" secondAttribute="trailing" id="Att-3L-huk"/>
                                     <constraint firstItem="zs6-o6-9ha" firstAttribute="leading" secondItem="bcs-jK-0Sf" secondAttribute="leading" id="Gzz-dV-aD7"/>
-                                    <constraint firstItem="FUS-C8-niy" firstAttribute="leading" secondItem="bcs-jK-0Sf" secondAttribute="leading" id="Jzn-Qu-lbF"/>
+                                    <constraint firstItem="Db4-eu-wIN" firstAttribute="top" secondItem="bcs-jK-0Sf" secondAttribute="top" id="JiJ-uw-U6u"/>
+                                    <constraint firstItem="aKW-ru-Hzk" firstAttribute="top" secondItem="zs6-o6-9ha" secondAttribute="bottom" constant="15" id="KQK-nk-Yux"/>
                                     <constraint firstAttribute="bottom" secondItem="aKW-ru-Hzk" secondAttribute="bottom" id="M71-uX-3TQ"/>
                                     <constraint firstAttribute="trailing" secondItem="aKW-ru-Hzk" secondAttribute="trailing" id="Xmk-Hg-MRm"/>
-                                    <constraint firstItem="aKW-ru-Hzk" firstAttribute="top" secondItem="FUS-C8-niy" secondAttribute="bottom" constant="10" id="dZ5-mg-EjB"/>
-                                    <constraint firstItem="FUS-C8-niy" firstAttribute="top" secondItem="zs6-o6-9ha" secondAttribute="bottom" constant="2" id="kig-wI-Ez4"/>
                                     <constraint firstItem="aKW-ru-Hzk" firstAttribute="leading" secondItem="bcs-jK-0Sf" secondAttribute="leading" id="n9J-qO-BCO"/>
+                                    <constraint firstItem="Db4-eu-wIN" firstAttribute="leading" secondItem="bcs-jK-0Sf" secondAttribute="leading" id="q1K-Dy-o7B"/>
                                     <constraint firstItem="zs6-o6-9ha" firstAttribute="top" secondItem="bcs-jK-0Sf" secondAttribute="top" id="v8f-Ua-0ak"/>
                                 </constraints>
                             </view>
@@ -994,11 +1022,17 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="blurSupportView" destination="Db4-eu-wIN" id="iJN-iV-vqM"/>
                         <outlet property="labelTextField" destination="zs6-o6-9ha" id="gWm-MX-Obr"/>
                         <outlet property="suggestedLabelTableView" destination="aKW-ru-Hzk" id="Tt0-rJ-f2z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xup-aV-C1U" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="oOB-3s-NdN">
+                    <connections>
+                        <action selector="tapPiece:" destination="LHa-of-g1b" id="f2o-GK-Rsl"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="5084" y="863"/>
         </scene>
@@ -1715,6 +1749,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
         <image name="Warning" width="36" height="36"/>
         <image name="add_label" width="12" height="12.333333015441895"/>
         <image name="add_label_disabled" width="12" height="12.333333015441895"/>
+        <image name="blue-delete-label" width="12" height="12"/>
         <image name="delete_label" width="12" height="12.333333015441895"/>
     </resources>
     <inferredMetricsTieBreakers>

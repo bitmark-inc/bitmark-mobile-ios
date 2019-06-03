@@ -10,7 +10,7 @@ import UIKit
 
 protocol MetaDataCellDelegate {
   func gotoUpdateLabel(from cell: MetaDataCell)
-  func changeEditButtonText(isEditMode: Bool)
+  func changeEditMode(isEditMode: Bool)
   func adjustRelatedButtonsState()
   func removeCell(_ cell: MetaDataCell)
 }
@@ -33,25 +33,30 @@ class MetaDataCell: UITableViewCell {
     return imageView
   }()
 
-  // 1. Set up nextArrow icon
-  // 2. Reset state for all elements
-  func styleCell(in view: UIView) {
-    labelTextField.rightViewMode = .always // 1
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    // Set up nextArrow icon
+    labelTextField.rightViewMode = .always
     labelTextField.rightView = nextArrow
-    labelTextField.text = nil // 2
+  }
+
+  // style & reset state for all elements
+  func styleCell(in view: UIView) {
+    labelTextField.text = nil
     descriptionTextField.text = nil
-    displayDeleteView(isShow: false)
   }
 
   // MARK: - Handlers
-  @IBAction func tapToUpdateLabel(_ sender: UITextField) {
-    sender.resignFirstResponder()
+  @IBAction func tapToUpdateLabel(_ sender: UIButton) {
+    endEditing(true)
     delegate?.gotoUpdateLabel(from: self)
   }
 
   func setLabel(_ label: String) {
     labelTextField.text = label
     labelTextField.sendActions(for: .editingChanged)
+    labelTextField.sendActions(for: .editingDidEnd)
   }
 
   func getValues() -> (label: String, description: String) {
@@ -59,8 +64,7 @@ class MetaDataCell: UITableViewCell {
   }
 
   @IBAction func startEditingMetadata(_ sender: UITextField) {
-    displayDeleteView(isShow: false)
-    delegate?.changeEditButtonText(isEditMode: false)
+    delegate?.changeEditMode(isEditMode: false)
   }
 
   @IBAction func changeTextField(_ sender: DesignedTextField) {
@@ -96,7 +100,16 @@ class MetaDataCell: UITableViewCell {
       descriptionTextField.borderLineColor = .mainBlueColor
     } else {
       let isBlank = textfield.text! == ""
-      textfield.borderLineColor = isBlank ? .mainRedColor : .mainBlueColor
+      if isBlank {
+        textfield.borderLineColor = .mainRedColor // set error if current textfield is empty
+      } else {
+        textfield.borderLineColor = .mainBlueColor
+        // set error for other textfield when current textfield's text is present and other is empty
+        let otherTextfield = textfield == labelTextField ? descriptionTextField : labelTextField
+        if otherTextfield?.text! == "" {
+          otherTextfield?.borderLineColor = .mainRedColor
+        }
+      }
     }
   }
 

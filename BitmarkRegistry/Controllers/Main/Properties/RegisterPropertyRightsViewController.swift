@@ -33,12 +33,13 @@ class RegisterPropertyRightsViewController: UIViewController {
 
   let metaDataReuseIdentifier = "metaDataIdentifier"
   let selectLabelSegue = "selectLabelSegue"
+  var isInEditMode = false
   let editButtonInEditMode = "DONE"
   let editButtonNotInEditMode = "EDIT"
   var numberOfMetaData = 0 {
     didSet {
       if numberOfMetaData == 0 {
-        changeEditButtonText(isEditMode: false)
+        changeEditMode(isEditMode: false)
         metadataEditButton.isHidden = true
       } else {
         metadataEditButton.isHidden = false
@@ -97,17 +98,13 @@ class RegisterPropertyRightsViewController: UIViewController {
   /*
    When user tap "Edit"/"Done" in metadata TableView:
    1. end editting for any editing textfield
-   2. show/hide delete view in metadata cell
-   3. change metadataEditButton's text
+   2. on/off edit mode
    */
   @IBAction func tapToEditMetadata(_ sender: UIButton) {
-    view.endEditing(true) // 1
+    view.endEditing(true)
     let isInEditMode = metadataEditButton.currentTitle == editButtonInEditMode
     let moveToEditMode = !isInEditMode
-    for cell in (metaDataTableView.visibleCells as! [MetaDataCell]) { // 2
-      cell.displayDeleteView(isShow: moveToEditMode)
-    }
-    changeEditButtonText(isEditMode: moveToEditMode) // 3
+    changeEditMode(isEditMode: moveToEditMode)
   }
 
   // MARK: - Number of Issue
@@ -138,9 +135,11 @@ class RegisterPropertyRightsViewController: UIViewController {
 
   // MARK: - General
   @IBAction func tapPiece(_ recognizer: UITapGestureRecognizer) {
-    if recognizer.state == .ended {
-      view.endEditing(true)
-    }
+    view.endEditing(true)
+  }
+
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    view.endEditing(true)
   }
 }
 
@@ -153,6 +152,7 @@ extension RegisterPropertyRightsViewController: UITableViewDataSource, UITableVi
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: metaDataReuseIdentifier, for: indexPath) as! MetaDataCell
     cell.styleCell(in: view)
+    cell.displayDeleteView(isShow: isInEditMode)
     cell.delegate = self
     return cell
   }
@@ -163,7 +163,6 @@ extension RegisterPropertyRightsViewController: UITableViewDataSource, UITableVi
    - updateMetadataLabel with label from MetadataLabelViewController Screen
    */
   func gotoUpdateLabel(from cell: MetaDataCell) {
-    view.endEditing(true)
     selectedMetadataCell = cell
     performSegue(withIdentifier: selectLabelSegue, sender: nil)
   }
@@ -192,6 +191,7 @@ extension RegisterPropertyRightsViewController: UITableViewDataSource, UITableVi
    1. remove the metadata cell
    2. update metadataTableView height to fix current number of metadata cells
    3. adjust "Add label" & "Issue" buttons
+   4. revalidate label duplication
    */
   func removeCell(_ cell: MetaDataCell) {
     numberOfMetaData -= 1 // 1
@@ -199,8 +199,9 @@ extension RegisterPropertyRightsViewController: UITableViewDataSource, UITableVi
     metaDataTableView.beginUpdates()
     metaDataTableView.deleteRows(at: [indexPath], with: .automatic)
     metaDataTableView.endUpdates()
-    metaDataTableViewHeightConstraint.constant = CGFloat(numberOfMetaData) * metaDataHeightPerItem //3
-    adjustRelatedButtonsState()
+    metaDataTableViewHeightConstraint.constant = CGFloat(numberOfMetaData) * metaDataHeightPerItem // 2
+    adjustRelatedButtonsState() // 3
+    validateLabelDuplication() // 4
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -220,7 +221,9 @@ extension RegisterPropertyRightsViewController {
   }
 
   func validToIssue() -> Bool {
-    if propertyNameTextField.text!.count > 0, numberOfBitmarksTextField.text!.count > 0, errorForNumberOfBitmarksToIssue.text == "", validMetadata() {
+    if propertyNameTextField.text!.count > 0, numberOfBitmarksTextField.text!.count > 0,
+       errorForNumberOfBitmarksToIssue.text == "",
+       validMetadata() && errorForMetadata.text == "" {
       return true
     }
     return false
@@ -314,9 +317,14 @@ extension RegisterPropertyRightsViewController: KeyboardObserver {
 
 // MARK: - Supporter
 extension RegisterPropertyRightsViewController {
-  func changeEditButtonText(isEditMode: Bool) {
+  func changeEditMode(isEditMode: Bool) {
+    isInEditMode = isEditMode
     let editButtonText = isEditMode ? editButtonInEditMode : editButtonNotInEditMode
     metadataEditButton.setTitle(editButtonText, for: .normal)
+
+    for cell in metaDataTableView.visibleCells as! [MetaDataCell] {
+      cell.displayDeleteView(isShow: isEditMode)
+    }
   }
 
   private func extractMetaData() -> [String: String] {
