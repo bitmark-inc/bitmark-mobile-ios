@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 extension UIViewController {
 
@@ -19,5 +20,23 @@ extension UIViewController {
     let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alertView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
     present(alertView, animated: true, completion: nil)
+  }
+
+  // MARK: - Support Functions
+  func askForPhotosPermission(handler: @escaping (PHAuthorizationStatus) -> Void ) {
+    let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+    if photoAuthorizationStatus == .notDetermined {
+      PHPhotoLibrary.requestAuthorization { (newStatus) in
+        DispatchQueue.main.async { handler(newStatus) }
+      }
+    } else {
+      handler(photoAuthorizationStatus)
+    }
+  }
+
+  func updateLayoutWithKeyboard() {
+    UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: {
+      self.view.layoutIfNeeded()
+    })
   }
 }
