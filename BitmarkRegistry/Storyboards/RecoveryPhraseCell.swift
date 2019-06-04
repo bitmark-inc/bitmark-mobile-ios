@@ -30,8 +30,6 @@ class RecoveryPhraseCell: UICollectionViewCell {
   func showHiddenBox(no: Int) {
     noLabel.text = "\(no)."
     hiddenPhraseBox.isHidden = false
-    // config styles for hidden phrase
-    phraseLabel.textColor = UIColor.mainBlueColor
     isUserInteractionEnabled = true
     // reset value when showing hidden box
     phraseLabel.text = ""
@@ -41,6 +39,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
   func setValueForHiddenBox(_ phrase: String, _ matchingTestPhraseCell: PhraseOptionCell) {
     hiddenPhraseBox.isHidden = true
     phraseLabel.text = phrase
+    phraseLabel.textColor = UIColor.mainBlueColor
     self.matchingTestPhraseCell = matchingTestPhraseCell
   }
 

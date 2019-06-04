@@ -26,7 +26,7 @@ class BaseRecoveryPhraseCollectionViewController: UIViewController, UICollection
     do {
       phrases = try Global.currentAccount!.getRecoverPhrase(language: .english)
     } catch let e {
-      showInformedAlert(withTitle: "Error", message: e.localizedDescription)
+      showErrorAlert(message: e.localizedDescription)
     }
   }
 

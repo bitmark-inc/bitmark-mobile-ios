@@ -20,7 +20,7 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseCollectionViewController {
     loadData()
   }
 
-  // MARK: Load Data
+  // MARK: Data Handlers
   private func loadData() {
     loadRecoveryPhrases(&recoveryPhrases)
   }
