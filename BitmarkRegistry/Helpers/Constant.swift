@@ -30,4 +30,13 @@ public struct Constant {
       public static let photo = "Please enable access to photos in privacy setting"
     }
   }
+
+  // MARK: - Success Message
+  public struct Success {
+    public static let issue = "Your property rights have been registerred."
+  }
+
+  public struct Message {
+    public static let sendingTransaction = "Sending your transaction to the Birmark network..."
+  }
 }

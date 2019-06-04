@@ -121,15 +121,35 @@ class RegisterPropertyRightsViewController: UIViewController {
 
   // MARK: - Issue
   @IBAction func tapToIssue(_ sender: UIButton) {
+    view.endEditing(true)
     let assetName = propertyNameTextField.text!
     let metadata = extractMetaData()
     let quantity = Int(numberOfBitmarksTextField.text!)!
+    var errorMessage: String? = nil
 
-    do {
-      let assetId = try PropertyService.registerAsset(registrant: Global.currentAccount!, assetName: assetName, fingerprint: assetFingerprintData, metadata: metadata)
-      let _ = try PropertyService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
-    } catch let e {
-      showErrorAlert(message: e.localizedDescription)
+    let alert = showAlertWithIndicator(message: Constant.Message.sendingTransaction) {
+      do {
+        let assetId = try PropertyService.registerAsset(
+                            registrant: Global.currentAccount!,
+                            assetName: assetName,
+                            fingerprint: self.assetFingerprintData,
+                            metadata: metadata)
+        let _ = try PropertyService.issueBitmarks(
+                            issuer: Global.currentAccount!,
+                            assetId: assetId,
+                            quantity: quantity)
+      } catch let e {
+        errorMessage = e.localizedDescription
+      }
+    }
+
+    // show result alert
+    alert.dismiss(animated: true) {
+      if let errorMessage = errorMessage {
+        self.showErrorAlert(message: errorMessage)
+      } else {
+        self.showSuccessAlert(message: Constant.Success.issue)
+      }
     }
   }
 
