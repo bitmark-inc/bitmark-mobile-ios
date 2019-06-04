@@ -36,7 +36,7 @@ class RegisterPropertyViewController: UIViewController {
         imagePickerController.sourceType = .photoLibrary
         self.present(imagePickerController, animated: true, completion: nil)
       } else {
-        self.showInformedAlert(withTitle: "Error", message: Constant.Error.Permission.photo)
+        self.showErrorAlert(message: Constant.Error.Permission.photo)
       }
     }
   }

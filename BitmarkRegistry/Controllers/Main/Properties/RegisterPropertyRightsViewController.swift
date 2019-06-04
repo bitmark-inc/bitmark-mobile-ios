@@ -129,7 +129,7 @@ class RegisterPropertyRightsViewController: UIViewController {
       let assetId = try PropertyService.registerAsset(registrant: Global.currentAccount!, assetName: assetName, fingerprint: assetFingerprintData, metadata: metadata)
       let _ = try PropertyService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
     } catch let e {
-      showInformedAlert(withTitle: "Error", message: e.localizedDescription)
+      showErrorAlert(message: e.localizedDescription)
     }
   }
 
@@ -248,7 +248,7 @@ extension RegisterPropertyRightsViewController {
         cell.setDuplicatedStyle(isDuplicated: isDuplicated)
       }
     } else {
-      errorForMetadata.text = nil
+      errorForMetadata.text = ""
       issueButton.isEnabled = validToIssue()
       for cell in (metaDataTableView.visibleCells as! [MetaDataCell]) {
         cell.setDuplicatedStyle(isDuplicated: false)
@@ -257,6 +257,7 @@ extension RegisterPropertyRightsViewController {
   }
 
   func getDuplicatedLabelCells() -> [MetaDataCell] {
+    // create dictionary with key is label, value is cells which has the label
     var metadataLabelList = [String: [MetaDataCell]]()
     for cell in (metaDataTableView.visibleCells as! [MetaDataCell]) {
       let label = cell.labelTextField.text!
@@ -266,6 +267,7 @@ extension RegisterPropertyRightsViewController {
       metadataLabelList[label] = currentCellsForLabel
     }
 
+    // get all cells has duplicated labels
     var duplicatedCells = [MetaDataCell]()
     for (_, cellsForLabel) in metadataLabelList {
       if cellsForLabel.count > 1 { duplicatedCells += cellsForLabel }
@@ -331,6 +333,7 @@ extension RegisterPropertyRightsViewController {
     var metadataList = [String: String]()
     for cell in (metaDataTableView.visibleCells as! [MetaDataCell]) {
       let metadata = cell.getValues()
+      guard metadata.label != "" else { continue }
       metadataList[metadata.label] = metadata.description
     }
     return metadataList

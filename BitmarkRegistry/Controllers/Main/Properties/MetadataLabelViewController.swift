@@ -39,12 +39,14 @@ class MetadataLabelViewController: UIViewController {
     loadData()
   }
 
+  // MARK: - Data Handlers
   private func loadData() {
     suggestedLabels = defaultSuggestedLabels
     labelTextField.text = metadataLabel
     labelTextField.sendActions(for: .editingChanged) // for default filter
   }
 
+  // MARK: - Handlers
   @IBAction func clickDone(_ sender: Any) {
     doneUpdate(with: labelTextField.text!.uppercased())
   }
