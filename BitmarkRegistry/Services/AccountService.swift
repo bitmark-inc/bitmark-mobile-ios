@@ -11,8 +11,8 @@ import BitmarkSDK
 
 class AccountService {
 
-  static func createNewAccount() -> Account {
-    return try! Account()
+  static func createNewAccount() throws -> Account  {
+    return try Account()
   }
 
   static func existsCurrentAccount() -> Bool {

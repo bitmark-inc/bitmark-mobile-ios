@@ -11,6 +11,10 @@ import UIKit
 extension UIViewController {
 
   // MARK: - Alert
+  func showErrorAlert(message: String) {
+    showInformedAlert(withTitle: "Error", message: message)
+  }
+
   func showInformedAlert(withTitle title: String, message: String) {
     let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alertView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

@@ -26,7 +26,7 @@ class AccountViewController: UIViewController {
     copiedToClipboardNotifier.showIn(period: 1.2)
   }
 
-  // MARK: UI Elements
+  // MARK: Data Handlers
   private func loadData() {
     accountNumberLabel.setTitle(Global.currentAccount?.accountNumber, for: .normal)
   }

@@ -12,16 +12,15 @@ class OnboardingViewController: UIViewController {
 
   // MARK: - Handlers
   @IBAction func createNewAccount(_ sender: UIButton) {
-    let account = AccountService.createNewAccount()
-    // Track and Store currentAccount
-    Global.currentAccount = account
     do {
+      let account = try AccountService.createNewAccount()
+      Global.currentAccount = account // track and store currentAccount
       try KeychainStore.saveToKeychain(account.seed.core)
     } catch let e {
-      showInformedAlert(withTitle: "Error", message: e.localizedDescription)
+      showErrorAlert(message: e.localizedDescription)
     }
 
-    // Redirect to Main Screen
+    // redirect to Main Screen
     present(
       UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()!,
       animated: true, completion: nil
