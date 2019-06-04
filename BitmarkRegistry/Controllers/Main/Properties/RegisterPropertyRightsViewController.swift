@@ -194,14 +194,16 @@ extension RegisterPropertyRightsViewController: UITableViewDataSource, UITableVi
    4. revalidate label duplication
    */
   func removeCell(_ cell: MetaDataCell) {
-    numberOfMetaData -= 1 // 1
-    let indexPath = metaDataTableView.indexPath(for: cell)!
-    metaDataTableView.beginUpdates()
-    metaDataTableView.deleteRows(at: [indexPath], with: .automatic)
-    metaDataTableView.endUpdates()
-    metaDataTableViewHeightConstraint.constant = CGFloat(numberOfMetaData) * metaDataHeightPerItem // 2
-    adjustRelatedButtonsState() // 3
-    validateLabelDuplication() // 4
+    showConfirmationAlert(message: Constant.Confirmation.deleteLabel) {
+      self.numberOfMetaData -= 1 // 1
+      let indexPath = self.metaDataTableView.indexPath(for: cell)!
+      self.metaDataTableView.beginUpdates()
+      self.metaDataTableView.deleteRows(at: [indexPath], with: .automatic)
+      self.metaDataTableView.endUpdates()
+      self.metaDataTableViewHeightConstraint.constant = CGFloat(self.numberOfMetaData) * self.metaDataHeightPerItem // 2
+      self.adjustRelatedButtonsState() // 3
+      self.validateLabelDuplication() // 4
+    }
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

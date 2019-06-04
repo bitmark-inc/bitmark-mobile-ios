@@ -10,6 +10,11 @@ import Foundation
 
 public struct Constant {
 
+  // MARK: - Confirmation
+  public struct Confirmation {
+    public static let deleteLabel = "Are you sure you want to delete this label?"
+  }
+
   // MARK: - Error Messages
   public struct Error {
     public struct Metadata {

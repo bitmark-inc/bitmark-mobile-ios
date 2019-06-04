@@ -16,6 +16,15 @@ extension UIViewController {
     showInformedAlert(withTitle: "Error", message: message)
   }
 
+  func showConfirmationAlert(message: String, handler: @escaping () -> Void) {
+    let alertView = UIAlertController(title: nil, message: Constant.Confirmation.deleteLabel, preferredStyle: .alert)
+    let yesAction = UIAlertAction(title: "Yes", style: .default) { (_) in handler() }
+    let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+    alertView.addAction(cancelAction)
+    alertView.addAction(yesAction)
+    present(alertView, animated: true, completion: nil)
+  }
+
   func showInformedAlert(withTitle title: String, message: String) {
     let alertView = UIAlertController(title: title, message: message, preferredStyle: .alert)
     alertView.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
