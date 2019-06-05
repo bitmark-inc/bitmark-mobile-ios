@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // init BitmarkSDK environment & api_token
-    BitmarkService.initialize()
+    BitmarkSDKService.initialize()
 
     // Redirect Screen for new user / existing user
     window = UIWindow(frame: UIScreen.main.bounds)

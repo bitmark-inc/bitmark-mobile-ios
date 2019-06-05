@@ -35,7 +35,7 @@
 		E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */; };
 		E2E798D6229E1ED400508B69 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798D5229E1ED400508B69 /* Onboarding.storyboard */; };
 		E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D8229E238900508B69 /* AccountViewController.swift */; };
-		E2E798DB229E25BC00508B69 /* BitmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DA229E25BC00508B69 /* BitmarkService.swift */; };
+		E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */; };
 		E2E798DD229E25E200508B69 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DC229E25E200508B69 /* Credential.swift */; };
 		E2E798DF229E264100508B69 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DE229E264100508B69 /* AccountService.swift */; };
 		E2E798E1229E267500508B69 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
@@ -78,7 +78,7 @@
 		E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		E2E798D5229E1ED400508B69 /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		E2E798D8229E238900508B69 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
-		E2E798DA229E25BC00508B69 /* BitmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
+		E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkSDKService.swift; sourceTree = "<group>"; };
 		E2E798DC229E25E200508B69 /* Credential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credential.swift; sourceTree = "<group>"; };
 		E2E798DE229E264100508B69 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		E2E798E0229E267500508B69 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
@@ -217,7 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E798E0229E267500508B69 /* Global.swift */,
-				E2E798DA229E25BC00508B69 /* BitmarkService.swift */,
+				E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */,
 				E2E798DE229E264100508B69 /* AccountService.swift */,
 				E287210F22A10CA8004BD9BD /* PropertyService.swift */,
 				E2E798E6229E285600508B69 /* KeychainStore.swift */,
@@ -421,7 +421,7 @@
 				E27CD245229E7CF700503D6A /* TestRecoveryPhraseViewController.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
-				E2E798DB229E25BC00508B69 /* BitmarkService.swift in Sources */,
+				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E25F9C2222A28EC300635AA8 /* NotificationService.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,

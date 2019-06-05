@@ -28,6 +28,6 @@ class AccountViewController: UIViewController {
 
   // MARK: Data Handlers
   private func loadData() {
-    accountNumberLabel.setTitle(Global.currentAccount?.accountNumber, for: .normal)
+    accountNumberLabel.setTitle(Global.currentAccount?.getAccountNumber(), for: .normal)
   }
 }

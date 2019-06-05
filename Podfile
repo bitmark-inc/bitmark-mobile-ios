@@ -6,7 +6,7 @@ target 'BitmarkRegistry' do
   use_frameworks!
 
   # Pods for BitmarkRegistry
-  pod 'BitmarkSDK'
+  pod 'BitmarkSDK', :git => 'https://github.com/bitmark-inc/bitmark-sdk-swift.git', :branch => 'master'
   pod 'KeychainAccess'
 
 end
