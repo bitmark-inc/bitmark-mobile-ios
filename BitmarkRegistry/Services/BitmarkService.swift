@@ -2,7 +2,7 @@
 //  BitmarkService.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 5/29/19.
+//  Created by Macintosh on 6/5/19.
 //  Copyright © 2019 thuyentruong. All rights reserved.
 //
 
@@ -11,11 +11,15 @@ import BitmarkSDK
 
 class BitmarkService {
 
-  private static let networkMode = Network.testnet;
-  private static let apiToken = Credential.valueForKey(keyName: "BITMARK_API_TOKEN")
-
-  static func initialize() {
-    let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared)
-    BitmarkSDK.initialize(config: config)
+  static func listAllBitmarksWithAsset(owner: Account, at fromOffset: Int64, direction: QueryDirection) throws -> ([Bitmark], [Asset]) {
+    let params = try Bitmark.newBitmarkQueryParams()
+                            .loadAsset(true)
+                            .limit(size: 100)
+                            .ownedBy(owner.getAccountNumber())
+                            .at(fromOffset)
+                            .to(direction: direction)
+                            .pending(true)
+    let (bitmarks, assets) = try Bitmark.list(params: params)
+    return (bitmarks ?? [Bitmark](), assets ?? [Asset]())
   }
 }
