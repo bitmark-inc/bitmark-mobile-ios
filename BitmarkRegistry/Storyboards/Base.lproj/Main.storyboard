@@ -720,6 +720,9 @@
                                                 <rect key="frame" x="58" y="90" width="82" height="45"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                                 <state key="normal" title="TRANSFER"/>
+                                                <connections>
+                                                    <segue destination="KaS-fe-B8u" kind="show" identifier="transferSegue" id="MZL-t4-aR8"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm4-RL-cF8">
                                                 <rect key="frame" x="81" y="135" width="59" height="45"/>
@@ -752,6 +755,7 @@
                         <viewLayoutGuide key="safeArea" id="i9g-6t-dsM"/>
                     </view>
                     <navigationItem key="navigationItem" id="mpj-wh-pg5">
+                        <barButtonItem key="backBarButtonItem" title=" " id="6i3-wE-2ng"/>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="More Actions-close" id="1NB-ZY-co2">
                             <connections>
                                 <action selector="toggleActionsMenuWithSender:" destination="Coy-x4-9qC" id="Y4u-wS-4lH"/>
@@ -772,7 +776,141 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IoV-17-sbg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3025" y="1553"/>
+            <point key="canvasLocation" x="3048" y="1734"/>
+        </scene>
+        <!--Transfer Bitmark View Controller-->
+        <scene sceneID="RKf-CE-RXH">
+            <objects>
+                <viewController id="KaS-fe-B8u" customClass="TransferBitmarkViewController" customModule="BitmarkRegistry" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fxP-6E-Wri">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XL3-ih-WeA" userLabel="Content View">
+                                <rect key="frame" x="20" y="113" width="374" height="630"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="z9s-vR-OnN">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="94"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-S3-HbP">
+                                                <rect key="frame" x="0.0" y="0.0" width="158" height="22"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="TRANSFER BITMARK">
+                                                        <attributes>
+                                                            <font key="NSFont" size="16" name="Avenir-Heavy"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="22" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="RECIPIENT BITMARK ACCOUNT NUMBER" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6O8-JK-dD8" customClass="DesignedTextField" customModule="BitmarkRegistry" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="37" width="273.66666666666669" height="17"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                                        <real key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderLineColor">
+                                                        <color key="value" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="deleteTextImage" value="blue-delete-label"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="beginEditingWithTextfield:" destination="KaS-fe-B8u" eventType="editingDidBegin" id="LwV-t4-Nfh"/>
+                                                    <action selector="changeRecipientTextFieldWithTextfield:" destination="KaS-fe-B8u" eventType="editingChanged" id="drf-fI-tym"/>
+                                                    <outlet property="delegate" destination="KaS-fe-B8u" id="Jdr-Np-zAT"/>
+                                                </connections>
+                                            </textField>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vxx-jj-tQ2">
+                                                <rect key="frame" x="0.0" y="69" width="241.33333333333334" height="25"/>
+                                                <subviews>
+                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid bitmark account number!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Nv-w1-51j">
+                                                        <rect key="frame" x="0.0" y="0.0" width="241.33333333333334" height="25"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                                        <color key="textColor" red="1" green="0.0" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="0Nv-w1-51j" secondAttribute="trailing" id="BF3-g9-Yfz"/>
+                                                    <constraint firstAttribute="height" constant="25" id="KJe-Ph-Abs"/>
+                                                    <constraint firstAttribute="bottom" secondItem="0Nv-w1-51j" secondAttribute="bottom" id="QBY-aj-wCZ"/>
+                                                    <constraint firstItem="0Nv-w1-51j" firstAttribute="top" secondItem="Vxx-jj-tQ2" secondAttribute="top" id="e71-P3-eZZ"/>
+                                                    <constraint firstItem="0Nv-w1-51j" firstAttribute="leading" secondItem="Vxx-jj-tQ2" secondAttribute="leading" id="pxO-vG-hKn"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="247" text="Enter the Bitmark account number to which you would like to transfer ownership of this property." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeE-vS-Raa">
+                                        <rect key="frame" x="0.0" y="109" width="374" height="41"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="z9s-vR-OnN" firstAttribute="top" secondItem="XL3-ih-WeA" secondAttribute="top" id="4XV-R9-pw7"/>
+                                    <constraint firstItem="z9s-vR-OnN" firstAttribute="leading" secondItem="XL3-ih-WeA" secondAttribute="leading" id="Oau-7i-A8n"/>
+                                    <constraint firstItem="NeE-vS-Raa" firstAttribute="leading" secondItem="z9s-vR-OnN" secondAttribute="leading" id="Trc-9x-gYD"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="z9s-vR-OnN" secondAttribute="bottom" id="Y36-c5-HrU"/>
+                                    <constraint firstItem="NeE-vS-Raa" firstAttribute="trailing" secondItem="z9s-vR-OnN" secondAttribute="trailing" id="elR-Q7-6ci"/>
+                                    <constraint firstAttribute="trailing" secondItem="z9s-vR-OnN" secondAttribute="trailing" id="lMI-Hf-2Ir"/>
+                                    <constraint firstItem="NeE-vS-Raa" firstAttribute="top" secondItem="z9s-vR-OnN" secondAttribute="bottom" constant="15" id="tCS-gr-EmU"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T7n-gI-rmf">
+                                <rect key="frame" x="0.0" y="768" width="414" height="45"/>
+                                <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Mnp-Tj-0R0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="17"/>
+                                <state key="normal" title="TRANSFER">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" red="0.75686274509999996" green="0.75686274509999996" blue="0.75686274509999996" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="disabledBackgroundColor">
+                                        <color key="value" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="tapToTransferWithButton:" destination="KaS-fe-B8u" eventType="touchUpInside" id="6wU-4a-CGJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fai-eE-3Ff" firstAttribute="bottom" secondItem="T7n-gI-rmf" secondAttribute="bottom" id="20K-hQ-pca"/>
+                            <constraint firstItem="fai-eE-3Ff" firstAttribute="trailing" secondItem="XL3-ih-WeA" secondAttribute="trailing" constant="20" id="6ck-zb-FpR"/>
+                            <constraint firstItem="T7n-gI-rmf" firstAttribute="trailing" secondItem="fai-eE-3Ff" secondAttribute="trailing" id="8qZ-j0-CbQ"/>
+                            <constraint firstItem="T7n-gI-rmf" firstAttribute="top" secondItem="XL3-ih-WeA" secondAttribute="bottom" constant="25" id="HLa-Cj-kTU"/>
+                            <constraint firstItem="XL3-ih-WeA" firstAttribute="top" secondItem="fai-eE-3Ff" secondAttribute="top" constant="25" id="KXy-3c-GcZ"/>
+                            <constraint firstItem="T7n-gI-rmf" firstAttribute="leading" secondItem="fai-eE-3Ff" secondAttribute="leading" id="S61-bA-UvA"/>
+                            <constraint firstItem="XL3-ih-WeA" firstAttribute="leading" secondItem="fai-eE-3Ff" secondAttribute="leading" constant="20" id="yj6-Kt-mlq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="fai-eE-3Ff"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="4zY-Xb-S4N">
+                        <barButtonItem key="backBarButtonItem" title=" " id="jks-wS-UZo"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="bottomTransferButtonConstraint" destination="20K-hQ-pca" id="5m4-Ep-6s2"/>
+                        <outlet property="errorForInvalidAccountNumber" destination="0Nv-w1-51j" id="CQz-L7-HlN"/>
+                        <outlet property="recipientAccountNumberTextfield" destination="6O8-JK-dD8" id="fCZ-sO-Shf"/>
+                        <outlet property="transferButton" destination="T7n-gI-rmf" id="vGf-iT-8TE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5T-Qk-IRq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4077" y="1584"/>
         </scene>
         <!--REGISTER PROPERTY RIGHTS-->
         <scene sceneID="Y94-3Y-xJG">

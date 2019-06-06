@@ -67,6 +67,7 @@ extension DesignedTextField {
     if let textfield = button.superview?.superview as? DesignedTextField {
       textfield.text = nil
       sendActions(for: .editingChanged)
+      sendActions(for: .editingDidBegin)
     }
   }
 }

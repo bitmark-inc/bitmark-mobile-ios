@@ -22,6 +22,7 @@
 		E239A92A22A8B100003F1EFA /* MetadataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239A92922A8B100003F1EFA /* MetadataObject.swift */; };
 		E239A92C22A8B9E5003F1EFA /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239A92B22A8B9E5003F1EFA /* TransactionService.swift */; };
 		E239A92E22A8C0A6003F1EFA /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239A92D22A8C0A6003F1EFA /* TransactionCell.swift */; };
+		E239A93022A8FE43003F1EFA /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E239A92F22A8FE43003F1EFA /* TransferBitmarkViewController.swift */; };
 		E2587515229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2587514229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift */; };
 		E258751B229F7F8B00AED94D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E258751A229F7F8B00AED94D /* UIView+Extension.swift */; };
 		E258751D229FA5FA00AED94D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E258751C229FA5FA00AED94D /* UIColor+Extension.swift */; };
@@ -74,6 +75,7 @@
 		E239A92922A8B100003F1EFA /* MetadataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataObject.swift; sourceTree = "<group>"; };
 		E239A92B22A8B9E5003F1EFA /* TransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
 		E239A92D22A8C0A6003F1EFA /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		E239A92F22A8FE43003F1EFA /* TransferBitmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferBitmarkViewController.swift; sourceTree = "<group>"; };
 		E2587514229F663B00AED94D /* BaseRecoveryPhraseCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecoveryPhraseCollectionViewController.swift; sourceTree = "<group>"; };
 		E258751A229F7F8B00AED94D /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E258751C229FA5FA00AED94D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				E287210D22A0DD17004BD9BD /* RegisterPropertyRightsViewController.swift */,
 				E2318C3822A40951003B6969 /* MetadataLabelViewController.swift */,
 				E21C7B4222A8220B005F8E67 /* BitmarkDetailViewController.swift */,
+				E239A92F22A8FE43003F1EFA /* TransferBitmarkViewController.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -464,6 +467,7 @@
 				E296A17E22A516760041CFF3 /* UIButton+Extension.swift in Sources */,
 				E21AB39922A7A44E000740AB /* BitmarkStorage.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
+				E239A93022A8FE43003F1EFA /* TransferBitmarkViewController.swift in Sources */,
 				E2EF761422A4CFDB00416860 /* DesignedTextField.swift in Sources */,
 				E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */,
 				E25F9C2022A28DDE00635AA8 /* KeyboardObserver.swift in Sources */,

@@ -43,6 +43,8 @@ class BitmarkDetailViewController: UIViewController {
   let transactionCellIdentifier = "transactionCellIdentifier"
   var transactions = [Transaction]()
 
+  let transferSegue = "transferSegue"
+
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -71,6 +73,13 @@ class BitmarkDetailViewController: UIViewController {
   @IBAction func touchToCopyId(button: UIButton) {
     UIPasteboard.general.string = bitmark.id
     copiedToClipboardNotifier.showIn(period: 1.2)
+  }
+
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == transferSegue, let destination = segue.destination as? TransferBitmarkViewController {
+      destination.bitmarkId = bitmark.id
+      destination.assetName = asset.name
+    }
   }
 }
 
