@@ -20,6 +20,8 @@ class BitmarkDetailViewController: UIViewController {
   @IBOutlet weak var transactionTableView: UITableView!
   @IBOutlet weak var transactionIndicator: UIActivityIndicatorView!
 
+  @IBOutlet weak var actionsMenuView: UIView!
+
   var bitmark: Bitmark!
   lazy var asset: Asset = {
     return Global.findAsset(with: bitmark.asset_id)!
@@ -58,6 +60,13 @@ class BitmarkDetailViewController: UIViewController {
     issueDateLabel.text = bitmark.created_at?.format()
     issuerLabel.text = bitmark.issuer.middleShorten()
   }
+
+  // MARK: - Actions Menu Handlers
+  @IBAction func toggleActionsMenu(sender: UIBarButtonItem) {
+    actionsMenuView.isHidden = !actionsMenuView.isHidden
+    sender.image = UIImage(named: actionsMenuView.isHidden ? "More Actions-close" : "More Actions-open") 
+  }
+
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
@@ -118,6 +127,13 @@ extension BitmarkDetailViewController {
 extension BitmarkDetailViewController {
   private func configureUI() {
     metadataTableViewHeightConstraint.constant = CGFloat(metadataObjects.count) * metadataCellHeight
+
+    // set up shadow for actionsMenuView
+    actionsMenuView.layer.masksToBounds = false
+    actionsMenuView.layer.shadowColor = UIColor.black.cgColor
+    actionsMenuView.layer.shadowOpacity = 0.2
+    actionsMenuView.layer.shadowOffset = .zero
+    actionsMenuView.layer.shadowRadius = 1
   }
 
   // layout header of provenance - transactions table view

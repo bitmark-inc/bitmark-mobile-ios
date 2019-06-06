@@ -676,17 +676,66 @@
                                     <constraint firstItem="Yx7-NL-M7A" firstAttribute="leading" secondItem="HGw-Hn-U2p" secondAttribute="leading" id="kb8-HB-dFh"/>
                                 </constraints>
                             </view>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LUA-3M-taF">
+                                <rect key="frame" x="214" y="88" width="200" height="180"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="e89-7J-Sg0">
+                                        <rect key="frame" x="20" y="0.0" width="160" height="180"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ewo-Sv-j8K">
+                                                <rect key="frame" x="94" y="0.0" width="66" height="45"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                                <state key="normal" title="COPY ID"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2qh-cU-3u6">
+                                                <rect key="frame" x="60" y="45" width="100" height="45"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                                <state key="normal" title="DOWNLOAD"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lAd-cY-qfR">
+                                                <rect key="frame" x="78" y="90" width="82" height="45"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                                <state key="normal" title="TRANSFER"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm4-RL-cF8">
+                                                <rect key="frame" x="101" y="135" width="59" height="45"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                                <state key="normal" title="DELETE"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="e89-7J-Sg0" firstAttribute="leading" secondItem="LUA-3M-taF" secondAttribute="leading" constant="20" id="2cU-N7-c1U"/>
+                                    <constraint firstAttribute="bottom" secondItem="e89-7J-Sg0" secondAttribute="bottom" id="P4w-LX-nHP"/>
+                                    <constraint firstAttribute="trailing" secondItem="e89-7J-Sg0" secondAttribute="trailing" constant="20" id="Wei-Qu-DbB"/>
+                                    <constraint firstItem="e89-7J-Sg0" firstAttribute="top" secondItem="LUA-3M-taF" secondAttribute="top" id="Z1X-Tk-CcP"/>
+                                    <constraint firstAttribute="height" constant="180" id="aWA-bx-Q1n"/>
+                                    <constraint firstAttribute="width" constant="200" id="qCa-h1-hp2"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="i9g-6t-dsM" firstAttribute="trailing" secondItem="LUA-3M-taF" secondAttribute="trailing" id="OGi-dR-36A"/>
                             <constraint firstItem="i9g-6t-dsM" firstAttribute="trailing" secondItem="HGw-Hn-U2p" secondAttribute="trailing" constant="20" id="UZP-gv-hcE"/>
                             <constraint firstItem="HGw-Hn-U2p" firstAttribute="leading" secondItem="i9g-6t-dsM" secondAttribute="leading" constant="20" id="iqh-B6-6co"/>
+                            <constraint firstItem="LUA-3M-taF" firstAttribute="top" secondItem="i9g-6t-dsM" secondAttribute="top" id="juo-7i-oMT"/>
                             <constraint firstItem="HGw-Hn-U2p" firstAttribute="top" secondItem="i9g-6t-dsM" secondAttribute="top" constant="25" id="p3X-5R-QuE"/>
                             <constraint firstItem="i9g-6t-dsM" firstAttribute="bottom" secondItem="HGw-Hn-U2p" secondAttribute="bottom" constant="10" id="qdG-mt-9TB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="i9g-6t-dsM"/>
                     </view>
+                    <navigationItem key="navigationItem" id="mpj-wh-pg5">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="More Actions-close" id="1NB-ZY-co2">
+                            <connections>
+                                <action selector="toggleActionsMenuWithSender:" destination="Coy-x4-9qC" id="Y4u-wS-4lH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="actionsMenuView" destination="LUA-3M-taF" id="Lym-Hk-WJk"/>
                         <outlet property="assetNameLabel" destination="XFH-nm-w8e" id="Vgt-ja-Sq5"/>
                         <outlet property="issueDateLabel" destination="aFc-PL-VQJ" id="oX8-pF-LXl"/>
                         <outlet property="issuerLabel" destination="6WI-dI-CrW" id="0fk-RY-gdn"/>
@@ -2104,6 +2153,7 @@ We will show you a list of words to write down on a piece of paper and keep safe
     <resources>
         <image name="Account-inactive" width="19" height="25"/>
         <image name="AccountSelected" width="19" height="25"/>
+        <image name="More Actions-close" width="20" height="5.3333334922790527"/>
         <image name="Properties - inactive" width="25" height="25"/>
         <image name="Properties - selected" width="25" height="25"/>
         <image name="Warning" width="36" height="36"/>
