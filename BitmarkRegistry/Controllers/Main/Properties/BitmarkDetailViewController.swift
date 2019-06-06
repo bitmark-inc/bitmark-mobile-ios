@@ -21,6 +21,7 @@ class BitmarkDetailViewController: UIViewController {
   @IBOutlet weak var transactionIndicator: UIActivityIndicatorView!
 
   @IBOutlet weak var actionsMenuView: UIView!
+  @IBOutlet weak var copiedToClipboardNotifier: UILabel!
 
   var bitmark: Bitmark!
   lazy var asset: Asset = {
@@ -67,6 +68,10 @@ class BitmarkDetailViewController: UIViewController {
     sender.image = UIImage(named: actionsMenuView.isHidden ? "More Actions-close" : "More Actions-open") 
   }
 
+  @IBAction func touchToCopyId(button: UIButton) {
+    UIPasteboard.general.string = bitmark.id
+    copiedToClipboardNotifier.showIn(period: 1.2)
+  }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate

@@ -677,28 +677,52 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LUA-3M-taF">
-                                <rect key="frame" x="214" y="88" width="200" height="180"/>
+                                <rect key="frame" x="234" y="88" width="180" height="180"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="e89-7J-Sg0">
-                                        <rect key="frame" x="20" y="0.0" width="160" height="180"/>
+                                        <rect key="frame" x="20" y="0.0" width="140" height="180"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ewo-Sv-j8K">
-                                                <rect key="frame" x="94" y="0.0" width="66" height="45"/>
-                                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
-                                                <state key="normal" title="COPY ID"/>
-                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xVb-ZO-E9x">
+                                                <rect key="frame" x="0.0" y="0.0" width="140" height="45"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ewo-Sv-j8K">
+                                                        <rect key="frame" x="0.0" y="0.0" width="140" height="39"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
+                                                        <state key="normal" title="COPY ID"/>
+                                                        <connections>
+                                                            <action selector="touchToCopyIdWithButton:" destination="Coy-x4-9qC" eventType="touchUpInside" id="Ln5-Oa-su1"/>
+                                                        </connections>
+                                                    </button>
+                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copied to clipboard!" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OND-Ce-5S4">
+                                                        <rect key="frame" x="0.0" y="34" width="140" height="11"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-HeavyOblique" family="Avenir" pointSize="8"/>
+                                                        <color key="textColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="OND-Ce-5S4" secondAttribute="trailing" id="QdX-TY-N7R"/>
+                                                    <constraint firstItem="OND-Ce-5S4" firstAttribute="top" secondItem="Ewo-Sv-j8K" secondAttribute="bottom" constant="-5" id="fSc-zO-p0c"/>
+                                                    <constraint firstAttribute="bottom" secondItem="OND-Ce-5S4" secondAttribute="bottom" id="jzE-Gk-H8I"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Ewo-Sv-j8K" secondAttribute="trailing" id="k5G-hF-BSt"/>
+                                                    <constraint firstItem="OND-Ce-5S4" firstAttribute="leading" secondItem="xVb-ZO-E9x" secondAttribute="leading" id="kBP-d3-Lrf"/>
+                                                    <constraint firstItem="Ewo-Sv-j8K" firstAttribute="top" secondItem="xVb-ZO-E9x" secondAttribute="top" id="t0n-Tw-cfu"/>
+                                                    <constraint firstItem="Ewo-Sv-j8K" firstAttribute="leading" secondItem="xVb-ZO-E9x" secondAttribute="leading" id="tUJ-Xc-Tl7"/>
+                                                </constraints>
+                                            </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2qh-cU-3u6">
-                                                <rect key="frame" x="60" y="45" width="100" height="45"/>
+                                                <rect key="frame" x="40" y="45" width="100" height="45"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                                 <state key="normal" title="DOWNLOAD"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lAd-cY-qfR">
-                                                <rect key="frame" x="78" y="90" width="82" height="45"/>
+                                                <rect key="frame" x="58" y="90" width="82" height="45"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                                 <state key="normal" title="TRANSFER"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xm4-RL-cF8">
-                                                <rect key="frame" x="101" y="135" width="59" height="45"/>
+                                                <rect key="frame" x="81" y="135" width="59" height="45"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                                 <state key="normal" title="DELETE"/>
                                             </button>
@@ -712,7 +736,7 @@
                                     <constraint firstAttribute="trailing" secondItem="e89-7J-Sg0" secondAttribute="trailing" constant="20" id="Wei-Qu-DbB"/>
                                     <constraint firstItem="e89-7J-Sg0" firstAttribute="top" secondItem="LUA-3M-taF" secondAttribute="top" id="Z1X-Tk-CcP"/>
                                     <constraint firstAttribute="height" constant="180" id="aWA-bx-Q1n"/>
-                                    <constraint firstAttribute="width" constant="200" id="qCa-h1-hp2"/>
+                                    <constraint firstAttribute="width" constant="180" id="qCa-h1-hp2"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -737,6 +761,7 @@
                     <connections>
                         <outlet property="actionsMenuView" destination="LUA-3M-taF" id="Lym-Hk-WJk"/>
                         <outlet property="assetNameLabel" destination="XFH-nm-w8e" id="Vgt-ja-Sq5"/>
+                        <outlet property="copiedToClipboardNotifier" destination="OND-Ce-5S4" id="rqe-3h-eMn"/>
                         <outlet property="issueDateLabel" destination="aFc-PL-VQJ" id="oX8-pF-LXl"/>
                         <outlet property="issuerLabel" destination="6WI-dI-CrW" id="0fk-RY-gdn"/>
                         <outlet property="metadataTableView" destination="CRl-8c-Qj5" id="gQi-Qd-qvD"/>
