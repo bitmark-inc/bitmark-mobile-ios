@@ -21,6 +21,8 @@ class YourPropertyCell: UITableViewCell {
     assetNameLabel.text = asset?.name
     if let confirmed_at = bitmark.confirmed_at {
       dateLabel.text = confirmed_at.format()
+    } else {
+      dateLabel.text = "REGISTERING..."
     }
     issuerLabel.text = "[\(bitmark.issuer.middleShorten())]"
   }

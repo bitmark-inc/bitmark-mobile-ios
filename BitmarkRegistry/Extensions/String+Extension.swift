@@ -9,8 +9,9 @@
 import Foundation
 
 extension String {
-  func middleShorten(eachMaxChars: Int = 4) -> String {
-    return "\(self[0..<eachMaxChars])...\(self[count - eachMaxChars..<count])"
+  func middleShorten(eachMaxChars: Int = 4, hasBracket: Bool = true) -> String {
+    let shortString = "\(self[0..<eachMaxChars])...\(self[count - eachMaxChars..<count])"
+    return hasBracket ? "[\(shortString)]" : shortString
   }
 }
 

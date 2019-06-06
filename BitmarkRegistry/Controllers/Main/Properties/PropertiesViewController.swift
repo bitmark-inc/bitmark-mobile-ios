@@ -24,6 +24,7 @@ class PropertiesViewController: UIViewController {
   lazy var bitmarkStorage: BitmarkStorage = {
     return BitmarkStorage(for: Global.currentAccount!)
   }()
+  let bitmarkDetailSegue = "bitmarkDetailSegue"
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -75,8 +76,8 @@ class PropertiesViewController: UIViewController {
   }
 }
 
-// MARK: - UITableViewDataSource
-extension PropertiesViewController: UITableViewDataSource {
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return bitmarks.count
   }
@@ -87,5 +88,17 @@ extension PropertiesViewController: UITableViewDataSource {
     let asset = Global.findAsset(with: bitmark.asset_id)
     cell.loadWith(asset, bitmark)
     return cell
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    performSegue(withIdentifier: bitmarkDetailSegue, sender: indexPath)
+  }
+
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if segue.identifier == bitmarkDetailSegue,
+       let destination = segue.destination as? BitmarkDetailViewController,
+       let sender = sender as? IndexPath {
+      destination.bitmark = bitmarks[sender.row]
+    }
   }
 }
