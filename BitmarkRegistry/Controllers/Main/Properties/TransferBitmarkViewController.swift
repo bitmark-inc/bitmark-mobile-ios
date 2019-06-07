@@ -8,6 +8,7 @@
 
 import UIKit
 import BitmarkSDK
+import AVFoundation
 
 class TransferBitmarkViewController: UIViewController {
 
@@ -49,6 +50,13 @@ class TransferBitmarkViewController: UIViewController {
     }
   }
 
+  @IBAction func touchToCaptuerQRCode(sender: UIButton) {
+    if let qrScannerViewController = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "QRScannerViewController") as? QRScannerViewController {
+      qrScannerViewController.delegate = self
+      navigationController?.pushViewController(qrScannerViewController, animated: true)
+    }
+  }
+
   @IBAction func beginEditing(textfield: UITextField) {
     errorForInvalidAccountNumber.isHidden = true
   }
@@ -63,6 +71,7 @@ class TransferBitmarkViewController: UIViewController {
           to: recipientAccountNumber
         )
       } catch let e {
+        print(e)
         showErrorAlert(message: e.localizedDescription)
       }
     } else {
@@ -79,6 +88,13 @@ class TransferBitmarkViewController: UIViewController {
 extension TransferBitmarkViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     return view.endEditing(true)
+  }
+}
+
+// MARK: - QRCodeScannerDelegate
+extension TransferBitmarkViewController: QRCodeScannerDelegate {
+  func process(qrCode: String) {
+    recipientAccountNumberTextfield.text = qrCode
   }
 }
 

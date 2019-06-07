@@ -11,6 +11,7 @@
 		E21AB38822A75EC9000740AB /* BitmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21AB38722A75EC9000740AB /* BitmarkService.swift */; };
 		E21AB38B22A76AAF000740AB /* BitmarksWithAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21AB38A22A76AAF000740AB /* BitmarksWithAsset.swift */; };
 		E21AB38D22A76B66000740AB /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21AB38C22A76B66000740AB /* FileManager+Extension.swift */; };
+		E21AB39122A78138000740AB /* temp+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21AB39022A78138000740AB /* temp+Extension.swift */; };
 		E21AB39322A78CB1000740AB /* YourPropertyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21AB39222A78CB1000740AB /* YourPropertyCell.swift */; };
 		E21AB39722A79A0D000740AB /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21AB39622A79A0D000740AB /* String+Extension.swift */; };
 		E21AB39922A7A44E000740AB /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21AB39822A7A44E000740AB /* BitmarkStorage.swift */; };
@@ -40,7 +41,10 @@
 		E287211022A10CA8004BD9BD /* PropertyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E287210F22A10CA8004BD9BD /* PropertyService.swift */; };
 		E287211222A133D5004BD9BD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E287211122A133D5004BD9BD /* Constant.swift */; };
 		E296A17E22A516760041CFF3 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296A17D22A516760041CFF3 /* UIButton+Extension.swift */; };
+		E29A73ED22AA0D0B0052C716 /* CustomReceiverQRView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E29A73EC22AA0D0B0052C716 /* CustomReceiverQRView.xib */; };
+		E29A73F522AA0DDA0052C716 /* CustomReceiverQRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29A73F422AA0DDA0052C716 /* CustomReceiverQRView.swift */; };
 		E2A6C1D022A5596400121197 /* BlurSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A6C1CF22A5596400121197 /* BlurSupportView.swift */; };
+		E2C3BFE922A92B06009130BD /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C3BFE822A92B06009130BD /* QRScannerViewController.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
 		E2E798BF229E189E00508B69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
@@ -64,6 +68,7 @@
 		E21AB38722A75EC9000740AB /* BitmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
 		E21AB38A22A76AAF000740AB /* BitmarksWithAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarksWithAsset.swift; sourceTree = "<group>"; };
 		E21AB38C22A76B66000740AB /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
+		E21AB39022A78138000740AB /* temp+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "temp+Extension.swift"; sourceTree = "<group>"; };
 		E21AB39222A78CB1000740AB /* YourPropertyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourPropertyCell.swift; sourceTree = "<group>"; };
 		E21AB39622A79A0D000740AB /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		E21AB39822A7A44E000740AB /* BitmarkStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkStorage.swift; sourceTree = "<group>"; };
@@ -93,7 +98,10 @@
 		E287210F22A10CA8004BD9BD /* PropertyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyService.swift; sourceTree = "<group>"; };
 		E287211122A133D5004BD9BD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		E296A17D22A516760041CFF3 /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		E29A73EC22AA0D0B0052C716 /* CustomReceiverQRView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomReceiverQRView.xib; sourceTree = "<group>"; };
+		E29A73F422AA0DDA0052C716 /* CustomReceiverQRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomReceiverQRView.swift; sourceTree = "<group>"; };
 		E2A6C1CF22A5596400121197 /* BlurSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurSupportView.swift; sourceTree = "<group>"; };
+		E2C3BFE822A92B06009130BD /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -240,6 +248,7 @@
 				E27CD23D229E407C00503D6A /* UILabel+Extension.swift */,
 				E258751A229F7F8B00AED94D /* UIView+Extension.swift */,
 				E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */,
+				E21AB39022A78138000740AB /* temp+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -282,6 +291,8 @@
 				E21AB39222A78CB1000740AB /* YourPropertyCell.swift */,
 				E239A92722A8AE8E003F1EFA /* MetadataShowCell.swift */,
 				E239A92D22A8C0A6003F1EFA /* TransactionCell.swift */,
+				E29A73EC22AA0D0B0052C716 /* CustomReceiverQRView.xib */,
+				E29A73F422AA0DDA0052C716 /* CustomReceiverQRView.swift */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -317,6 +328,7 @@
 			children = (
 				E287210622A0C94B004BD9BD /* Properties */,
 				E27CD23F229E5C5100503D6A /* Account */,
+				E2C3BFE822A92B06009130BD /* QRScannerViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -386,6 +398,7 @@
 				E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */,
 				E2E798BF229E189E00508B69 /* Main.storyboard in Resources */,
 				E2E798D6229E1ED400508B69 /* Onboarding.storyboard in Resources */,
+				E29A73ED22AA0D0B0052C716 /* CustomReceiverQRView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +465,7 @@
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E27CD241229E5C6B00503D6A /* RecoveryPhraseViewController.swift in Sources */,
+				E2C3BFE922A92B06009130BD /* QRScannerViewController.swift in Sources */,
 				E21AB39B22A7B8BE000740AB /* Date+Extension.swift in Sources */,
 				E21C7B4322A8220B005F8E67 /* BitmarkDetailViewController.swift in Sources */,
 				E2318C3722A3ED24003B6969 /* MetaDataCell.swift in Sources */,
@@ -471,6 +485,7 @@
 				E2EF761422A4CFDB00416860 /* DesignedTextField.swift in Sources */,
 				E27CD243229E5DF200503D6A /* RecoveryPhraseCell.swift in Sources */,
 				E25F9C2022A28DDE00635AA8 /* KeyboardObserver.swift in Sources */,
+				E21AB39122A78138000740AB /* temp+Extension.swift in Sources */,
 				E2A6C1D022A5596400121197 /* BlurSupportView.swift in Sources */,
 				E287211222A133D5004BD9BD /* Constant.swift in Sources */,
 				E258751B229F7F8B00AED94D /* UIView+Extension.swift in Sources */,
@@ -480,6 +495,7 @@
 				E239A92C22A8B9E5003F1EFA /* TransactionService.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E239A92E22A8C0A6003F1EFA /* TransactionCell.swift in Sources */,
+				E29A73F522AA0DDA0052C716 /* CustomReceiverQRView.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E25F9C2222A28EC300635AA8 /* NotificationService.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,

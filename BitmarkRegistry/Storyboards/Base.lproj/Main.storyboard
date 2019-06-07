@@ -24,14 +24,26 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Mh-bO-ZXe" userLabel="Account Number Box">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="70"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOUR BITMARK ACCOUNT NUMBER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gu-2N-mH9">
-                                                <rect key="frame" x="0.0" y="0.0" width="237" height="19.333333333333332"/>
-                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="12t-lK-JsK">
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="YOUR BITMARK ACCOUNT NUMBER" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gu-2N-mH9">
+                                                        <rect key="frame" x="0.0" y="0.0" width="237" height="19.333333333333332"/>
+                                                        <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugh-dN-cQW">
+                                                        <rect key="frame" x="237" y="0.0" width="137" height="30"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <connections>
+                                                            <action selector="showReceiverQR:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cWL-Aq-XhT"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vC4-vj-Nhr">
-                                                <rect key="frame" x="0.0" y="34.333333333333343" width="374" height="28"/>
+                                                <rect key="frame" x="0.0" y="45" width="374" height="28"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="11"/>
                                                 <state key="normal" title="Button"/>
                                                 <connections>
@@ -39,14 +51,14 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P28-1O-ZOu">
-                                                <rect key="frame" x="0.0" y="61.333333333333343" width="374" height="1"/>
+                                                <rect key="frame" x="0.0" y="72" width="374" height="1"/>
                                                 <color key="backgroundColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="R4W-Wb-ICt"/>
                                                 </constraints>
                                             </view>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copied to clipboard!" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMZ-qg-O5B">
-                                                <rect key="frame" x="0.0" y="67.333333333333343" width="374" height="11"/>
+                                                <rect key="frame" x="0.0" y="78" width="374" height="11"/>
                                                 <fontDescription key="fontDescription" name="Avenir-HeavyOblique" family="Avenir" pointSize="8"/>
                                                 <color key="textColor" red="0.0" green="0.37647058820000001" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -55,18 +67,18 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="QMZ-qg-O5B" firstAttribute="top" secondItem="vC4-vj-Nhr" secondAttribute="bottom" constant="5" id="13w-t9-OxW"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7Gu-2N-mH9" secondAttribute="trailing" constant="20" symbolic="YES" id="2c6-u4-zda"/>
-                                            <constraint firstItem="vC4-vj-Nhr" firstAttribute="top" secondItem="7Gu-2N-mH9" secondAttribute="bottom" constant="15" id="J9V-5f-0FT"/>
+                                            <constraint firstAttribute="trailing" secondItem="12t-lK-JsK" secondAttribute="trailing" id="9w2-EK-OBv"/>
+                                            <constraint firstItem="12t-lK-JsK" firstAttribute="top" secondItem="4Mh-bO-ZXe" secondAttribute="top" id="CXi-b4-k3A"/>
                                             <constraint firstAttribute="height" constant="70" id="Kal-xK-ATp"/>
-                                            <constraint firstItem="7Gu-2N-mH9" firstAttribute="top" secondItem="4Mh-bO-ZXe" secondAttribute="top" id="MHE-dq-mdj"/>
                                             <constraint firstItem="vC4-vj-Nhr" firstAttribute="leading" secondItem="4Mh-bO-ZXe" secondAttribute="leading" id="Q7Z-Ez-eq6"/>
                                             <constraint firstAttribute="trailing" secondItem="vC4-vj-Nhr" secondAttribute="trailing" id="W4N-73-c2R"/>
                                             <constraint firstAttribute="trailing" secondItem="P28-1O-ZOu" secondAttribute="trailing" id="Xxo-3u-HE3"/>
                                             <constraint firstItem="QMZ-qg-O5B" firstAttribute="trailing" secondItem="P28-1O-ZOu" secondAttribute="trailing" id="axR-W3-YFY"/>
                                             <constraint firstItem="QMZ-qg-O5B" firstAttribute="leading" secondItem="P28-1O-ZOu" secondAttribute="leading" id="cQf-5j-KPf"/>
-                                            <constraint firstItem="7Gu-2N-mH9" firstAttribute="leading" secondItem="4Mh-bO-ZXe" secondAttribute="leading" id="jmK-la-kMy"/>
+                                            <constraint firstItem="12t-lK-JsK" firstAttribute="leading" secondItem="4Mh-bO-ZXe" secondAttribute="leading" id="cd6-Fm-1Sv"/>
                                             <constraint firstItem="P28-1O-ZOu" firstAttribute="leading" secondItem="4Mh-bO-ZXe" secondAttribute="leading" id="sY5-7U-y1V"/>
                                             <constraint firstItem="QMZ-qg-O5B" firstAttribute="top" secondItem="P28-1O-ZOu" secondAttribute="bottom" constant="5" id="vVN-BV-pl1"/>
+                                            <constraint firstItem="vC4-vj-Nhr" firstAttribute="top" secondItem="12t-lK-JsK" secondAttribute="bottom" constant="15" id="wwN-g1-fQH"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hzt-zy-L5B">
@@ -119,10 +131,15 @@
                                             </button>
                                         </subviews>
                                     </stackView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h1x-NN-nWv">
+                                        <rect key="frame" x="67" y="429" width="240" height="128"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="h1x-NN-nWv" firstAttribute="bottom" secondItem="7wS-Ty-f9G" secondAttribute="bottom" constant="-200" id="6Fq-pH-OIx"/>
                                     <constraint firstAttribute="trailing" secondItem="hzt-zy-L5B" secondAttribute="trailing" id="7MB-qI-EXE"/>
+                                    <constraint firstItem="h1x-NN-nWv" firstAttribute="centerX" secondItem="7wS-Ty-f9G" secondAttribute="centerX" id="E7Z-Np-ON4"/>
                                     <constraint firstItem="4Mh-bO-ZXe" firstAttribute="leading" secondItem="7wS-Ty-f9G" secondAttribute="leading" id="EJK-yd-YCA"/>
                                     <constraint firstAttribute="trailing" secondItem="xzG-a1-gWT" secondAttribute="trailing" id="RJX-EB-FAB"/>
                                     <constraint firstItem="hzt-zy-L5B" firstAttribute="top" secondItem="4Mh-bO-ZXe" secondAttribute="bottom" constant="12" id="a72-AJ-0iM"/>
@@ -150,6 +167,7 @@
                     <connections>
                         <outlet property="accountNumberLabel" destination="vC4-vj-Nhr" id="vR0-r3-g7G"/>
                         <outlet property="copiedToClipboardNotifier" destination="QMZ-qg-O5B" id="2gF-bQ-Zaw"/>
+                        <outlet property="qrImage" destination="h1x-NN-nWv" id="Zfj-wK-HxT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -715,6 +733,9 @@
                                                 <rect key="frame" x="40" y="45" width="100" height="45"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                                 <state key="normal" title="DOWNLOAD"/>
+                                                <connections>
+                                                    <action selector="touchToDownloadWithButton:" destination="Coy-x4-9qC" eventType="touchUpInside" id="wO6-h8-I77"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lAd-cY-qfR">
                                                 <rect key="frame" x="58" y="90" width="82" height="45"/>
@@ -728,6 +749,9 @@
                                                 <rect key="frame" x="81" y="135" width="59" height="45"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="16"/>
                                                 <state key="normal" title="DELETE"/>
+                                                <connections>
+                                                    <action selector="touchToDeleteWithButton:" destination="Coy-x4-9qC" eventType="touchUpInside" id="fHi-rT-oZW"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -790,22 +814,37 @@
                                 <rect key="frame" x="20" y="113" width="374" height="630"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="z9s-vR-OnN">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="94"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="102"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-S3-HbP">
-                                                <rect key="frame" x="0.0" y="0.0" width="158" height="22"/>
-                                                <attributedString key="attributedText">
-                                                    <fragment content="TRANSFER BITMARK">
-                                                        <attributes>
-                                                            <font key="NSFont" size="16" name="Avenir-Heavy"/>
-                                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="22" tighteningFactorForTruncation="0.0"/>
-                                                        </attributes>
-                                                    </fragment>
-                                                </attributedString>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hSD-Nu-DMK">
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="30"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uH-S3-HbP">
+                                                        <rect key="frame" x="0.0" y="0.0" width="308" height="30"/>
+                                                        <attributedString key="attributedText">
+                                                            <fragment content="TRANSFER BITMARK">
+                                                                <attributes>
+                                                                    <font key="NSFont" size="16" name="Avenir-Heavy"/>
+                                                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="22" tighteningFactorForTruncation="0.0"/>
+                                                                </attributes>
+                                                            </fragment>
+                                                        </attributedString>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jhC-6n-EhF">
+                                                        <rect key="frame" x="308" y="0.0" width="46" height="30"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <connections>
+                                                            <action selector="touchToCaptuerQRCodeWithSender:" destination="KaS-fe-B8u" eventType="touchUpInside" id="Tbo-7j-c4M"/>
+                                                        </connections>
+                                                    </button>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="More Actions-close" translatesAutoresizingMaskIntoConstraints="NO" id="QWi-J2-mFA">
+                                                        <rect key="frame" x="354" y="0.0" width="20" height="30"/>
+                                                    </imageView>
+                                                </subviews>
+                                            </stackView>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="RECIPIENT BITMARK ACCOUNT NUMBER" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6O8-JK-dD8" customClass="DesignedTextField" customModule="BitmarkRegistry" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="37" width="273.66666666666669" height="17"/>
+                                                <rect key="frame" x="0.0" y="45" width="273.66666666666669" height="17"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
@@ -825,7 +864,7 @@
                                                 </connections>
                                             </textField>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vxx-jj-tQ2">
-                                                <rect key="frame" x="0.0" y="69" width="241.33333333333334" height="25"/>
+                                                <rect key="frame" x="0.0" y="77" width="241.33333333333334" height="25"/>
                                                 <subviews>
                                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid bitmark account number!" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Nv-w1-51j">
                                                         <rect key="frame" x="0.0" y="0.0" width="241.33333333333334" height="25"/>
@@ -844,9 +883,13 @@
                                                 </constraints>
                                             </view>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="hSD-Nu-DMK" secondAttribute="trailing" id="SmD-W8-lxJ"/>
+                                            <constraint firstItem="hSD-Nu-DMK" firstAttribute="leading" secondItem="z9s-vR-OnN" secondAttribute="leading" id="yQz-dX-1EV"/>
+                                        </constraints>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="247" text="Enter the Bitmark account number to which you would like to transfer ownership of this property." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NeE-vS-Raa">
-                                        <rect key="frame" x="0.0" y="109" width="374" height="41"/>
+                                        <rect key="frame" x="0.0" y="117" width="374" height="41"/>
                                         <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1607,6 +1650,21 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="5084" y="863"/>
+        </scene>
+        <!--SCAN QRCODE-->
+        <scene sceneID="Jfw-ej-nTi">
+            <objects>
+                <viewController storyboardIdentifier="QRScannerViewController" title="SCAN QRCODE" id="N3Q-CS-W1l" customClass="QRScannerViewController" customModule="BitmarkRegistry" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WHH-Xb-dpZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="sEj-FH-Ck1"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qP4-Te-jSl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5251" y="1565"/>
         </scene>
         <!--RECOVERY PHRASE-->
         <scene sceneID="rSB-hi-ZZ0">

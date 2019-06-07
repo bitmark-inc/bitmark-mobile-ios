@@ -27,4 +27,15 @@ class PropertyService {
     try issueParams.sign(issuer)
     return try Bitmark.issue(issueParams)
   }
+
+  static func listAllAssets(registrant: Account) throws -> [Asset] {
+    let params = try Asset.newQueryParams()
+                          .limit(size: 100)
+                          .registeredBy(registrant: "eeUqCy12biXVd8PDcYkKXR7nSJh7A5tHsPKhJWJB45v499VQTT")
+                          .pending(true)
+    return try Asset.list(params: params)
+  }
+
+  static func listIssurance() {
+  }
 }

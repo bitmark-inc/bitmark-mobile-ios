@@ -75,6 +75,14 @@ class BitmarkDetailViewController: UIViewController {
     copiedToClipboardNotifier.showIn(period: 1.2)
   }
 
+  @IBAction func touchToDownload(button: UIButton) {
+
+  }
+
+  @IBAction func touchToDelete(button: UIButton) {
+
+  }
+
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == transferSegue, let destination = segue.destination as? TransferBitmarkViewController {
       destination.bitmarkId = bitmark.id
@@ -129,6 +137,7 @@ extension BitmarkDetailViewController {
       }
 
       self.transactions = transactions!
+//      (0...5).forEach { _ in self.transactions += self.transactions }
       DispatchQueue.main.async {
         self.transactionIndicator.stopAnimating()
         self.transactionTableView.reloadData()

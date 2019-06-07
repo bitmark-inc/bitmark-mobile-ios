@@ -25,10 +25,12 @@ class PropertiesViewController: UIViewController {
     return BitmarkStorage(for: Global.currentAccount!)
   }()
   let bitmarkDetailSegue = "bitmarkDetailSegue"
+  var observers = NSPointerArray.weakObjects()
 
   override func viewDidLoad() {
     super.viewDidLoad()
     loadData()
+//    try! bitmarkStorage.getLatestSize()
   }
 
   // MARK: - Data Handlers
@@ -45,6 +47,9 @@ class PropertiesViewController: UIViewController {
         } else {
           self.emptyBoxInYoursTab.isHidden = false
         }
+        print("-----------------------LOG THUYEN bitmark count_____________________")
+        print(self.bitmarks.count)
+
       } catch let e {
         errorMessage = e.localizedDescription
       }
