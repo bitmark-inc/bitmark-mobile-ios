@@ -9,6 +9,21 @@
 /* Begin PBXBuildFile section */
 		D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
+		E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
+		E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
+		E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */; };
+		E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
+		E29A73FD22AA49990052C716 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DC229E25E200508B69 /* Credential.swift */; };
+		E29A73FE22AA49990052C716 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DE229E264100508B69 /* AccountService.swift */; };
+		E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */; };
+		E29A740022AA49990052C716 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D8229E238900508B69 /* AccountViewController.swift */; };
+		E29A740122AA49990052C716 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
+		E29A740222AA49990052C716 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
+		E29A740422AA49990052C716 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
+		E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
+		E29A740722AA49990052C716 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
+		E29A740822AA49990052C716 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
+		E29A740922AA49990052C716 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798D5229E1ED400508B69 /* Onboarding.storyboard */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
 		E2E798BF229E189E00508B69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
@@ -16,7 +31,7 @@
 		E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */; };
 		E2E798D6229E1ED400508B69 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798D5229E1ED400508B69 /* Onboarding.storyboard */; };
 		E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D8229E238900508B69 /* AccountViewController.swift */; };
-		E2E798DB229E25BC00508B69 /* BitmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DA229E25BC00508B69 /* BitmarkService.swift */; };
+		E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */; };
 		E2E798DD229E25E200508B69 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DC229E25E200508B69 /* Credential.swift */; };
 		E2E798DF229E264100508B69 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DE229E264100508B69 /* AccountService.swift */; };
 		E2E798E1229E267500508B69 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
@@ -28,6 +43,8 @@
 		416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
 		57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BitmarkRegistry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
+		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
 		E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -38,7 +55,7 @@
 		E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		E2E798D5229E1ED400508B69 /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		E2E798D8229E238900508B69 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
-		E2E798DA229E25BC00508B69 /* BitmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
+		E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkSDKService.swift; sourceTree = "<group>"; };
 		E2E798DC229E25E200508B69 /* Credential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credential.swift; sourceTree = "<group>"; };
 		E2E798DE229E264100508B69 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		E2E798E0229E267500508B69 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
@@ -47,6 +64,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E29A740322AA49990052C716 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29A740422AA49990052C716 /* Pods_BitmarkRegistry.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2E798B3229E189E00508B69 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -89,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E798B6229E189E00508B69 /* BitmarkRegistry.app */,
+				E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,6 +131,7 @@
 				E2E798CB229E1CA700508B69 /* Supporting Files */,
 				E2E798D1229E1CFB00508B69 /* Secrets */,
 				E2E798C5229E189F00508B69 /* Info.plist */,
+				E29A740F22AA49990052C716 /* Dev-Info.plist */,
 			);
 			path = BitmarkRegistry;
 			sourceTree = "<group>";
@@ -138,7 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E798E0229E267500508B69 /* Global.swift */,
-				E2E798DA229E25BC00508B69 /* BitmarkService.swift */,
+				E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */,
 				E2E798DE229E264100508B69 /* AccountService.swift */,
 				E2E798E6229E285600508B69 /* KeychainStore.swift */,
 			);
@@ -190,6 +217,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E29A73F622AA49990052C716 /* BitmarkRegistry Dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E29A740B22AA49990052C716 /* Build configuration list for PBXNativeTarget "BitmarkRegistry Dev" */;
+			buildPhases = (
+				E29A73F722AA49990052C716 /* [CP] Check Pods Manifest.lock */,
+				E29A73F822AA49990052C716 /* Sources */,
+				E29A740322AA49990052C716 /* Frameworks */,
+				E29A740522AA49990052C716 /* Resources */,
+				E29A740A22AA49990052C716 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "BitmarkRegistry Dev";
+			productName = BitmarkRegistry;
+			productReference = E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */;
+			productType = "com.apple.product-type.application";
+		};
 		E2E798B5229E189E00508B69 /* BitmarkRegistry */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E2E798C8229E189F00508B69 /* Build configuration list for PBXNativeTarget "BitmarkRegistry" */;
@@ -238,11 +284,23 @@
 			projectRoot = "";
 			targets = (
 				E2E798B5229E189E00508B69 /* BitmarkRegistry */,
+				E29A73F622AA49990052C716 /* BitmarkRegistry Dev */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E29A740522AA49990052C716 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */,
+				E29A740722AA49990052C716 /* Assets.xcassets in Resources */,
+				E29A740822AA49990052C716 /* Main.storyboard in Resources */,
+				E29A740922AA49990052C716 /* Onboarding.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2E798B4229E189E00508B69 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,6 +326,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -276,6 +335,57 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E29A73F722AA49990052C716 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BitmarkRegistry-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E29A740A22AA49990052C716 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -308,6 +418,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E29A73F822AA49990052C716 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
+				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
+				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
+				E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */,
+				E29A73FD22AA49990052C716 /* Credential.swift in Sources */,
+				E29A73FE22AA49990052C716 /* AccountService.swift in Sources */,
+				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
+				E29A740022AA49990052C716 /* AccountViewController.swift in Sources */,
+				E29A740122AA49990052C716 /* Global.swift in Sources */,
+				E29A740222AA49990052C716 /* KeychainStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E2E798B2229E189E00508B69 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -318,7 +445,7 @@
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
-				E2E798DB229E25BC00508B69 /* BitmarkService.swift in Sources */,
+				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
@@ -347,6 +474,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E29A740C22AA49990052C716 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K378H9Z4P2;
+				INFOPLIST_FILE = "$(SRCROOT)/Dev-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
+				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E29A740D22AA49990052C716 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K378H9Z4P2;
+				INFOPLIST_FILE = "$(SRCROOT)/Dev-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
+				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		E2E798C6229E189F00508B69 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -475,6 +642,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "\"-D\" \"PRODUCTION\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -494,6 +662,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "\"-D\" \"PRODUCTION\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -504,6 +673,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E29A740B22AA49990052C716 /* Build configuration list for PBXNativeTarget "BitmarkRegistry Dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E29A740C22AA49990052C716 /* Debug */,
+				E29A740D22AA49990052C716 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E2E798B1229E189E00508B69 /* Build configuration list for PBXProject "BitmarkRegistry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

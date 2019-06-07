@@ -9,10 +9,16 @@
 import Foundation
 import BitmarkSDK
 
-class BitmarkService {
+class BitmarkSDKService {
 
-  private static let networkMode = Network.testnet;
-  private static let apiToken = Credential.valueForKey(keyName: "BITMARK_API_TOKEN")
+  private static let networkMode: Network = {
+    #if PRODUCTION
+      return Network.livenet
+    #else
+      return Network.testnet
+    #endif
+  }()
+  private static let apiToken = Credential.valueForKey(keyName: "BITMARK_API_TOKEN") as! String
 
   static func initialize() {
     let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared)

@@ -9,12 +9,8 @@
 import Foundation
 
 class Credential {
-
-  public static func valueForKey(keyName:String) -> String {
-    if let filePath = Bundle.main.path(forResource: "Info", ofType: "plist"),
-      let plist = NSDictionary(contentsOfFile: filePath) {
-      return plist.value(forKey: keyName) as! String
-    }
-    return ""
+  public static func valueForKey(keyName: String) -> Any? {
+    let appCredentials = Bundle.main.object(forInfoDictionaryKey: "AppCredentials") as! [String : Any]
+    return appCredentials[keyName]
   }
 }
