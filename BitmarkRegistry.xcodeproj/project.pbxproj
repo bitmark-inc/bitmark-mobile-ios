@@ -20,7 +20,6 @@
 		E2E798DD229E25E200508B69 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DC229E25E200508B69 /* Credential.swift */; };
 		E2E798DF229E264100508B69 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DE229E264100508B69 /* AccountService.swift */; };
 		E2E798E1229E267500508B69 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
-		E2E798E5229E282C00508B69 /* keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = E2E798E4229E282C00508B69 /* keys.plist */; };
 		E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
 /* End PBXBuildFile section */
@@ -43,7 +42,6 @@
 		E2E798DC229E25E200508B69 /* Credential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credential.swift; sourceTree = "<group>"; };
 		E2E798DE229E264100508B69 /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
 		E2E798E0229E267500508B69 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
-		E2E798E4229E282C00508B69 /* keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = keys.plist; sourceTree = "<group>"; };
 		E2E798E6229E285600508B69 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,7 +167,6 @@
 		E2E798D1229E1CFB00508B69 /* Secrets */ = {
 			isa = PBXGroup;
 			children = (
-				E2E798E4229E282C00508B69 /* keys.plist */,
 			);
 			path = Secrets;
 			sourceTree = "<group>";
@@ -250,7 +247,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2E798E5229E282C00508B69 /* keys.plist in Resources */,
 				E2E798C4229E189F00508B69 /* LaunchScreen.storyboard in Resources */,
 				E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */,
 				E2E798BF229E189E00508B69 /* Main.storyboard in Resources */,

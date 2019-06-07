@@ -39,5 +39,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>BITMARK_API_TOKEN</key>
+	<string>bmk-lljpzkhqdkzmblhg</string>
 </dict>
 </plist>
