@@ -20,7 +20,7 @@ class BitmarkSDKService {
   }()
   private static let apiToken = Credential.valueForKey(keyName: "BITMARK_API_TOKEN") as! String
 
-  static func initialize() {
+  static func setupConfig() {
     let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared)
     BitmarkSDK.initialize(config: config)
   }

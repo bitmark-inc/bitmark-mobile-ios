@@ -16,13 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // init BitmarkSDK environment & api_token
-    BitmarkSDKService.initialize()
+    BitmarkSDKService.setupConfig()
 
-    // Redirect Screen for new user / existing user
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.makeKeyAndVisible()
-    let storyboardName = AccountService.existsCurrentAccount() ? "Main" : "Onboarding"
-    let initialVC = UIStoryboard(name: storyboardName, bundle: nil).instantiateInitialViewController()
+
+    // Redirect Screen for new user / existing user
+    let initialVC = AccountService.existsCurrentAccount()
+                          ? CustomTabBarViewController()
+                          : OnboardingViewController()
     window?.rootViewController = initialVC
 
     return true

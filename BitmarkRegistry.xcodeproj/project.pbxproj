@@ -7,7 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		171019F658C2E946E9937FC0 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
+		2BE5095F442A2BCB182D166B /* Pods_BitmarkRegistry_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A5FB43309FD36695FB8495 /* Pods_BitmarkRegistry_Dev.framework */; };
 		D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
+		E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */; };
+		E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4B22ADFED80095E11D /* CommonUI.swift */; };
+		E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */; };
+		E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */; };
+		E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */; };
+		E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4B22ADFED80095E11D /* CommonUI.swift */; };
+		E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */; };
+		E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */; };
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
@@ -19,17 +29,12 @@
 		E29A740022AA49990052C716 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D8229E238900508B69 /* AccountViewController.swift */; };
 		E29A740122AA49990052C716 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
 		E29A740222AA49990052C716 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
-		E29A740422AA49990052C716 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
 		E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
 		E29A740722AA49990052C716 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
-		E29A740822AA49990052C716 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
-		E29A740922AA49990052C716 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798D5229E1ED400508B69 /* Onboarding.storyboard */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
-		E2E798BF229E189E00508B69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798BD229E189E00508B69 /* Main.storyboard */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
 		E2E798C4229E189F00508B69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
 		E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */; };
-		E2E798D6229E1ED400508B69 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798D5229E1ED400508B69 /* Onboarding.storyboard */; };
 		E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D8229E238900508B69 /* AccountViewController.swift */; };
 		E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */; };
 		E2E798DD229E25E200508B69 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DC229E25E200508B69 /* Credential.swift */; };
@@ -40,20 +45,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
+		415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry Dev.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev.release.xcconfig"; sourceTree = "<group>"; };
 		57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BitmarkRegistry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		651E9C762774E042F0FA1915 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
+		6F49B2891D8855D7048183F0 /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
+		77DBC69DFE134DB0791E0BDF /* Pods-BitmarkRegistry Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry Dev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev.debug.xcconfig"; sourceTree = "<group>"; };
+		C3A5FB43309FD36695FB8495 /* Pods_BitmarkRegistry_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BitmarkRegistry_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		E24D9C4B22ADFED80095E11D /* CommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUI.swift; sourceTree = "<group>"; };
+		E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
+		E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
-		E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E2E798BE229E189E00508B69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E2E798C0229E189F00508B69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2E798C3229E189F00508B69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E2E798C5229E189F00508B69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		E2E798D5229E1ED400508B69 /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		E2E798D8229E238900508B69 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkSDKService.swift; sourceTree = "<group>"; };
 		E2E798DC229E25E200508B69 /* Credential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credential.swift; sourceTree = "<group>"; };
@@ -68,7 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E29A740422AA49990052C716 /* Pods_BitmarkRegistry.framework in Frameworks */,
+				2BE5095F442A2BCB182D166B /* Pods_BitmarkRegistry_Dev.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +87,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */,
+				171019F658C2E946E9937FC0 /* Pods_BitmarkRegistry.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,8 +97,10 @@
 		642B7D0C504CB1496EFFADAB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */,
-				416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */,
+				6F49B2891D8855D7048183F0 /* Pods-BitmarkRegistry.debug.xcconfig */,
+				651E9C762774E042F0FA1915 /* Pods-BitmarkRegistry.release.xcconfig */,
+				77DBC69DFE134DB0791E0BDF /* Pods-BitmarkRegistry Dev.debug.xcconfig */,
+				415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -96,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */,
+				C3A5FB43309FD36695FB8495 /* Pods_BitmarkRegistry_Dev.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -147,8 +161,10 @@
 		E2E798CC229E1CA900508B69 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */,
+				E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */,
 				E27CD23D229E407C00503D6A /* UILabel+Extension.swift */,
+				E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */,
+				E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -156,6 +172,7 @@
 		E2E798CD229E1CAC00508B69 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				E24D9C4B22ADFED80095E11D /* CommonUI.swift */,
 				E2E798DC229E25E200508B69 /* Credential.swift */,
 			);
 			path = Helpers;
@@ -176,8 +193,6 @@
 			isa = PBXGroup;
 			children = (
 				E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */,
-				E2E798D5229E1ED400508B69 /* Onboarding.storyboard */,
-				E2E798BD229E189E00508B69 /* Main.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -209,6 +224,7 @@
 		E2E798D7229E237500508B69 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */,
 				E2E798D8229E238900508B69 /* AccountViewController.swift */,
 			);
 			path = Main;
@@ -221,11 +237,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E29A740B22AA49990052C716 /* Build configuration list for PBXNativeTarget "BitmarkRegistry Dev" */;
 			buildPhases = (
-				E29A73F722AA49990052C716 /* [CP] Check Pods Manifest.lock */,
+				1EF2783C2F320449B594B7C8 /* [CP] Check Pods Manifest.lock */,
 				E29A73F822AA49990052C716 /* Sources */,
 				E29A740322AA49990052C716 /* Frameworks */,
 				E29A740522AA49990052C716 /* Resources */,
-				E29A740A22AA49990052C716 /* [CP] Embed Pods Frameworks */,
+				E94854F455DF6F275C6652D0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -296,8 +312,6 @@
 			files = (
 				E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */,
 				E29A740722AA49990052C716 /* Assets.xcassets in Resources */,
-				E29A740822AA49990052C716 /* Main.storyboard in Resources */,
-				E29A740922AA49990052C716 /* Onboarding.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,43 +321,13 @@
 			files = (
 				E2E798C4229E189F00508B69 /* LaunchScreen.storyboard in Resources */,
 				E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */,
-				E2E798BF229E189E00508B69 /* Main.storyboard in Resources */,
-				E2E798D6229E1ED400508B69 /* Onboarding.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		A50385B7145866B82936D62B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
-				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
-				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E29A73F722AA49990052C716 /* [CP] Check Pods Manifest.lock */ = {
+		1EF2783C2F320449B594B7C8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -358,14 +342,14 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BitmarkRegistry-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-BitmarkRegistry Dev-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E29A740A22AA49990052C716 /* [CP] Embed Pods Frameworks */ = {
+		A50385B7145866B82936D62B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -376,6 +360,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
 			);
@@ -385,12 +370,43 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E94854F455DF6F275C6652D0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F3F2EBE35BE2BCD9D2EAE5F0 /* [CP] Check Pods Manifest.lock */ = {
@@ -424,12 +440,16 @@
 			files = (
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
+				E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */,
 				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
 				E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */,
 				E29A73FD22AA49990052C716 /* Credential.swift in Sources */,
 				E29A73FE22AA49990052C716 /* AccountService.swift in Sources */,
 				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
+				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
+				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
 				E29A740022AA49990052C716 /* AccountViewController.swift in Sources */,
+				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
 				E29A740122AA49990052C716 /* Global.swift in Sources */,
 				E29A740222AA49990052C716 /* KeychainStore.swift in Sources */,
 			);
@@ -442,27 +462,23 @@
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
+				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
+				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
+				E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
+				E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		E2E798BD229E189E00508B69 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E2E798BE229E189E00508B69 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -476,7 +492,7 @@
 /* Begin XCBuildConfiguration section */
 		E29A740C22AA49990052C716 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */;
+			baseConfigurationReference = 77DBC69DFE134DB0791E0BDF /* Pods-BitmarkRegistry Dev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -496,7 +512,7 @@
 		};
 		E29A740D22AA49990052C716 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */;
+			baseConfigurationReference = 415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -632,7 +648,7 @@
 		};
 		E2E798C9229E189F00508B69 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2CDB73567076986622A5BAD /* Pods-BitmarkRegistry.debug.xcconfig */;
+			baseConfigurationReference = 6F49B2891D8855D7048183F0 /* Pods-BitmarkRegistry.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -652,7 +668,7 @@
 		};
 		E2E798CA229E189F00508B69 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 416ED4DE109ED961DC188B38 /* Pods-BitmarkRegistry.release.xcconfig */;
+			baseConfigurationReference = 651E9C762774E042F0FA1915 /* Pods-BitmarkRegistry.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

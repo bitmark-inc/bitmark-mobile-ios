@@ -3,23 +3,49 @@ PODS:
     - KeychainAccess
     - TweetNacl
   - KeychainAccess (3.2.0)
+  - SnapKit (5.0.0)
+  - SwifterSwift (5.0.0):
+    - SwifterSwift/AppKit (= 5.0.0)
+    - SwifterSwift/CoreGraphics (= 5.0.0)
+    - SwifterSwift/CoreLocation (= 5.0.0)
+    - SwifterSwift/Dispatch (= 5.0.0)
+    - SwifterSwift/Foundation (= 5.0.0)
+    - SwifterSwift/MapKit (= 5.0.0)
+    - SwifterSwift/SpriteKit (= 5.0.0)
+    - SwifterSwift/SwiftStdlib (= 5.0.0)
+    - SwifterSwift/UIKit (= 5.0.0)
+  - SwifterSwift/AppKit (5.0.0)
+  - SwifterSwift/CoreGraphics (5.0.0)
+  - SwifterSwift/CoreLocation (5.0.0)
+  - SwifterSwift/Dispatch (5.0.0)
+  - SwifterSwift/Foundation (5.0.0)
+  - SwifterSwift/MapKit (5.0.0)
+  - SwifterSwift/SpriteKit (5.0.0)
+  - SwifterSwift/SwiftStdlib (5.0.0)
+  - SwifterSwift/UIKit (5.0.0)
   - TweetNacl (1.0.1)
 
 DEPENDENCIES:
   - BitmarkSDK
   - KeychainAccess
+  - SnapKit (~> 5.0.0)
+  - SwifterSwift
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BitmarkSDK
     - KeychainAccess
+    - SnapKit
+    - SwifterSwift
     - TweetNacl
 
 SPEC CHECKSUMS:
   BitmarkSDK: 4cb6539495e03956c7eeca6a5f6fc11c524a7088
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
+  SwifterSwift: 96f90594b370802f01647c2b1229c74a84ffafee
   TweetNacl: ea279cd32bffee69c59c73631470d3419db675df
 
-PODFILE CHECKSUM: c7e3962d1f4932433a7008a582f9bfee9b95bcdd
+PODFILE CHECKSUM: aed464b950cefaa01a39f029677ebb75285e9331
 
 COCOAPODS: 1.5.3
