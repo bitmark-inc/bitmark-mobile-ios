@@ -18,6 +18,8 @@
 		E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4B22ADFED80095E11D /* CommonUI.swift */; };
 		E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */; };
 		E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */; };
+		E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */; };
+		E24D9C5E22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */; };
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
@@ -26,7 +28,6 @@
 		E29A73FD22AA49990052C716 /* Credential.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DC229E25E200508B69 /* Credential.swift */; };
 		E29A73FE22AA49990052C716 /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DE229E264100508B69 /* AccountService.swift */; };
 		E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */; };
-		E29A740022AA49990052C716 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D8229E238900508B69 /* AccountViewController.swift */; };
 		E29A740122AA49990052C716 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
 		E29A740222AA49990052C716 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
@@ -55,6 +56,8 @@
 		E24D9C4B22ADFED80095E11D /* CommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUI.swift; sourceTree = "<group>"; };
 		E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
 		E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
+		E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+AddTargetClosure+Extension.swift"; sourceTree = "<group>"; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
@@ -114,6 +117,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E24D9C5A22AE57FA0095E11D /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				E2E798D8229E238900508B69 /* AccountViewController.swift */,
+				E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		E2E798AD229E189E00508B69 = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +173,7 @@
 		E2E798CC229E1CA900508B69 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */,
 				E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */,
 				E27CD23D229E407C00503D6A /* UILabel+Extension.swift */,
 				E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */,
@@ -225,7 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */,
-				E2E798D8229E238900508B69 /* AccountViewController.swift */,
+				E24D9C5A22AE57FA0095E11D /* Account */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -448,7 +461,6 @@
 				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
-				E29A740022AA49990052C716 /* AccountViewController.swift in Sources */,
 				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
 				E29A740122AA49990052C716 /* Global.swift in Sources */,
 				E29A740222AA49990052C716 /* KeychainStore.swift in Sources */,
@@ -464,6 +476,7 @@
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
 				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
+				E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
@@ -472,6 +485,7 @@
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
+				E24D9C5E22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift in Sources */,
 				E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
