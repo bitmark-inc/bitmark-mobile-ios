@@ -13,6 +13,13 @@ class CustomTabBarViewController: UITabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    let propertiesVC = PropertiesViewController()
+    propertiesVC.tabBarItem = UITabBarItem(
+      title: "Account",
+      image: UIImage(named: "Properties - inactive"),
+      selectedImage: UIImage(named: "Properties - selected")
+    )
+
     let accountVC = AccountViewController()
     accountVC.tabBarItem = UITabBarItem(
       title: "Account",
@@ -21,6 +28,7 @@ class CustomTabBarViewController: UITabBarController {
     )
 
     viewControllers = [
+      UINavigationController(rootViewController: propertiesVC),
       UINavigationController(rootViewController: accountVC)
     ]
   }

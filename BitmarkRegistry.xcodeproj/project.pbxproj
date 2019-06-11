@@ -45,6 +45,8 @@
 		E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */; };
 		E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */; };
 		E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */; };
+		E2BEC95B22AFA6F8009F7DF5 /* PropertiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */; };
+		E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */; };
 		E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
 		E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
@@ -80,6 +82,7 @@
 		E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseCell.swift; sourceTree = "<group>"; };
 		E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPhraseOptionCell.swift; sourceTree = "<group>"; };
+		E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesViewController.swift; sourceTree = "<group>"; };
 		E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +151,14 @@
 				E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		E2BEC95922AFA6D6009F7DF5 /* Properties */ = {
+			isa = PBXGroup;
+			children = (
+				E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */,
+			);
+			path = Properties;
 			sourceTree = "<group>";
 		};
 		E2C05CA222AEAC74002B3350 /* Cells */ = {
@@ -273,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */,
+				E2BEC95922AFA6D6009F7DF5 /* Properties */,
 				E24D9C5A22AE57FA0095E11D /* Account */,
 			);
 			path = Main;
@@ -487,6 +499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */,
+				E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
 				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
@@ -516,6 +529,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
+				E2BEC95B22AFA6F8009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
 				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
