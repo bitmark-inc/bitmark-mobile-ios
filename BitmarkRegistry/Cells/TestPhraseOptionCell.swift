@@ -8,15 +8,21 @@
 
 import UIKit
 
+protocol SelectPhraseOptionDelegate {
+  func selectPhraseOptionCell(_ phraseOptionCell: TestPhraseOptionCell)
+}
+
 class TestPhraseOptionCell: UICollectionViewCell {
 
   // MARK: - Properties
   static let phraseOptionFont = UIFont(name: "Avenir", size: 15)!
+  var delegate: SelectPhraseOptionDelegate?
 
-  let phraseOptionBox: UIButton = {
+  lazy var phraseOptionBox: UIButton = {
     let button = UIButton()
-    button.titleLabel?.font = phraseOptionFont
+    button.titleLabel?.font = TestPhraseOptionCell.phraseOptionFont
     button.setTitleColor(.mainBlueColor, for: .normal)
+    button.addTarget(self, action: #selector(TestPhraseOptionCell.selectPhraseOption), for: .touchUpInside)
     return button
   }()
 
@@ -29,6 +35,11 @@ class TestPhraseOptionCell: UICollectionViewCell {
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     setupViews()
+  }
+
+  // MARK: - Handlers
+  @objc func selectPhraseOption(_ sender: UIButton) {
+    delegate?.selectPhraseOptionCell(self)
   }
 
   // MARK: - Setup Views

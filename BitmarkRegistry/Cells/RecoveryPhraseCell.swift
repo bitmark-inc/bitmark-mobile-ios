@@ -42,6 +42,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
   func setData(numericOrder: Int, phrase: String) {
     numericOrderLabel.text = "\(numericOrder)."
     phraseLabel.text = phrase
+    isUserInteractionEnabled = false
   }
 
   // MARK: - Setup Views

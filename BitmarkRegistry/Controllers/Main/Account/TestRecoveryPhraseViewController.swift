@@ -15,9 +15,15 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   private let numberOfHiddenPhrases = 5
   private var hiddenPhraseIndexes = [Int]()
+  private lazy var orderedHiddenPhraseIndexes: [Int] = {
+    return hiddenPhraseIndexes.sorted()
+  }()
+  private var selectedHiddenPhraseBoxIndexPath: IndexPath!
 
   private let heightPerPhraseOptionItem: CGFloat = 25.0
   private let phraseOptionPadding: CGFloat = 15.0
+
+  private var userPhraseChoice = [String?](repeating: nil, count: 12)
   
   let descriptionLabel: UILabel = {
     return CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:")
@@ -49,6 +55,13 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     phraseOptionCollectionView.dataSource = self
 
     loadData()
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    // set default selected hidden cell for recoveryPhraseCollectionView
+    setupDefaultSelectHiddenRecoveryPhraseBox()
   }
 
   // MARK: Data Handlers
@@ -92,6 +105,7 @@ extension TestRecoveryPhraseViewController: UICollectionViewDataSource {
       if hiddenPhraseIndexes.firstIndex(of: indexPath.row) != nil {
         cell.setData(numericOrder: numericOrder)
         cell.showHiddenBox()
+        cell.delegate = self
       } else {
         cell.setData(numericOrder: numericOrder, phrase: recoveryPhrases[indexPath.row])
       }
@@ -99,9 +113,54 @@ extension TestRecoveryPhraseViewController: UICollectionViewDataSource {
     case phraseOptionCollectionView:
       let cell = collectionView.dequeueReusableCell(withClass: TestPhraseOptionCell.self, for: indexPath)
       cell.phraseOptionBox.setTitle(phraseOptionIn(indexPath), for: .normal)
+      cell.delegate = self
       return cell
     default:
       fatalError()
+    }
+  }
+}
+
+// MARK: - UICollectionViewDelegate, SelectPhraseOptionDelegate
+extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, ReselectHiddenPhraseBoxDelegate {
+
+  /*
+   when user select cell: only impact when user select hidden cell in recoveryPhraseCollectionView,
+   because in phraseOptionCollectionView, cell is coverred by UIButton -> it doesn't trigger the selection
+   */
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard collectionView == recoveryPhraseCollectionView else { return }
+    selectedHiddenPhraseBoxIndexPath = indexPath
+  }
+
+  // When user reselect test hidden recovery phrase box: revert the selection of phrase option
+  func reselectHiddenPhraseBoxCell(_ cell: TestRecoveryPhraseCell) {
+    let indexPath = recoveryPhraseCollectionView.indexPath(for: cell)!
+    orderedHiddenPhraseIndexes.append(indexPath.row)
+    orderedHiddenPhraseIndexes.sort()
+
+    userPhraseChoice[indexPath.row] = nil
+    cell.matchingTestPhraseCell?.isHidden = false
+    cell.showHiddenBox()
+  }
+
+  /*
+   When user select phrase option:
+   - 1. hiddens the phrase option cell itself
+   - 2. matches phrase option into selected hidden recovery phrase box
+   - 3. tracks user phrase choice
+   - 4. selects next hidden recovery phrase box
+   */
+  func selectPhraseOptionCell(_ phraseOptionCell: TestPhraseOptionCell) {
+    let selectedHiddenPhraseBoxCell = recoveryPhraseCollectionView.cellForItem(at: selectedHiddenPhraseBoxIndexPath) as! TestRecoveryPhraseCell
+
+    phraseOptionCell.isHidden = true // 1
+    let phraseOption = phraseOptionCell.phraseOptionBox.currentTitle!
+    selectedHiddenPhraseBoxCell.setValueForHiddenBox(phraseOption, phraseOptionCell) // 2
+    userPhraseChoice[selectedHiddenPhraseBoxIndexPath.row] = phraseOption // 3
+    if let nextSelectedHiddenIndexPath = nextHiddenRecoveryPhraseIndexPath(selectedHiddenPhraseBoxIndexPath) { // 4
+      recoveryPhraseCollectionView.selectItem(at: nextSelectedHiddenIndexPath, animated: false, scrollPosition: [])
+      selectedHiddenPhraseBoxIndexPath = nextSelectedHiddenIndexPath
     }
   }
 }
@@ -157,5 +216,20 @@ extension TestRecoveryPhraseViewController {
 
   func phraseOptionIn(_ indexPath: IndexPath) -> String {
     return recoveryPhrases[hiddenPhraseIndexes[indexPath.row]]
+  }
+
+  func setupDefaultSelectHiddenRecoveryPhraseBox() {
+    selectedHiddenPhraseBoxIndexPath = IndexPath(row: orderedHiddenPhraseIndexes.first!, section: 0)
+    recoveryPhraseCollectionView.selectItem(at: selectedHiddenPhraseBoxIndexPath, animated: false, scrollPosition: [])
+  }
+
+  func nextHiddenRecoveryPhraseIndexPath(_ currentIndexPath: IndexPath) -> IndexPath? {
+    if let orderedIndex = orderedHiddenPhraseIndexes.firstIndex(of: currentIndexPath.row) {
+      orderedHiddenPhraseIndexes.remove(at: orderedIndex)
+      if let nextIndex = orderedHiddenPhraseIndexes.first {
+        return IndexPath(row: nextIndex, section: 0)
+      }
+    }
+    return nil
   }
 }

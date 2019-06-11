@@ -8,12 +8,19 @@
 
 import UIKit
 
+protocol ReselectHiddenPhraseBoxDelegate {
+  func reselectHiddenPhraseBoxCell(_ cell: TestRecoveryPhraseCell)
+}
+
 class TestRecoveryPhraseCell: RecoveryPhraseCell {
 
   // MARK: - Properties
+  var delegate: ReselectHiddenPhraseBoxDelegate?
+  var matchingTestPhraseCell: TestPhraseOptionCell?
   let hiddenPhraseBox: UIView = {
     let view = UIView()
     view.backgroundColor = .wildSand
+    view.borderColor = .mainBlueColor
     view.isHidden = true
     return view
   }()
@@ -30,9 +37,25 @@ class TestRecoveryPhraseCell: RecoveryPhraseCell {
     phraseLabel.text = ""
   }
 
+  func setValueForHiddenBox(_ phrase: String, _ matchingTestPhraseCell: TestPhraseOptionCell) {
+    hiddenPhraseBox.isHidden = true
+    phraseLabel.text = phrase
+    phraseLabel.textColor = .mainBlueColor
+    self.matchingTestPhraseCell = matchingTestPhraseCell
+  }
+
+  override var isSelected: Bool {
+    didSet {
+      hiddenPhraseBox.borderWidth = isSelected ? 1 : 0
+      if (isSelected && hiddenPhraseBox.isHidden) { delegate?.reselectHiddenPhraseBoxCell(self) }
+    }
+  }
+
   // MARK: - Setup Views
   override func setupViews() {
     super.setupViews()
+
+    phraseLabel.textColor = .gray
 
     // *** Setup subviews ***
     mainView.addSubview(hiddenPhraseBox)
