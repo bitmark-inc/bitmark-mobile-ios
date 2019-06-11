@@ -23,7 +23,8 @@ class PropertiesViewController: UIViewController {
   }()
 
   //*** Yours Segment ***
-  let emptyView = UIView()
+  var createFirstProperty: UIButton!
+  let emptyViewInYoursTab = UIView()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -32,12 +33,16 @@ class PropertiesViewController: UIViewController {
     title = "PROPERTIES"
     let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(tapToAddProperty))
     navigationItem.rightBarButtonItem = addBarButton
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
+    setupEvents()
   }
 
   // MARK: - Handlers
   @objc func tapToAddProperty() {
-
+    navigationController?.pushViewController(
+      RegisterPropertyViewController()
+    )
   }
 
   @objc func segmentChanged(_ sender: UISegmentedControl) {
@@ -54,16 +59,20 @@ class PropertiesViewController: UIViewController {
   }
 }
 
-// MARK: - Setup Views
+// MARK: - Setup Views/Events
 extension PropertiesViewController {
-  private func setupViews() {
+  fileprivate func setupEvents() {
+    createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)
+  }
+
+  fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
     setupYoursEmptyView()
 
-    yoursView.addSubview(emptyView)
-    emptyView.snp.makeConstraints { (make) in
+    yoursView.addSubview(emptyViewInYoursTab)
+    emptyViewInYoursTab.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
     }
 
@@ -101,11 +110,10 @@ extension PropertiesViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    let createFirstProperty = CommonUI.blueButton(title: "CREATE FIRST PROPERTY")
-    createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)
+    createFirstProperty = CommonUI.blueButton(title: "CREATE FIRST PROPERTY")
 
-    emptyView.addSubview(contentView)
-    emptyView.addSubview(createFirstProperty)
+    emptyViewInYoursTab.addSubview(contentView)
+    emptyViewInYoursTab.addSubview(createFirstProperty)
 
     contentView.snp.makeConstraints { (make) in
       make.top.equalToSuperview().offset(25)
