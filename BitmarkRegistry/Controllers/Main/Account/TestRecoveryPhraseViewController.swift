@@ -16,10 +16,20 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   private let numberOfHiddenPhrases = 5
   private var hiddenPhraseIndexes = [Int]()
 
+  private let heightPerPhraseOptionItem: CGFloat = 25.0
+  private let phraseOptionPadding: CGFloat = 15.0
+  
   let descriptionLabel: UILabel = {
     return CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:")
                    .lineHeightMultiple(1.2)
 
+  }()
+
+  lazy var phraseOptionCollectionView: UICollectionView = {
+    let flowlayout = UICollectionViewFlowLayout()
+    let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: flowlayout)
+    collectionView.backgroundColor = .clear
+    return collectionView
   }()
 
   // MARK: - Init
@@ -34,6 +44,10 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     recoveryPhraseCollectionView.delegate = self
     recoveryPhraseCollectionView.dataSource = self
 
+    phraseOptionCollectionView.register(cellWithClass: TestPhraseOptionCell.self)
+    phraseOptionCollectionView.delegate = self
+    phraseOptionCollectionView.dataSource = self
+
     loadData()
   }
 
@@ -42,24 +56,53 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     loadRecoveryPhrases(&recoveryPhrases)
     hiddenPhraseIndexes = randomHiddenIndexes()
   }
+
+  // MARK: - Override - UICollectionViewDelegateFlowLayout
+  override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    if collectionView == recoveryPhraseCollectionView {
+      return super.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAt: indexPath)
+    } else {
+      let cellText = phraseOptionIn(indexPath)
+      let textSize = cellText.size(withAttributes: [NSAttributedString.Key.font: TestPhraseOptionCell.phraseOptionFont])
+      return CGSize(width: textSize.width + phraseOptionPadding, height: heightPerPhraseOptionItem)
+    }
+  }
 }
 
 // MARK: - UICollectionViewDataSource
 extension TestRecoveryPhraseViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return recoveryPhrases.count
+    return collectionView == recoveryPhraseCollectionView
+                          ? recoveryPhrases.count
+                          : numberOfHiddenPhrases
   }
 
+  /*
+   Set Cell Item For CollectionView
+   1. recoveryPhraseCollectionView
+   - show hidden box to random hidden phrase index
+   - show data - recovery phrase for others
+   2. phraseOptionCollectionView: show phrase options which index is in hidden phrase indexes
+   */
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withClass: TestRecoveryPhraseCell.self, for: indexPath)
-    let numericOrder = indexPath.row + 1
-    if hiddenPhraseIndexes.firstIndex(of: indexPath.row) != nil {
-      cell.setData(numericOrder: numericOrder)
-      cell.showHiddenBox()
-    } else {
-      cell.setData(numericOrder: numericOrder, phrase: recoveryPhrases[indexPath.row])
+    switch collectionView {
+    case recoveryPhraseCollectionView:
+      let cell = collectionView.dequeueReusableCell(withClass: TestRecoveryPhraseCell.self, for: indexPath)
+      let numericOrder = indexPath.row + 1
+      if hiddenPhraseIndexes.firstIndex(of: indexPath.row) != nil {
+        cell.setData(numericOrder: numericOrder)
+        cell.showHiddenBox()
+      } else {
+        cell.setData(numericOrder: numericOrder, phrase: recoveryPhrases[indexPath.row])
+      }
+      return cell
+    case phraseOptionCollectionView:
+      let cell = collectionView.dequeueReusableCell(withClass: TestPhraseOptionCell.self, for: indexPath)
+      cell.phraseOptionBox.setTitle(phraseOptionIn(indexPath), for: .normal)
+      return cell
+    default:
+      fatalError()
     }
-    return cell
   }
 }
 
@@ -72,6 +115,7 @@ extension TestRecoveryPhraseViewController {
     let mainView = UIView()
     mainView.addSubview(descriptionLabel)
     mainView.addSubview(recoveryPhraseCollectionView)
+    mainView.addSubview(phraseOptionCollectionView)
 
     descriptionLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
@@ -80,6 +124,11 @@ extension TestRecoveryPhraseViewController {
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
       make.top.equalTo(descriptionLabel.snp.bottom).offset(25)
       make.leading.trailing.equalToSuperview()
+    }
+
+    phraseOptionCollectionView.snp.makeConstraints { (make) in
+      make.top.equalTo(recoveryPhraseCollectionView.snp.bottom).offset(25)
+      make.leading.trailing.bottom.equalToSuperview()
     }
 
     // *** Setup UI in view ***
@@ -104,5 +153,9 @@ extension TestRecoveryPhraseViewController {
       availableNums.remove(at: availableNums.firstIndex(of: randomIndex)!)
     }
     return randomIndexes
+  }
+
+  func phraseOptionIn(_ indexPath: IndexPath) -> String {
+    return recoveryPhrases[hiddenPhraseIndexes[indexPath.row]]
   }
 }
