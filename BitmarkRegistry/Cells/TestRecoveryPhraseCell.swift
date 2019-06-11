@@ -44,6 +44,14 @@ class TestRecoveryPhraseCell: RecoveryPhraseCell {
     self.matchingTestPhraseCell = matchingTestPhraseCell
   }
 
+  func setErrorStyle() {
+    phraseLabel.textColor = .mainRedColor
+  }
+
+  func reloadStyle(_ isPhraseHidden: Bool) {
+    phraseLabel.textColor = isPhraseHidden ? .mainBlueColor : .gray
+  }
+
   override var isSelected: Bool {
     didSet {
       hiddenPhraseBox.borderWidth = isSelected ? 1 : 0

@@ -38,6 +38,23 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     return collectionView
   }()
 
+  let successResultView = UIView()
+  let errorResultView = UIView()
+
+  lazy var doneButton: UIButton = {
+    let button = CommonUI.blueButton(title: "DONE")
+    button.addAction(for: .touchUpInside, { [unowned self] in
+      self.navigationController?.popToRootViewController(animated: true)
+    })
+    return button
+  }()
+
+  lazy var retryButton: UIButton = {
+    let button = CommonUI.blueButton(title: "RETRY")
+    button.addTarget(self, action: #selector(clickRetryWhenError), for: .touchUpInside)
+    return button
+  }()
+
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -62,6 +79,19 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
     // set default selected hidden cell for recoveryPhraseCollectionView
     setupDefaultSelectHiddenRecoveryPhraseBox()
+  }
+
+  // MARK: - Handlers
+  @objc func clickRetryWhenError(_ sender: UIButton) {
+    for hiddenIndex in hiddenPhraseIndexes {
+      let indexPath = IndexPath(row: hiddenIndex, section: 0)
+      recoveryPhraseCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+    }
+    errorResultView.isHidden = true
+    phraseOptionCollectionView.isHidden = false
+    setupDefaultSelectHiddenRecoveryPhraseBox()
+    setStyleForRecoveryPhraseCell(isError: false)
+    recoveryPhraseCollectionView.isUserInteractionEnabled = true
   }
 
   // MARK: Data Handlers
@@ -150,6 +180,7 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
    - 2. matches phrase option into selected hidden recovery phrase box
    - 3. tracks user phrase choice
    - 4. selects next hidden recovery phrase box
+   - 5. if user finish to test recovery phrases, check the result
    */
   func selectPhraseOptionCell(_ phraseOptionCell: TestPhraseOptionCell) {
     let selectedHiddenPhraseBoxCell = recoveryPhraseCollectionView.cellForItem(at: selectedHiddenPhraseBoxIndexPath) as! TestRecoveryPhraseCell
@@ -161,6 +192,15 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
     if let nextSelectedHiddenIndexPath = nextHiddenRecoveryPhraseIndexPath(selectedHiddenPhraseBoxIndexPath) { // 4
       recoveryPhraseCollectionView.selectItem(at: nextSelectedHiddenIndexPath, animated: false, scrollPosition: [])
       selectedHiddenPhraseBoxIndexPath = nextSelectedHiddenIndexPath
+    } else { // 5
+      phraseOptionCollectionView.isHidden = true
+      recoveryPhraseCollectionView.isUserInteractionEnabled = false
+      if isResultCorrect() {
+        successResultView.isHidden = false
+      } else {
+        errorResultView.isHidden = false
+        setStyleForRecoveryPhraseCell(isError: true)
+      }
     }
   }
 }
@@ -198,6 +238,100 @@ extension TestRecoveryPhraseViewController {
       make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
       make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
     }
+
+    setupSuccessResultView()
+    setupErrorResultView()
+    view.addSubview(successResultView)
+    view.addSubview(errorResultView)
+    successResultView.snp.makeConstraints { (make) in
+      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+      make.height.equalTo(130)
+    }
+
+    errorResultView.snp.makeConstraints { (make) in
+      make.edges.equalTo(successResultView)
+    }
+
+    successResultView.isHidden = true
+    errorResultView.isHidden = true
+  }
+
+  func setupSuccessResultView() {
+    let viewFont = UIFont(name: "Avenir", size: 15)
+    let successTitle = UILabel(text: "Success!")
+    successTitle.font = viewFont?.bold
+    successTitle.textAlignment = .center
+
+    let message = UILabel(text: "Keep your written copy private in a secure and safe location.")
+    message.font = viewFont
+    message.numberOfLines = 0
+    message.textAlignment = .center
+
+    let textView = UIView()
+    textView.addSubview(successTitle)
+    textView.addSubview(message)
+
+    successTitle.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    message.snp.makeConstraints { (make) in
+      make.top.equalTo(successTitle.snp.bottom).offset(10)
+      make.leading.trailing.equalToSuperview()
+    }
+
+    successResultView.addSubview(textView)
+    successResultView.addSubview(doneButton)
+
+    textView.snp.makeConstraints { (make) in
+      make.top.equalToSuperview()
+      make.leading.equalToSuperview().offset(20)
+      make.trailing.equalToSuperview().offset(-20)
+    }
+
+    doneButton.snp.makeConstraints { (make) in
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+  }
+
+  func setupErrorResultView() {
+    let viewFont = UIFont(name: "Avenir", size: 15)
+    let errorTitle = UILabel(text: "Error!")
+    errorTitle.font = viewFont?.bold
+    errorTitle.textAlignment = .center
+    errorTitle.textColor = .mainRedColor
+
+    let message = UILabel(text: "Please try again!")
+    message.font = viewFont
+    message.numberOfLines = 0
+    message.textAlignment = .center
+    message.textColor = .mainRedColor
+
+    let textView = UIView()
+    textView.addSubview(errorTitle)
+    textView.addSubview(message)
+
+    errorTitle.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    message.snp.makeConstraints { (make) in
+      make.top.equalTo(errorTitle.snp.bottom).offset(10)
+      make.leading.trailing.equalToSuperview()
+    }
+
+    errorResultView.addSubview(textView)
+    errorResultView.addSubview(retryButton)
+
+    textView.snp.makeConstraints { (make) in
+      make.top.equalToSuperview()
+      make.leading.equalToSuperview().offset(20)
+      make.trailing.equalToSuperview().offset(-20)
+    }
+
+    retryButton.snp.makeConstraints { (make) in
+      make.leading.trailing.bottom.equalToSuperview()
+    }
   }
 }
 
@@ -231,5 +365,31 @@ extension TestRecoveryPhraseViewController {
       }
     }
     return nil
+  }
+
+  func isResultCorrect() -> Bool {
+    for hiddenIndex in hiddenPhraseIndexes {
+      if recoveryPhrases[hiddenIndex] != userPhraseChoice[hiddenIndex] {
+        return false
+      }
+    }
+    return true
+  }
+
+  /*
+   when result is error: set all cells into error styles
+   when retry (isError is false): back to default style (reload style)
+   */
+  func setStyleForRecoveryPhraseCell(isError: Bool) {
+    for index in (0..<numberOfPhrases) {
+      let indexPath = IndexPath(row: index, section: 0)
+      let cell = recoveryPhraseCollectionView.cellForItem(at: indexPath) as! TestRecoveryPhraseCell
+      if isError {
+        cell.setErrorStyle()
+      } else {
+        let isHiddenPhrase = hiddenPhraseIndexes.firstIndex(of: index) != nil
+        cell.reloadStyle(isHiddenPhrase)
+      }
+    }
   }
 }
