@@ -43,9 +43,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   lazy var doneButton: UIButton = {
     let button = CommonUI.blueButton(title: "DONE")
-    button.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.popToRootViewController(animated: true)
-    })
+    button.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
     return button
   }()
 
@@ -60,7 +58,8 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     super.viewDidLoad()
 
     title = "RECOVERY PHRASE"
-    navigationItem.backBarButtonItem = UIBarButtonItem()
+    navigationItem.setHidesBackButton(true, animated: false)
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(doneHandler))
     setupViews()
 
     recoveryPhraseCollectionView.register(cellWithClass: TestRecoveryPhraseCell.self)
@@ -92,6 +91,10 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     setupDefaultSelectHiddenRecoveryPhraseBox()
     setStyleForRecoveryPhraseCell(isError: false)
     recoveryPhraseCollectionView.isUserInteractionEnabled = true
+  }
+
+  @objc func doneHandler() {
+    navigationController?.popToRootViewController(animated: true)
   }
 
   // MARK: Data Handlers
@@ -221,7 +224,7 @@ extension TestRecoveryPhraseViewController {
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
-      make.top.equalTo(descriptionLabel.snp.bottom).offset(25)
+      make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
       make.leading.trailing.equalToSuperview()
     }
 
@@ -245,7 +248,7 @@ extension TestRecoveryPhraseViewController {
     view.addSubview(errorResultView)
     successResultView.snp.makeConstraints { (make) in
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-      make.height.equalTo(130)
+      make.height.equalTo(120)
     }
 
     errorResultView.snp.makeConstraints { (make) in
@@ -276,7 +279,7 @@ extension TestRecoveryPhraseViewController {
     }
 
     message.snp.makeConstraints { (make) in
-      make.top.equalTo(successTitle.snp.bottom).offset(10)
+      make.top.equalTo(successTitle.snp.bottom)
       make.leading.trailing.equalToSuperview()
     }
 
@@ -316,7 +319,7 @@ extension TestRecoveryPhraseViewController {
     }
 
     message.snp.makeConstraints { (make) in
-      make.top.equalTo(errorTitle.snp.bottom).offset(10)
+      make.top.equalTo(errorTitle.snp.bottom)
       make.leading.trailing.equalToSuperview()
     }
 

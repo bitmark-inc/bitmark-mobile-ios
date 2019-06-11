@@ -47,8 +47,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
 
   // MARK: - Setup Views
   func setupViews() {
-
-     // *** Setup subviews ***
+    // *** Setup subviews ***
     let numericOrderCover = UIView()
     numericOrderCover.addSubview(numericOrderLabel)
     numericOrderLabel.snp.makeConstraints { (make) in
@@ -68,7 +67,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
       make.centerY.trailing.equalToSuperview()
     }
 
-    // *** Setup UI in view ***
+    // *** Setup UI in cell ***
     addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.centerX.centerY.top.equalToSuperview()

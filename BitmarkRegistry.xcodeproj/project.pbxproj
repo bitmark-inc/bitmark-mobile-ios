@@ -36,6 +36,15 @@
 		E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */; };
 		E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */; };
 		E2BEC94F22AF699D009F7DF5 /* TestPhraseOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */; };
+		E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D8229E238900508B69 /* AccountViewController.swift */; };
+		E2BEC95122AF9871009F7DF5 /* WarningRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */; };
+		E2BEC95222AF9873009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */; };
+		E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
+		E2BEC95422AF9878009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */; };
+		E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
+		E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */; };
+		E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */; };
+		E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */; };
 		E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
 		E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
@@ -477,17 +486,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */,
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
+				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
 				E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */,
 				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
+				E2BEC95122AF9871009F7DF5 /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */,
 				E29A73FD22AA49990052C716 /* Credential.swift in Sources */,
+				E2BEC95422AF9878009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E29A73FE22AA49990052C716 /* AccountService.swift in Sources */,
 				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
+				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
+				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
+				E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */,
+				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
+				E2BEC95222AF9873009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E29A740122AA49990052C716 /* Global.swift in Sources */,
 				E29A740222AA49990052C716 /* KeychainStore.swift in Sources */,
 			);

@@ -35,6 +35,7 @@ class TestRecoveryPhraseCell: RecoveryPhraseCell {
     isUserInteractionEnabled = true
     // reset value when showing hidden box
     phraseLabel.text = ""
+    matchingTestPhraseCell = nil
   }
 
   func setValueForHiddenBox(_ phrase: String, _ matchingTestPhraseCell: TestPhraseOptionCell) {

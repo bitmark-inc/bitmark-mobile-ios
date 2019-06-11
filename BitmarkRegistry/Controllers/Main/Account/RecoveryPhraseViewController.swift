@@ -96,7 +96,7 @@ extension RecoveryPhraseViewController {
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
-      make.top.equalTo(descriptionLabel.snp.bottom).offset(25)
+      make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
       make.leading.trailing.equalToSuperview()
     }
 
