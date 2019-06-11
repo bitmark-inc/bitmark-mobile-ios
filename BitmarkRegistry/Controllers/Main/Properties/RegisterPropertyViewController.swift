@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import Photos
 
 class RegisterPropertyViewController: UIViewController {
 
   // MARK: - Properties
+  var assetFile: UIImage?
+  var assetFileName: String?
+
   lazy var registerByPhotoButton: UIButton = {
     let button = registerButton(by: "PHOTOS")
+    button.addTarget(self, action: #selector(tapPhotosToRegiter), for: .touchUpInside)
     return button
   }()
 
@@ -47,6 +52,46 @@ class RegisterPropertyViewController: UIViewController {
 
     title = "REGISTER"
     setupViews()
+  }
+
+  // MARK: - Handlers
+  // Show actionSheet Alert with option: Choose from Library
+  @objc func tapPhotosToRegiter(_ sender: UIButton) {
+    let alertController = UIAlertController()
+    alertController.addAction(title: "Choose from Library...", handler: imagePickerHandler)
+    alertController.addAction(title: "Cancel", style: .cancel)
+    present(alertController, animated: true, completion: nil)
+  }
+
+  @objc func imagePickerHandler(_ sender: UIAlertAction) {
+    askForPhotosPermission { [unowned self] (status) in
+      if status == .authorized {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        imagePickerController.allowsEditing = false
+        imagePickerController.sourceType = .photoLibrary
+        self.present(imagePickerController, animated: true, completion: nil)
+      } else {
+        self.showErrorAlert(message: Constant.Error.Permission.photo)
+      }
+    }
+  }
+}
+
+// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
+extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    picker.dismiss(animated: true, completion: nil)
+
+    // get image
+    guard let image = info[.originalImage] as? UIImage else { return }
+    assetFile = image
+
+    // get image name
+    if let asset = info[.phAsset] as? PHAsset,
+      let assetResource = PHAssetResource.assetResources(for: asset).first {
+      assetFileName = assetResource.originalFilename
+    }
   }
 }
 

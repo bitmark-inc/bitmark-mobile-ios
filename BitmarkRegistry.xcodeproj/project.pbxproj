@@ -49,6 +49,8 @@
 		E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */; };
 		E2BEC95E22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95D22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift */; };
 		E2BEC95F22AFB4CF009F7DF5 /* RegisterPropertyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95D22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift */; };
+		E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC96022AFC24F009F7DF5 /* Constant.swift */; };
+		E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC96022AFC24F009F7DF5 /* Constant.swift */; };
 		E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
 		E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
@@ -86,6 +88,7 @@
 		E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPhraseOptionCell.swift; sourceTree = "<group>"; };
 		E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesViewController.swift; sourceTree = "<group>"; };
 		E2BEC95D22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPropertyViewController.swift; sourceTree = "<group>"; };
+		E2BEC96022AFC24F009F7DF5 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -236,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				E24D9C4B22ADFED80095E11D /* CommonUI.swift */,
+				E2BEC96022AFC24F009F7DF5 /* Constant.swift */,
 				E2E798DC229E25E200508B69 /* Credential.swift */,
 			);
 			path = Helpers;
@@ -519,6 +523,7 @@
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
 				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
+				E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
 				E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */,
@@ -550,6 +555,7 @@
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
 				E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
+				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
