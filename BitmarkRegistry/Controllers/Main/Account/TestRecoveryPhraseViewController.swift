@@ -1,50 +1,25 @@
 //
-//  RecoveryPhraseViewController.swift
+//  TestRecoveryPhraseViewController.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 6/10/19.
+//  Created by Macintosh on 6/11/19.
 //  Copyright © 2019 thuyentruong. All rights reserved.
 //
 
 import UIKit
 
-class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
+class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Properties
   private var recoveryPhrases = [String]()
 
+  private let numberOfHiddenPhrases = 5
+  private var hiddenPhraseIndexes = [Int]()
+
   let descriptionLabel: UILabel = {
-    return CommonUI.descriptionLabel(text: "Please write down your recovery phrase in the exact sequence below:")
+    return CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:")
                    .lineHeightMultiple(1.2)
 
-  }()
-
-  lazy var testRecoveryPhraseButton: UIButton = {
-    let button = CommonUI.blueButton(title: "TEST RECOVERY PHRASE")
-    button.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.pushViewController(
-        TestRecoveryPhraseViewController()
-      )
-    })
-    return button
-  }()
-
-  lazy var doneButton: UIButton = {
-    let button = CommonUI.lightButton(title: "DONE")
-    button.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.popToRootViewController(animated: true)
-    })
-    return button
-  }()
-
-  lazy var buttonsGroupStackView: UIStackView = {
-    return UIStackView(
-      arrangedSubviews: [testRecoveryPhraseButton, doneButton],
-      axis: .vertical,
-      spacing: 0.0,
-      alignment: .fill,
-      distribution: .fill
-    )
   }()
 
   // MARK: - Init
@@ -55,7 +30,7 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
 
-    recoveryPhraseCollectionView.register(cellWithClass: RecoveryPhraseCell.self)
+    recoveryPhraseCollectionView.register(cellWithClass: TestRecoveryPhraseCell.self)
     recoveryPhraseCollectionView.delegate = self
     recoveryPhraseCollectionView.dataSource = self
 
@@ -65,24 +40,31 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   // MARK: Data Handlers
   private func loadData() {
     loadRecoveryPhrases(&recoveryPhrases)
+    hiddenPhraseIndexes = randomHiddenIndexes()
   }
 }
 
 // MARK: - UICollectionViewDataSource
-extension RecoveryPhraseViewController: UICollectionViewDataSource {
+extension TestRecoveryPhraseViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return recoveryPhrases.count
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withClass: RecoveryPhraseCell.self, for: indexPath)
-    cell.setData(numericOrder: indexPath.row + 1, phrase: recoveryPhrases[indexPath.row])
+    let cell = collectionView.dequeueReusableCell(withClass: TestRecoveryPhraseCell.self, for: indexPath)
+    let numericOrder = indexPath.row + 1
+    if hiddenPhraseIndexes.firstIndex(of: indexPath.row) != nil {
+      cell.setData(numericOrder: numericOrder)
+      cell.showHiddenBox()
+    } else {
+      cell.setData(numericOrder: numericOrder, phrase: recoveryPhrases[indexPath.row])
+    }
     return cell
   }
 }
 
 // MARK: - Setup Views
-extension RecoveryPhraseViewController {
+extension TestRecoveryPhraseViewController {
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
@@ -102,17 +84,25 @@ extension RecoveryPhraseViewController {
 
     // *** Setup UI in view ***
     view.addSubview(mainView)
-    view.addSubview(buttonsGroupStackView)
 
     mainView.snp.makeConstraints { (make) in
       make.top.equalTo(view.safeAreaLayoutGuide).offset(25)
       make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-      make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
+      make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
     }
+  }
+}
 
-    buttonsGroupStackView.snp.makeConstraints { (make) in
-      make.top.equalTo(mainView.snp.bottom)
-      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+// MARK: - Support Functions
+extension TestRecoveryPhraseViewController {
+  func randomHiddenIndexes() -> [Int] {
+    var randomIndexes = [Int]()
+    var availableNums = Array(0..<recoveryPhrases.count)
+    for _ in 0..<numberOfHiddenPhrases {
+      let randomIndex = availableNums.randomElement()!
+      randomIndexes.append(randomIndex)
+      availableNums.remove(at: availableNums.firstIndex(of: randomIndex)!)
     }
+    return randomIndexes
   }
 }

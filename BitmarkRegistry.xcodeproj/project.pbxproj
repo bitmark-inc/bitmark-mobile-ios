@@ -32,6 +32,9 @@
 		E29A740222AA49990052C716 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
 		E29A740722AA49990052C716 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
+		E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */; };
+		E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */; };
+		E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */; };
 		E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
 		E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
@@ -63,6 +66,9 @@
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
+		E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
+		E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
+		E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseCell.swift; sourceTree = "<group>"; };
 		E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,7 +132,9 @@
 			children = (
 				E2E798D8229E238900508B69 /* AccountViewController.swift */,
 				E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */,
+				E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */,
 				E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */,
+				E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -135,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */,
+				E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -489,8 +498,11 @@
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
 				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
+				E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
+				E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
 				E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */,
+				E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,

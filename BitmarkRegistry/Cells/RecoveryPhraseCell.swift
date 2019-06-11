@@ -11,6 +11,8 @@ import UIKit
 class RecoveryPhraseCell: UICollectionViewCell {
 
   // MARK: - Properties
+  let mainView = UIView()
+
   let numericOrderLabel: UILabel = {
     let label = UILabel()
     label.textColor = .alto
@@ -43,7 +45,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
   }
 
   // MARK: - Setup Views
-  fileprivate func setupViews() {
+  func setupViews() {
 
      // *** Setup subviews ***
     let numericOrderCover = UIView()
@@ -52,7 +54,6 @@ class RecoveryPhraseCell: UICollectionViewCell {
       make.centerY.leading.trailing.height.equalToSuperview()
     }
 
-    let mainView = UIView()
     mainView.addSubview(numericOrderCover)
     mainView.addSubview(phraseLabel)
 
