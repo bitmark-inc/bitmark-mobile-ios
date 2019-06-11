@@ -22,6 +22,7 @@ class AccountViewController: UIViewController {
     super.viewDidLoad()
 
     title = "Account"
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
 

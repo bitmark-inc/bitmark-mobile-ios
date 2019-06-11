@@ -37,6 +37,7 @@ class WarningRecoveryPhraseViewController: UIViewController {
   let warningTextView: UITextView = {
     let textView = UITextView()
     textView.font = UIFont(name: "Avenir", size: 17)
+    textView.isUserInteractionEnabled = false
     textView.text =
       "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\n" +
       "We will show you a list of words to write down on a piece of paper and keep safe.\n\n" +
@@ -44,8 +45,13 @@ class WarningRecoveryPhraseViewController: UIViewController {
     return textView
   }()
 
-  let writeDownRecoveryPhraseButton: UIButton = {
+  lazy var writeDownRecoveryPhraseButton: UIButton = {
     let button = CommonUI.blueButton(title: "WRITE DOWN RECOVERY PHRASE")
+    button.addAction(for: .touchUpInside, { [unowned self] in
+      self.navigationController?.pushViewController(
+        RecoveryPhraseViewController()
+      )
+    })
     return button
   }()
 
@@ -53,6 +59,8 @@ class WarningRecoveryPhraseViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    title = "RECOVERY PHRASE"
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
   }
 }
