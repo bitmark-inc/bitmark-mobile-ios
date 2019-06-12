@@ -11,49 +11,7 @@ import UIKit
 class WarningRecoveryPhraseViewController: UIViewController {
 
   // MARK: - Properties
-  let pageIcon: UIImageView = {
-    let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
-    imageView.image = UIImage(named: "Warning")
-    imageView.contentMode = .scaleAspectFit
-    return imageView
-  }()
-
-  let pageLabel: UILabel = {
-    let label = CommonUI.pageTitleLabel(text: "WARNING!")
-    label.textColor = .mainRedColor
-    return label
-  }()
-
-  lazy var pageTitle: UIStackView = {
-    return UIStackView(
-      arrangedSubviews: [pageIcon, pageLabel],
-      axis: .horizontal,
-      spacing: 3,
-      alignment: .leading,
-      distribution: .fill
-    )
-  }()
-
-  let warningTextView: UITextView = {
-    let textView = UITextView()
-    textView.font = UIFont(name: "Avenir", size: 17)
-    textView.isUserInteractionEnabled = false
-    textView.text =
-      "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\n" +
-      "We will show you a list of words to write down on a piece of paper and keep safe.\n\n" +
-      "Make sure you are in a private location before writing down your recovery phrase."
-    return textView
-  }()
-
-  lazy var writeDownRecoveryPhraseButton: UIButton = {
-    let button = CommonUI.blueButton(title: "WRITE DOWN RECOVERY PHRASE")
-    button.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.pushViewController(
-        RecoveryPhraseViewController()
-      )
-    })
-    return button
-  }()
+  var writeDownRecoveryPhraseButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -62,15 +20,47 @@ class WarningRecoveryPhraseViewController: UIViewController {
     title = "RECOVERY PHRASE"
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
+    setupEvents()
   }
 }
 
-// MARK: - Setup Views
+// MARK: - Setup Views/Events
 extension WarningRecoveryPhraseViewController {
-  private func setupViews() {
+  fileprivate func setupEvents() {
+    writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
+      self.navigationController?.pushViewController(
+        RecoveryPhraseViewController()
+      )
+    })
+  }
+
+  fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
+    let pageIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+    pageIcon.image = UIImage(named: "Warning")
+    pageIcon.contentMode = .scaleAspectFit
+
+    let pageLabel = CommonUI.pageTitleLabel(text: "WARNING!")
+    pageLabel.textColor = .mainRedColor
+
+    let pageTitle = UIStackView(
+      arrangedSubviews: [pageIcon, pageLabel],
+      axis: .horizontal,
+      spacing: 3,
+      alignment: .leading,
+      distribution: .fill
+    )
+
+    let warningTextView = UITextView()
+    warningTextView.font = UIFont(name: "Avenir", size: 17)
+    warningTextView.isUserInteractionEnabled = false
+    warningTextView.text =
+      "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\n" +
+      "We will show you a list of words to write down on a piece of paper and keep safe.\n\n" +
+      "Make sure you are in a private location before writing down your recovery phrase."
+
     let mainView = UIView()
     mainView.addSubview(pageTitle)
     mainView.addSubview(warningTextView)
@@ -83,6 +73,8 @@ extension WarningRecoveryPhraseViewController {
       make.top.equalTo(pageTitle.snp.bottom).offset(20)
       make.leading.trailing.bottom.equalToSuperview()
     }
+
+    writeDownRecoveryPhraseButton = CommonUI.blueButton(title: "WRITE DOWN RECOVERY PHRASE")
 
     // *** Setup UI in view ***
     view.addSubview(mainView)

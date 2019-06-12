@@ -12,20 +12,8 @@ class RecoveryPhraseCell: UICollectionViewCell {
 
   // MARK: - Properties
   let mainView = UIView()
-
-  let numericOrderLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .alto
-    label.font = UIFont(name: "Avenir", size: 15)
-    return label
-  }()
-
-  let phraseLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .mainBlueColor
-    label.font = UIFont(name: "Avenir", size: 15)
-    return label
-  }()
+  var numericOrderLabel: UILabel!
+  var phraseLabel: UILabel!
 
   // MARK: - Init
   override init(frame: CGRect) {
@@ -34,8 +22,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
   }
 
   required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    setupViews()
+    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Handlers
@@ -48,12 +35,21 @@ class RecoveryPhraseCell: UICollectionViewCell {
   // MARK: - Setup Views
   func setupViews() {
     // *** Setup subviews ***
+    numericOrderLabel = UILabel()
+    numericOrderLabel.textColor = .alto
+    numericOrderLabel.font = UIFont(name: "Avenir", size: 15)
+
     let numericOrderCover = UIView()
     numericOrderCover.addSubview(numericOrderLabel)
     numericOrderLabel.snp.makeConstraints { (make) in
       make.centerY.leading.trailing.height.equalToSuperview()
     }
 
+    phraseLabel = UILabel()
+    phraseLabel.textColor = .mainBlueColor
+    phraseLabel.font = UIFont(name: "Avenir", size: 15)
+
+    // *** Setup UI in cell ***
     mainView.addSubview(numericOrderCover)
     mainView.addSubview(phraseLabel)
 
@@ -67,7 +63,6 @@ class RecoveryPhraseCell: UICollectionViewCell {
       make.centerY.trailing.equalToSuperview()
     }
 
-    // *** Setup UI in cell ***
     addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.centerX.centerY.top.equalToSuperview()

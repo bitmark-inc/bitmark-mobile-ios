@@ -12,40 +12,8 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Properties
   private var recoveryPhrases = [String]()
-
-  let descriptionLabel: UILabel = {
-    return CommonUI.descriptionLabel(text: "Please write down your recovery phrase in the exact sequence below:")
-                   .lineHeightMultiple(1.2)
-
-  }()
-
-  lazy var testRecoveryPhraseButton: UIButton = {
-    let button = CommonUI.blueButton(title: "TEST RECOVERY PHRASE")
-    button.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.pushViewController(
-        TestRecoveryPhraseViewController()
-      )
-    })
-    return button
-  }()
-
-  lazy var doneButton: UIButton = {
-    let button = CommonUI.lightButton(title: "DONE")
-    button.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.popToRootViewController(animated: true)
-    })
-    return button
-  }()
-
-  lazy var buttonsGroupStackView: UIStackView = {
-    return UIStackView(
-      arrangedSubviews: [testRecoveryPhraseButton, doneButton],
-      axis: .vertical,
-      spacing: 0.0,
-      alignment: .fill,
-      distribution: .fill
-    )
-  }()
+  var testRecoveryPhraseButton: UIButton!
+  var doneButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -54,6 +22,7 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     title = "RECOVERY PHRASE"
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
+    setupEvents()
 
     recoveryPhraseCollectionView.register(cellWithClass: RecoveryPhraseCell.self)
     recoveryPhraseCollectionView.delegate = self
@@ -81,12 +50,26 @@ extension RecoveryPhraseViewController: UICollectionViewDataSource {
   }
 }
 
-// MARK: - Setup Views
+// MARK: - Setup Views/Events
 extension RecoveryPhraseViewController {
+  fileprivate func setupEvents() {
+    testRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
+      self.navigationController?.pushViewController(
+        TestRecoveryPhraseViewController()
+      )
+    })
+
+    doneButton.addAction(for: .touchUpInside, { [unowned self] in
+      self.navigationController?.popToRootViewController(animated: true)
+    })
+  }
+
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
+    let descriptionLabel = CommonUI.descriptionLabel(text: "Please write down your recovery phrase in the exact sequence below:").lineHeightMultiple(1.2)
+
     let mainView = UIView()
     mainView.addSubview(descriptionLabel)
     mainView.addSubview(recoveryPhraseCollectionView)
@@ -99,6 +82,14 @@ extension RecoveryPhraseViewController {
       make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
       make.leading.trailing.equalToSuperview()
     }
+
+    testRecoveryPhraseButton = CommonUI.blueButton(title: "TEST RECOVERY PHRASE")
+    doneButton = CommonUI.lightButton(title: "DONE")
+
+    let buttonsGroupStackView = UIStackView(
+      arrangedSubviews: [testRecoveryPhraseButton, doneButton],
+      axis: .vertical
+    )
 
     // *** Setup UI in view ***
     view.addSubview(mainView)

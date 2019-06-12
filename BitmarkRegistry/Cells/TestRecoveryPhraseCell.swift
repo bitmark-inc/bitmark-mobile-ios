@@ -17,13 +17,7 @@ class TestRecoveryPhraseCell: RecoveryPhraseCell {
   // MARK: - Properties
   var delegate: ReselectHiddenPhraseBoxDelegate?
   var matchingTestPhraseCell: TestPhraseOptionCell?
-  let hiddenPhraseBox: UIView = {
-    let view = UIView()
-    view.backgroundColor = .wildSand
-    view.borderColor = .mainBlueColor
-    view.isHidden = true
-    return view
-  }()
+  var hiddenPhraseBox: UIView!
 
   // MARK: - Handlers
   func setData(numericOrder: Int) {
@@ -65,6 +59,11 @@ class TestRecoveryPhraseCell: RecoveryPhraseCell {
     super.setupViews()
 
     phraseLabel.textColor = .gray
+
+    hiddenPhraseBox = UIView()
+    hiddenPhraseBox.backgroundColor = .wildSand
+    hiddenPhraseBox.borderColor = .mainBlueColor
+    hiddenPhraseBox.isHidden = true
 
     // *** Setup subviews ***
     mainView.addSubview(hiddenPhraseBox)

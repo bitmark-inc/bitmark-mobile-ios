@@ -13,6 +13,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   // MARK: - Properties
   private var recoveryPhrases = [String]()
 
+  // *** Properties for Hidden Phrase Function ***
   private let numberOfHiddenPhrases = 5
   private var hiddenPhraseIndexes = [Int]()
   private lazy var orderedHiddenPhraseIndexes: [Int] = {
@@ -20,38 +21,21 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   }()
   private var selectedHiddenPhraseBoxIndexPath: IndexPath!
 
+  // *** Properties for Phrase Option Function ***
   private let heightPerPhraseOptionItem: CGFloat = 25.0
   private let phraseOptionPadding: CGFloat = 15.0
-
   private var userPhraseChoice = [String?](repeating: nil, count: 12)
   
-  let descriptionLabel: UILabel = {
-    return CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:")
-                   .lineHeightMultiple(1.2)
-
-  }()
-
   lazy var phraseOptionCollectionView: UICollectionView = {
     let flowlayout = UICollectionViewFlowLayout()
     let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: flowlayout)
     collectionView.backgroundColor = .clear
     return collectionView
   }()
-
   let successResultView = UIView()
   let errorResultView = UIView()
-
-  lazy var doneButton: UIButton = {
-    let button = CommonUI.blueButton(title: "DONE")
-    button.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
-    return button
-  }()
-
-  lazy var retryButton: UIButton = {
-    let button = CommonUI.blueButton(title: "RETRY")
-    button.addTarget(self, action: #selector(clickRetryWhenError), for: .touchUpInside)
-    return button
-  }()
+  var doneButton: UIButton!
+  var retryButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -61,6 +45,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     navigationItem.setHidesBackButton(true, animated: false)
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(doneHandler))
     setupViews()
+    setupEvents()
 
     recoveryPhraseCollectionView.register(cellWithClass: TestRecoveryPhraseCell.self)
     recoveryPhraseCollectionView.delegate = self
@@ -208,12 +193,19 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
   }
 }
 
-// MARK: - Setup Views
+// MARK: - Setup Views/Events
 extension TestRecoveryPhraseViewController {
+  fileprivate func setupEvents() {
+    doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
+    retryButton.addTarget(self, action: #selector(clickRetryWhenError), for: .touchUpInside)
+  }
+
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
+    let descriptionLabel = CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:").lineHeightMultiple(1.2)
+
     let mainView = UIView()
     mainView.addSubview(descriptionLabel)
     mainView.addSubview(recoveryPhraseCollectionView)
@@ -283,6 +275,8 @@ extension TestRecoveryPhraseViewController {
       make.leading.trailing.equalToSuperview()
     }
 
+    doneButton = CommonUI.blueButton(title: "DONE")
+
     successResultView.addSubview(textView)
     successResultView.addSubview(doneButton)
 
@@ -322,6 +316,8 @@ extension TestRecoveryPhraseViewController {
       make.top.equalTo(errorTitle.snp.bottom)
       make.leading.trailing.equalToSuperview()
     }
+
+    retryButton = CommonUI.blueButton(title: "RETRY")
 
     errorResultView.addSubview(textView)
     errorResultView.addSubview(retryButton)
