@@ -13,38 +13,15 @@ import SwifterSwift
 class OnboardingViewController: UIViewController {
 
   // MARK: - Properties
-  let logoImageView: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "Bitmark_Logo-8")
-    return imageView
-  }()
-
-  let registerButton: UIButton = {
-    let button = CommonUI.blueButton(title: "CREATE NEW ACCOUNT")
-    button.addTarget(self, action: #selector(createNewAccount), for: .touchUpInside)
-    return button
-  }()
-
-  let loginButton: UIButton = {
-    let button = CommonUI.lightButton(title: "ACCESS EXISTING ACCOUNT")
-    return button
-  }()
-
-  lazy var buttonsGroupStackView: UIStackView = {
-    return UIStackView(
-      arrangedSubviews: [registerButton, loginButton],
-      axis: .vertical,
-      spacing: 0.0,
-      alignment: .fill,
-      distribution: .fill
-    )
-  }()
+  var registerButton: UIButton!
+  var loginButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
 
     setupViews()
+    setupEvents()
   }
 
   // MARK: - Handlers
@@ -62,36 +39,51 @@ class OnboardingViewController: UIViewController {
   }
 }
 
-// MARK: - Setup Views
+// MARK: - Setup Views/Events
 extension OnboardingViewController {
+  fileprivate func setupEvents() {
+    registerButton.addTarget(self, action: #selector(createNewAccount), for: .touchUpInside)
+  }
+
   fileprivate func setupViews() {
 
     view.backgroundColor = .white
 
     // *** Setup subviews ***
+    let logoImageView = UIImageView()
+    logoImageView.image = UIImage(named: "Bitmark_Logo-8")
+
     let contentView = UIView()
     contentView.addSubview(logoImageView)
+
     logoImageView.snp.makeConstraints({ (make) in
       make.centerX.centerY.equalToSuperview()
     })
 
+    registerButton = CommonUI.blueButton(title: "CREATE NEW ACCOUNT")
+    loginButton = CommonUI.lightButton(title: "ACCESS EXISTING ACCOUNT")
+    let buttonsGroupStackView = UIStackView(
+      arrangedSubviews: [registerButton, loginButton],
+      axis: .vertical
+    )
+
     // *** Setup UI in view ***
     let mainView = UIView()
-    view.addSubview(mainView)
-    mainView.snp.makeConstraints { (make) in
-      make.edges.equalTo(view.safeAreaLayoutGuide)
-    }
-
     mainView.addSubview(contentView)
     mainView.addSubview(buttonsGroupStackView)
 
     contentView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
-      make.bottom.equalTo(buttonsGroupStackView.snp.top)
     }
 
     buttonsGroupStackView.snp.makeConstraints { (make) in
+      make.top.equalTo(contentView.snp.bottom)
       make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    view.addSubview(mainView)
+    mainView.snp.makeConstraints { (make) in
+      make.edges.equalTo(view.safeAreaLayoutGuide)
     }
   }
 }

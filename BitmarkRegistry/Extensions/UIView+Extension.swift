@@ -16,19 +16,18 @@ extension UIView {
       return layer.borderColor?.uiColor
     }
     set {
-      guard let color = newValue else {
-        layer.borderColor = nil
-        return
-      }
+      guard let color = newValue else { layer.borderColor = nil; return }
+      layer.borderColor = color.cgColor
+
       let underlinedLine = UIView()
       underlinedLine.backgroundColor = color
+
       addSubview(underlinedLine)
       underlinedLine.snp.makeConstraints { (make) in
-        make.top.equalTo(self.snp.bottom).offset(5.0)
+        make.top.equalTo(snp.bottom).offset(5.0)
         make.leading.trailing.equalToSuperview()
         make.height.equalTo(1.0)
       }
-      layer.borderColor = color.cgColor
     }
   }
 }

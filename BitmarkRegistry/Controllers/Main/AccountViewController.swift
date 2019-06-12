@@ -11,63 +11,11 @@ import UIKit
 class AccountViewController: UIViewController {
 
   // MARK: - Properties
-  let accountNumberTitleLabel: UILabel = {
-    return CommonUI.fieldTitleLabel(text: "YOUR BITMARK ACCOUNT NUMBER")
-                   .lineHeightMultiple(1.2)
-  }()
-
-  let accountNumberLabel: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitleColor(.mainBlueColor, for: .normal)
-    button.titleLabel?.font = UIFont(name: "Courier", size: 11)
-    button.contentHorizontalAlignment = .fill
-    button.underlinedLineColor = .mainBlueColor
-    button.addTarget(self, action: #selector(tapToCopyAccountNumber), for: .touchUpInside)
-    return button
-  }()
-
-  let copiedToClipboardNotifier: UILabel = {
-    let label = UILabel(text: "Copied to clipboard!")
-    label.font = UIFont(name: "Avenir", size: 8)?.italic
-    label.textColor = .mainBlueColor
-    label.textAlignment = .right
-    label.isHidden = true
-    return label
-  }()
-
-  let accountNumberDescription: UILabel = {
-    return CommonUI.descriptionLabel(text: "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public. You can safely share it with others without compromising your security.")
-                   .lineHeightMultiple(1.2)
-  }()
-
-  let writeDownRecoveryPhraseButton: UIButton = {
-    let button = CommonUI.actionButton(title: "WRITE DOWN RECOVERY PHRASE »")
-    return button
-  }()
-
-  let logoutButton: UIButton = {
-    let button = CommonUI.actionButton(title: "LOG OUT »")
-    return button
-  }()
-
-  let detailsButton: UIButton = {
-    let button = CommonUI.actionButton(title: "DETAILS »")
-    return button
-  }()
-
-  lazy var buttonsGroupStackView: UIStackView = {
-    return UIStackView(
-      arrangedSubviews: [
-        writeDownRecoveryPhraseButton,
-        logoutButton,
-        detailsButton
-      ],
-      axis: .vertical,
-      spacing: 0.0,
-      alignment: .fill,
-      distribution: .fill
-    )
-  }()
+  var accountNumberLabel: UIButton!
+  var copiedToClipboardNotifier: UILabel!
+  var writeDownRecoveryPhraseButton: UIButton!
+  var logoutButton: UIButton!
+  var detailsButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -75,6 +23,7 @@ class AccountViewController: UIViewController {
 
     title = "Account"
     setupViews()
+    setupEvents()
 
     loadData()
   }
@@ -91,22 +40,32 @@ class AccountViewController: UIViewController {
   }
 }
 
-// MARK: - setup Views
+// MARK: - setup Views/Events
 extension AccountViewController {
+  fileprivate func setupEvents() {
+    accountNumberLabel.addTarget(self, action: #selector(tapToCopyAccountNumber), for: .touchUpInside)
+  }
+
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
     let accountNumberBox = setupAccountNumberBox()
 
+    writeDownRecoveryPhraseButton = CommonUI.actionButton(title: "WRITE DOWN RECOVERY PHRASE »")
+    logoutButton = CommonUI.actionButton(title: "LOG OUT »")
+    detailsButton = CommonUI.actionButton(title: "DETAILS »")
+    let buttonsGroupStackView = UIStackView(
+      arrangedSubviews: [
+          writeDownRecoveryPhraseButton,
+          logoutButton,
+          detailsButton
+        ],
+      axis: .vertical
+    )
+
     // *** Setup UI in view ***
     let mainView = UIView()
-    view.addSubview(mainView)
-    mainView.snp.makeConstraints { (make) in
-      make.edges.equalTo(view.safeAreaLayoutGuide)
-                .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
-    }
-
     mainView.addSubview(accountNumberBox)
     mainView.addSubview(buttonsGroupStackView)
 
@@ -118,11 +77,32 @@ extension AccountViewController {
       make.top.equalTo(accountNumberBox.snp.bottom).offset(45)
       make.leading.trailing.equalToSuperview()
     }
+
+    view.addSubview(mainView)
+    mainView.snp.makeConstraints { (make) in
+      make.edges.equalTo(view.safeAreaLayoutGuide)
+                .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
+    }
   }
 
   fileprivate func setupAccountNumberBox() -> UIView {
-    let accountNumberBox = UIView()
+    let accountNumberTitleLabel = CommonUI.fieldTitleLabel(text: "YOUR BITMARK ACCOUNT NUMBER")
 
+    accountNumberLabel = UIButton(type: .system)
+    accountNumberLabel.setTitleColor(.mainBlueColor, for: .normal)
+    accountNumberLabel.titleLabel?.font = UIFont(name: "Courier", size: 11)
+    accountNumberLabel.contentHorizontalAlignment = .fill
+    accountNumberLabel.underlinedLineColor = .mainBlueColor
+
+    copiedToClipboardNotifier = UILabel(text: "Copied to clipboard!")
+    copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
+    copiedToClipboardNotifier.textColor = .mainBlueColor
+    copiedToClipboardNotifier.textAlignment = .right
+    copiedToClipboardNotifier.isHidden = true
+
+    let accountNumberDescription = CommonUI.descriptionLabel(text: "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public. You can safely share it with others without compromising your security.").lineHeightMultiple(1.2)
+
+    let accountNumberBox = UIView()
     accountNumberBox.addSubview(accountNumberTitleLabel)
     accountNumberBox.addSubview(accountNumberLabel)
     accountNumberBox.addSubview(accountNumberDescription)

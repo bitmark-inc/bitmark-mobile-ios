@@ -9,7 +9,6 @@
 import UIKit
 
 extension UILabel {
-
   func showIn(period: Double) {
     isHidden = false
     DispatchQueue.main.asyncAfter(deadline: .now() + period) { self.isHidden = true }
