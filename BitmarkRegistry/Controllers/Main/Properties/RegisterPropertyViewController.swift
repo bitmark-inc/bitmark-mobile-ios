@@ -51,6 +51,7 @@ class RegisterPropertyViewController: UIViewController {
     super.viewDidLoad()
 
     title = "REGISTER"
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
   }
 
@@ -92,6 +93,16 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
       let assetResource = PHAssetResource.assetResources(for: asset).first {
       assetFileName = assetResource.originalFilename
     }
+
+    performMoveToRegisterPropertyRights()
+  }
+
+  fileprivate func performMoveToRegisterPropertyRights() {
+    let registerPropertyRightsVC = RegisterPropertyRightsViewController()
+    registerPropertyRightsVC.hidesBottomBarWhenPushed = true
+    registerPropertyRightsVC.assetFile = assetFile
+    registerPropertyRightsVC.assetFileName = assetFileName
+    navigationController?.pushViewController(registerPropertyRightsVC)
   }
 }
 
