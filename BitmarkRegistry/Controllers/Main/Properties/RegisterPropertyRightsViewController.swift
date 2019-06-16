@@ -137,7 +137,9 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       if let errorMessage = errorMessage {
         self.showErrorAlert(message: errorMessage)
       } else {
-        self.showSuccessAlert(message: Constant.Success.issue)
+        self.showSuccessAlert(message: Constant.Success.issue, handler: {
+          self.navigationController?.popToRootViewController(animated: true)
+        })
       }
     }
   }
@@ -281,9 +283,7 @@ extension RegisterPropertyRightsViewController {
     var metadataList = [String: String]()
     metadataForms.forEach { (form) in
       let metadata = form.getValues()
-      if !metadata.label.isEmpty {
-        metadataList[metadata.label] = metadata.description
-      }
+      metadataList[metadata.label] = metadata.description
     }
     return metadataList
   }

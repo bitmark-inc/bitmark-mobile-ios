@@ -32,4 +32,15 @@ struct BitmarksWithAsset: Codable {
     let jsonData = try jsonEncoder.encode(self)
     try jsonData.write(to: bitmarksURL, options: .atomic)
   }
+
+  func reStore(in bitmarksURL: URL, newBitmarksURL: URL) throws {
+    try store(in: bitmarksURL)
+    try FileManager.default.moveItem(at: bitmarksURL, to: newBitmarksURL)
+  }
+
+  mutating func merge(with other: BitmarksWithAsset) {
+    self.assets += other.assets
+    self.assets.removeDuplicates()
+    self.bitmarks += other.bitmarks
+  }
 }

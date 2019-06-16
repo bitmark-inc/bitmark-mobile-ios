@@ -42,7 +42,9 @@ class PropertiesViewController: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
+  }
 
+  override func viewWillAppear(_ animated: Bool) {
     loadData()
   }
 
