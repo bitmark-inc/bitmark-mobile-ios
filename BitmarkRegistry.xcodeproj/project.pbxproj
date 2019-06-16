@@ -16,6 +16,18 @@
 		E205107D22B0ABC300475871 /* DesignedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107B22B0AA6300475871 /* DesignedTextField.swift */; };
 		E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */; };
 		E205108122B1041200475871 /* MetadataForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205108022B1041200475871 /* MetadataForm.swift */; };
+		E215D72B22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
+		E215D72C22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
+		E215D72E22B694B800E292E8 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72D22B694B800E292E8 /* FileManager+Extension.swift */; };
+		E215D72F22B694B800E292E8 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72D22B694B800E292E8 /* FileManager+Extension.swift */; };
+		E215D73122B6958E00E292E8 /* BitmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73022B6958E00E292E8 /* BitmarkService.swift */; };
+		E215D73222B6958E00E292E8 /* BitmarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73022B6958E00E292E8 /* BitmarkService.swift */; };
+		E215D73522B6962200E292E8 /* BitmarksWithAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73422B6962200E292E8 /* BitmarksWithAsset.swift */; };
+		E215D73622B6962200E292E8 /* BitmarksWithAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73422B6962200E292E8 /* BitmarksWithAsset.swift */; };
+		E215D73822B69C8E00E292E8 /* YourPropertyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73722B69C8E00E292E8 /* YourPropertyCell.swift */; };
+		E215D73A22B6A0F700E292E8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73922B6A0F700E292E8 /* String+Extension.swift */; };
+		E215D73B22B6A2DA00E292E8 /* YourPropertyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73722B69C8E00E292E8 /* YourPropertyCell.swift */; };
+		E215D73C22B6A2E400E292E8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73922B6A0F700E292E8 /* String+Extension.swift */; };
 		E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */; };
 		E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4B22ADFED80095E11D /* CommonUI.swift */; };
 		E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */; };
@@ -91,6 +103,12 @@
 		E205107B22B0AA6300475871 /* DesignedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignedTextField.swift; sourceTree = "<group>"; };
 		E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataLabelViewController.swift; sourceTree = "<group>"; };
 		E205108022B1041200475871 /* MetadataForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataForm.swift; sourceTree = "<group>"; };
+		E215D72A22B6940300E292E8 /* BitmarkStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkStorage.swift; sourceTree = "<group>"; };
+		E215D72D22B694B800E292E8 /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
+		E215D73022B6958E00E292E8 /* BitmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
+		E215D73422B6962200E292E8 /* BitmarksWithAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarksWithAsset.swift; sourceTree = "<group>"; };
+		E215D73722B69C8E00E292E8 /* YourPropertyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourPropertyCell.swift; sourceTree = "<group>"; };
+		E215D73922B6A0F700E292E8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E24D9C4B22ADFED80095E11D /* CommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUI.swift; sourceTree = "<group>"; };
 		E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +186,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E215D73322B6960100E292E8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E215D73422B6962200E292E8 /* BitmarksWithAsset.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E24D9C5A22AE57FA0095E11D /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,6 +234,7 @@
 				E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */,
 				E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */,
 				E2DFDA3522B21233008B1AD5 /* LabelCell.swift */,
+				E215D73722B69C8E00E292E8 /* YourPropertyCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -239,6 +266,7 @@
 				E2E798CF229E1CB100508B69 /* Storyboards */,
 				E2C05CA222AEAC74002B3350 /* Cells */,
 				E283CB0422B38BE900CCB4E5 /* Custom Views */,
+				E215D73322B6960100E292E8 /* Models */,
 				E2E798CE229E1CAE00508B69 /* Services */,
 				E2E798CD229E1CAC00508B69 /* Helpers */,
 				E2E798CC229E1CA900508B69 /* Extensions */,
@@ -261,6 +289,8 @@
 		E2E798CC229E1CA900508B69 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E215D72D22B694B800E292E8 /* FileManager+Extension.swift */,
+				E215D73922B6A0F700E292E8 /* String+Extension.swift */,
 				E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */,
 				E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */,
 				E27CD23D229E407C00503D6A /* UILabel+Extension.swift */,
@@ -287,6 +317,8 @@
 				E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */,
 				E2E798DE229E264100508B69 /* AccountService.swift */,
 				E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */,
+				E215D73022B6958E00E292E8 /* BitmarkService.swift */,
+				E215D72A22B6940300E292E8 /* BitmarkStorage.swift */,
 				E2E798E6229E285600508B69 /* KeychainStore.swift */,
 			);
 			path = Services;
@@ -545,13 +577,17 @@
 				E205107D22B0ABC300475871 /* DesignedTextField.swift in Sources */,
 				E2DFDA3722B212FD008B1AD5 /* LabelCell.swift in Sources */,
 				E2BEC95F22AFB4CF009F7DF5 /* RegisterPropertyViewController.swift in Sources */,
+				E215D73622B6962200E292E8 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */,
 				E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
 				E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
+				E215D72C22B6940300E292E8 /* BitmarkStorage.swift in Sources */,
 				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
 				E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */,
+				E215D73222B6958E00E292E8 /* BitmarkService.swift in Sources */,
+				E215D72F22B694B800E292E8 /* FileManager+Extension.swift in Sources */,
 				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
 				E2BEC95122AF9871009F7DF5 /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */,
@@ -560,11 +596,13 @@
 				E29A73FE22AA49990052C716 /* AccountService.swift in Sources */,
 				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
+				E215D73C22B6A2E400E292E8 /* String+Extension.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
 				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */,
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
+				E215D73B22B6A2DA00E292E8 /* YourPropertyCell.swift in Sources */,
 				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
 				E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */,
 				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
@@ -584,13 +622,17 @@
 				E205107C22B0AA6300475871 /* DesignedTextField.swift in Sources */,
 				E2DFDA3622B21233008B1AD5 /* LabelCell.swift in Sources */,
 				E2BEC95E22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift in Sources */,
+				E215D73522B6962200E292E8 /* BitmarksWithAsset.swift in Sources */,
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
 				E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */,
 				E2BEC95B22AFA6F8009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
+				E215D72B22B6940300E292E8 /* BitmarkStorage.swift in Sources */,
 				E2BEC96422AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
 				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
+				E215D73122B6958E00E292E8 /* BitmarkService.swift in Sources */,
+				E215D72E22B694B800E292E8 /* FileManager+Extension.swift in Sources */,
 				E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
@@ -599,11 +641,13 @@
 				E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E2BEC94F22AF699D009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
+				E215D73A22B6A0F700E292E8 /* String+Extension.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
 				E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
+				E215D73822B69C8E00E292E8 /* YourPropertyCell.swift in Sources */,
 				E205107922B0A09900475871 /* SubmitButton.swift in Sources */,
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,

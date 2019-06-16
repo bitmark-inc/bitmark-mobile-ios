@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BitmarkSDK
 
 class PropertiesViewController: UIViewController {
 
@@ -23,8 +24,13 @@ class PropertiesViewController: UIViewController {
   }()
 
   //*** Yours Segment ***
+  var yoursTableView: UITableView!
   var createFirstProperty: UIButton!
   let emptyViewInYoursTab = UIView()
+  var bitmarks = [Bitmark]()
+  lazy var bitmarkStorage: BitmarkStorage = {
+    return BitmarkStorage(for: Global.currentAccount!)
+  }()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -36,6 +42,33 @@ class PropertiesViewController: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
+
+    loadData()
+  }
+
+  // MARK: - Data Handlers
+  private func loadData() {
+    var errorMessage: String? = nil
+    let alert = showIndicatorAlert(message: "Syncing Bitmarks") {
+      do {
+        try self.bitmarkStorage.sync()
+        self.bitmarks = try self.bitmarkStorage.getBitmarkData()
+
+        if self.bitmarks.isEmpty {
+          self.emptyViewInYoursTab.isHidden = false
+        } else {
+          self.emptyViewInYoursTab.isHidden = true
+          self.yoursTableView.reloadData()
+        }
+      } catch let e {
+        errorMessage = e.localizedDescription
+      }
+    }
+    alert.dismiss(animated: true) {
+      if let errorMessage = errorMessage {
+        self.showErrorAlert(message: errorMessage)
+      }
+    }
   }
 
   // MARK: - Handlers
@@ -59,9 +92,27 @@ class PropertiesViewController: UIViewController {
   }
 }
 
+// MARK: - UITableViewDataSource
+extension PropertiesViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return bitmarks.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withClass: YourPropertyCell.self)
+    let bitmark = bitmarks[indexPath.row]
+    let asset = Global.findAsset(with: bitmark.asset_id)
+    cell.loadWith(asset, bitmark)
+    return cell
+  }
+}
+
 // MARK: - Setup Views/Events
 extension PropertiesViewController {
   fileprivate func setupEvents() {
+    yoursTableView.dataSource = self
+    yoursTableView.register(cellWithClass: YourPropertyCell.self)
+
     createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)
   }
 
@@ -71,8 +122,16 @@ extension PropertiesViewController {
     // *** Setup subviews ***
     setupYoursEmptyView()
 
+    yoursTableView = UITableView()
+    yoursTableView.tableFooterView = UIView() // eliminate extra separators
+
     yoursView.addSubview(emptyViewInYoursTab)
+    yoursView.addSubview(yoursTableView)
     emptyViewInYoursTab.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    yoursTableView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
     }
 
