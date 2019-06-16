@@ -108,6 +108,40 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     }
   }
 
+  @objc func tapToIssue(_ button: UIButton) {
+    view.endEditing(true)
+
+    let assetName = propertyNameTextField.text!
+    let metadata = extractMetadataFromForms()
+    let quantity = Int(numberOfBitmarksTextField.text!)!
+    var errorMessage: String? = nil
+
+    let alert = showIndicatorAlert(message: Constant.Message.sendingTransaction) {
+      do {
+        let assetId = try AssetService.registerAsset(
+          registrant: Global.currentAccount!,
+          assetName: assetName,
+          fingerprint: self.assetFingerprintData,
+          metadata: metadata)
+        let _ = try AssetService.issueBitmarks(
+          issuer: Global.currentAccount!,
+          assetId: assetId,
+          quantity: quantity)
+      } catch let e {
+        errorMessage = e.localizedDescription
+      }
+    }
+
+    // show result alert
+    alert.dismiss(animated: true) {
+      if let errorMessage = errorMessage {
+        self.showErrorAlert(message: errorMessage)
+      } else {
+        self.showSuccessAlert(message: Constant.Success.issue)
+      }
+    }
+  }
+
   @objc func dismissKeyboard() {
     view.endEditing(true)
   }
@@ -242,6 +276,17 @@ extension RegisterPropertyRightsViewController {
     metadataEditModeButton.isSelected = isOnEdit
     metadataForms.forEach { $0.isOnDeleteMode = isOnEdit }
   }
+
+  private func extractMetadataFromForms() -> [String: String] {
+    var metadataList = [String: String]()
+    metadataForms.forEach { (form) in
+      let metadata = form.getValues()
+      if !metadata.label.isEmpty {
+        metadataList[metadata.label] = metadata.description
+      }
+    }
+    return metadataList
+  }
 }
 
 // MARK: - Setup Views/Events
@@ -256,6 +301,8 @@ extension RegisterPropertyRightsViewController {
     numberOfBitmarksTextField.delegate = self
     numberOfBitmarksTextField.addTarget(self, action: #selector(typeNumberOfBitmarkToIssue), for: .editingChanged)
     numberOfBitmarksTextField.addTarget(self, action: #selector(editingTextField), for: .editingChanged)
+
+    issueButton.addTarget(self, action: #selector(tapToIssue), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {

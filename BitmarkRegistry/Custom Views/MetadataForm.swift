@@ -51,6 +51,10 @@ class MetadataForm: UIView, UITextFieldDelegate {
   }
 
   // MARK: - Handlers
+  func getValues() -> (label: String, description: String) {
+    return (labelTextField.text!, descriptionTextField.text!)
+  }
+
   func setLabel(_ label: String) {
     labelTextField.text = label
     labelTextField.sendActions(for: .editingDidBegin)
