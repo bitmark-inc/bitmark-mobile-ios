@@ -116,6 +116,7 @@ extension MetadataLabelViewController {
     // *** Setup subviews ***
     labelTextField = DesignedTextField(placeholder: "SELECT OR CREATE A LABEL")
     labelTextField.returnKeyType = .done
+    labelTextField.clearButtonMode = .always
 
     suggestedLabelTableView = UITableView()
     suggestedLabelTableView.register(cellWithClass: LabelCell.self)

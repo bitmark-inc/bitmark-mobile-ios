@@ -27,6 +27,17 @@ class DesignedTextField: UITextField {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // Change image of the clear button
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    for view in subviews {
+      if let button = view as? UIButton {
+        button.setImageForAllStates(UIImage(named: "blue-delete-label")!)
+      }
+    }
+  }
+
   // MARK: - Handlers
   func onErrorStyle() {
     textColor = .mainRedColor
