@@ -36,12 +36,20 @@ class BitmarkDetailViewController: UIViewController {
   var transactionIndicator: UIActivityIndicatorView!
   var transactions = [Transaction]()
 
+  var actionMenuView: UIView!
+  var copyIdButton: UIButton!
+  var downloadButton: UIButton!
+  var transferButton: UIButton!
+  var deleteButton: UIButton!
+
 
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
 
     title = asset.name.uppercased()
+    let menuBarButton = UIBarButtonItem(image: UIImage(named: "More Actions-close"), style: .plain, target: self, action: #selector(tapToOpenActionMenu))
+    navigationItem.rightBarButtonItem = menuBarButton
     setupViews()
     setupEvents()
 
@@ -83,6 +91,12 @@ class BitmarkDetailViewController: UIViewController {
         self.transactionTableView.reloadData()
       }
     }
+  }
+
+  // MARK: - Handlers
+  @objc func tapToOpenActionMenu(sender: UIBarButtonItem) {
+    actionMenuView.isHidden = !actionMenuView.isHidden
+    sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
   }
 }
 
@@ -153,11 +167,46 @@ extension BitmarkDetailViewController {
       spacing: 30
     )
 
+    actionMenuView = setupActionMenuView()
+    actionMenuView.backgroundColor = .wildSand
+    actionMenuView.addShadow(ofColor: .gray)
+    actionMenuView.isHidden = true
+
     view.addSubview(stackView)
+    view.addSubview(actionMenuView)
+
     stackView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
           .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
     }
+
+    actionMenuView.snp.makeConstraints { (make) in
+      make.width.equalTo(180)
+      make.top.trailing.equalTo(view.safeAreaLayoutGuide)
+    }
+  }
+
+  fileprivate func setupActionMenuView() -> UIView {
+    copyIdButton = CommonUI.actionMenuButton(title: "COPY ID")
+    downloadButton = CommonUI.actionMenuButton(title: "DOWNLOAD")
+    transferButton = CommonUI.actionMenuButton(title: "TRANSFER")
+    deleteButton = CommonUI.actionMenuButton(title: "DELETE")
+
+    let stackview = UIStackView(
+      arrangedSubviews: [copyIdButton, downloadButton, transferButton, deleteButton],
+      axis: .vertical,
+      spacing: 15,
+      alignment: .trailing,
+      distribution: .fill
+    )
+
+    let view = UIView()
+    view.addSubview(stackview)
+    stackview.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+          .inset(UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20))
+    }
+    return view
   }
 
   fileprivate func setupAssetInfoView() -> UIView {

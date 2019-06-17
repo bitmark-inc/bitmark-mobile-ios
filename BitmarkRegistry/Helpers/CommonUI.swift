@@ -39,6 +39,15 @@ class CommonUI {
     return button
   }
 
+  static func actionMenuButton(title: String) -> UIButton {
+    let button = UIButton(type: .system)
+    button.setTitle(title.uppercased(), for: .normal)
+    button.setTitleColor(.mainBlueColor, for: .normal)
+    button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 16)
+    button.contentHorizontalAlignment = .right
+    return button
+  }
+
   static func fieldTitleLabel(text: String) -> UILabel {
     let label = UILabel(text: text.uppercased())
     label.font = UIFont(name: "Avenir", size: 14)
