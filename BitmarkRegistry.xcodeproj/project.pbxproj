@@ -25,6 +25,8 @@
 		E20ED1B522B767B00046CBEE /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B322B767B00046CBEE /* TransactionCell.swift */; };
 		E20ED1B722B7881A0046CBEE /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */; };
 		E20ED1B822B7881A0046CBEE /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */; };
+		E20ED1BA22B7B2D90046CBEE /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B922B7B2D90046CBEE /* TransferBitmarkViewController.swift */; };
+		E20ED1BB22B7B2D90046CBEE /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B922B7B2D90046CBEE /* TransferBitmarkViewController.swift */; };
 		E215D72B22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
 		E215D72C22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
 		E215D72E22B694B800E292E8 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72D22B694B800E292E8 /* FileManager+Extension.swift */; };
@@ -117,6 +119,7 @@
 		E20ED1B022B754010046CBEE /* TransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
 		E20ED1B322B767B00046CBEE /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
+		E20ED1B922B7B2D90046CBEE /* TransferBitmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferBitmarkViewController.swift; sourceTree = "<group>"; };
 		E215D72A22B6940300E292E8 /* BitmarkStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkStorage.swift; sourceTree = "<group>"; };
 		E215D72D22B694B800E292E8 /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		E215D73022B6958E00E292E8 /* BitmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
@@ -240,6 +243,7 @@
 				E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */,
 				E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */,
 				E215D73D22B6B2AC00E292E8 /* BitmarkDetailViewController.swift */,
+				E20ED1B922B7B2D90046CBEE /* TransferBitmarkViewController.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -614,6 +618,7 @@
 				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
 				E2BEC95122AF9871009F7DF5 /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */,
+				E20ED1BB22B7B2D90046CBEE /* TransferBitmarkViewController.swift in Sources */,
 				E29A73FD22AA49990052C716 /* Credential.swift in Sources */,
 				E2BEC95422AF9878009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E29A73FE22AA49990052C716 /* AccountService.swift in Sources */,
@@ -664,6 +669,7 @@
 				E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
+				E20ED1BA22B7B2D90046CBEE /* TransferBitmarkViewController.swift in Sources */,
 				E205108122B1041200475871 /* MetadataForm.swift in Sources */,
 				E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,

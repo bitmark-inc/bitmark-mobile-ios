@@ -37,6 +37,7 @@ class BitmarkDetailViewController: UIViewController {
   var transactions = [Transaction]()
 
   var actionMenuView: UIView!
+  var menuBarButton: UIBarButtonItem!
   var copyIdButton: UIButton!
   var copiedToClipboardNotifier: UILabel!
   var downloadButton: UIButton!
@@ -49,8 +50,9 @@ class BitmarkDetailViewController: UIViewController {
     super.viewDidLoad()
 
     title = asset.name.uppercased()
-    let menuBarButton = UIBarButtonItem(image: UIImage(named: "More Actions-close"), style: .plain, target: self, action: #selector(tapToOpenActionMenu))
+    menuBarButton = UIBarButtonItem(image: UIImage(named: "More Actions-close"), style: .plain, target: self, action: #selector(tapToOpenActionMenu))
     navigationItem.rightBarButtonItem = menuBarButton
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
 
@@ -95,7 +97,7 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   // MARK: - Handlers
-  @objc func tapToOpenActionMenu(sender: UIBarButtonItem) {
+  @objc func tapToOpenActionMenu(_ sender: UIBarButtonItem) {
     actionMenuView.isHidden = !actionMenuView.isHidden
     sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
   }
@@ -153,6 +155,17 @@ extension BitmarkDetailViewController {
     transactionTableView.register(cellWithClass: TransactionCell.self)
 
     copyIdButton.addTarget(self, action: #selector(tapToCopyId), for: .touchUpInside)
+    transferButton.addAction(for: .touchUpInside) {
+      self.performMoveToTransferBitmark()
+    }
+  }
+
+  fileprivate func performMoveToTransferBitmark() {
+    tapToOpenActionMenu(menuBarButton)
+    let transferBitmarkVC = TransferBitmarkViewController()
+    transferBitmarkVC.assetName = asset.name
+    transferBitmarkVC.bitmarkId = bitmark.id
+    navigationController?.pushViewController(transferBitmarkVC)
   }
 
   fileprivate func setupViews() {

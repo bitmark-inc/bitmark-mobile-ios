@@ -111,6 +111,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let bitmark = bitmarks[indexPath.row]
     let bitmarkDetailsVC = BitmarkDetailViewController()
+    bitmarkDetailsVC.hidesBottomBarWhenPushed = true
     bitmarkDetailsVC.bitmark = bitmark
     navigationController?.pushViewController(bitmarkDetailsVC)
   }
