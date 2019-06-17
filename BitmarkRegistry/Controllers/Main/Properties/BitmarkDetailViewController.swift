@@ -38,6 +38,7 @@ class BitmarkDetailViewController: UIViewController {
 
   var actionMenuView: UIView!
   var copyIdButton: UIButton!
+  var copiedToClipboardNotifier: UILabel!
   var downloadButton: UIButton!
   var transferButton: UIButton!
   var deleteButton: UIButton!
@@ -98,6 +99,11 @@ class BitmarkDetailViewController: UIViewController {
     actionMenuView.isHidden = !actionMenuView.isHidden
     sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
   }
+
+  @objc func tapToCopyId(_ sender: UIButton) {
+    UIPasteboard.general.string = bitmark.id
+    copiedToClipboardNotifier.showIn(period: 1.2)
+  }
 }
 
 // MARK: - UITableViewDataSource
@@ -145,6 +151,8 @@ extension BitmarkDetailViewController {
     transactionTableView.dataSource = self
     transactionTableView.delegate = self
     transactionTableView.register(cellWithClass: TransactionCell.self)
+
+    copyIdButton.addTarget(self, action: #selector(tapToCopyId), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {
@@ -188,12 +196,32 @@ extension BitmarkDetailViewController {
 
   fileprivate func setupActionMenuView() -> UIView {
     copyIdButton = CommonUI.actionMenuButton(title: "COPY ID")
+
+    copiedToClipboardNotifier = UILabel(text: "Copied to clipboard!")
+    copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
+    copiedToClipboardNotifier.textColor = .mainBlueColor
+    copiedToClipboardNotifier.textAlignment = .right
+    copiedToClipboardNotifier.isHidden = true
+
+    let copyIdView = UIView()
+    copyIdView.addSubview(copyIdButton)
+    copyIdView.addSubview(copiedToClipboardNotifier)
+
+    copyIdButton.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    copiedToClipboardNotifier.snp.makeConstraints { (make) in
+      make.top.equalTo(copyIdButton.snp.bottom).offset(-5)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+
     downloadButton = CommonUI.actionMenuButton(title: "DOWNLOAD")
     transferButton = CommonUI.actionMenuButton(title: "TRANSFER")
     deleteButton = CommonUI.actionMenuButton(title: "DELETE")
 
     let stackview = UIStackView(
-      arrangedSubviews: [copyIdButton, downloadButton, transferButton, deleteButton],
+      arrangedSubviews: [copyIdView, downloadButton, transferButton, deleteButton],
       axis: .vertical,
       spacing: 15,
       alignment: .trailing,
