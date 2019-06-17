@@ -95,7 +95,7 @@ class PropertiesViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-extension PropertiesViewController: UITableViewDataSource {
+extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return bitmarks.count
   }
@@ -107,12 +107,20 @@ extension PropertiesViewController: UITableViewDataSource {
     cell.loadWith(asset, bitmark)
     return cell
   }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let bitmark = bitmarks[indexPath.row]
+    let bitmarkDetailsVC = BitmarkDetailViewController()
+    bitmarkDetailsVC.bitmark = bitmark
+    navigationController?.pushViewController(bitmarkDetailsVC)
+  }
 }
 
 // MARK: - Setup Views/Events
 extension PropertiesViewController {
   fileprivate func setupEvents() {
     yoursTableView.dataSource = self
+    yoursTableView.delegate = self
     yoursTableView.register(cellWithClass: YourPropertyCell.self)
 
     createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)

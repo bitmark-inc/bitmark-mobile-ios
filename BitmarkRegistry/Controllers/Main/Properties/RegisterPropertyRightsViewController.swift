@@ -363,9 +363,8 @@ extension RegisterPropertyRightsViewController {
     // *** Setup subviews ***
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "ASSET FINGERPRINT")
 
-    assetFingerprintLabel = UILabel()
+    assetFingerprintLabel = CommonUI.infoLabel()
     assetFingerprintLabel.textColor = .mainBlueColor
-    assetFingerprintLabel.font = UIFont(name: "Courier", size: 13)
 
     let generatedFromLabel = UILabel()
     generatedFromLabel.text = "GENERATED FROM"

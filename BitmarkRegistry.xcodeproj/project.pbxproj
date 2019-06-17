@@ -16,6 +16,15 @@
 		E205107D22B0ABC300475871 /* DesignedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107B22B0AA6300475871 /* DesignedTextField.swift */; };
 		E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */; };
 		E205108122B1041200475871 /* MetadataForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205108022B1041200475871 /* MetadataForm.swift */; };
+		E20ED1AC22B72E180046CBEE /* BitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73D22B6B2AC00E292E8 /* BitmarkDetailViewController.swift */; };
+		E20ED1AE22B73DD50046CBEE /* MetadataDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1AD22B73DD50046CBEE /* MetadataDetailCell.swift */; };
+		E20ED1AF22B73DD50046CBEE /* MetadataDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1AD22B73DD50046CBEE /* MetadataDetailCell.swift */; };
+		E20ED1B122B754010046CBEE /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B022B754010046CBEE /* TransactionService.swift */; };
+		E20ED1B222B754010046CBEE /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B022B754010046CBEE /* TransactionService.swift */; };
+		E20ED1B422B767B00046CBEE /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B322B767B00046CBEE /* TransactionCell.swift */; };
+		E20ED1B522B767B00046CBEE /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B322B767B00046CBEE /* TransactionCell.swift */; };
+		E20ED1B722B7881A0046CBEE /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */; };
+		E20ED1B822B7881A0046CBEE /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */; };
 		E215D72B22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
 		E215D72C22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
 		E215D72E22B694B800E292E8 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72D22B694B800E292E8 /* FileManager+Extension.swift */; };
@@ -28,6 +37,7 @@
 		E215D73A22B6A0F700E292E8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73922B6A0F700E292E8 /* String+Extension.swift */; };
 		E215D73B22B6A2DA00E292E8 /* YourPropertyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73722B69C8E00E292E8 /* YourPropertyCell.swift */; };
 		E215D73C22B6A2E400E292E8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73922B6A0F700E292E8 /* String+Extension.swift */; };
+		E215D73E22B6B2AC00E292E8 /* BitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D73D22B6B2AC00E292E8 /* BitmarkDetailViewController.swift */; };
 		E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */; };
 		E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4B22ADFED80095E11D /* CommonUI.swift */; };
 		E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */; };
@@ -103,12 +113,17 @@
 		E205107B22B0AA6300475871 /* DesignedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignedTextField.swift; sourceTree = "<group>"; };
 		E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataLabelViewController.swift; sourceTree = "<group>"; };
 		E205108022B1041200475871 /* MetadataForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataForm.swift; sourceTree = "<group>"; };
+		E20ED1AD22B73DD50046CBEE /* MetadataDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataDetailCell.swift; sourceTree = "<group>"; };
+		E20ED1B022B754010046CBEE /* TransactionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
+		E20ED1B322B767B00046CBEE /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		E215D72A22B6940300E292E8 /* BitmarkStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkStorage.swift; sourceTree = "<group>"; };
 		E215D72D22B694B800E292E8 /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		E215D73022B6958E00E292E8 /* BitmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
 		E215D73422B6962200E292E8 /* BitmarksWithAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarksWithAsset.swift; sourceTree = "<group>"; };
 		E215D73722B69C8E00E292E8 /* YourPropertyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourPropertyCell.swift; sourceTree = "<group>"; };
 		E215D73922B6A0F700E292E8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		E215D73D22B6B2AC00E292E8 /* BitmarkDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkDetailViewController.swift; sourceTree = "<group>"; };
 		E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E24D9C4B22ADFED80095E11D /* CommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUI.swift; sourceTree = "<group>"; };
 		E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
@@ -212,6 +227,7 @@
 				E205107B22B0AA6300475871 /* DesignedTextField.swift */,
 				E205108022B1041200475871 /* MetadataForm.swift */,
 				E205107822B0A09900475871 /* SubmitButton.swift */,
+				E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -223,6 +239,7 @@
 				E2BEC95D22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift */,
 				E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */,
 				E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */,
+				E215D73D22B6B2AC00E292E8 /* BitmarkDetailViewController.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -235,6 +252,8 @@
 				E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */,
 				E2DFDA3522B21233008B1AD5 /* LabelCell.swift */,
 				E215D73722B69C8E00E292E8 /* YourPropertyCell.swift */,
+				E20ED1AD22B73DD50046CBEE /* MetadataDetailCell.swift */,
+				E20ED1B322B767B00046CBEE /* TransactionCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -319,6 +338,7 @@
 				E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */,
 				E215D73022B6958E00E292E8 /* BitmarkService.swift */,
 				E215D72A22B6940300E292E8 /* BitmarkStorage.swift */,
+				E20ED1B022B754010046CBEE /* TransactionService.swift */,
 				E2E798E6229E285600508B69 /* KeychainStore.swift */,
 			);
 			path = Services;
@@ -580,6 +600,7 @@
 				E215D73622B6962200E292E8 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */,
 				E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */,
+				E20ED1AC22B72E180046CBEE /* BitmarkDetailViewController.swift in Sources */,
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
 				E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
@@ -587,7 +608,9 @@
 				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
 				E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */,
 				E215D73222B6958E00E292E8 /* BitmarkService.swift in Sources */,
+				E20ED1B522B767B00046CBEE /* TransactionCell.swift in Sources */,
 				E215D72F22B694B800E292E8 /* FileManager+Extension.swift in Sources */,
+				E20ED1AF22B73DD50046CBEE /* MetadataDetailCell.swift in Sources */,
 				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
 				E2BEC95122AF9871009F7DF5 /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */,
@@ -608,7 +631,9 @@
 				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
 				E2BEC95222AF9873009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E29A740122AA49990052C716 /* Global.swift in Sources */,
+				E20ED1B222B754010046CBEE /* TransactionService.swift in Sources */,
 				E29A740222AA49990052C716 /* KeychainStore.swift in Sources */,
+				E20ED1B822B7881A0046CBEE /* SelfSizedTableView.swift in Sources */,
 				E2DFDA3422B1EB46008B1AD5 /* MetadataLabelViewController.swift in Sources */,
 				E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */,
 				E2DFDA3322B1EB43008B1AD5 /* MetadataForm.swift in Sources */,
@@ -625,6 +650,7 @@
 				E215D73522B6962200E292E8 /* BitmarksWithAsset.swift in Sources */,
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
 				E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */,
+				E215D73E22B6B2AC00E292E8 /* BitmarkDetailViewController.swift in Sources */,
 				E2BEC95B22AFA6F8009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
@@ -632,7 +658,9 @@
 				E2BEC96422AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
 				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
 				E215D73122B6958E00E292E8 /* BitmarkService.swift in Sources */,
+				E20ED1B422B767B00046CBEE /* TransactionCell.swift in Sources */,
 				E215D72E22B694B800E292E8 /* FileManager+Extension.swift in Sources */,
+				E20ED1AE22B73DD50046CBEE /* MetadataDetailCell.swift in Sources */,
 				E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
@@ -653,7 +681,9 @@
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
 				E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */,
+				E20ED1B122B754010046CBEE /* TransactionService.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
+				E20ED1B722B7881A0046CBEE /* SelfSizedTableView.swift in Sources */,
 				E24D9C5E22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift in Sources */,
 				E283CB0622B3B1EA00CCB4E5 /* AssetService.swift in Sources */,
 				E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */,

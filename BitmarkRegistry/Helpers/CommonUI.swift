@@ -54,7 +54,7 @@ class CommonUI {
   }
 
   static func errorFieldLabel(text: String = "") -> UILabel {
-    let label = UILabel(text: text.uppercased()).lineHeightMultiple(1.2)
+    let label = UILabel(text: text).lineHeightMultiple(1.2)
     label.font = UIFont(name: "Avenir", size: 14)
     label.textColor = .mainRedColor
     label.numberOfLines = 0
@@ -71,6 +71,12 @@ class CommonUI {
     let label = UILabel(text: text)
     label.font = UIFont(name: "Avenir", size: 17)
     label.numberOfLines = 0
+    return label
+  }
+
+  static func infoLabel(text: String = "") -> UILabel {
+    let label = UILabel(text: text).lineHeightMultiple(1.2)
+    label.font = UIFont(name: "Courier", size: 13)
     return label
   }
 
