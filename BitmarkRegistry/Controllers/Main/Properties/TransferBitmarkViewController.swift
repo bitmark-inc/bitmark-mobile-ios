@@ -18,6 +18,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   var recipientAccountNumberTextfield: DesignedTextField!
   var errorForInvalidAccountNumber: UILabel!
   var transferButton: SubmitButton!
+  var scanQRButton: UIButton!
   var transferButtonBottomConstraint: Constraint!
 
   // MARK: - Init
@@ -25,6 +26,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
     super.viewDidLoad()
 
     title = assetName
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
   }
@@ -46,6 +48,12 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
   @objc func beginEditing(textfield: UITextField) {
     errorForInvalidAccountNumber.isHidden = true
+  }
+
+  @objc func touchToScanQRCode(_ sender: UIButton) {
+    let qrScannerVC = QRScannerViewController()
+    qrScannerVC.delegate = self
+    navigationController?.pushViewController(qrScannerVC)
   }
 
   @objc func tapToTransfer(button: UIButton) {
@@ -75,12 +83,22 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   }
 }
 
+// MARK: - QRCodeScannerDelegate
+extension TransferBitmarkViewController: QRCodeScannerDelegate {
+  func process(qrCode: String) {
+    recipientAccountNumberTextfield.text = qrCode
+    recipientAccountNumberTextfield.sendActions(for: .editingDidBegin)
+    recipientAccountNumberTextfield.sendActions(for: .editingChanged)
+  }
+}
+
 // MARK: - Setup Views/Events
 extension TransferBitmarkViewController {
   fileprivate func setupEvents() {
     recipientAccountNumberTextfield.delegate = self
     recipientAccountNumberTextfield.addTarget(self, action: #selector(changeRecipientTextField), for: .editingChanged)
     recipientAccountNumberTextfield.addTarget(self, action: #selector(beginEditing), for: .editingDidBegin)
+    scanQRButton.addTarget(self, action: #selector(touchToScanQRCode), for: .touchUpInside)
 
     transferButton.addTarget(self, action: #selector(tapToTransfer), for: .touchUpInside)
   }
@@ -90,6 +108,13 @@ extension TransferBitmarkViewController {
 
     // *** Setup subviews ***
     let transferTitle = CommonUI.inputFieldTitleLabel(text: "TRANSFER BITMARK")
+    scanQRButton = UIButton(type: .system)
+    scanQRButton.setImage(UIImage(named: "qr-code-scan-icon"), for: .normal)
+    scanQRButton.snp.makeConstraints { (make) in
+      make.width.height.equalTo(19)
+    }
+
+    let transferView = UIStackView(arrangedSubviews: [transferTitle, scanQRButton])
 
     recipientAccountNumberTextfield = DesignedTextField(placeholder: "RECIPIENT BITMARK ACCOUNT NUMBER")
     recipientAccountNumberTextfield.clearButtonMode = .always
@@ -101,12 +126,12 @@ extension TransferBitmarkViewController {
     let descriptionLabel = CommonUI.descriptionLabel(text: "Enter the Bitmark account number to which you would like to transfer ownership of this property.")
 
     let mainView = UIView()
-    mainView.addSubview(transferTitle)
+    mainView.addSubview(transferView)
     mainView.addSubview(recipientAccountNumberTextfield)
     mainView.addSubview(errorForInvalidAccountNumber)
     mainView.addSubview(descriptionLabel)
 
-    transferTitle.snp.makeConstraints { (make) in
+    transferView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
     }
 

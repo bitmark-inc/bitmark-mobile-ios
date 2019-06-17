@@ -27,6 +27,8 @@
 		E20ED1B822B7881A0046CBEE /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */; };
 		E20ED1BA22B7B2D90046CBEE /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B922B7B2D90046CBEE /* TransferBitmarkViewController.swift */; };
 		E20ED1BB22B7B2D90046CBEE /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1B922B7B2D90046CBEE /* TransferBitmarkViewController.swift */; };
+		E20ED1BD22B7C6CF0046CBEE /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1BC22B7C6CF0046CBEE /* QRCode.swift */; };
+		E20ED1BE22B7C6CF0046CBEE /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20ED1BC22B7C6CF0046CBEE /* QRCode.swift */; };
 		E215D72B22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
 		E215D72C22B6940300E292E8 /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72A22B6940300E292E8 /* BitmarkStorage.swift */; };
 		E215D72E22B694B800E292E8 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E215D72D22B694B800E292E8 /* FileManager+Extension.swift */; };
@@ -50,6 +52,10 @@
 		E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */; };
 		E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */; };
 		E24D9C5E22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */; };
+		E273847522B881FC00284947 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E273847422B881FC00284947 /* QRScannerViewController.swift */; };
+		E273847622B881FC00284947 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E273847422B881FC00284947 /* QRScannerViewController.swift */; };
+		E273847B22B89A8500284947 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E273847A22B89A8500284947 /* QRViewController.swift */; };
+		E273847C22B89ABB00284947 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E273847A22B89A8500284947 /* QRViewController.swift */; };
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E283CB0622B3B1EA00CCB4E5 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */; };
 		E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */; };
@@ -120,6 +126,7 @@
 		E20ED1B322B767B00046CBEE /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		E20ED1B622B7881A0046CBEE /* SelfSizedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		E20ED1B922B7B2D90046CBEE /* TransferBitmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferBitmarkViewController.swift; sourceTree = "<group>"; };
+		E20ED1BC22B7C6CF0046CBEE /* QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
 		E215D72A22B6940300E292E8 /* BitmarkStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkStorage.swift; sourceTree = "<group>"; };
 		E215D72D22B694B800E292E8 /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		E215D73022B6958E00E292E8 /* BitmarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
@@ -133,6 +140,8 @@
 		E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+AddTargetClosure+Extension.swift"; sourceTree = "<group>"; };
+		E273847422B881FC00284947 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
+		E273847A22B89A8500284947 /* QRViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				E215D73422B6962200E292E8 /* BitmarksWithAsset.swift */,
+				E20ED1BC22B7C6CF0046CBEE /* QRCode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -384,6 +394,8 @@
 			isa = PBXGroup;
 			children = (
 				E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */,
+				E273847422B881FC00284947 /* QRScannerViewController.swift */,
+				E273847A22B89A8500284947 /* QRViewController.swift */,
 				E2BEC95922AFA6D6009F7DF5 /* Properties */,
 				E24D9C5A22AE57FA0095E11D /* Account */,
 			);
@@ -520,6 +532,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
@@ -530,6 +543,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
@@ -550,6 +564,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
+				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
@@ -560,6 +575,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
@@ -612,6 +628,7 @@
 				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
 				E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */,
 				E215D73222B6958E00E292E8 /* BitmarkService.swift in Sources */,
+				E20ED1BE22B7C6CF0046CBEE /* QRCode.swift in Sources */,
 				E20ED1B522B767B00046CBEE /* TransactionCell.swift in Sources */,
 				E215D72F22B694B800E292E8 /* FileManager+Extension.swift in Sources */,
 				E20ED1AF22B73DD50046CBEE /* MetadataDetailCell.swift in Sources */,
@@ -626,7 +643,9 @@
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
 				E215D73C22B6A2E400E292E8 /* String+Extension.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
+				E273847C22B89ABB00284947 /* QRViewController.swift in Sources */,
 				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
+				E273847622B881FC00284947 /* QRScannerViewController.swift in Sources */,
 				E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */,
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
@@ -663,6 +682,7 @@
 				E2BEC96422AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
 				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
 				E215D73122B6958E00E292E8 /* BitmarkService.swift in Sources */,
+				E20ED1BD22B7C6CF0046CBEE /* QRCode.swift in Sources */,
 				E20ED1B422B767B00046CBEE /* TransactionCell.swift in Sources */,
 				E215D72E22B694B800E292E8 /* FileManager+Extension.swift in Sources */,
 				E20ED1AE22B73DD50046CBEE /* MetadataDetailCell.swift in Sources */,
@@ -677,7 +697,9 @@
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E215D73A22B6A0F700E292E8 /* String+Extension.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
+				E273847B22B89A8500284947 /* QRViewController.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
+				E273847522B881FC00284947 /* QRScannerViewController.swift in Sources */,
 				E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
