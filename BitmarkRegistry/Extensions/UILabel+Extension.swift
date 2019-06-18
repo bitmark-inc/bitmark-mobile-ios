@@ -15,7 +15,7 @@ extension UILabel {
   }
 
   func lineHeightMultiple(_ lineHeightMultiple: CGFloat) -> UILabel {
-    let attributedString = NSMutableAttributedString(string: text!)
+    let attributedString = NSMutableAttributedString(string: text ?? "")
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineHeightMultiple = lineHeightMultiple
 

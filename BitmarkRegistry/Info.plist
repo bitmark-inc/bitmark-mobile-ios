@@ -39,6 +39,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) will use photos from your library to issue bitmarks.</string>
 	<key>AppCredentials</key>
 	<dict>
 		<key>BITMARK_API_TOKEN</key>

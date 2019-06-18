@@ -46,6 +46,21 @@ class CommonUI {
     return label
   }
 
+  static func inputFieldTitleLabel(text: String) -> UILabel {
+    let label = UILabel(text: text.uppercased()).lineHeightMultiple(1.2)
+    label.font = UIFont(name: "Avenir-Black", size: 14)
+    label.numberOfLines = 0
+    return label
+  }
+
+  static func errorFieldLabel(text: String = "") -> UILabel {
+    let label = UILabel(text: text.uppercased()).lineHeightMultiple(1.2)
+    label.font = UIFont(name: "Avenir", size: 14)
+    label.textColor = .mainRedColor
+    label.numberOfLines = 0
+    return label
+  }
+
   static func pageTitleLabel(text: String) -> UILabel {
     let label = UILabel(text: text.uppercased()).lineHeightMultiple(1.2)
     label.font = UIFont(name: "Avenir-Black", size: 17)
@@ -56,6 +71,14 @@ class CommonUI {
     let label = UILabel(text: text)
     label.font = UIFont(name: "Avenir", size: 17)
     label.numberOfLines = 0
+    return label
+  }
+
+  static func alertMessageLabel(text: String) -> UILabel {
+    let label = UILabel(text: text)
+    label.numberOfLines = 0
+    label.font = UIFont(name: "SF Pro Text", size: 16)
+    label.textAlignment = .center
     return label
   }
 }
