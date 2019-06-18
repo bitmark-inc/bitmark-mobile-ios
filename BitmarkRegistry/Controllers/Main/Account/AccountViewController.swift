@@ -22,6 +22,7 @@ class AccountViewController: UIViewController {
     super.viewDidLoad()
 
     title = "Account"
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
 
@@ -44,6 +45,12 @@ class AccountViewController: UIViewController {
 extension AccountViewController {
   fileprivate func setupEvents() {
     accountNumberLabel.addTarget(self, action: #selector(tapToCopyAccountNumber), for: .touchUpInside)
+
+    writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
+      self.navigationController?.pushViewController(
+        WarningRecoveryPhraseViewController()
+      )
+    })
   }
 
   fileprivate func setupViews() {
