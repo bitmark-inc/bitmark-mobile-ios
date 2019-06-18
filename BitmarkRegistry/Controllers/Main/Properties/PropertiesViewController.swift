@@ -23,7 +23,7 @@ class PropertiesViewController: UIViewController {
     return segmentControl
   }()
 
-  //*** Yours Segment ***
+  // *** Yours Segment ***
   var yoursTableView: UITableView!
   var createFirstProperty: UIButton!
   let emptyViewInYoursTab = UIView()
@@ -131,18 +131,20 @@ extension PropertiesViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
+    // ***** Yours Segment *****
     setupYoursEmptyView()
 
     yoursTableView = UITableView()
     yoursTableView.tableFooterView = UIView() // eliminate extra separators
 
-    yoursView.addSubview(emptyViewInYoursTab)
     yoursView.addSubview(yoursTableView)
-    emptyViewInYoursTab.snp.makeConstraints { (make) in
+    yoursView.addSubview(emptyViewInYoursTab)
+
+    yoursTableView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
     }
 
-    yoursTableView.snp.makeConstraints { (make) in
+    emptyViewInYoursTab.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
     }
 
