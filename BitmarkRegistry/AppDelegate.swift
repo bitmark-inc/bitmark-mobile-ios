@@ -15,7 +15,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Override point for customization after application launch.
+    // init BitmarkSDK environment & api_token
+    BitmarkSDKService.setupConfig()
+
+    window = UIWindow(frame: UIScreen.main.bounds)
+    window?.makeKeyAndVisible()
+
+    // Redirect Screen for new user / existing user
+    let initialVC = AccountService.existsCurrentAccount()
+                          ? CustomTabBarViewController()
+                          : OnboardingViewController()
+    window?.rootViewController = initialVC
+
     return true
   }
 
