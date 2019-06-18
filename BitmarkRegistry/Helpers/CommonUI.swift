@@ -73,4 +73,12 @@ class CommonUI {
     label.numberOfLines = 0
     return label
   }
+
+  static func alertMessageLabel(text: String) -> UILabel {
+    let label = UILabel(text: text)
+    label.numberOfLines = 0
+    label.font = UIFont(name: "SF Pro Text", size: 16)
+    label.textAlignment = .center
+    return label
+  }
 }

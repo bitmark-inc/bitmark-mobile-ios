@@ -8,6 +8,12 @@
 
 import UIKit
 
+/**
+ DesignedTextField:
+ - **Bottom line color**: default is mainBlueColor
+ - **Padding left**: 10px
+ - **Error mode**: text & bottom line turn mainRedColor
+ */
 class DesignedTextField: UITextField {
   var bottomLineColor: UIColor = .mainBlueColor {
     didSet {

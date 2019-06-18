@@ -8,6 +8,11 @@
 
 import UIKit
 
+/**
+ SubmitButton: using for consitent Submit button style across screens
+ - **Enabled Mode**:  titleColor: mainBlueColor; backgroundColor: wildSand, topLine: silver
+ - **Disabled Mode**: titleColor: silver       ; backgroundColor: wildSand, topLine: mainBlueColor
+ */
 class SubmitButton: UIButton {
   var topLine: UIView!
   override var isEnabled: Bool {

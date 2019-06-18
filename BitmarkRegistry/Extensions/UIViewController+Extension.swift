@@ -32,18 +32,14 @@ extension UIViewController {
     activityIndicator.color = .black
     activityIndicator.startAnimating()
 
-    let messageLabel = UILabel()
-    messageLabel.text = message
-    messageLabel.numberOfLines = 0
-    messageLabel.font = UIFont(name: "SF Pro Text", size: 16)
-    messageLabel.textAlignment = .center
+    let messageLabel = CommonUI.alertMessageLabel(text: message)
 
     alertController.view.addSubview(activityIndicator)
     alertController.view.addSubview(messageLabel)
 
     activityIndicator.snp.makeConstraints { (make) in
       make.centerX.equalToSuperview()
-      make.top.equalToSuperview().offset(25)
+      make.top.equalToSuperview().offset(45)
     }
 
     messageLabel.snp.makeConstraints { (make) in

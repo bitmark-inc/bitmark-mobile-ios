@@ -16,6 +16,13 @@ protocol MetadataFormDelegate: class {
   func changeMetadataViewMode(isOnEdit: Bool)
 }
 
+/**
+ Create Metadata Form: supports in Create Property Screen
+ - Components:
+   - **Label**: textfield which has next-arrow to move to label selection screen.
+   - **Description**: textfield for user to input description of the label.
+   - **Delete button**: remove this metadata form from the parent view.
+ */
 class MetadataForm: UIView, UITextFieldDelegate {
 
   // MARK: - Properties
