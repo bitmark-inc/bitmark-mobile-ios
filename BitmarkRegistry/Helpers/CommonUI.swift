@@ -77,6 +77,13 @@ class CommonUI {
     return label
   }
 
+  static func infoLabel(text: String = "") -> UILabel {
+    let label = UILabel(text: text)
+    label.font = UIFont(name: "Courier", size: 13)
+    label.lineHeightMultiple(1.2)
+    return label
+  }
+
   static func alertMessageLabel(text: String) -> UILabel {
     let label = UILabel(text: text)
     label.numberOfLines = 0
