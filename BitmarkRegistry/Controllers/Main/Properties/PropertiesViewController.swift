@@ -9,6 +9,11 @@
 import UIKit
 import BitmarkSDK
 
+protocol BitmarkEventDelegate {
+  var bitmarks: [Bitmark] { get }
+  func receiveNewBitmark(_ bitmark: Bitmark, duplicatedRow: Int?)
+}
+
 class PropertiesViewController: UIViewController {
 
   let yoursView = UIView()
@@ -25,11 +30,14 @@ class PropertiesViewController: UIViewController {
 
   // *** Yours Segment ***
   var yoursTableView: UITableView!
+  var yoursActivityIndicator: UIActivityIndicatorView!
   var createFirstProperty: UIButton!
   let emptyViewInYoursTab = UIView()
   var bitmarks = [Bitmark]()
   lazy var bitmarkStorage: BitmarkStorage = {
-    return BitmarkStorage(for: Global.currentAccount!)
+    let bitmarkStorage = BitmarkStorage(for: Global.currentAccount!)
+    bitmarkStorage.delegate = self
+    return bitmarkStorage
   }()
 
   // MARK: - Init
@@ -42,34 +50,35 @@ class PropertiesViewController: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
-  }
 
-  override func viewWillAppear(_ animated: Bool) {
     loadData()
   }
 
   // MARK: - Data Handlers
   private func loadData() {
-    var errorMessage: String? = nil
-    let alert = showIndicatorAlert(message: "Syncing Bitmarks") {
-      do {
-        try self.bitmarkStorage.sync()
-        self.bitmarks = try self.bitmarkStorage.getBitmarkData()
+    yoursActivityIndicator.startAnimating()
+    do {
+      try bitmarkStorage.firstLoad { [weak self] (bitmarks, error) in
+        guard let self = self else { return }
+        self.yoursActivityIndicator.stopAnimating()
 
-        if self.bitmarks.isEmpty {
-          self.emptyViewInYoursTab.isHidden = false
-        } else {
-          self.emptyViewInYoursTab.isHidden = true
-          self.yoursTableView.reloadData()
+        if let error = error {
+          self.showErrorAlert(message: error.localizedDescription)
         }
-      } catch let e {
-        errorMessage = e.localizedDescription
+
+        if let bitmarks = bitmarks {
+          self.bitmarks = bitmarks
+
+          if self.bitmarks.isEmpty {
+            self.emptyViewInYoursTab.isHidden = false
+          } else {
+            self.emptyViewInYoursTab.isHidden = true
+            self.yoursTableView.reloadData()
+          }
+        }
       }
-    }
-    alert.dismiss(animated: true) {
-      if let errorMessage = errorMessage {
-        self.showErrorAlert(message: errorMessage)
-      }
+    } catch let e {
+      showErrorAlert(message: e.localizedDescription)
     }
   }
 
@@ -117,6 +126,19 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   }
 }
 
+extension PropertiesViewController: BitmarkEventDelegate {
+  func receiveNewBitmark(_ bitmark: Bitmark, duplicatedRow: Int?) {
+    yoursTableView.performBatchUpdates({
+      if let duplicatedRow = duplicatedRow {
+        self.bitmarks.remove(at: duplicatedRow)
+        yoursTableView.deleteRows(at: [IndexPath(row: duplicatedRow, section: 0)], with: .automatic)
+      }
+      self.bitmarks.prepend(bitmark)
+      yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    })
+  }
+}
+
 // MARK: - Setup Views/Events
 extension PropertiesViewController {
   fileprivate func setupEvents() {
@@ -134,14 +156,23 @@ extension PropertiesViewController {
     // ***** Yours Segment *****
     setupYoursEmptyView()
 
+    yoursActivityIndicator = UIActivityIndicatorView()
+    yoursActivityIndicator.style = .whiteLarge
+    yoursActivityIndicator.color = .gray
+
     yoursTableView = UITableView()
     yoursTableView.tableFooterView = UIView() // eliminate extra separators
 
     yoursView.addSubview(yoursTableView)
     yoursView.addSubview(emptyViewInYoursTab)
+    yoursView.addSubview(yoursActivityIndicator)
 
     yoursTableView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
+    }
+
+    yoursActivityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
     }
 
     emptyViewInYoursTab.snp.makeConstraints { (make) in
@@ -186,6 +217,7 @@ extension PropertiesViewController {
 
     emptyViewInYoursTab.addSubview(contentView)
     emptyViewInYoursTab.addSubview(createFirstProperty)
+    emptyViewInYoursTab.isHidden = true
 
     contentView.snp.makeConstraints { (make) in
       make.top.equalToSuperview().offset(25)

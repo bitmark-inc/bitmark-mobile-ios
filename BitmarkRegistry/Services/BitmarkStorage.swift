@@ -11,6 +11,7 @@ import BitmarkSDK
 
 class BitmarkStorage {
   var owner: Account
+  var delegate: BitmarkEventDelegate?
   let pathExtension = "json"
   let minimumSize = 50_000 // about 50 KB
 
@@ -36,7 +37,35 @@ class BitmarkStorage {
     return [Bitmark]()
   }
 
-  func sync() throws {
+  func firstLoad(handler: @escaping ([Bitmark]?, Error?) -> Void) throws {
+    Global.storedBitmarksPathNames = try getStoredPathNames()
+    if Global.storedBitmarksPathNames.isEmpty {
+      DispatchQueue.global(qos: .background).async { [weak self] in
+        guard let self = self else { return }
+        do {
+          try self.sync()
+          let bitmarks = try self.getBitmarkData()
+          DispatchQueue.main.async {
+            handler(bitmarks, nil)
+          }
+        } catch let e {
+          DispatchQueue.main.async { handler(nil, e) }
+        }
+      }
+    } else {
+      let bitmarks = try getBitmarkData()
+      handler(bitmarks, nil)
+      DispatchQueue.global(qos: .background).async { [weak self] in
+        do {
+          try self?.sync(notifyNew: true)
+        } catch let e {
+          DispatchQueue.main.async { handler(nil, e) }
+        }
+      }
+    }
+  }
+
+  func sync(notifyNew: Bool = false) throws {
     Global.storedBitmarksPathNames = try getStoredPathNames()
     let latestPathName = Global.storedBitmarksPathNames.first
     var latestOffset = latestPathName != nil ? Int64(latestPathName!)! : 0
@@ -45,6 +74,17 @@ class BitmarkStorage {
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
+
+      if notifyNew {
+        for newBitmark in bitmarks {
+          let duplicatedIndex = delegate?.bitmarks.firstIndex(where: { $0.id == newBitmark.id })
+
+          DispatchQueue.main.async { [weak self] in
+            self?.delegate?.receiveNewBitmark(newBitmark, duplicatedRow: duplicatedIndex)
+          }
+        }
+      }
+
       let bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
 
       guard bitmarks.count > 0 else { break }
@@ -91,7 +131,6 @@ class BitmarkStorage {
   }
 
   fileprivate func getLatestBitmarksURL() throws -> URL? {
-    Global.storedBitmarksPathNames = try getStoredPathNames()
     if let latestPathName = Global.storedBitmarksPathNames.first {
       return fileURL(pathName: String(latestPathName))
     }
@@ -100,9 +139,9 @@ class BitmarkStorage {
 
   fileprivate func getStoredPathNames() throws -> [String] {
     let directoryContents = try FileManager.default.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: nil)
-    let offsets = directoryContents.map { (fileURL) -> Int64 in
+    let offsets = directoryContents.compactMap { (fileURL) -> Int64? in
       let fileURL = fileURL.deletingPathExtension()
-      return Int64(fileURL.lastPathComponent)!
+      return (Int64(fileURL.lastPathComponent)) ?? nil
     }
     return offsets.sorted(by: >).map { String($0) }
   }
