@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import BitmarkSDK
 
 class PropertiesViewController: UIViewController {
 
+  // MARK: - Properties
   let yoursView = UIView()
   let globalView = UIView()
 
-  // MARK: - Properties
   lazy var segmentControl: UISegmentedControl = {
     let segmentControl = UISegmentedControl()
     segmentControl.segmentTitles = ["YOURS", "GLOBAL"]
@@ -23,8 +24,14 @@ class PropertiesViewController: UIViewController {
   }()
 
   //*** Yours Segment ***
+  var yoursTableView: UITableView!
+  var yoursActivityIndicator: UIActivityIndicatorView!
   var createFirstProperty: UIButton!
   let emptyViewInYoursTab = UIView()
+  var bitmarks = [Bitmark]()
+  lazy var bitmarkStorage: BitmarkStorage = {
+    return BitmarkStorage(for: Global.currentAccount!)
+  }()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -36,6 +43,36 @@ class PropertiesViewController: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
+
+    loadData()
+  }
+
+  // MARK: - Data Handlers
+  private func loadData() {
+    yoursActivityIndicator.startAnimating()
+    do {
+      try bitmarkStorage.firstLoad { [weak self] (bitmarks, error) in
+        guard let self = self else { return }
+        self.yoursActivityIndicator.stopAnimating()
+
+        if let error = error {
+          self.showErrorAlert(message: error.localizedDescription)
+        }
+
+        if let bitmarks = bitmarks {
+          self.bitmarks = bitmarks
+
+          if self.bitmarks.isEmpty {
+            self.emptyViewInYoursTab.isHidden = false
+          } else {
+            self.emptyViewInYoursTab.isHidden = true
+            self.yoursTableView.reloadData()
+          }
+        }
+      }
+    } catch let e {
+      showErrorAlert(message: e.localizedDescription)
+    }
   }
 
   // MARK: - Handlers
@@ -59,9 +96,27 @@ class PropertiesViewController: UIViewController {
   }
 }
 
+// MARK: - UITableViewDataSource
+extension PropertiesViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return bitmarks.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withClass: YourPropertyCell.self)
+    let bitmark = bitmarks[indexPath.row]
+    let asset = Global.findAsset(with: bitmark.asset_id)
+    cell.loadWith(asset, bitmark)
+    return cell
+  }
+}
+
 // MARK: - Setup Views/Events
 extension PropertiesViewController {
   fileprivate func setupEvents() {
+    yoursTableView.register(cellWithClass: YourPropertyCell.self)
+    yoursTableView.dataSource = self
+
     createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)
   }
 
@@ -69,9 +124,28 @@ extension PropertiesViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
+    // ***** Yours Segment *****
     setupYoursEmptyView()
 
+    yoursActivityIndicator = UIActivityIndicatorView()
+    yoursActivityIndicator.style = .whiteLarge
+    yoursActivityIndicator.color = .gray
+
+    yoursTableView = UITableView()
+    yoursTableView.tableFooterView = UIView() // eliminate extra separators
+
+    yoursView.addSubview(yoursTableView)
     yoursView.addSubview(emptyViewInYoursTab)
+    yoursView.addSubview(yoursActivityIndicator)
+
+    yoursTableView.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    yoursActivityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
+
     emptyViewInYoursTab.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
     }
@@ -112,6 +186,7 @@ extension PropertiesViewController {
 
     createFirstProperty = CommonUI.blueButton(title: "CREATE FIRST PROPERTY")
 
+    emptyViewInYoursTab.isHidden = true
     emptyViewInYoursTab.addSubview(contentView)
     emptyViewInYoursTab.addSubview(createFirstProperty)
 
