@@ -35,6 +35,14 @@ class BitmarkDetailViewController: UIViewController {
   var transactionTableView: UITableView!
   var transactionIndicator: UIActivityIndicatorView!
   var transactions = [Transaction]()
+  // *** Action Menu ***
+  var actionMenuView: UIView!
+  var menuBarButton: UIBarButtonItem!
+  var copyIdButton: UIButton!
+  var copiedToClipboardNotifier: UILabel!
+  var downloadButton: UIButton!
+  var transferButton: UIButton!
+  var deleteButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -42,6 +50,8 @@ class BitmarkDetailViewController: UIViewController {
 
     title = asset.name.uppercased()
     navigationItem.backBarButtonItem = UIBarButtonItem()
+    menuBarButton = UIBarButtonItem(image: UIImage(named: "More Actions-close"), style: .plain, target: self, action: #selector(tapToOpenActionMenu))
+    navigationItem.rightBarButtonItem = menuBarButton
     setupViews()
     setupEvents()
 
@@ -80,6 +90,17 @@ class BitmarkDetailViewController: UIViewController {
       self.transactions = transactions!
       DispatchQueue.main.async { self.transactionTableView.reloadData() }
     }
+  }
+
+  // MARK: - Handlers
+  @objc func tapToOpenActionMenu(_ sender: UIBarButtonItem) {
+    actionMenuView.isHidden = !actionMenuView.isHidden
+    sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
+  }
+
+  @objc func tapToCopyId(_ sender: UIButton) {
+    UIPasteboard.general.string = bitmark.id
+    copiedToClipboardNotifier.showIn(period: 1.2)
   }
 }
 
@@ -128,6 +149,8 @@ extension BitmarkDetailViewController {
     transactionTableView.register(cellWithClass: TransactionCell.self)
     transactionTableView.dataSource = self
     transactionTableView.delegate = self
+
+    copyIdButton.addTarget(self, action: #selector(tapToCopyId), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {
@@ -150,12 +173,66 @@ extension BitmarkDetailViewController {
       spacing: 30
     )
 
+    actionMenuView = setupActionMenuView()
+    actionMenuView.backgroundColor = .wildSand
+    actionMenuView.addShadow(ofColor: .gray)
+    actionMenuView.isHidden = true
+
     view.addSubview(stackView)
+    view.addSubview(actionMenuView)
 
     stackView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
           .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
     }
+
+    actionMenuView.snp.makeConstraints { (make) in
+      make.width.equalTo(180)
+      make.top.trailing.equalTo(view.safeAreaLayoutGuide)
+    }
+  }
+
+  fileprivate func setupActionMenuView() -> UIView {
+    copyIdButton = CommonUI.actionMenuButton(title: "COPY ID")
+
+    copiedToClipboardNotifier = UILabel(text: "Copied to clipboard!")
+    copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
+    copiedToClipboardNotifier.textColor = .mainBlueColor
+    copiedToClipboardNotifier.textAlignment = .right
+    copiedToClipboardNotifier.isHidden = true
+
+    let copyIdView = UIView()
+    copyIdView.addSubview(copyIdButton)
+    copyIdView.addSubview(copiedToClipboardNotifier)
+
+    copyIdButton.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    copiedToClipboardNotifier.snp.makeConstraints { (make) in
+      make.top.equalTo(copyIdButton.snp.bottom).offset(-5)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    downloadButton = CommonUI.actionMenuButton(title: "DOWNLOAD")
+    transferButton = CommonUI.actionMenuButton(title: "TRANSFER")
+    deleteButton = CommonUI.actionMenuButton(title: "DELETE")
+
+    let stackview = UIStackView(
+      arrangedSubviews: [copyIdView, downloadButton, transferButton, deleteButton],
+      axis: .vertical,
+      spacing: 15,
+      alignment: .trailing,
+      distribution: .fill
+    )
+
+    let view = UIView()
+    view.addSubview(stackview)
+    stackview.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+        .inset(UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20))
+    }
+    return view
   }
 
   fileprivate func setupAssetInfoView() -> UIView {
