@@ -204,7 +204,8 @@ extension TestRecoveryPhraseViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:").lineHeightMultiple(1.2)
+    let descriptionLabel = CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:")
+    descriptionLabel.lineHeightMultiple(1.2)
 
     let mainView = UIView()
     mainView.addSubview(descriptionLabel)

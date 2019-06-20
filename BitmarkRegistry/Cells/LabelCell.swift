@@ -24,7 +24,7 @@ class LabelCell: UITableViewCell {
   // MARK: - Setup Views
   fileprivate func setupViews() {
     // *** Setup subviews ***
-    label = UILabel().lineHeightMultiple(1.2)
+    label = UILabel()
     label.font = UIFont(name: "Courier", size: 15)
     label.textColor = .mainBlueColor
 

@@ -68,7 +68,8 @@ extension RecoveryPhraseViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Please write down your recovery phrase in the exact sequence below:").lineHeightMultiple(1.2)
+    let descriptionLabel = CommonUI.descriptionLabel(text: "Please write down your recovery phrase in the exact sequence below:")
+    descriptionLabel.lineHeightMultiple(1.2)
 
     let mainView = UIView()
     mainView.addSubview(descriptionLabel)
