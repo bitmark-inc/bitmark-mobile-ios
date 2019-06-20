@@ -11,8 +11,8 @@ import BitmarkSDK
 
 class BitmarkStorage {
   var owner: Account
+  var delegate: BitmarkEventDelegate?
   let pathExtension = "json"
-  let minimumSize = 50_000 // about 50 KB
 
   lazy var directoryURL: URL = {
     let directoryURL = URL(
@@ -20,6 +20,7 @@ class BitmarkStorage {
       relativeTo: FileManager.documentDirectoryURL
     )
     try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+    print(directoryURL)
     return directoryURL
   }()
 
@@ -28,7 +29,7 @@ class BitmarkStorage {
   }
 
   func getBitmarkData() throws -> [Bitmark] {
-    if let bitmarksURL = try getLatestBitmarksURL() {
+    if let bitmarksURL = try getBitmarksURL() {
       let bitmarksWithAsset = try BitmarksWithAsset(from: bitmarksURL)
       Global.addAssets(bitmarksWithAsset.assets)
       return bitmarksWithAsset.bitmarks.reversed()
@@ -36,48 +37,75 @@ class BitmarkStorage {
     return [Bitmark]()
   }
 
-  func sync() throws {
-    Global.storedBitmarksPathNames = try getStoredPathNames()
-    let latestPathName = Global.storedBitmarksPathNames.first
-    var latestOffset = latestPathName != nil ? Int64(latestPathName!)! : 0
-    // Only need to connect bitmarks for the first
-    var willMergeBitmarksInLatestFile = latestOffset != 0
+  func firstLoad(handler: @escaping ([Bitmark]?, Error?) -> Void) throws {
+    Global.latestBitmarkOffset = try getStoredPathName()
+    if Global.latestBitmarkOffset == nil {
+      DispatchQueue.global(qos: .background).async { [weak self] in
+        guard let self = self else { return }
+        do {
+          try self.sync()
+          let bitmarks = try self.getBitmarkData()
+          DispatchQueue.main.async {
+            handler(bitmarks, nil)
+          }
+        } catch let e {
+          DispatchQueue.main.async { handler(nil, e) }
+        }
+      }
+    } else {
+      let bitmarks = try getBitmarkData()
+      handler(bitmarks, nil)
+      DispatchQueue.global(qos: .background).async { [weak self] in
+        do {
+          try self?.sync(notifyNew: true)
+        } catch let e {
+          DispatchQueue.main.async { handler(nil, e) }
+        }
+      }
+    }
+  }
+
+  func sync(notifyNew: Bool = false) throws {
+    Global.latestBitmarkOffset = try getStoredPathName()
+    var latestOffset = Global.latestBitmarkOffset ?? 0
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
+
+      if notifyNew {
+        for newBitmark in bitmarks {
+          let duplicatedIndex = delegate?.bitmarks.firstIndex(where: { $0.id == newBitmark.id })
+
+          DispatchQueue.main.async { [weak self] in
+            self?.delegate?.receiveNewBitmark(newBitmark, duplicatedRow: duplicatedIndex)
+          }
+        }
+      }
+
       let bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
 
       guard bitmarks.count > 0 else { break }
 
       let baseOffset = bitmarks.sorted(by: { $0.offset > $1.offset }).first!.offset
-      let bitmarksURL = fileURL(pathName: String(baseOffset))
+      let bitmarksURL = fileURL(pathName: baseOffset)
 
-      if willMergeBitmarksInLatestFile {
-        try mergeNewBitmarks(bitmarksURL, bitmarksWithAsset)
-        // only need to merge for first limited result;
-        // because if bitmarks list exists the next limited result, the latest file is large enough (cause it was merged with the first limited result)
-        willMergeBitmarksInLatestFile = false
-      } else {
+      if latestOffset == 0 {
         try bitmarksWithAsset.store(in: bitmarksURL)
+      } else {
+        try mergeNewBitmarks(bitmarksURL, bitmarksWithAsset)
       }
 
       latestOffset = baseOffset
-      Global.storedBitmarksPathNames.insert(String(latestOffset), at: 0)
+      Global.latestBitmarkOffset = latestOffset
     } while true
   }
 
-  // Merge new bitmarks into the bitmarks file is having small size / number of bitmarks
-  // to avoid many small-size files when user sync regularly
+  // Merge new bitmarks into the bitmarks file
   fileprivate func mergeNewBitmarks(_ newBitmarksURL: URL, _ bitmarksWithAsset: BitmarksWithAsset) throws {
-    let latestPathName = Global.storedBitmarksPathNames.first!
+    guard let latestPathName = Global.latestBitmarkOffset else { return }
     let latestBitmarksURL = fileURL(pathName: latestPathName)
-    if let fileSize = try getSize(for: latestBitmarksURL), fileSize < minimumSize {
-      var oldBitmarksWithAsset = try BitmarksWithAsset(from: latestBitmarksURL)
-      oldBitmarksWithAsset.merge(with: bitmarksWithAsset)
-      try oldBitmarksWithAsset.reStore(in: latestBitmarksURL, newBitmarksURL: newBitmarksURL)
-    } else {
-      try bitmarksWithAsset.store(in: newBitmarksURL)
-    }
+    var oldBitmarksWithAsset = try BitmarksWithAsset(from: latestBitmarksURL)
+    try oldBitmarksWithAsset.merge(with: bitmarksWithAsset, in: latestBitmarksURL, newBitmarksURL: newBitmarksURL)
   }
 
   // MARK: - Support Functions
@@ -86,24 +114,23 @@ class BitmarkStorage {
     return attributes[.size] as? UInt64 ?? nil
   }
 
-  fileprivate func fileURL(pathName: String) -> URL {
-    return directoryURL.appendingPathComponent(pathName).appendingPathExtension(pathExtension)
+  fileprivate func fileURL(pathName: Int64) -> URL {
+    return directoryURL.appendingPathComponent(String(pathName)).appendingPathExtension(pathExtension)
   }
 
-  fileprivate func getLatestBitmarksURL() throws -> URL? {
-    Global.storedBitmarksPathNames = try getStoredPathNames()
-    if let latestPathName = Global.storedBitmarksPathNames.first {
-      return fileURL(pathName: String(latestPathName))
+  fileprivate func getBitmarksURL() throws -> URL? {
+    if let latestPathName = Global.latestBitmarkOffset {
+      return fileURL(pathName: latestPathName)
     }
     return nil
   }
 
-  fileprivate func getStoredPathNames() throws -> [String] {
+  fileprivate func getStoredPathName() throws -> Int64? {
     let directoryContents = try FileManager.default.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: nil)
-    let offsets = directoryContents.map { (fileURL) -> Int64 in
+    let offsets = directoryContents.compactMap { (fileURL) -> Int64? in
       let fileURL = fileURL.deletingPathExtension()
-      return Int64(fileURL.lastPathComponent)!
+      return Int64(fileURL.lastPathComponent) ?? nil
     }
-    return offsets.sorted(by: >).map { String($0) }
+    return offsets.first
   }
 }

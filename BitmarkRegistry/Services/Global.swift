@@ -12,7 +12,7 @@ import BitmarkSDK
 class Global {
   static var currentAccount: Account? = nil
   static var currentAssets = [Asset]()
-  static var storedBitmarksPathNames = [String]()
+  static var latestBitmarkOffset: Int64? = nil
 
   public static func addAssets(_ assets: [Asset]) {
     currentAssets += assets

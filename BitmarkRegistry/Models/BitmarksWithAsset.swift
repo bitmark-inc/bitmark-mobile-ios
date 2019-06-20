@@ -27,20 +27,28 @@ struct BitmarksWithAsset: Codable {
   func store(in bitmarksURL: URL) throws {
     let jsonEncoder = JSONEncoder()
     #if IOS_SIMULATOR
-    jsonEncoder.outputFormatting = .prettyPrinted
+      jsonEncoder.outputFormatting = .prettyPrinted
     #endif
     let jsonData = try jsonEncoder.encode(self)
     try jsonData.write(to: bitmarksURL, options: .atomic)
   }
 
-  func reStore(in bitmarksURL: URL, newBitmarksURL: URL) throws {
+  mutating func merge(with other: BitmarksWithAsset, in bitmarksURL: URL, newBitmarksURL: URL) throws {
+    self.assets += other.assets
+    self.assets.removeDuplicates()
+    self.bitmarks += other.bitmarks
+    self.removeBitmarkDuplicates()
+
     try store(in: bitmarksURL)
     try FileManager.default.moveItem(at: bitmarksURL, to: newBitmarksURL)
   }
 
-  mutating func merge(with other: BitmarksWithAsset) {
-    self.assets += other.assets
-    self.assets.removeDuplicates()
-    self.bitmarks += other.bitmarks
+  mutating func removeBitmarkDuplicates() {
+    let descBitmarks = bitmarks.reversed()
+    self.bitmarks = descBitmarks.reduce(into: [Bitmark]()) { (uniqAscbitmarks, bitmark) in
+      if uniqAscbitmarks.firstIndex(where: { $0.id == bitmark.id }) == nil {
+        uniqAscbitmarks.prepend(bitmark)
+      }
+    }
   }
 }
