@@ -11,8 +11,10 @@ import BitmarkSDK
 
 class BitmarkStorage {
   var owner: Account
+  var delegate: BitmarkEventDelegate?
   let pathExtension = "json"
 
+  // Get/create directory in documentURL; which directory's name is current account number
   lazy var directoryURL: URL = {
     let directoryURL = URL(
       fileURLWithPath: owner.getAccountNumber(),
@@ -36,7 +38,12 @@ class BitmarkStorage {
   }
 
   /**
-   If no existing data: sync all bitmarks from beginning; then get and returns data to display in UI
+   - If data no exist in local storage:
+      * execute sync all bitmarks from beginning
+      * get and returns data to display in UI
+   - If data exists in local storage:
+      * load existing data into UI
+      * execute sync in background and update bitmark rows if any change
    */
   func firstLoad(handler: @escaping ([Bitmark]?, Error?) -> Void) throws {
     Global.latestBitmarkOffset = try getStoredPathName()
@@ -51,18 +58,40 @@ class BitmarkStorage {
           DispatchQueue.main.async { handler(nil, e) }
         }
       }
+    } else {
+      let bitmarks = try getBitmarkData()
+      handler(bitmarks, nil)
+      DispatchQueue.global(qos: .background).async { [weak self] in
+        do {
+          try self?.sync(notifyNew: true)
+        } catch let e {
+          DispatchQueue.main.async { handler(nil, e) }
+        }
+      }
     }
   }
 
-  func sync() throws {
+  /**
+   Sync and merge all bitmarks into a file; set the latest offset as the filename
+   - Parameters:
+      - notifyNew: when true, notify receiveNewBitmarks to update in UI
+   */
+  func sync(notifyNew: Bool = false) throws {
     Global.latestBitmarkOffset = try getStoredPathName()
     var latestOffset = Global.latestBitmarkOffset ?? 0
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
+      guard bitmarks.count > 0 else { break }
+
       let bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
 
-      guard bitmarks.count > 0 else { break }
+      if notifyNew {
+        Global.addAssets(bitmarksWithAsset.assets)
+        DispatchQueue.main.async { [weak self] in
+          self?.delegate?.receiveNewBitmarks(bitmarks)
+        }
+      }
 
       let baseOffset = bitmarks.last!.offset // the last offset is the latest offset cause response bitmarks is asc-offset
       let bitmarksURL = fileURL(pathName: baseOffset)

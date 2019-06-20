@@ -37,6 +37,7 @@ struct BitmarksWithAsset: Codable {
     self.assets += other.assets
     self.assets.removeDuplicates()
     self.bitmarks += other.bitmarks
+    self.bitmarks.removeObsoleteBitmarks()
 
     try store(in: bitmarksURL)
     try FileManager.default.moveItem(at: bitmarksURL, to: newBitmarksURL)

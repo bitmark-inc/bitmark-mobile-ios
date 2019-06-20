@@ -9,6 +9,10 @@
 import UIKit
 import BitmarkSDK
 
+protocol BitmarkEventDelegate {
+  func receiveNewBitmarks(_ newBitmarks: [Bitmark])
+}
+
 class PropertiesViewController: UIViewController {
 
   // MARK: - Properties
@@ -30,7 +34,9 @@ class PropertiesViewController: UIViewController {
   let emptyViewInYoursTab = UIView()
   var bitmarks = [Bitmark]()
   lazy var bitmarkStorage: BitmarkStorage = {
-    return BitmarkStorage(for: Global.currentAccount!)
+    let bitmarkStorage = BitmarkStorage(for: Global.currentAccount!)
+    bitmarkStorage.delegate = self
+    return bitmarkStorage
   }()
 
   // MARK: - Init
@@ -108,6 +114,24 @@ extension PropertiesViewController: UITableViewDataSource {
     let asset = Global.findAsset(with: bitmark.asset_id)
     cell.loadWith(asset, bitmark)
     return cell
+  }
+}
+
+// MARK: BitmarkEventDelegate
+extension PropertiesViewController: BitmarkEventDelegate {
+  func receiveNewBitmarks(_ newBitmarks: [Bitmark]) {
+    for newBitmark in newBitmarks {
+      yoursTableView.beginUpdates()
+      // Remove obsolete bitmark which is displaying in table
+      if let index = bitmarks.firstIndexWithId(newBitmark.id) {
+        bitmarks.remove(at: index)
+        yoursTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
+      }
+      // Add new bitmark
+      bitmarks.prepend(newBitmark)
+      yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+      yoursTableView.endUpdates()
+    }
   }
 }
 
