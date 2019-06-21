@@ -17,7 +17,7 @@ protocol QRCodeScannerDelegate {
 class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
   // MARK: - Properties
-  var receivedQRCode: Bool = false
+  var captureSession: AVCaptureSession!
   var delegate: QRCodeScannerDelegate!
 
   override func viewDidLoad() {
@@ -36,13 +36,13 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
       return
     }
 
-    let captureSession = AVCaptureSession()
+    captureSession = AVCaptureSession()
 
     do {
       let input = try AVCaptureDeviceInput(device: captureDevice)
       captureSession.addInput(input)
-    } catch let e {
-      showErrorAlert(message: e.localizedDescription)
+    } catch {
+      showErrorAlert(message: "The device cannot be opened because it is no longer available or because it is in use.")
       return
     }
 
@@ -67,9 +67,8 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
 
     let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
 
-    if !receivedQRCode,
-       metadataObj.type == AVMetadataObject.ObjectType.qr, let qrCode = metadataObj.stringValue {
-      receivedQRCode = true
+    if metadataObj.type == AVMetadataObject.ObjectType.qr, let qrCode = metadataObj.stringValue {
+      captureSession.stopRunning()
       delegate.process(qrCode: qrCode)
       navigationController?.popViewController(animated: true)
     }
