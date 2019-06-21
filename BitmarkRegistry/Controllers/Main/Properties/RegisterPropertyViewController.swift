@@ -26,6 +26,7 @@ class RegisterPropertyViewController: UIViewController {
     title = "REGISTER"
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
+    setupEvents()
   }
 
   // MARK: - Handlers

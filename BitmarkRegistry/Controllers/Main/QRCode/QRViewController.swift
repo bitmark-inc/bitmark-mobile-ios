@@ -52,6 +52,12 @@ class QRViewController: UIViewController, PanModalPresentable {
     qrImage.image = qrCode
     accountNumberLabel.text = accountNumber
   }
+
+  // MARK: - Handlers
+  @objc func tapToShare(_ sender: UIButton) {
+    let activityVC = UIActivityViewController(activityItems: [accountNumber, qrCode], applicationActivities: [])
+    present(activityVC, animated: true)
+  }
 }
 
 // MARK: - Setup Views/Events
@@ -60,6 +66,8 @@ extension QRViewController {
     closeButton.addAction(for: .touchUpInside) {
       self.dismiss(animated: true, completion: nil)
     }
+
+    shareButton.addTarget(self, action: #selector(tapToShare), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {
