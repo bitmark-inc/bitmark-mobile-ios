@@ -52,6 +52,8 @@
 		E29A740222AA49990052C716 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
 		E29A740722AA49990052C716 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
+		E2ADFD1522BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */; };
+		E2ADFD1622BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */; };
 		E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */; };
 		E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */; };
 		E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */; };
@@ -131,6 +133,7 @@
 		E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
+		E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferBitmarkViewController.swift; sourceTree = "<group>"; };
 		E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseCell.swift; sourceTree = "<group>"; };
@@ -235,6 +238,7 @@
 				E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */,
 				E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */,
 				E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */,
+				E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -621,6 +625,7 @@
 				E29A73FE22AA49990052C716 /* AccountService.swift in Sources */,
 				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
+				E2ADFD1622BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
 				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2CEDC7822BB93CC00B5BBF9 /* BitmarkService.swift in Sources */,
@@ -672,6 +677,7 @@
 				E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E2BEC94F22AF699D009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
+				E2ADFD1522BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
 				E2CEDC7722BB93CC00B5BBF9 /* BitmarkService.swift in Sources */,
