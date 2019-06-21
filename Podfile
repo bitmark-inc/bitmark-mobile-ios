@@ -6,6 +6,7 @@ def sharedPods
   pod 'KeychainAccess'
   pod 'SnapKit', '~> 5.0.0'
   pod 'SwifterSwift'
+  pod 'PanModal'
 end
 
 target 'BitmarkRegistry' do

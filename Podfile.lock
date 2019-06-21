@@ -3,6 +3,7 @@ PODS:
     - KeychainAccess
     - TweetNacl
   - KeychainAccess (3.2.0)
+  - PanModal (1.2.2)
   - SnapKit (5.0.0)
   - SwifterSwift (5.0.0):
     - SwifterSwift/AppKit (= 5.0.0)
@@ -28,6 +29,7 @@ PODS:
 DEPENDENCIES:
   - BitmarkSDK
   - KeychainAccess
+  - PanModal
   - SnapKit (~> 5.0.0)
   - SwifterSwift
 
@@ -35,6 +37,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BitmarkSDK
     - KeychainAccess
+    - PanModal
     - SnapKit
     - SwifterSwift
     - TweetNacl
@@ -42,10 +45,11 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   BitmarkSDK: 4cb6539495e03956c7eeca6a5f6fc11c524a7088
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
+  PanModal: db200380a267634f746f8dea550dc3d1df017fc0
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   SwifterSwift: 96f90594b370802f01647c2b1229c74a84ffafee
   TweetNacl: ea279cd32bffee69c59c73631470d3419db675df
 
-PODFILE CHECKSUM: aed464b950cefaa01a39f029677ebb75285e9331
+PODFILE CHECKSUM: 4902cd8a23dec9337eb90ea3f4ae5d0f6d565c8c
 
 COCOAPODS: 1.5.3

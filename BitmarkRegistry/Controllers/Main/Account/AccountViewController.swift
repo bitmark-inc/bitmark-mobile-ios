@@ -12,6 +12,7 @@ class AccountViewController: UIViewController {
 
   // MARK: - Properties
   var accountNumberLabel: UIButton!
+  var qrShowButton: UIButton!
   var copiedToClipboardNotifier: UILabel!
   var writeDownRecoveryPhraseButton: UIButton!
   var logoutButton: UIButton!
@@ -29,15 +30,21 @@ class AccountViewController: UIViewController {
     loadData()
   }
 
+  // MARK: Data Handlers
+  private func loadData() {
+    accountNumberLabel.setTitle(Global.currentAccount!.getAccountNumber(), for: .normal)
+  }
+
   // MARK: - Handlers
   @objc func tapToCopyAccountNumber(_ sender: UIButton) {
     UIPasteboard.general.string = accountNumberLabel.currentTitle
     copiedToClipboardNotifier.showIn(period: 1.2)
   }
 
-  // MARK: Data Handlers
-  private func loadData() {
-    accountNumberLabel.setTitle(Global.currentAccount!.getAccountNumber(), for: .normal)
+  @objc func showReceiverQR(_ sender: UIButton) {
+    let qrVC = QRViewController()
+    qrVC.accountNumber = accountNumberLabel.currentTitle
+    presentPanModal(qrVC)
   }
 }
 
@@ -51,6 +58,8 @@ extension AccountViewController {
         WarningRecoveryPhraseViewController()
       )
     })
+
+    qrShowButton.addTarget(self, action: #selector(showReceiverQR), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {
@@ -95,6 +104,12 @@ extension AccountViewController {
   fileprivate func setupAccountNumberBox() -> UIView {
     let accountNumberTitleLabel = CommonUI.fieldTitleLabel(text: "YOUR BITMARK ACCOUNT NUMBER")
 
+    qrShowButton = UIButton(type: .system)
+    qrShowButton.setImage(UIImage(named: "qr-code-icon"), for: .normal)
+    qrShowButton.snp.makeConstraints { $0.width.height.equalTo(19) }
+
+    let accountNumberView = UIStackView(arrangedSubviews: [accountNumberTitleLabel, qrShowButton])
+
     accountNumberLabel = UIButton(type: .system)
     accountNumberLabel.setTitleColor(.mainBlueColor, for: .normal)
     accountNumberLabel.titleLabel?.font = UIFont(name: "Courier", size: 11)
@@ -111,12 +126,12 @@ extension AccountViewController {
     accountNumberDescription.lineHeightMultiple(1.2)
 
     let accountNumberBox = UIView()
-    accountNumberBox.addSubview(accountNumberTitleLabel)
+    accountNumberBox.addSubview(accountNumberView)
     accountNumberBox.addSubview(accountNumberLabel)
     accountNumberBox.addSubview(accountNumberDescription)
     accountNumberBox.addSubview(copiedToClipboardNotifier)
 
-    accountNumberTitleLabel.snp.makeConstraints({ (make) in
+    accountNumberView.snp.makeConstraints({ (make) in
       make.top.leading.trailing.equalToSuperview()
     })
 
