@@ -23,14 +23,6 @@ class BitmarkDetailViewController: UIViewController {
   // *** Metadata Properties ***
   var metadataTableView: SelfSizedTableView!
   var metadataObjects = [(label: String, description: String)]()
-  var metadataList: [String: String]! {
-    didSet {
-      metadataObjects.removeAll()
-      for (key, value) in metadataList {
-        metadataObjects.append((label: key, description: value))
-      }
-    }
-  }
   // *** Transaction Properties ***
   var transactionTableView: UITableView!
   var transactionIndicator: UIActivityIndicatorView!
@@ -65,8 +57,9 @@ class BitmarkDetailViewController: UIViewController {
     issueDateLabel.text = bitmark.created_at?.string(withFormat: Constant.systemFullFormatDate)
     issuerLabel.text = bitmark.issuer.middleShorten()
 
-    metadataList = asset.metadata
-    metadataTableView.reloadData {
+    loadMetadataObjects(asset.metadata)
+    metadataTableView.reloadData { [weak self] in
+      guard let self = self else { return }
       if self.metadataObjects.isEmpty {
         self.metadataTableView.removeFromSuperview()
       } else {
@@ -89,6 +82,13 @@ class BitmarkDetailViewController: UIViewController {
 
       self.transactions = transactions!
       DispatchQueue.main.async { self.transactionTableView.reloadData() }
+    }
+  }
+
+  fileprivate func loadMetadataObjects(_ metadataList: [String: String]) {
+    metadataObjects.removeAll()
+    for (key, value) in metadataList {
+      metadataObjects.append((label: key, description: value))
     }
   }
 
