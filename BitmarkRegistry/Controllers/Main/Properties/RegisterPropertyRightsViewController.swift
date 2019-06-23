@@ -12,11 +12,8 @@ import SnapKit
 class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
 
   // MARK: - Properties
-  var assetFile: UIImage!
+  var assetData: Data!
   var assetFileName: String?
-  lazy var assetFingerprintData: Data = {
-    return assetFile.pngData()!
-  }()
 
   var scrollView: UIScrollView!
   var assetFingerprintLabel: UILabel!
@@ -68,7 +65,14 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   // MARK: - Load Data
   fileprivate func loadData() {
-    assetFingerprintLabel.text = AssetService.getFingerprintFrom(assetFingerprintData)
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      guard let self = self else { return }
+      let assetFingerprint = AssetService.getFingerprintFrom(self.assetData)
+
+      DispatchQueue.main.async { [weak self] in
+        self?.assetFingerprintLabel.text = assetFingerprint
+      }
+    }
     assetFilenameLabel.text = assetFileName
   }
 
@@ -121,7 +125,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         let assetId = try AssetService.registerAsset(
           registrant: Global.currentAccount!,
           assetName: assetName,
-          fingerprint: self.assetFingerprintData,
+          fingerprint: self.assetData,
           metadata: metadata)
         let _ = try AssetService.issueBitmarks(
           issuer: Global.currentAccount!,
@@ -365,9 +369,8 @@ extension RegisterPropertyRightsViewController {
     // *** Setup subviews ***
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "ASSET FINGERPRINT")
 
-    assetFingerprintLabel = UILabel()
+    assetFingerprintLabel = CommonUI.infoLabel(text: "Loading...")
     assetFingerprintLabel.textColor = .mainBlueColor
-    assetFingerprintLabel.font = UIFont(name: "Courier", size: 13)
 
     let generatedFromLabel = UILabel()
     generatedFromLabel.text = "GENERATED FROM"
