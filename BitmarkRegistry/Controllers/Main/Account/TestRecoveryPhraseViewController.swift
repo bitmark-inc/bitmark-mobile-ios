@@ -11,6 +11,7 @@ import UIKit
 class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Properties
+  var recoveryPhraseSource: RecoveryPhraseSource!
   private var recoveryPhrases = [String]()
 
   // *** Properties for Hidden Phrase Function ***
@@ -36,16 +37,16 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   let errorResultView = UIView()
   var doneButton: UIButton!
   var retryButton: UIButton!
+  var removeAccessButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "RECOVERY PHRASE"
+    title = "TEST RECOVERY PHRASE"
     navigationItem.setHidesBackButton(true, animated: false)
     navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(doneHandler))
     setupViews()
-    setupEvents()
 
     recoveryPhraseCollectionView.register(cellWithClass: TestRecoveryPhraseCell.self)
     recoveryPhraseCollectionView.delegate = self
@@ -78,8 +79,17 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     recoveryPhraseCollectionView.isUserInteractionEnabled = true
   }
 
-  @objc func doneHandler() {
+  @objc func doneHandler(_ sender: UIButton) {
     navigationController?.popToRootViewController(animated: true)
+  }
+
+  @objc func removeAccess(_ sender: UIButton) {
+    do {
+      try KeychainStore.removeSeedCoreFromKeychain()
+    } catch {
+      showErrorAlert(message: Constant.Error.removeAccess)
+    }
+    present(OnboardingViewController(), animated: true, completion: nil)
   }
 
   // MARK: Data Handlers
@@ -195,11 +205,6 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
 
 // MARK: - Setup Views/Events
 extension TestRecoveryPhraseViewController {
-  fileprivate func setupEvents() {
-    doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
-    retryButton.addTarget(self, action: #selector(clickRetryWhenError), for: .touchUpInside)
-  }
-
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
@@ -276,10 +281,22 @@ extension TestRecoveryPhraseViewController {
       make.leading.trailing.equalToSuperview()
     }
 
+    let successButton: UIButton!
+
+    switch recoveryPhraseSource! {
+    case .TestRecoveryPhrase:
+      doneButton = CommonUI.blueButton(title: "DONE")
+      doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
+      successButton = doneButton
+    case .RemoveAccess:
+      removeAccessButton = CommonUI.blueButton(title: "REMOVE ACCESS")
+      removeAccessButton.addTarget(self, action: #selector(removeAccess), for: .touchUpInside)
+      successButton = removeAccessButton
+    }
     doneButton = CommonUI.blueButton(title: "DONE")
 
     successResultView.addSubview(textView)
-    successResultView.addSubview(doneButton)
+    successResultView.addSubview(successButton)
 
     textView.snp.makeConstraints { (make) in
       make.top.equalToSuperview()
@@ -287,7 +304,7 @@ extension TestRecoveryPhraseViewController {
       make.trailing.equalToSuperview().offset(-20)
     }
 
-    doneButton.snp.makeConstraints { (make) in
+    successButton.snp.makeConstraints { (make) in
       make.leading.trailing.bottom.equalToSuperview()
     }
   }
@@ -319,6 +336,7 @@ extension TestRecoveryPhraseViewController {
     }
 
     retryButton = CommonUI.blueButton(title: "RETRY")
+    retryButton.addTarget(self, action: #selector(clickRetryWhenError), for: .touchUpInside)
 
     errorResultView.addSubview(textView)
     errorResultView.addSubview(retryButton)

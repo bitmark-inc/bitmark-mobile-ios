@@ -23,6 +23,10 @@ class KeychainStore {
     try keychain.set(seedCore, key: bitmarkSeedCoreKey)
   }
 
+  static func removeSeedCoreFromKeychain() throws {
+    try keychain.remove(bitmarkSeedCoreKey)
+  }
+
   static func getSeedDataFromKeychain() -> Data? {
     do {
       return try keychain.getData(bitmarkSeedCoreKey)

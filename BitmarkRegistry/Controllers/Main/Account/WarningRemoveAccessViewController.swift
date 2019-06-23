@@ -1,14 +1,14 @@
 //
-//  WarningRecoveryPhraseViewController.swift
+//  WarningRemoveAccessViewController.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 6/10/19.
+//  Created by Macintosh on 6/23/19.
 //  Copyright © 2019 thuyentruong. All rights reserved.
 //
 
 import UIKit
 
-class WarningRecoveryPhraseViewController: UIViewController {
+class WarningRemoveAccessViewController: UIViewController {
 
   // MARK: - Properties
   var writeDownRecoveryPhraseButton: UIButton!
@@ -17,7 +17,7 @@ class WarningRecoveryPhraseViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "RECOVERY PHRASE"
+    title = "REMOVE ACCESS"
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
@@ -25,11 +25,11 @@ class WarningRecoveryPhraseViewController: UIViewController {
 }
 
 // MARK: - Setup Views/Events
-extension WarningRecoveryPhraseViewController {
+extension WarningRemoveAccessViewController {
   fileprivate func setupEvents() {
     writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
       let recoveryPhraseVC = RecoveryPhraseViewController()
-      recoveryPhraseVC.recoveryPhraseSource = RecoveryPhraseSource.TestRecoveryPhrase
+      recoveryPhraseVC.recoveryPhraseSource = RecoveryPhraseSource.RemoveAccess
       self.navigationController?.pushViewController(recoveryPhraseVC)
     })
   }
@@ -57,9 +57,9 @@ extension WarningRecoveryPhraseViewController {
     warningTextView.font = UIFont(name: "Avenir", size: 17)
     warningTextView.isUserInteractionEnabled = false
     warningTextView.text =
-      "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\n" +
-      "We will show you a list of words to write down on a piece of paper and keep safe.\n\n" +
-      "Make sure you are in a private location before writing down your recovery phrase."
+      "Your recovery phrase is the only way to access your Bitmark account after signing out. If you have not already written down your recovery phrase, you must do so now or you will be permanently lose access to your account and lose ownership of all your digital properties.\n\n" +
+      "Your recovery phrase is a list of 24 words to write on a piece of paper and keep safe. Make sure you are in a private location when you write it down.\n\n" +
+      "This will completely remove access to your account on this device. Regular data bitmarking and data donations will be paused until you sign back in with your recovery phrase."
 
     let mainView = UIView()
     mainView.addSubview(pageTitle)

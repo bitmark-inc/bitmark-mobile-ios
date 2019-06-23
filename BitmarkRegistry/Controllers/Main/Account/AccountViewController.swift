@@ -52,6 +52,7 @@ class AccountViewController: UIViewController {
 extension AccountViewController {
   fileprivate func setupEvents() {
     accountNumberLabel.addTarget(self, action: #selector(tapToCopyAccountNumber), for: .touchUpInside)
+    qrShowButton.addTarget(self, action: #selector(showReceiverQR), for: .touchUpInside)
 
     writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
       self.navigationController?.pushViewController(
@@ -59,7 +60,11 @@ extension AccountViewController {
       )
     })
 
-    qrShowButton.addTarget(self, action: #selector(showReceiverQR), for: .touchUpInside)
+    logoutButton.addAction(for: .touchUpInside) {
+      self.navigationController?.pushViewController(
+        WarningRemoveAccessViewController()
+      )
+    }
   }
 
   fileprivate func setupViews() {
