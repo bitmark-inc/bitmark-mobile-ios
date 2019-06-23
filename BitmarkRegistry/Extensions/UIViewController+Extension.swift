@@ -16,8 +16,10 @@ extension UIViewController {
     showAlert(title: "Error", message: message)
   }
 
-  func showSuccessAlert(message: String) {
-    showAlert(title: "Success!", message: message)
+  func showSuccessAlert(message: String, handler: @escaping () -> Void) {
+    let alertController = UIAlertController(title: "Success!", message: message, preferredStyle: .alert)
+    alertController.addAction(title: "OK", style: .default, handler: {_ in handler() })
+    alertController.show()
   }
 
   func showConfirmationAlert(message: String, handler: @escaping () -> Void) {

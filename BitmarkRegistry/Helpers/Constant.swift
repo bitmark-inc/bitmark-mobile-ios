@@ -10,6 +10,8 @@ import Foundation
 
 public struct Constant {
 
+  public static let systemFullFormatDate = "yyyy MMM dd HH:MM:SS"
+
   // MARK: - Confirmation
   public struct Confirmation {
     public static let deleteLabel = "Are you sure you want to delete this label?"

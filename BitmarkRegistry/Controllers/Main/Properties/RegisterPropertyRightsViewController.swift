@@ -137,7 +137,9 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       if let errorMessage = errorMessage {
         self.showErrorAlert(message: errorMessage)
       } else {
-        self.showSuccessAlert(message: Constant.Success.issue)
+        self.showSuccessAlert(message: Constant.Success.issue, handler: {
+          self.navigationController?.popToRootViewController(animated: true)
+        })
       }
     }
   }
