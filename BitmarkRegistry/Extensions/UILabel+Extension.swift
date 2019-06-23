@@ -14,7 +14,7 @@ extension UILabel {
     DispatchQueue.main.asyncAfter(deadline: .now() + period) { self.isHidden = true }
   }
 
-  func lineHeightMultiple(_ lineHeightMultiple: CGFloat) -> UILabel {
+  func lineHeightMultiple(_ lineHeightMultiple: CGFloat) {
     let attributedString = NSMutableAttributedString(string: text ?? "")
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.lineHeightMultiple = lineHeightMultiple
@@ -24,6 +24,5 @@ extension UILabel {
 
     // *** Set Attributed String to your label ***
     attributedText = attributedString
-    return self
   }
 }

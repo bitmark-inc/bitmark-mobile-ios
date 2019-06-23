@@ -15,36 +15,9 @@ class RegisterPropertyViewController: UIViewController {
   var assetFile: UIImage?
   var assetFileName: String?
 
-  lazy var registerByPhotoButton: UIButton = {
-    let button = registerButton(by: "PHOTOS")
-    button.addTarget(self, action: #selector(tapPhotosToRegiter), for: .touchUpInside)
-    return button
-  }()
-
-  lazy var registerByFileButton: UIButton = {
-    let button = registerButton(by: "FILES")
-    return button
-  }()
-
-  let descriptionLabel = CommonUI.descriptionLabel(text: "Property rights are registered on Bitmark through the creation of an asset record followed by an issue record. Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.").lineHeightMultiple(1.2)
-
-  lazy var registerSelectionView: UIStackView = {
-    let registerButtons: [UIButton] = [registerByPhotoButton, registerByFileButton]
-
-    let stackView = UIStackView(
-      arrangedSubviews: registerButtons,
-      axis: .vertical,
-      spacing: 10.0,
-      alignment: .leading,
-      distribution: .fill
-    )
-
-    for registerButton in registerButtons {
-      registerButton.snp.makeConstraints { $0.width.equalToSuperview() }
-    }
-
-    return stackView
-  }()
+  var registerByPhotoButton: UIButton!
+  var registerByFileButton: UIButton!
+  var descriptionLabel: UILabel!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -106,10 +79,32 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
   }
 }
 
-// MARK: - Setup Views
+// MARK: - Setup Views/Events
 extension RegisterPropertyViewController {
+  private func setupEvents() {
+    registerByPhotoButton.addTarget(self, action: #selector(tapPhotosToRegiter), for: .touchUpInside)
+  }
+
   private func setupViews() {
     view.backgroundColor = .white
+
+    // *** Setup subviews ***
+    registerByPhotoButton = registerButton(by: "PHOTOS")
+    registerByFileButton = registerButton(by: "FILES")
+
+    let registerSelectionView = UIStackView(
+      arrangedSubviews: [registerByPhotoButton, registerByFileButton],
+      axis: .vertical,
+      spacing: 10.0,
+      alignment: .leading,
+      distribution: .fill
+    )
+    registerSelectionView.arrangedSubviews.forEach {
+      $0.snp.makeConstraints( { $0.width.equalToSuperview() })
+    }
+
+    descriptionLabel = CommonUI.descriptionLabel(text: "Property rights are registered on Bitmark through the creation of an asset record followed by an issue record. Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.")
+    descriptionLabel.lineHeightMultiple(1.2)
 
     // *** Setup UI in view ***
     view.addSubview(registerSelectionView)
