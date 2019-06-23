@@ -10,6 +10,14 @@ import Foundation
 import BitmarkSDK
 
 class Global {
+  static var registryServerUrl: String = {
+    #if PRODUCTION
+      return "https://registry.bitmark.com"
+    #else
+      return "https://registry.test.bitmark.com"
+    #endif
+  }()
+
   static var currentAccount: Account? = nil
   static var currentAssets = [Asset]()
   static var latestBitmarkOffset: Int64? = nil

@@ -8,6 +8,7 @@
 
 import UIKit
 import BitmarkSDK
+import WebKit
 
 protocol BitmarkEventDelegate {
   func receiveNewBitmarks(_ newBitmarks: [Bitmark])
@@ -16,8 +17,8 @@ protocol BitmarkEventDelegate {
 class PropertiesViewController: UIViewController {
 
   // MARK: - Properties
-  let yoursView = UIView()
-  let globalView = UIView()
+  var yoursView: UIView!
+  var globalView: UIView!
 
   lazy var segmentControl: UISegmentedControl = {
     let segmentControl = UISegmentedControl()
@@ -29,15 +30,23 @@ class PropertiesViewController: UIViewController {
 
   //*** Yours Segment ***
   var yoursTableView: UITableView!
-  var yoursActivityIndicator: UIActivityIndicatorView!
   var createFirstProperty: UIButton!
-  let emptyViewInYoursTab = UIView()
+  var emptyViewInYoursTab: UIView!
+  var yoursActivityIndicator: UIActivityIndicatorView!
   var bitmarks = [Bitmark]()
   lazy var bitmarkStorage: BitmarkStorage = {
     let bitmarkStorage = BitmarkStorage(for: Global.currentAccount!)
     bitmarkStorage.delegate = self
     return bitmarkStorage
   }()
+
+  // *** Global Segment ***
+  var webView: WKWebView!
+  var backButton: UIButton!
+  var forwardButton: UIButton!
+  var globalActivityIndicator: UIActivityIndicatorView!
+  let globalRegisterApp = Global.registryServerUrl + "?env=app"
+  var didLoadWebview: Bool = false
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -96,6 +105,12 @@ class PropertiesViewController: UIViewController {
     case 1:
       yoursView.isHidden = true
       globalView.isHidden = false
+
+      if !globalActivityIndicator.isAnimating && !didLoadWebview {
+        let url = URL(string: globalRegisterApp)!
+        globalActivityIndicator.startAnimating()
+        webView.load(URLRequest(url: url))
+      }
     default:
       break
     }
@@ -143,49 +158,55 @@ extension PropertiesViewController: BitmarkEventDelegate {
   }
 }
 
+// MARK: - WKWebView, WKNavigationDelegate
+extension PropertiesViewController: WKNavigationDelegate {
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    didLoadWebview = true
+    globalActivityIndicator.stopAnimating()
+  }
+
+  @objc func navigateBack(_ sender: UIButton) {
+    if webView.canGoBack {
+      webView.goBack()
+    }
+  }
+
+  @objc func navigateForward(_ sender: UIButton) {
+    if webView.canGoForward {
+      webView.goForward()
+    }
+  }
+}
+
 // MARK: - Setup Views/Events
 extension PropertiesViewController {
   fileprivate func setupEvents() {
+    // *** Yours Segment ***
     yoursTableView.register(cellWithClass: YourPropertyCell.self)
     yoursTableView.dataSource = self
     yoursTableView.delegate = self
 
     createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)
+
+    // *** Global Segment ***
+    webView.navigationDelegate = self
+    backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
+    forwardButton.addTarget(self, action: #selector(navigateForward), for: .touchUpInside)
+
+    segmentControl.sendActions(for: .valueChanged)
   }
 
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    // ***** Yours Segment *****
-    setupYoursEmptyView()
-
-    yoursActivityIndicator = UIActivityIndicatorView()
-    yoursActivityIndicator.style = .whiteLarge
-    yoursActivityIndicator.color = .gray
-
-    yoursTableView = UITableView()
-    yoursTableView.tableFooterView = UIView() // eliminate extra separators
-
-    yoursView.addSubview(yoursTableView)
-    yoursView.addSubview(emptyViewInYoursTab)
-    yoursView.addSubview(yoursActivityIndicator)
-
-    yoursTableView.snp.makeConstraints { (make) in
-      make.edges.equalToSuperview()
-    }
-
-    yoursActivityIndicator.snp.makeConstraints { (make) in
-      make.centerX.centerY.equalToSuperview()
-    }
-
-    emptyViewInYoursTab.snp.makeConstraints { (make) in
-      make.edges.equalToSuperview()
-    }
+    yoursView = setupYoursView()
+    globalView = setupGlobalView()
 
     // *** Setup UI in view ***
     view.addSubview(segmentControl)
     view.addSubview(yoursView)
+    view.addSubview(globalView)
 
     segmentControl.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -196,9 +217,44 @@ extension PropertiesViewController {
       make.top.equalTo(segmentControl.snp.bottom)
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
     }
+
+    globalView.snp.makeConstraints { (make) in
+      make.top.equalTo(segmentControl.snp.bottom)
+      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+    }
   }
 
-  fileprivate func setupYoursEmptyView() {
+  fileprivate func setupYoursView() -> UIView {
+    yoursTableView = UITableView()
+    yoursTableView.tableFooterView = UIView() // eliminate extra separators
+
+    emptyViewInYoursTab = setupYoursEmptyView()
+
+    yoursActivityIndicator = UIActivityIndicatorView()
+    yoursActivityIndicator.style = .whiteLarge
+    yoursActivityIndicator.color = .gray
+
+    let view = UIView()
+    view.addSubview(yoursTableView)
+    view.addSubview(emptyViewInYoursTab)
+    view.addSubview(yoursActivityIndicator)
+
+    yoursTableView.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    emptyViewInYoursTab.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    yoursActivityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
+
+    return view
+  }
+
+  fileprivate func setupYoursEmptyView() -> UIView {
     let welcomeLabel = CommonUI.pageTitleLabel(text: "WELCOME TO BITMARK!")
     welcomeLabel.textColor = .mainBlueColor
 
@@ -219,9 +275,10 @@ extension PropertiesViewController {
 
     createFirstProperty = CommonUI.blueButton(title: "CREATE FIRST PROPERTY")
 
-    emptyViewInYoursTab.isHidden = true
-    emptyViewInYoursTab.addSubview(contentView)
-    emptyViewInYoursTab.addSubview(createFirstProperty)
+    let view = UIView()
+    view.isHidden = true
+    view.addSubview(contentView)
+    view.addSubview(createFirstProperty)
 
     contentView.snp.makeConstraints { (make) in
       make.top.equalToSuperview().offset(25)
@@ -233,5 +290,57 @@ extension PropertiesViewController {
       make.top.equalTo(contentView.snp.bottom).offset(25)
       make.leading.trailing.bottom.equalToSuperview()
     }
+
+    return view
+  }
+
+  fileprivate func setupGlobalView() -> UIView {
+    webView = WKWebView()
+
+    backButton = UIButton(type: .system)
+    backButton.setImage(UIImage(named: "back-arrow"), for: .normal)
+    backButton.contentMode = .scaleAspectFit
+    backButton.tintColor = .silver
+
+    forwardButton = UIButton(type: .system)
+    forwardButton.setImage(UIImage(named: "forward-arrow"), for: .normal)
+    forwardButton.contentMode = .scaleAspectFit
+    forwardButton.tintColor = .silver
+
+    let navigationButtons = UIStackView(
+      arrangedSubviews: [backButton, forwardButton],
+      axis: .horizontal, spacing: 100
+    )
+
+    let coverNavigationButtonsView = UIView()
+    coverNavigationButtonsView.backgroundColor = .alabaster
+    coverNavigationButtonsView.addSubview(navigationButtons)
+
+    navigationButtons.snp.makeConstraints { (make) in
+      make.height.equalTo(45)
+      make.centerX.equalToSuperview()
+    }
+
+    globalActivityIndicator = UIActivityIndicatorView()
+    globalActivityIndicator.style = .whiteLarge
+    globalActivityIndicator.color = .gray
+
+    let view = UIView()
+    view.addSubview(webView)
+    view.addSubview(coverNavigationButtonsView)
+    view.addSubview(globalActivityIndicator)
+
+    webView.snp.makeConstraints { $0.edges.equalToSuperview() }
+
+    coverNavigationButtonsView.snp.makeConstraints { (make) in
+      make.height.equalTo(45)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    globalActivityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
+
+    return view
   }
 }
