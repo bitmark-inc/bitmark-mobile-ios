@@ -14,6 +14,7 @@ class KeychainStore {
   // MARK: - Properties
   private static let service = "com.bitmark.registry"
   private static let bitmarkSeedCoreKey = "bitmark_core"
+  private static let bitmarkTouchFaceIdKey = "bitmark_touch_face_id_"
   private static let keychain: Keychain = {
     return Keychain(service: service)
   }()
@@ -26,10 +27,21 @@ class KeychainStore {
   static func removeSeedCoreFromKeychain() throws {
     try keychain.remove(bitmarkSeedCoreKey)
   }
+  static func saveEnableTouchFaceId(_ accountNumber: String) throws {
+    try keychain.set("true", key: bitmarkTouchFaceIdKey + accountNumber)
+  }
 
   static func getSeedDataFromKeychain() -> Data? {
+    return getDataFromKeychain(key: bitmarkSeedCoreKey)
+  }
+
+  static func isTouchFaceIdEnabled(_ accountNumber: String) -> Bool {
+    return getDataFromKeychain(key: bitmarkTouchFaceIdKey + accountNumber) != nil
+  }
+
+  private static func getDataFromKeychain(key: String) -> Data? {
     do {
-      return try keychain.getData(bitmarkSeedCoreKey)
+      return try keychain.getData(key)
     } catch let e {
       print(e.localizedDescription)
       return nil
