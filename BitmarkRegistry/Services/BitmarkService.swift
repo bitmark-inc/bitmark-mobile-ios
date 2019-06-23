@@ -22,4 +22,12 @@ class BitmarkService {
     let (bitmarks, assets) = try Bitmark.list(params: params)
     return (bitmarks ?? [Bitmark](), assets ?? [Asset]())
   }
+
+  static func directTransfer(account: Account, bitmarkId: String, to receiverAccountNumber: String) throws -> String {
+    var transferParams = try Bitmark.newTransferParams(to: receiverAccountNumber)
+    try transferParams.from(bitmarkID: bitmarkId)
+    try transferParams.sign(account)
+
+    return try Bitmark.transfer(withTransferParams: transferParams)
+  }
 }
