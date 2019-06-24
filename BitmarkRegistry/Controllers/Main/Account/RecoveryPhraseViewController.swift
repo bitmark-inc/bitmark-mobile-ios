@@ -8,9 +8,24 @@
 
 import UIKit
 
+enum RecoveryPhraseSource {
+  case TestRecoveryPhrase
+  case RemoveAccess
+}
+
 class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Properties
+  var recoveryPhraseSource: RecoveryPhraseSource!
+  lazy var screenTitle: String = {
+    switch recoveryPhraseSource! {
+    case .TestRecoveryPhrase:
+      return "RECOVERY PHRASE"
+    case .RemoveAccess:
+      return "WRITE DOWN RECOVERY PHRASE"
+    }
+  }()
+
   private var recoveryPhrases = [String]()
   var testRecoveryPhraseButton: UIButton!
   var doneButton: UIButton!
@@ -19,10 +34,9 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "RECOVERY PHRASE"
+    title = screenTitle
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
-    setupEvents()
 
     recoveryPhraseCollectionView.register(cellWithClass: RecoveryPhraseCell.self)
     recoveryPhraseCollectionView.delegate = self
@@ -34,6 +48,17 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   // MARK: Data Handlers
   private func loadData() {
     loadRecoveryPhrases(&recoveryPhrases)
+  }
+
+  // MARK: - Handlers
+  @objc func moveToTestRecoveryPhrase(_ sender: UIButton) {
+    let testRecoveryPhraseVC = TestRecoveryPhraseViewController()
+    testRecoveryPhraseVC.recoveryPhraseSource = recoveryPhraseSource
+    navigationController?.pushViewController(testRecoveryPhraseVC)
+  }
+
+  @objc func doneHandler(_ sender: UIButton) {
+    navigationController?.popToRootViewController(animated: true)
   }
 }
 
@@ -52,18 +77,6 @@ extension RecoveryPhraseViewController: UICollectionViewDataSource {
 
 // MARK: - Setup Views/Events
 extension RecoveryPhraseViewController {
-  fileprivate func setupEvents() {
-    testRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.pushViewController(
-        TestRecoveryPhraseViewController()
-      )
-    })
-
-    doneButton.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.popToRootViewController(animated: true)
-    })
-  }
-
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
@@ -84,13 +97,7 @@ extension RecoveryPhraseViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    testRecoveryPhraseButton = CommonUI.blueButton(title: "TEST RECOVERY PHRASE")
-    doneButton = CommonUI.lightButton(title: "DONE")
-
-    let buttonsGroupStackView = UIStackView(
-      arrangedSubviews: [testRecoveryPhraseButton, doneButton],
-      axis: .vertical
-    )
+    let buttonsGroupStackView = setupbuttonsGroup()
 
     // *** Setup UI in view ***
     view.addSubview(mainView)
@@ -105,6 +112,21 @@ extension RecoveryPhraseViewController {
     buttonsGroupStackView.snp.makeConstraints { (make) in
       make.top.equalTo(mainView.snp.bottom)
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+    }
+  }
+
+  fileprivate func setupbuttonsGroup() -> UIStackView {
+    switch recoveryPhraseSource! {
+    case .TestRecoveryPhrase:
+      testRecoveryPhraseButton = CommonUI.blueButton(title: "TEST RECOVERY PHRASE")
+      doneButton = CommonUI.lightButton(title: "DONE")
+      testRecoveryPhraseButton.addTarget(self, action: #selector(moveToTestRecoveryPhrase), for: .touchUpInside)
+      doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
+      return UIStackView(arrangedSubviews: [testRecoveryPhraseButton, doneButton], axis: .vertical)
+    case .RemoveAccess:
+      doneButton = CommonUI.blueButton(title: "DONE")
+      doneButton.addTarget(self, action: #selector(moveToTestRecoveryPhrase), for: .touchUpInside)
+      return UIStackView(arrangedSubviews: [doneButton], axis: .vertical)
     }
   }
 }

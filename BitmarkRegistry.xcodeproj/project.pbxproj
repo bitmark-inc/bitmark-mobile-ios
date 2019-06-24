@@ -110,6 +110,8 @@
 		E2E798E1229E267500508B69 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
 		E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
+		E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */; };
+		E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -173,6 +175,7 @@
 		E2E798E0229E267500508B69 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E2E798E6229E285600508B69 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningRemoveAccessViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +227,7 @@
 				E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */,
 				E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */,
 				E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */,
+				E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -661,6 +665,7 @@
 				E2CEDC8422BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E24B527F22BBB8B400E160E3 /* TransactionService.swift in Sources */,
+				E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
 				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
 				E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */,
 				E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
@@ -716,6 +721,7 @@
 				E2CEDC8322BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
 				E24B527E22BBB8B400E160E3 /* TransactionService.swift in Sources */,
+				E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
 				E205107922B0A09900475871 /* SubmitButton.swift in Sources */,
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,

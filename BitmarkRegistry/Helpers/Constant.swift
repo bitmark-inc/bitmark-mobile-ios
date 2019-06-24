@@ -19,6 +19,8 @@ public struct Constant {
 
   // MARK: - Error Messages
   public struct Error {
+    public static let removeAccess = "There was a problem from removing the access."
+
     public struct Metadata {
       public static let duplication = "Duplicated labels! "
     }
