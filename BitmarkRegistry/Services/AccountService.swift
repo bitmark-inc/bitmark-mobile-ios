@@ -36,6 +36,9 @@ class AccountService {
     }
     Global.currentAccount = account
     return account
+
+  static func getCurrentAccount(phrases: [String]) throws -> Account {
+    return try Account(recoverPhrase: phrases, language: .english)
   }
 
   // request jwt from mobile_server;
