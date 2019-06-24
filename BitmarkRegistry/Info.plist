@@ -41,6 +41,8 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) will use photos from your library to issue bitmarks.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera access is needed to scan QR code.</string>
 	<key>AppCredentials</key>
 	<dict>
 		<key>BITMARK_API_TOKEN</key>
