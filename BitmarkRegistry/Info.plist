@@ -44,7 +44,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is needed to scan QR code.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Face ID is needed to confirm your identity.</string>
+	<string>Face ID is used to put your account in secured place.</string>
 	<key>AppCredentials</key>
 	<dict>
 		<key>BITMARK_API_TOKEN</key>

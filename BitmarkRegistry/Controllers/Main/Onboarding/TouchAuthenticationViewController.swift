@@ -29,7 +29,9 @@ class TouchAuthenticationViewController: UIViewController {
       DispatchQueue.main.async {
         guard errorMessage == nil else {
           let alertController = UIAlertController(title: "Error", message: errorMessage, defaultActionButtonTitle: "Cancel")
-          alertController.addAction(title: "Retry", style: .default, handler: { _ in self.enableTouchId(sender) })
+          alertController.addAction(title: "Retry", style: .default, handler: { [weak self] _ in
+            self?.enableTouchId(sender)
+          })
           self.present(alertController, animated: true, completion: nil)
           return
         }
