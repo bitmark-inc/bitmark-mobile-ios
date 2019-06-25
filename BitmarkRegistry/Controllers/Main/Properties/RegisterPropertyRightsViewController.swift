@@ -69,8 +69,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       guard let self = self else { return }
       let assetFingerprint = AssetService.getFingerprintFrom(self.assetData)
 
-      DispatchQueue.main.async { [weak self] in
-        self?.assetFingerprintLabel.text = assetFingerprint
+      DispatchQueue.main.async {
+        self.assetFingerprintLabel.text = assetFingerprint
       }
     }
     assetFilenameLabel.text = assetFileName
@@ -369,7 +369,7 @@ extension RegisterPropertyRightsViewController {
     // *** Setup subviews ***
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "ASSET FINGERPRINT")
 
-    assetFingerprintLabel = CommonUI.infoLabel(text: "Loading...")
+    assetFingerprintLabel = CommonUI.infoLabel(text: "Analyzing your file data...")
     assetFingerprintLabel.textColor = .mainBlueColor
 
     let generatedFromLabel = UILabel()

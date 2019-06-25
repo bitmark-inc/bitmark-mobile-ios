@@ -40,7 +40,9 @@ class RegisterPropertyViewController: UIViewController {
   }
 
   @objc func tapFilesToRegister(_ sender: UIButton) {
-    let browserAction = UIAlertAction(title: "", style: .default, handler: documentPickerHandler)
+    let browserAction = UIAlertAction(title: "", style: .default) { [weak self] in
+      self?.documentPickerHandler($0)
+    }
     let browserButton = setupBrowserActionButton()
     browserButton.addTarget(self, action: #selector(documentPickerHandler), for: .touchUpInside)
 
@@ -114,8 +116,7 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
 
     let fileCoordinator = NSFileCoordinator()
     var error: NSError? = nil
-    fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { [weak self] (newURL) in
-      guard let self = self else { return }
+    fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { (newURL) in
       do {
         assetData = try Data(contentsOf: newURL)
       } catch {
@@ -123,8 +124,7 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
         return
       }
       assetFileName = newURL.lastPathComponent
-
-      self.performMoveToRegisterPropertyRights()
+      performMoveToRegisterPropertyRights()
     }
   }
 }
