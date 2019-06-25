@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 private extension AppDelegate {
   func evaluatePolicyWhenUserSetEnable() {
     guard Global.currentAccount != nil else { return }
-    guard KeychainStore.isTouchFaceIdEnabled(Global.currentAccount!.getAccountNumber()) else { return }
+    guard UserSetting.shared.getTouchFaceIdSetting() else { return }
 
     BiometricAuth().authorizeAccess { [weak self] (errorMessage) in
       guard let self = self else { return }

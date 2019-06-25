@@ -34,13 +34,16 @@ class TouchAuthenticationViewController: UIViewController {
           return
         }
         // save enable touch/face id for current account and move to main screen
-        do {
-          try KeychainStore.saveEnableTouchFaceId(Global.currentAccount!.getAccountNumber())
-        } catch {
-          self.showErrorAlert(message: Constant.Error.keychainStore)
-        }
+        UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
         self.present(CustomTabBarViewController(), animated: true)
       }
+    }
+  }
+
+  @objc func skipTouchId(_ sender: UIButton) {
+    showConfirmationAlert(message: Constant.Confirmation.skipTouchFaceIdAuthentication) {
+      UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
+      self.present(CustomTabBarViewController(), animated: true)
     }
   }
 }
@@ -49,9 +52,7 @@ class TouchAuthenticationViewController: UIViewController {
 extension TouchAuthenticationViewController {
   fileprivate func setupEvents() {
     enableButton.addTarget(self, action: #selector(enableTouchId), for: .touchUpInside)
-    skipButton.addAction(for: .touchUpInside) {
-      self.present(CustomTabBarViewController(), animated: true)
-    }
+    skipButton.addTarget(self, action: #selector(skipTouchId), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {

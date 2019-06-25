@@ -15,6 +15,7 @@ public struct Constant {
   // MARK: - Confirmation
   public struct Confirmation {
     public static let deleteLabel = "Are you sure you want to delete this label?"
+    public static let skipTouchFaceIdAuthentication = "Are you sure you don't want to protect your data with Touch & Face ID?"
   }
 
   // MARK: - Error Messages

@@ -16,6 +16,8 @@
 		E205107D22B0ABC300475871 /* DesignedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107B22B0AA6300475871 /* DesignedTextField.swift */; };
 		E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */; };
 		E205108122B1041200475871 /* MetadataForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205108022B1041200475871 /* MetadataForm.swift */; };
+		E216890822C1F09A00E943B9 /* UserSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216890722C1F09A00E943B9 /* UserSetting.swift */; };
+		E216890922C1F09A00E943B9 /* UserSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216890722C1F09A00E943B9 /* UserSetting.swift */; };
 		E24B527522BBAC0E00E160E3 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527422BBAC0E00E160E3 /* Array+Extension.swift */; };
 		E24B527622BBAE9B00E160E3 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527422BBAC0E00E160E3 /* Array+Extension.swift */; };
 		E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */; };
@@ -129,6 +131,7 @@
 		E205107B22B0AA6300475871 /* DesignedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignedTextField.swift; sourceTree = "<group>"; };
 		E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataLabelViewController.swift; sourceTree = "<group>"; };
 		E205108022B1041200475871 /* MetadataForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataForm.swift; sourceTree = "<group>"; };
+		E216890722C1F09A00E943B9 /* UserSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSetting.swift; sourceTree = "<group>"; };
 		E24B527422BBAC0E00E160E3 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkDetailViewController.swift; sourceTree = "<group>"; };
 		E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
@@ -386,6 +389,7 @@
 				E2CEDC7622BB93CC00B5BBF9 /* BitmarkStorage.swift */,
 				E24B527D22BBB8B400E160E3 /* TransactionService.swift */,
 				E2E798E6229E285600508B69 /* KeychainStore.swift */,
+				E216890722C1F09A00E943B9 /* UserSetting.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -651,6 +655,7 @@
 				E24B527C22BBB7C600E160E3 /* SelfSizedTableView.swift in Sources */,
 				E2BEC95F22AFB4CF009F7DF5 /* RegisterPropertyViewController.swift in Sources */,
 				E2ADFD2722BCE37700FC46D8 /* BiometricAuth.swift in Sources */,
+				E216890922C1F09A00E943B9 /* UserSetting.swift in Sources */,
 				E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */,
 				E2ADFD2022BC742900FC46D8 /* QRCode.swift in Sources */,
 				E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */,
@@ -709,6 +714,7 @@
 				E24B527B22BBB7C600E160E3 /* SelfSizedTableView.swift in Sources */,
 				E2BEC95E22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift in Sources */,
 				E2ADFD2622BCE37700FC46D8 /* BiometricAuth.swift in Sources */,
+				E216890822C1F09A00E943B9 /* UserSetting.swift in Sources */,
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
 				E2ADFD1F22BC742900FC46D8 /* QRCode.swift in Sources */,
 				E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */,
