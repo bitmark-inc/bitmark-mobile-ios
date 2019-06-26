@@ -22,6 +22,7 @@ public struct Constant {
   public struct Error {
     public static let keychainStore = "There was a problem saving data in a safe place."
     public static let removeAccess = "There was a problem from removing the access."
+    public static let accessFile = "There was a problem to access your selected file."
 
     public struct Metadata {
       public static let duplication = "Duplicated labels! "

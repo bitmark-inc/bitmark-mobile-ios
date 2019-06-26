@@ -12,12 +12,13 @@ import Photos
 class RegisterPropertyViewController: UIViewController {
 
   // MARK: - Properties
-  var assetFile: UIImage?
+  var assetData: Data?
   var assetFileName: String?
 
   var registerByPhotoButton: UIButton!
   var registerByFileButton: UIButton!
   var descriptionLabel: UILabel!
+  var browserFileAlertController: UIAlertController!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -38,6 +39,21 @@ class RegisterPropertyViewController: UIViewController {
     present(alertController, animated: true, completion: nil)
   }
 
+  @objc func tapFilesToRegister(_ sender: UIButton) {
+    let browserAction = UIAlertAction(title: "", style: .default) { [weak self] in
+      self?.documentPickerHandler($0)
+    }
+    let browserButton = setupBrowserActionButton()
+    browserButton.addTarget(self, action: #selector(documentPickerHandler), for: .touchUpInside)
+
+    browserFileAlertController = UIAlertController()
+    browserFileAlertController.view.addSubview(browserButton)
+    browserFileAlertController.addAction(browserAction)
+    browserFileAlertController.addAction(title: "Cancel", style: .cancel)
+
+    present(browserFileAlertController, animated: true, completion: nil)
+  }
+
   @objc func imagePickerHandler(_ sender: UIAlertAction) {
     askForPhotosPermission { [unowned self] (status) in
       if status == .authorized {
@@ -51,6 +67,13 @@ class RegisterPropertyViewController: UIViewController {
       }
     }
   }
+
+  @objc func documentPickerHandler(_ sender: Any) {
+    browserFileAlertController?.dismiss(animated: false, completion: nil)
+    let documentPickerController = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
+    documentPickerController.delegate = self
+    present(documentPickerController, animated: true, completion: nil)
+  }
 }
 
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
@@ -60,7 +83,7 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
 
     // get image
     guard let image = info[.originalImage] as? UIImage else { return }
-    assetFile = image
+    assetData = image.pngData()
 
     // get image name
     if let asset = info[.phAsset] as? PHAsset,
@@ -74,9 +97,35 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
   fileprivate func performMoveToRegisterPropertyRights() {
     let registerPropertyRightsVC = RegisterPropertyRightsViewController()
     registerPropertyRightsVC.hidesBottomBarWhenPushed = true
-    registerPropertyRightsVC.assetFile = assetFile
+    registerPropertyRightsVC.assetData = assetData
     registerPropertyRightsVC.assetFileName = assetFileName
     navigationController?.pushViewController(registerPropertyRightsVC)
+  }
+}
+
+
+// MARK: - UIDocumentPickerDelegate
+extension RegisterPropertyViewController: UIDocumentPickerDelegate {
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+    let didStartAccessing = url.startAccessingSecurityScopedResource()
+    defer {
+      if didStartAccessing {
+        url.stopAccessingSecurityScopedResource()
+      }
+    }
+
+    let fileCoordinator = NSFileCoordinator()
+    var error: NSError? = nil
+    fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { (newURL) in
+      do {
+        assetData = try Data(contentsOf: newURL)
+      } catch {
+        showErrorAlert(message: Constant.Error.accessFile)
+        return
+      }
+      assetFileName = newURL.lastPathComponent
+      performMoveToRegisterPropertyRights()
+    }
   }
 }
 
@@ -84,6 +133,7 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
 extension RegisterPropertyViewController {
   private func setupEvents() {
     registerByPhotoButton.addTarget(self, action: #selector(tapPhotosToRegiter), for: .touchUpInside)
+    registerByFileButton.addTarget(self, action: #selector(tapFilesToRegister), for: .touchUpInside)
   }
 
   private func setupViews() {
@@ -133,5 +183,21 @@ extension RegisterPropertyViewController {
     button.titleEdgeInsets.left = 20.0
     button.snp.makeConstraints { $0.height.equalTo(45) }
     return button
+  }
+
+  fileprivate func setupBrowserActionButton() -> UIButton {
+    let browserTextLabel = UILabel(text: "Browser")
+    browserTextLabel.font = UIFont(name: "Arial", size: 16)
+    let browserImage = UIImage(named: "browser-icon")
+
+    let browserButton = UIButton()
+    browserButton.frame = CGRect(x: 0, y: 16, width: view.frame.width - 35, height: 25)
+    browserButton.contentHorizontalAlignment = .leading
+    browserButton.setTitle("Browser", for: .normal)
+    browserButton.setTitleColor(.black, for: .normal)
+    browserButton.setImage(browserImage, for: .normal)
+    browserButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: browserButton.frame.width - 20, bottom: 0, right: 0)
+
+    return browserButton
   }
 }
