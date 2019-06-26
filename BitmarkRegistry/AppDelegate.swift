@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
+  var retryAuthenticationAlert: UIAlertController?
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -26,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                           ? CustomTabBarViewController()
                           : OnboardingViewController()
     window?.rootViewController = initialVC
+
+    evaluatePolicyWhenUserSetEnable()
 
     return true
   }
@@ -42,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func applicationWillEnterForeground(_ application: UIApplication) {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    evaluatePolicyWhenUserSetEnable()
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
@@ -55,3 +59,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+private extension AppDelegate {
+  func evaluatePolicyWhenUserSetEnable() {
+    guard Global.currentAccount != nil else { return }
+    guard UserSetting.shared.getTouchFaceIdSetting() else { return }
+    retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
+
+    BiometricAuth().authorizeAccess { [weak self] (errorMessage) in
+      guard let self = self else { return }
+      if let errorMessage = errorMessage {
+        DispatchQueue.main.async {
+          self.retryAuthenticationAlert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
+          self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
+          self.retryAuthenticationAlert!.show()
+        }
+      }
+    }
+  }
+}

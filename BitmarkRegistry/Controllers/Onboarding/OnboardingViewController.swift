@@ -30,12 +30,12 @@ class OnboardingViewController: UIViewController {
       let account = try AccountService.createNewAccount()
       Global.currentAccount = account // track and store currentAccount
       try KeychainStore.saveToKeychain(account.seed.core)
-    } catch let e {
-      showErrorAlert(message: e.localizedDescription)
+    } catch {
+      showErrorAlert(message: Constant.Error.keychainStore)
     }
 
-    // redirect to Main Screen
-    present(CustomTabBarViewController(), animated: true)
+    // redirect to Onboarding Screens
+    present(TouchAuthenticationViewController(), animated: true)
   }
 }
 
@@ -46,7 +46,6 @@ extension OnboardingViewController {
   }
 
   fileprivate func setupViews() {
-
     view.backgroundColor = .white
 
     // *** Setup subviews ***

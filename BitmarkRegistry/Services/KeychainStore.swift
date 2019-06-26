@@ -28,8 +28,12 @@ class KeychainStore {
   }
 
   static func getSeedDataFromKeychain() -> Data? {
+    return getDataFromKeychain(key: bitmarkSeedCoreKey)
+  }
+
+  private static func getDataFromKeychain(key: String) -> Data? {
     do {
-      return try keychain.getData(bitmarkSeedCoreKey)
+      return try keychain.getData(key)
     } catch let e {
       print(e.localizedDescription)
       return nil
