@@ -10,7 +10,7 @@ import UIKit
 import BitmarkSDK
 import WebKit
 
-protocol BitmarkEventDelegate {
+protocol BitmarkEventDelegate: class {
   func receiveNewBitmarks(_ newBitmarks: [Bitmark])
   func syncUpdatedBitmarks()
 }
@@ -30,16 +30,12 @@ class PropertiesViewController: UIViewController {
   }()
 
   //*** Yours Segment ***
+  var refreshControl: UIRefreshControl!
   var yoursTableView: UITableView!
   var createFirstProperty: UIButton!
   var emptyViewInYoursTab: UIView!
   var yoursActivityIndicator: UIActivityIndicatorView!
   var bitmarks = [Bitmark]()
-  lazy var bitmarkStorage: BitmarkStorage = {
-    let bitmarkStorage = BitmarkStorage(for: Global.currentAccount!)
-    bitmarkStorage.delegate = self
-    return bitmarkStorage
-  }()
 
   // *** Global Segment ***
   var webView: WKWebView!
@@ -68,7 +64,7 @@ class PropertiesViewController: UIViewController {
   private func loadData() {
     yoursActivityIndicator.startAnimating()
     do {
-      try bitmarkStorage.firstLoad { [weak self] (bitmarks, error) in
+      try BitmarkStorage.shared().firstLoad { [weak self] (bitmarks, error) in
         guard let self = self else { return }
         self.yoursActivityIndicator.stopAnimating()
 
@@ -158,8 +154,12 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: BitmarkEventDelegate
 extension PropertiesViewController: BitmarkEventDelegate {
-  func syncUpdatedBitmarks() {
-    bitmarkStorage.asyncSerialMoreBitmarks(notifyNew: true, callAPIOneTime: true, completion: nil)
+  @objc func syncUpdatedBitmarks() {
+    BitmarkStorage.shared().asyncSerialMoreBitmarks(notifyNew: true, callAPIOneTime: true) { [weak self] (_) in
+      DispatchQueue.main.async {
+        self?.refreshControl.endRefreshing()
+      }
+    }
   }
 
   func receiveNewBitmarks(_ newBitmarks: [Bitmark]) {
@@ -206,6 +206,7 @@ extension PropertiesViewController: WKNavigationDelegate {
 extension PropertiesViewController {
   fileprivate func setupEvents() {
     // *** Yours Segment ***
+    BitmarkStorage.shared().delegate = self
     yoursTableView.register(cellWithClass: YourPropertyCell.self)
     yoursTableView.dataSource = self
     yoursTableView.delegate = self
@@ -251,6 +252,17 @@ extension PropertiesViewController {
   fileprivate func setupYoursView() -> UIView {
     yoursTableView = UITableView()
     yoursTableView.tableFooterView = UIView() // eliminate extra separators
+
+    refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(syncUpdatedBitmarks), for: .valueChanged)
+    refreshControl.tintColor = UIColor.gray
+
+    // add refresh control to yoursTableView
+    if #available(iOS 10.0, *) {
+      yoursTableView.refreshControl = refreshControl
+    } else {
+      yoursTableView.addSubview(refreshControl)
+    }
 
     emptyViewInYoursTab = setupYoursEmptyView()
 

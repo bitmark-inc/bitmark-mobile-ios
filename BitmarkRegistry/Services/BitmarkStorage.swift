@@ -10,8 +10,16 @@ import Foundation
 import BitmarkSDK
 
 class BitmarkStorage {
-  var owner: Account
-  var delegate: BitmarkEventDelegate?
+
+  // MARK: - Properties
+  static var _shared: BitmarkStorage?
+  static func shared() -> BitmarkStorage {
+    _shared = _shared ?? BitmarkStorage(owner: Global.currentAccount!)
+    return _shared!
+  }
+
+  var owner: Account!
+  weak var delegate: BitmarkEventDelegate?
   let pathExtension = "json"
   private let serialSyncBitmarkQueue = DispatchQueue(label: "com.bitmark.registry.syncBitmarkQueue")
 
@@ -25,10 +33,12 @@ class BitmarkStorage {
     return directoryURL
   }()
 
-  init(for owner: Account) {
+  // MARK: - Init
+  init(owner: Account) {
     self.owner = owner
   }
 
+  // MARK: - Handlers
   func getBitmarkData() throws -> [Bitmark] {
     if let bitmarksURL = try getBitmarksURL() {
       let bitmarksWithAsset = try BitmarksWithAsset(from: bitmarksURL)
