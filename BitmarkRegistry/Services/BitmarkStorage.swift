@@ -13,6 +13,7 @@ class BitmarkStorage {
   var owner: Account
   var delegate: BitmarkEventDelegate?
   let pathExtension = "json"
+  private let serialSyncBitmarkQueue = DispatchQueue(label: "com.bitmark.registry.syncBitmarkQueue")
 
   // Get/create directory in documentURL; which directory's name is current account number
   lazy var directoryURL: URL = {
@@ -39,7 +40,7 @@ class BitmarkStorage {
 
   /**
    - If data no exist in local storage:
-      * execute sync all bitmarks from beginning
+      * execute sync all bitmarks from beginning (without notifyNew cause we already wait for sync all and display data)
       * get and returns data to display in UI
    - If data exists in local storage:
       * load existing data into UI
@@ -48,10 +49,9 @@ class BitmarkStorage {
   func firstLoad(handler: @escaping ([Bitmark]?, Error?) -> Void) throws {
     Global.latestBitmarkOffset = try getStoredPathName()
     if Global.latestBitmarkOffset == nil {
-      DispatchQueue.global(qos: .background).async { [weak self] in
-        guard let self = self else { return }
+      asyncSerialMoreBitmarks(notifyNew: false) { (executeSyncResult) in
         do {
-          try self.sync()
+          try executeSyncResult()
           let bitmarks = try self.getBitmarkData()
           DispatchQueue.main.async { handler(bitmarks, nil) }
         } catch let e {
@@ -61,12 +61,20 @@ class BitmarkStorage {
     } else {
       let bitmarks = try getBitmarkData()
       handler(bitmarks, nil)
-      DispatchQueue.global(qos: .background).async { [weak self] in
-        do {
-          try self?.sync(notifyNew: true)
-        } catch let e {
-          DispatchQueue.main.async { handler(nil, e) }
-        }
+      asyncSerialMoreBitmarks(notifyNew: true, completion: nil)
+    }
+  }
+
+  // Call Async function in serial queue
+  typealias throwsFunction = () throws -> Void
+  func asyncSerialMoreBitmarks(notifyNew: Bool, callAPIOneTime: Bool = false, completion: ((_ inner: throwsFunction) -> Void)?) {
+    serialSyncBitmarkQueue.async { [weak self] in
+      do {
+        try self?.syncBitmark(notifyNew: notifyNew, callAPIOneTime: callAPIOneTime)
+        completion?({})
+      } catch let e {
+        print(e.localizedDescription)
+        completion?({ throw e })
       }
     }
   }
@@ -75,8 +83,11 @@ class BitmarkStorage {
    Sync and merge all bitmarks into a file; set the latest offset as the filename
    - Parameters:
       - notifyNew: when true, notify receiveNewBitmarks to update in UI
+      - callAPIOneTime: to make one call listBitmarks API one only
+          when we're sure that there are no remain bitmarks in next API,
+          such as: in eventSubscription
    */
-  func sync(notifyNew: Bool = false) throws {
+  fileprivate func syncBitmark(notifyNew: Bool, callAPIOneTime: Bool = false) throws {
     Global.latestBitmarkOffset = try getStoredPathName()
     var latestOffset = Global.latestBitmarkOffset ?? 0
 
@@ -84,7 +95,7 @@ class BitmarkStorage {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
       guard bitmarks.count > 0 else { break }
 
-      let bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
+      var bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
 
       if notifyNew {
         Global.addAssets(bitmarksWithAsset.assets)
@@ -97,14 +108,14 @@ class BitmarkStorage {
       let bitmarksURL = fileURL(pathName: baseOffset)
 
       if latestOffset == 0 {
-        try bitmarksWithAsset.store(in: bitmarksURL)
+        try bitmarksWithAsset.store(in: bitmarksURL, ownerNumber: owner.getAccountNumber())
       } else {
         try mergeNewBitmarks(bitmarksURL, bitmarksWithAsset)
       }
 
       latestOffset = baseOffset
       Global.latestBitmarkOffset = latestOffset
-    } while true
+    } while !callAPIOneTime
   }
 
   // Merge new bitmarks into the bitmarks file
@@ -112,7 +123,12 @@ class BitmarkStorage {
     guard let latestPathName = Global.latestBitmarkOffset else { return }
     let latestBitmarksURL = fileURL(pathName: latestPathName)
     var oldBitmarksWithAsset = try BitmarksWithAsset(from: latestBitmarksURL)
-    try oldBitmarksWithAsset.merge(with: bitmarksWithAsset, in: latestBitmarksURL, newBitmarksURL: newBitmarksURL)
+    try oldBitmarksWithAsset.merge(
+      with: bitmarksWithAsset,
+      ownerNumber: owner.getAccountNumber(),
+      from: latestBitmarksURL,
+      to: newBitmarksURL
+    )
   }
 
   // MARK: - Support Functions

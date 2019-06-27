@@ -15,7 +15,7 @@ class BitmarkService {
     let params = try Bitmark.newBitmarkQueryParams()
                             .loadAsset(true)
                             .limit(size: 100)
-                            .ownedBy(owner.getAccountNumber())
+                            .ownedByWithTransient(owner.getAccountNumber())
                             .at(fromOffset)
                             .to(direction: direction)
                             .pending(true)

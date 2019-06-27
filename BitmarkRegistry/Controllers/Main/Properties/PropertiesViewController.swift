@@ -12,6 +12,7 @@ import WebKit
 
 protocol BitmarkEventDelegate {
   func receiveNewBitmarks(_ newBitmarks: [Bitmark])
+  func syncUpdatedBitmarks()
 }
 
 class PropertiesViewController: UIViewController {
@@ -60,6 +61,7 @@ class PropertiesViewController: UIViewController {
     setupEvents()
 
     loadData()
+    setupBitmarkEventSubscription()
   }
 
   // MARK: - Data Handlers
@@ -71,7 +73,8 @@ class PropertiesViewController: UIViewController {
         self.yoursActivityIndicator.stopAnimating()
 
         if let error = error {
-          self.showErrorAlert(message: error.localizedDescription)
+          print(error)
+          self.showErrorAlert(message: Constant.Error.syncBitmark)
         }
 
         if let bitmarks = bitmarks {
@@ -87,6 +90,19 @@ class PropertiesViewController: UIViewController {
       }
     } catch let e {
       showErrorAlert(message: e.localizedDescription)
+    }
+  }
+
+  func setupBitmarkEventSubscription() {
+    do {
+      let eventSubscription = EventSubscription.shared
+      try eventSubscription.connect(Global.currentAccount!)
+
+      try eventSubscription.listenBitmarkChanged { [weak self] (_) in
+        self?.syncUpdatedBitmarks()
+      }
+    } catch let e {
+      print(e)
     }
   }
 
@@ -142,6 +158,10 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: BitmarkEventDelegate
 extension PropertiesViewController: BitmarkEventDelegate {
+  func syncUpdatedBitmarks() {
+    bitmarkStorage.asyncSerialMoreBitmarks(notifyNew: true, callAPIOneTime: true, completion: nil)
+  }
+
   func receiveNewBitmarks(_ newBitmarks: [Bitmark]) {
     for newBitmark in newBitmarks {
       yoursTableView.beginUpdates()
@@ -150,9 +170,13 @@ extension PropertiesViewController: BitmarkEventDelegate {
         bitmarks.remove(at: index)
         yoursTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
       }
-      // Add new bitmark
-      bitmarks.prepend(newBitmark)
-      yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+      // Add new bitmark; ignore if bitmark is obsolete
+      if newBitmark.owner == Global.currentAccount?.getAccountNumber() {
+        bitmarks.prepend(newBitmark)
+        yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+      }
+
+      emptyViewInYoursTab.isHidden = !bitmarks.isEmpty
       yoursTableView.endUpdates()
     }
   }

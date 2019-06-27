@@ -24,7 +24,10 @@ struct BitmarksWithAsset: Codable {
     self.bitmarks = bitmarks
   }
 
-  func store(in bitmarksURL: URL) throws {
+  mutating func store(in bitmarksURL: URL, ownerNumber: String) throws {
+    // Pre-validate before storing
+    self.bitmarks.removeUnownedBitmarks(with: ownerNumber)
+
     let jsonEncoder = JSONEncoder()
     #if IOS_SIMULATOR
       jsonEncoder.outputFormatting = .prettyPrinted
@@ -33,13 +36,13 @@ struct BitmarksWithAsset: Codable {
     try jsonData.write(to: bitmarksURL, options: .atomic)
   }
 
-  mutating func merge(with other: BitmarksWithAsset, in bitmarksURL: URL, newBitmarksURL: URL) throws {
+  mutating func merge(with other: BitmarksWithAsset, ownerNumber: String, from bitmarksURL: URL, to newBitmarksURL: URL) throws {
     self.assets += other.assets
     self.assets.removeDuplicates()
     self.bitmarks += other.bitmarks
     self.bitmarks.removeObsoleteBitmarks()
 
-    try store(in: bitmarksURL)
+    try store(in: bitmarksURL, ownerNumber: ownerNumber)
     try FileManager.default.moveItem(at: bitmarksURL, to: newBitmarksURL)
   }
 }
