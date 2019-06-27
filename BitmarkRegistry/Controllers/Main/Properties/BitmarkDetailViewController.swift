@@ -98,6 +98,12 @@ class BitmarkDetailViewController: UIViewController {
     sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
   }
 
+  @objc func closeActionMenu(_ sender: UIGestureRecognizer) {
+    guard !actionMenuView.isHidden else { return }
+    actionMenuView.isHidden = true
+    menuBarButton.image = UIImage(named: "More Actions-close")
+  }
+
   @objc func tapToCopyId(_ sender: UIButton) {
     UIPasteboard.general.string = bitmark.id
     copiedToClipboardNotifier.showIn(period: 1.2)
@@ -190,7 +196,11 @@ extension BitmarkDetailViewController {
     actionMenuView.addShadow(ofColor: .gray)
     actionMenuView.isHidden = true
 
+    let recognizer = UITapGestureRecognizer(target: self, action: #selector(closeActionMenu))
+    recognizer.cancelsTouchesInView = true
+
     view.addSubview(stackView)
+    view.addGestureRecognizer(recognizer)
     view.addSubview(actionMenuView)
 
     stackView.snp.makeConstraints { (make) in
@@ -237,6 +247,10 @@ extension BitmarkDetailViewController {
       alignment: .trailing,
       distribution: .fill
     )
+
+    stackview.arrangedSubviews.forEach { (subview) in
+      subview.snp.makeConstraints { $0.width.equalToSuperview() }
+    }
 
     let view = UIView()
     view.addSubview(stackview)
