@@ -14,6 +14,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // MARK: - Properties
   var assetData: Data!
   var assetFileName: String?
+  var assetURL: URL?
 
   var scrollView: UIScrollView!
   var assetFingerprintLabel: UILabel!
@@ -127,6 +128,12 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           assetName: assetName,
           fingerprint: self.assetData,
           metadata: metadata)
+
+        if let assetURL = self.assetURL {
+          try? AssetFileService(owner: Global.currentAccount!, assetId: assetId)
+                  .moveFileToAppStorage(fileURL: assetURL)
+        }
+
         let _ = try AssetService.issueBitmarks(
           issuer: Global.currentAccount!,
           assetId: assetId,
