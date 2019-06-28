@@ -34,8 +34,8 @@ class KeychainStore {
   private static func getDataFromKeychain(key: String) -> Data? {
     do {
       return try keychain.getData(key)
-    } catch let e {
-      print(e.localizedDescription)
+    } catch {
+      print(error)
       return nil
     }
   }

@@ -25,8 +25,8 @@ extension Array where Iterator.Element == Bitmark {
   }
 
   mutating func removeUnownedBitmarks(with ownerNumber: String) {
-    self = self.compactMap({ (bitmark) -> Bitmark? in
-      return bitmark.owner == ownerNumber ? bitmark : nil
+    self = self.filter({ (bitmark) -> Bool in
+      return bitmark.owner == ownerNumber
     })
   }
 }

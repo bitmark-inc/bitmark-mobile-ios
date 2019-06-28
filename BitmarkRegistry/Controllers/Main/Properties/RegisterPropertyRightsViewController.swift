@@ -131,10 +131,12 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           issuer: Global.currentAccount!,
           assetId: assetId,
           quantity: quantity)
-        let propertiesVC = self.navigationController?.viewControllers[0] as! PropertiesViewController
+
+        guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else { return }
         propertiesVC.syncUpdatedBitmarks()
-      } catch let e {
-        errorMessage = e.localizedDescription
+      } catch {
+        print(error)
+        errorMessage = error.localizedDescription
       }
     }
 

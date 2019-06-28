@@ -59,7 +59,7 @@ class BitmarkStorage {
   func firstLoad(handler: @escaping ([Bitmark]?, Error?) -> Void) throws {
     Global.latestBitmarkOffset = try getStoredPathName()
     if Global.latestBitmarkOffset == nil {
-      asyncSerialMoreBitmarks(notifyNew: false) { (executeSyncResult) in
+      asyncUpdateBitmarksInSerialQueue(notifyNew: false) { (executeSyncResult) in
         do {
           try executeSyncResult()
           let bitmarks = try self.getBitmarkData()
@@ -71,20 +71,20 @@ class BitmarkStorage {
     } else {
       let bitmarks = try getBitmarkData()
       handler(bitmarks, nil)
-      asyncSerialMoreBitmarks(notifyNew: true, completion: nil)
+      asyncUpdateBitmarksInSerialQueue(notifyNew: true, completion: nil)
     }
   }
 
   // Call Async function in serial queue
   typealias throwsFunction = () throws -> Void
-  func asyncSerialMoreBitmarks(notifyNew: Bool, callAPIOneTime: Bool = false, completion: ((_ inner: throwsFunction) -> Void)?) {
+  func asyncUpdateBitmarksInSerialQueue(notifyNew: Bool, doRepeat: Bool = true, completion: ((_ inner: throwsFunction) -> Void)?) {
     serialSyncBitmarkQueue.async { [weak self] in
       do {
-        try self?.syncBitmark(notifyNew: notifyNew, callAPIOneTime: callAPIOneTime)
+        try self?.syncBitmarks(notifyNew: notifyNew, doRepeat: doRepeat)
         completion?({})
-      } catch let e {
-        print(e.localizedDescription)
-        completion?({ throw e })
+      } catch {
+        print(error)
+        completion?({ throw error })
       }
     }
   }
@@ -93,11 +93,16 @@ class BitmarkStorage {
    Sync and merge all bitmarks into a file; set the latest offset as the filename
    - Parameters:
       - notifyNew: when true, notify receiveNewBitmarks to update in UI
-      - callAPIOneTime: to make one call listBitmarks API one only
+      - doRepeat: when false, make one call listBitmarks API one only
           when we're sure that there are no remain bitmarks in next API,
           such as: in eventSubscription
    */
-  fileprivate func syncBitmark(notifyNew: Bool, callAPIOneTime: Bool = false) throws {
+  fileprivate func syncBitmarks(notifyNew: Bool, doRepeat: Bool = true) throws {
+    DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }
+    defer {
+      DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
+    }
+
     Global.latestBitmarkOffset = try getStoredPathName()
     var latestOffset = Global.latestBitmarkOffset ?? 0
 
@@ -125,7 +130,7 @@ class BitmarkStorage {
 
       latestOffset = baseOffset
       Global.latestBitmarkOffset = latestOffset
-    } while !callAPIOneTime
+    } while doRepeat
   }
 
   // Merge new bitmarks into the bitmarks file

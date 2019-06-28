@@ -155,7 +155,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: BitmarkEventDelegate
 extension PropertiesViewController: BitmarkEventDelegate {
   @objc func syncUpdatedBitmarks() {
-    BitmarkStorage.shared().asyncSerialMoreBitmarks(notifyNew: true, callAPIOneTime: true) { [weak self] (_) in
+    BitmarkStorage.shared().asyncUpdateBitmarksInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }
@@ -250,19 +250,13 @@ extension PropertiesViewController {
   }
 
   fileprivate func setupYoursView() -> UIView {
-    yoursTableView = UITableView()
-    yoursTableView.tableFooterView = UIView() // eliminate extra separators
-
     refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: #selector(syncUpdatedBitmarks), for: .valueChanged)
     refreshControl.tintColor = UIColor.gray
 
-    // add refresh control to yoursTableView
-    if #available(iOS 10.0, *) {
-      yoursTableView.refreshControl = refreshControl
-    } else {
-      yoursTableView.addSubview(refreshControl)
-    }
+    yoursTableView = UITableView()
+    yoursTableView.tableFooterView = UIView() // eliminate extra separators
+    yoursTableView.addSubview(refreshControl)
 
     emptyViewInYoursTab = setupYoursEmptyView()
 
