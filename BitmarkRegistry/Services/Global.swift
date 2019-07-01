@@ -11,6 +11,8 @@ import BitmarkSDK
 import XCGLogger
 
 class Global {
+  static var mobileServerURL = Credential.valueForKey(keyName: Constant.Key.mobileServerURL)
+
   static var registryServerUrl: String = {
     #if PRODUCTION
       return "https://registry.bitmark.com"

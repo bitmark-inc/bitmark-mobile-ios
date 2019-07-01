@@ -42,7 +42,7 @@ class PropertiesViewController: UIViewController {
   var backButton: UIButton!
   var forwardButton: UIButton!
   var globalActivityIndicator: UIActivityIndicatorView!
-  let globalRegisterApp = Global.registryServerUrl + "?env=app"
+  let globalRegisterApp = Global.registryServerURL + "?env=app"
   var didLoadWebview: Bool = false
 
   // MARK: - Init

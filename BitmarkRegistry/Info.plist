@@ -53,6 +53,8 @@
 		<string></string>
 		<key>API_SERVER_URL</key>
 		<string>https://api.bitmark.com</string>
+		<key>MOBILE_SERVER_URL</key>
+		<string>https://bm.bitmark.com</string>
 	</dict>
 </dict>
 </plist>

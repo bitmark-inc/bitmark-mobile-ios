@@ -45,6 +45,7 @@ public struct Constant {
 
   public struct Key {
     public static let apiServerURL = "API_SERVER_URL"
+    public static let mobileServerURL = "MOBILE_SERVER_URL"
   }
 
   // MARK: - Success Message
