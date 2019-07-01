@@ -60,14 +60,32 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
     view.endEditing(true)
     let recipientAccountNumber = recipientAccountNumberTextfield.text!
     if recipientAccountNumber.isValid() {
-      do {
-        _ = try BitmarkService.directTransfer(
-          account: Global.currentAccount!,
-          bitmarkId: bitmarkId,
-          to: recipientAccountNumber
-        )
-      } catch let e {
-        showErrorAlert(message: e.localizedDescription)
+      var errorMessage: String? = nil
+      let alert = showIndicatorAlert(message: Constant.Message.transferringTransaction) {
+        do {
+          _ = try BitmarkService.directTransfer(
+            account: Global.currentAccount!,
+            bitmarkId: self.bitmarkId,
+            to: recipientAccountNumber
+          )
+
+          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else { return }
+          propertiesVC.syncUpdatedBitmarks()
+        } catch {
+          print(error)
+          errorMessage = error.localizedDescription
+        }
+      }
+
+      // show result alert
+      alert.dismiss(animated: true) {
+        if let errorMessage = errorMessage {
+          self.showErrorAlert(message: errorMessage)
+        } else {
+          self.showSuccessAlert(message: Constant.Success.transfer, handler: {
+            self.navigationController?.popToRootViewController(animated: true)
+          })
+        }
       }
     } else {
       errorForInvalidAccountNumber.isHidden = false

@@ -32,7 +32,7 @@ class YourPropertyCell: UITableViewCell {
     if let confirmed_at = bitmark.confirmed_at {
       dateLabel.text = confirmed_at.string(withFormat: Constant.systemFullFormatDate)
     } else {
-      dateLabel.text = "REGISTERING..."
+      dateLabel.text = statusInWord(status: bitmark.status)
     }
     issuerLabel.text = bitmark.issuer.middleShorten()
   }
@@ -40,6 +40,17 @@ class YourPropertyCell: UITableViewCell {
 
 // MARK: - Setup Views
 extension YourPropertyCell {
+  fileprivate func statusInWord(status: String) -> String {
+    switch status {
+    case "issuing":
+      return "REGISTERING..."
+    case "transferring":
+      return "DELIVERING..."
+    default:
+      return ""
+    }
+  }
+
   fileprivate func setupViews() {
     separatorInset = UIEdgeInsets.zero
     layoutMargins = UIEdgeInsets.zero

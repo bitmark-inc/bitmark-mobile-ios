@@ -14,13 +14,19 @@ extension Array where Iterator.Element == Bitmark {
     return self.firstIndex(where: { $0.id == id })
   }
 
-  // Returns unique asc-offset bitmarks
+  /** - Returns: the unique asc-offset bitmarks */
   mutating func removeObsoleteBitmarks() {
     let descBitmarks = self.sorted(by: { $0.offset > $1.offset })
     self = descBitmarks.reduce(into: [Bitmark](), { (bitmarks, bitmark) in
       if bitmarks.firstIndexWithId(bitmark.id) == nil {
         bitmarks.prepend(bitmark)
       }
+    })
+  }
+
+  mutating func removeUnownedBitmarks(with ownerNumber: String) {
+    self = self.filter({ (bitmark) -> Bool in
+      return bitmark.owner == ownerNumber
     })
   }
 }

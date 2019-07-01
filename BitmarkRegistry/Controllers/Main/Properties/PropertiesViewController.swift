@@ -10,8 +10,9 @@ import UIKit
 import BitmarkSDK
 import WebKit
 
-protocol BitmarkEventDelegate {
+protocol BitmarkEventDelegate: class {
   func receiveNewBitmarks(_ newBitmarks: [Bitmark])
+  func syncUpdatedBitmarks()
 }
 
 class PropertiesViewController: UIViewController {
@@ -29,16 +30,12 @@ class PropertiesViewController: UIViewController {
   }()
 
   //*** Yours Segment ***
+  var refreshControl: UIRefreshControl!
   var yoursTableView: UITableView!
   var createFirstProperty: UIButton!
   var emptyViewInYoursTab: UIView!
   var yoursActivityIndicator: UIActivityIndicatorView!
   var bitmarks = [Bitmark]()
-  lazy var bitmarkStorage: BitmarkStorage = {
-    let bitmarkStorage = BitmarkStorage(for: Global.currentAccount!)
-    bitmarkStorage.delegate = self
-    return bitmarkStorage
-  }()
 
   // *** Global Segment ***
   var webView: WKWebView!
@@ -60,18 +57,20 @@ class PropertiesViewController: UIViewController {
     setupEvents()
 
     loadData()
+    setupBitmarkEventSubscription()
   }
 
   // MARK: - Data Handlers
   private func loadData() {
     yoursActivityIndicator.startAnimating()
     do {
-      try bitmarkStorage.firstLoad { [weak self] (bitmarks, error) in
+      try BitmarkStorage.shared().firstLoad { [weak self] (bitmarks, error) in
         guard let self = self else { return }
         self.yoursActivityIndicator.stopAnimating()
 
         if let error = error {
-          self.showErrorAlert(message: error.localizedDescription)
+          print(error)
+          self.showErrorAlert(message: Constant.Error.syncBitmark)
         }
 
         if let bitmarks = bitmarks {
@@ -87,6 +86,19 @@ class PropertiesViewController: UIViewController {
       }
     } catch let e {
       showErrorAlert(message: e.localizedDescription)
+    }
+  }
+
+  func setupBitmarkEventSubscription() {
+    do {
+      let eventSubscription = EventSubscription.shared
+      try eventSubscription.connect(Global.currentAccount!)
+
+      try eventSubscription.listenBitmarkChanged { [weak self] (_) in
+        self?.syncUpdatedBitmarks()
+      }
+    } catch let e {
+      print(e)
     }
   }
 
@@ -142,6 +154,14 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 
 // MARK: BitmarkEventDelegate
 extension PropertiesViewController: BitmarkEventDelegate {
+  @objc func syncUpdatedBitmarks() {
+    BitmarkStorage.shared().asyncUpdateBitmarksInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
+      DispatchQueue.main.async {
+        self?.refreshControl.endRefreshing()
+      }
+    }
+  }
+
   func receiveNewBitmarks(_ newBitmarks: [Bitmark]) {
     for newBitmark in newBitmarks {
       yoursTableView.beginUpdates()
@@ -150,9 +170,13 @@ extension PropertiesViewController: BitmarkEventDelegate {
         bitmarks.remove(at: index)
         yoursTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
       }
-      // Add new bitmark
-      bitmarks.prepend(newBitmark)
-      yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+      // Add new bitmark; ignore if bitmark is obsolete
+      if newBitmark.owner == Global.currentAccount?.getAccountNumber() {
+        bitmarks.prepend(newBitmark)
+        yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+      }
+
+      emptyViewInYoursTab.isHidden = !bitmarks.isEmpty
       yoursTableView.endUpdates()
     }
   }
@@ -182,6 +206,7 @@ extension PropertiesViewController: WKNavigationDelegate {
 extension PropertiesViewController {
   fileprivate func setupEvents() {
     // *** Yours Segment ***
+    BitmarkStorage.shared().delegate = self
     yoursTableView.register(cellWithClass: YourPropertyCell.self)
     yoursTableView.dataSource = self
     yoursTableView.delegate = self
@@ -225,8 +250,13 @@ extension PropertiesViewController {
   }
 
   fileprivate func setupYoursView() -> UIView {
+    refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(syncUpdatedBitmarks), for: .valueChanged)
+    refreshControl.tintColor = UIColor.gray
+
     yoursTableView = UITableView()
     yoursTableView.tableFooterView = UIView() // eliminate extra separators
+    yoursTableView.addSubview(refreshControl)
 
     emptyViewInYoursTab = setupYoursEmptyView()
 

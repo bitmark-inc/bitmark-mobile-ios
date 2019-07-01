@@ -23,6 +23,7 @@ public struct Constant {
     public static let keychainStore = "There was a problem saving data in a safe place."
     public static let removeAccess = "There was a problem from removing the access."
     public static let accessFile = "There was a problem to access your selected file."
+    public static let syncBitmark = "There was a problem to sync your lastest bitmarks."
 
     public struct Metadata {
       public static let duplication = "Duplicated labels! "
@@ -41,9 +42,11 @@ public struct Constant {
   // MARK: - Success Message
   public struct Success {
     public static let issue = "Your property rights have been registerred."
+    public static let transfer = "Your bitmark have been transferring."
   }
 
   public struct Message {
     public static let sendingTransaction = "Sending your transaction to the Birmark network..."
+    public static let transferringTransaction = "Transferring your bitmark to another account..."
   }
 }

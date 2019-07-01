@@ -86,6 +86,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   @objc func removeAccess(_ sender: UIButton) {
     do {
       try KeychainStore.removeSeedCoreFromKeychain()
+      BitmarkStorage._shared = nil
     } catch {
       showErrorAlert(message: Constant.Error.removeAccess)
     }
