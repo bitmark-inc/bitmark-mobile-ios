@@ -15,6 +15,7 @@ class OnboardingViewController: UIViewController {
   // MARK: - Properties
   var registerButton: UIButton!
   var loginButton: UIButton!
+  var activityIndicator: UIActivityIndicatorView!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -26,16 +27,31 @@ class OnboardingViewController: UIViewController {
 
   // MARK: - Handlers
   @objc func createNewAccount(_ sender: UIButton) {
+    activityIndicator.startAnimating()
     do {
-      let account = try AccountService.createNewAccount()
-      Global.currentAccount = account // track and store currentAccount
-      try KeychainStore.saveToKeychain(account.seed.core)
-    } catch {
-      showErrorAlert(message: Constant.Error.keychainStore)
-    }
+      try AccountService.createNewAccount { [weak self] (account, error) in
+        guard let self = self else { return }
+        DispatchQueue.main.async { self.activityIndicator.stopAnimating() }
+        if let error = error {
+          self.showErrorAlert(message: error.localizedDescription)
+        }
 
-    // redirect to Onboarding Screens
-    present(TouchAuthenticationViewController(), animated: true)
+        if let account = account {
+          do {
+            Global.currentAccount = account // track and store currentAccount
+            try KeychainStore.saveToKeychain(account.seed.core)
+            DispatchQueue.main.async {
+              self.present(TouchAuthenticationViewController(), animated: true) // redirect to Onboarding Screens
+            }
+          } catch {
+            self.showErrorAlert(message: Constant.Error.keychainStore)
+          }
+        }
+      }
+    } catch {
+      print(error)
+      showErrorAlert(message: Constant.Error.createAccount)
+    }
   }
 }
 
@@ -52,12 +68,22 @@ extension OnboardingViewController {
     let logoImageView = UIImageView()
     logoImageView.image = UIImage(named: "Bitmark_Logo-8")
 
+    activityIndicator = UIActivityIndicatorView()
+    activityIndicator.style = .whiteLarge
+    activityIndicator.color = .gray
+
     let contentView = UIView()
     contentView.addSubview(logoImageView)
+    contentView.addSubview(activityIndicator)
 
     logoImageView.snp.makeConstraints({ (make) in
       make.centerX.centerY.equalToSuperview()
     })
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.equalToSuperview()
+      make.centerY.equalToSuperview().offset(100)
+    }
 
     registerButton = CommonUI.blueButton(title: "CREATE NEW ACCOUNT")
     loginButton = CommonUI.lightButton(title: "ACCESS EXISTING ACCOUNT")

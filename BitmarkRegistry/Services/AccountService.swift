@@ -11,8 +11,12 @@ import BitmarkSDK
 
 class AccountService {
 
-  static func createNewAccount() throws -> Account  {
-    return try Account()
+  static func createNewAccount(completion: @escaping (Account?, Error?) -> Void) throws  {
+    let account = try Account()
+
+    AccountKeyService.registerEncryptionPublicKey(account: account) {
+      completion(account, $0)
+    }
   }
 
   static func existsCurrentAccount() -> Bool {

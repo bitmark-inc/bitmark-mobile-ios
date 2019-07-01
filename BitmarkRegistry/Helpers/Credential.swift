@@ -9,8 +9,8 @@
 import Foundation
 
 class Credential {
-  public static func valueForKey(keyName: String) -> Any? {
+  public static func valueForKey(keyName: String) -> String {
     let appCredentials = Bundle.main.object(forInfoDictionaryKey: "AppCredentials") as! [String : Any]
-    return appCredentials[keyName]
+    return appCredentials[keyName] as! String
   }
 }
