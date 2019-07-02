@@ -5,8 +5,8 @@ env:
     - WORKSPACE=BitmarkRegistry.xcworkspace
     - SCHEME=BitmarkRegistry
   matrix:
-    - DESTINATION="platform=iOS Simulator,OS=11.2,name=iPhone X"    SCHEME="BitmarkRegistry"      RUN_TESTS="NO"  RUN_DANGER="YES"
-    - DESTINATION="platform=iOS Simulator,OS=12.0,name=iPhone 7"    SCHEME="BitmarkRegistry"      RUN_TESTS="NO"  RUN_DANGER="NO"
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry"          RUN_TESTS="NO"  RUN_DANGER="YES"
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry Dev"      RUN_TESTS="NO"  RUN_DANGER="YES"
 cache:
   directories:
     - Pods
