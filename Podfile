@@ -2,7 +2,7 @@
 # platform :ios, '9.0'
 
 def sharedPods
-  pod 'BitmarkSDK'
+  pod 'BitmarkSDK', git: 'https://github.com/bitmark-inc/bitmark-sdk-swift.git', branch: 'master'
   pod 'KeychainAccess'
   pod 'SnapKit', '~> 5.0.0'
   pod 'SwifterSwift'

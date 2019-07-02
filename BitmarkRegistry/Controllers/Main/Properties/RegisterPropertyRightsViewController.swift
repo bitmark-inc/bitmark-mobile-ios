@@ -129,10 +129,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           fingerprint: self.assetData,
           metadata: metadata)
 
-        if let assetURL = self.assetURL {
-          try? AssetFileService(owner: Global.currentAccount!, assetId: assetId)
-                  .moveFileToAppStorage(fileURL: assetURL)
-        }
+        self.moveFileToAppStorage(of: assetId)
 
         let _ = try AssetService.issueBitmarks(
           issuer: Global.currentAccount!,
@@ -156,6 +153,16 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           self.navigationController?.popToRootViewController(animated: true)
         })
       }
+    }
+  }
+
+  func moveFileToAppStorage(of assetId: String) {
+    guard let assetURL = assetURL else { return }
+    do {
+      try AssetFileService(owner: Global.currentAccount!, assetId: assetId)
+        .moveFileToAppStorage(fileURL: assetURL)
+    } catch {
+      print(error)
     }
   }
 

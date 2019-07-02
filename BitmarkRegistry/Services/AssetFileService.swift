@@ -12,8 +12,8 @@ import BitmarkSDK
 class AssetFileService {
 
   // MARK: Properties
-  var owner: Account
-  var assetId: String
+  let owner: Account
+  let assetId: String
 
   lazy var downloadedFolderURL: URL = {
     let directoryURL = URL(
@@ -32,6 +32,9 @@ class AssetFileService {
 
   // MARK: Handlers
   func moveFileToAppStorage(fileURL: URL) throws {
-    try BitmarkFileUtil.moveFile(from: fileURL, toFolder: downloadedFolderURL)
+    let filename = fileURL.lastPathComponent
+    let destinationURL = downloadedFolderURL.appendingPathComponent(filename)
+
+    try FileManager.default.copyItem(at: fileURL, to: destinationURL)
   }
 }
