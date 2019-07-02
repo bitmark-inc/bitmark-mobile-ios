@@ -49,6 +49,8 @@
 	<dict>
 		<key>BITMARK_API_TOKEN</key>
 		<string>bmk-lljpzkhqdkzmblhg</string>
+		<key>API_SERVER_URL</key>
+		<string>https://api.test.bitmark.com</string>
 	</dict>
 </dict>
 </plist>

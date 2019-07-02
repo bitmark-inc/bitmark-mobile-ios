@@ -20,6 +20,7 @@ public struct Constant {
 
   // MARK: - Error Messages
   public struct Error {
+    public static let createAccount = "There was a problem to create your account."
     public static let keychainStore = "There was a problem saving data in a safe place."
     public static let removeAccess = "There was a problem from removing the access."
     public static let accessFile = "There was a problem to access your selected file."
@@ -37,6 +38,10 @@ public struct Constant {
     public struct Permission {
       public static let photo = "Please enable access to photos in privacy setting."
     }
+  }
+
+  public struct Key {
+    public static let apiServerURL = "API_SERVER_URL"
   }
 
   // MARK: - Success Message
