@@ -52,6 +52,8 @@
 		E25DF1C422CB3C8600AC270E /* AssetEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1C022CB3C8600AC270E /* AssetEncryption.swift */; };
 		E25DF1C522CB3C9700AC270E /* Chacha20Poly1305.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F1AFC22CA428000B0256F /* Chacha20Poly1305.swift */; };
 		E25DF1C622CB3CD100AC270E /* libsodium-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E28F1AEA22CA428000B0256F /* libsodium-ios.a */; };
+		E25DF1C922CB3EA100AC270E /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1C822CB3EA100AC270E /* TransactionsViewController.swift */; };
+		E25DF1CA22CB3EAB00AC270E /* TransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1C822CB3EA100AC270E /* TransactionsViewController.swift */; };
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E283CB0622B3B1EA00CCB4E5 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */; };
 		E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */; };
@@ -167,6 +169,7 @@
 		E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+AddTargetClosure+Extension.swift"; sourceTree = "<group>"; };
 		E25DF1BF22CB3C8500AC270E /* SessionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		E25DF1C022CB3C8600AC270E /* AssetEncryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetEncryption.swift; sourceTree = "<group>"; };
+		E25DF1C822CB3EA100AC270E /* TransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
 		E28F1ABC22CA428000B0256F /* crypto_stream_salsa2012.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_stream_salsa2012.h; sourceTree = "<group>"; };
@@ -331,6 +334,14 @@
 				E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		E25DF1C722CB3EA100AC270E /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				E25DF1C822CB3EA100AC270E /* TransactionsViewController.swift */,
+			);
+			path = Transactions;
 			sourceTree = "<group>";
 		};
 		E283CB0422B38BE900CCB4E5 /* Custom Views */ = {
@@ -605,6 +616,7 @@
 				E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */,
 				E2BEC95922AFA6D6009F7DF5 /* Properties */,
 				E24D9C5A22AE57FA0095E11D /* Account */,
+				E25DF1C722CB3EA100AC270E /* Transactions */,
 				E2ADFD1722BC72AB00FC46D8 /* QRCode */,
 			);
 			path = Main;
@@ -878,6 +890,7 @@
 				E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
 				E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */,
+				E25DF1CA22CB3EAB00AC270E /* TransactionsViewController.swift in Sources */,
 				E2CEDC7A22BB93CC00B5BBF9 /* BitmarkStorage.swift in Sources */,
 				E2CEDC8022BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */,
 				E24D795E22CA16CA00BC9912 /* BitmarkFileUtil.swift in Sources */,
@@ -975,6 +988,7 @@
 				E24B527E22BBB8B400E160E3 /* TransactionService.swift in Sources */,
 				E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
 				E205107922B0A09900475871 /* SubmitButton.swift in Sources */,
+				E25DF1C922CB3EA100AC270E /* TransactionsViewController.swift in Sources */,
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E2D4342722CC89EB006A8183 /* FileCourierService.swift in Sources */,

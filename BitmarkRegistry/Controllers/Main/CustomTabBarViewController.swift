@@ -20,6 +20,13 @@ class CustomTabBarViewController: UITabBarController {
       selectedImage: UIImage(named: "Properties - selected")
     )
 
+    let transactionsVC = TransactionsViewController()
+    transactionsVC.tabBarItem = UITabBarItem(
+      title: "Transactions",
+      image: UIImage(named: "Transactions - inactive"),
+      selectedImage: UIImage(named: "Transactions - selected")
+    )
+
     let accountVC = AccountViewController()
     accountVC.tabBarItem = UITabBarItem(
       title: "Account",
@@ -29,6 +36,7 @@ class CustomTabBarViewController: UITabBarController {
 
     viewControllers = [
       UINavigationController(rootViewController: propertiesVC),
+      UINavigationController(rootViewController: transactionsVC),
       UINavigationController(rootViewController: accountVC)
     ]
   }
