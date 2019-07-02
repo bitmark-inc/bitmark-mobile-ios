@@ -25,7 +25,7 @@ before_install:
   - pod install --repo-update
 
 script:
-  - swiftlint
+  - swiftlint lint --config .swiftlint-ci.yml
   - set -o pipefail
 
   # Build Framework and Run Tests if specified
