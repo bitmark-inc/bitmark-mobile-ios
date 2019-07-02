@@ -22,7 +22,7 @@ addons:
       - swiftlint
 
 before_install:
-  - pod install
+  - pod install --repo-update
 
 script:
   - swiftlint
