@@ -30,6 +30,10 @@
 		E24B528222BBB8E600E160E3 /* MetadataDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B528022BBB8E600E160E3 /* MetadataDetailCell.swift */; };
 		E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B528322BBB8EB00E160E3 /* TransactionCell.swift */; };
 		E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B528322BBB8EB00E160E3 /* TransactionCell.swift */; };
+		E24D795A22CA146D00BC9912 /* BitmarkFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */; };
+		E24D795C22CA149500BC9912 /* AssetFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795B22CA149400BC9912 /* AssetFileService.swift */; };
+		E24D795D22CA169C00BC9912 /* AssetFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795B22CA149400BC9912 /* AssetFileService.swift */; };
+		E24D795E22CA16CA00BC9912 /* BitmarkFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */; };
 		E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */; };
 		E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4B22ADFED80095E11D /* CommonUI.swift */; };
 		E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */; };
@@ -64,8 +68,6 @@
 		E2ADFD1D22BC72BF00FC46D8 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1922BC72BF00FC46D8 /* QRScannerViewController.swift */; };
 		E2ADFD1F22BC742900FC46D8 /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1E22BC742900FC46D8 /* QRCode.swift */; };
 		E2ADFD2022BC742900FC46D8 /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1E22BC742900FC46D8 /* QRCode.swift */; };
-		E2ADFD2222BCDA1C00FC46D8 /* TouchAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD2122BCDA1C00FC46D8 /* TouchAuthenticationViewController.swift */; };
-		E2ADFD2322BCDA2300FC46D8 /* TouchAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD2122BCDA1C00FC46D8 /* TouchAuthenticationViewController.swift */; };
 		E2ADFD2622BCE37700FC46D8 /* BiometricAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD2522BCE37700FC46D8 /* BiometricAuth.swift */; };
 		E2ADFD2722BCE37700FC46D8 /* BiometricAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD2522BCE37700FC46D8 /* BiometricAuth.swift */; };
 		E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */; };
@@ -103,6 +105,10 @@
 		E2CEDC8022BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CEDC7C22BB94D800B5BBF9 /* FileManager+Extension.swift */; };
 		E2CEDC8322BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CEDC8222BB951C00B5BBF9 /* BitmarksWithAsset.swift */; };
 		E2CEDC8422BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CEDC8222BB951C00B5BBF9 /* BitmarksWithAsset.swift */; };
+		E2CF94CD22CB31E500B40C66 /* TouchAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */; };
+		E2CF94CE22CB31FE00B40C66 /* TouchAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */; };
+		E2CF94D022CB323400B40C66 /* AccountKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */; };
+		E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */; };
 		E2DFDA3322B1EB43008B1AD5 /* MetadataForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205108022B1041200475871 /* MetadataForm.swift */; };
 		E2DFDA3422B1EB46008B1AD5 /* MetadataLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */; };
 		E2DFDA3622B21233008B1AD5 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DFDA3522B21233008B1AD5 /* LabelCell.swift */; };
@@ -140,6 +146,8 @@
 		E24B527D22BBB8B400E160E3 /* TransactionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
 		E24B528022BBB8E600E160E3 /* MetadataDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetailCell.swift; sourceTree = "<group>"; };
 		E24B528322BBB8EB00E160E3 /* TransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkFileUtil.swift; sourceTree = "<group>"; };
+		E24D795B22CA149400BC9912 /* AssetFileService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetFileService.swift; sourceTree = "<group>"; };
 		E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E24D9C4B22ADFED80095E11D /* CommonUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUI.swift; sourceTree = "<group>"; };
 		E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
@@ -219,7 +227,6 @@
 		E2ADFD1822BC72BF00FC46D8 /* QRViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		E2ADFD1922BC72BF00FC46D8 /* QRScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		E2ADFD1E22BC742900FC46D8 /* QRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
-		E2ADFD2122BCDA1C00FC46D8 /* TouchAuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchAuthenticationViewController.swift; sourceTree = "<group>"; };
 		E2ADFD2522BCE37700FC46D8 /* BiometricAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricAuth.swift; sourceTree = "<group>"; };
 		E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
@@ -237,6 +244,8 @@
 		E2CEDC7B22BB94D800B5BBF9 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		E2CEDC7C22BB94D800B5BBF9 /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		E2CEDC8222BB951C00B5BBF9 /* BitmarksWithAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarksWithAsset.swift; sourceTree = "<group>"; };
+		E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TouchAuthenticationViewController.swift; path = BitmarkRegistry/Controllers/Onboarding/TouchAuthenticationViewController.swift; sourceTree = SOURCE_ROOT; };
+		E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountKeyService.swift; sourceTree = "<group>"; };
 		E2DFDA3522B21233008B1AD5 /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -409,14 +418,6 @@
 			path = QRCode;
 			sourceTree = "<group>";
 		};
-		E2ADFD2422BCE2DC00FC46D8 /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				E2ADFD2122BCDA1C00FC46D8 /* TouchAuthenticationViewController.swift */,
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
 		E2BEC95922AFA6D6009F7DF5 /* Properties */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,6 +524,7 @@
 				E2E798DC229E25E200508B69 /* Credential.swift */,
 				E2ADFD1E22BC742900FC46D8 /* QRCode.swift */,
 				E28F1ABA22CA428000B0256F /* Encryption */,
+				E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -533,7 +535,9 @@
 				E2E798E0229E267500508B69 /* Global.swift */,
 				E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */,
 				E2E798DE229E264100508B69 /* AccountService.swift */,
+				E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */,
 				E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */,
+				E24D795B22CA149400BC9912 /* AssetFileService.swift */,
 				E2CEDC7522BB93CB00B5BBF9 /* BitmarkService.swift */,
 				E2CEDC7622BB93CC00B5BBF9 /* BitmarkStorage.swift */,
 				E24B527D22BBB8B400E160E3 /* TransactionService.swift */,
@@ -571,6 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */,
+				E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -578,7 +583,6 @@
 		E2E798D7229E237500508B69 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				E2ADFD2422BCE2DC00FC46D8 /* Onboarding */,
 				E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */,
 				E2BEC95922AFA6D6009F7DF5 /* Properties */,
 				E24D9C5A22AE57FA0095E11D /* Account */,
@@ -638,8 +642,20 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = thuyentruong;
 				TargetAttributes = {
+					E29A73F622AA49990052C716 = {
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					E2E798B5229E189E00508B69 = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -719,6 +735,9 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftCentrifuge/SwiftCentrifuge.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
 			);
@@ -730,6 +749,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftCentrifuge.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
 			);
@@ -751,6 +773,9 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftCentrifuge/SwiftCentrifuge.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftProtobuf/SwiftProtobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwifterSwift/SwifterSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/TweetNacl/TweetNacl.framework",
 			);
@@ -762,6 +787,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftCentrifuge.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftProtobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwifterSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TweetNacl.framework",
 			);
@@ -812,8 +840,11 @@
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
 				E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
 				E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
+				E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */,
 				E2CEDC7A22BB93CC00B5BBF9 /* BitmarkStorage.swift in Sources */,
 				E2CEDC8022BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */,
+				E24D795E22CA16CA00BC9912 /* BitmarkFileUtil.swift in Sources */,
+				E2CF94CE22CB31FE00B40C66 /* TouchAuthenticationViewController.swift in Sources */,
 				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
 				E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */,
 				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
@@ -830,6 +861,7 @@
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
 				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2CEDC7822BB93CC00B5BBF9 /* BitmarkService.swift in Sources */,
+				E24D795D22CA169C00BC9912 /* AssetFileService.swift in Sources */,
 				E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */,
 				E24B527622BBAE9B00E160E3 /* Array+Extension.swift in Sources */,
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
@@ -850,7 +882,6 @@
 				E2DFDA3422B1EB46008B1AD5 /* MetadataLabelViewController.swift in Sources */,
 				E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */,
 				E2DFDA3322B1EB43008B1AD5 /* MetadataForm.swift in Sources */,
-				E2ADFD2322BCDA2300FC46D8 /* TouchAuthenticationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -866,6 +897,7 @@
 				E216890822C1F09A00E943B9 /* UserSetting.swift in Sources */,
 				E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */,
 				E2ADFD1F22BC742900FC46D8 /* QRCode.swift in Sources */,
+				E24D795C22CA149500BC9912 /* AssetFileService.swift in Sources */,
 				E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */,
 				E2BEC95B22AFA6F8009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
@@ -873,13 +905,16 @@
 				E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E2CEDC7922BB93CC00B5BBF9 /* BitmarkStorage.swift in Sources */,
 				E2CEDC7F22BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */,
+				E24D795A22CA146D00BC9912 /* BitmarkFileUtil.swift in Sources */,
 				E2BEC96422AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
 				E24D9C4A22ADFE8E0095E11D /* UIColor+Extension.swift in Sources */,
 				E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
+				E2CF94CD22CB31E500B40C66 /* TouchAuthenticationViewController.swift in Sources */,
 				E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
 				E2ADFD1C22BC72BF00FC46D8 /* QRScannerViewController.swift in Sources */,
 				E205108122B1041200475871 /* MetadataForm.swift in Sources */,
+				E2CF94D022CB323400B40C66 /* AccountKeyService.swift in Sources */,
 				E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E24B528122BBB8E600E160E3 /* MetadataDetailCell.swift in Sources */,
 				E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
@@ -910,7 +945,6 @@
 				E24D9C5E22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift in Sources */,
 				E283CB0622B3B1EA00CCB4E5 /* AssetService.swift in Sources */,
 				E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */,
-				E2ADFD2222BCDA1C00FC46D8 /* TouchAuthenticationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -933,6 +967,8 @@
 			baseConfigurationReference = 77DBC69DFE134DB0791E0BDF /* Pods-BitmarkRegistry Dev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K378H9Z4P2;
 				INFOPLIST_FILE = "$(SRCROOT)/Dev-Info.plist";
@@ -940,9 +976,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
+				);
 				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -953,6 +995,8 @@
 			baseConfigurationReference = 415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K378H9Z4P2;
 				INFOPLIST_FILE = "$(SRCROOT)/Dev-Info.plist";
@@ -960,9 +1004,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
+				);
 				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1089,8 +1139,9 @@
 			baseConfigurationReference = 6F49B2891D8855D7048183F0 /* Pods-BitmarkRegistry.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K378H9Z4P2;
+				CODE_SIGN_ENTITLEMENTS = BitmarkRegistry/BitmarkRegistry.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = Z5CE7A3A7N;
 				INFOPLIST_FILE = BitmarkRegistry/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1101,8 +1152,10 @@
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
 				OTHER_SWIFT_FLAGS = "\"-D\" \"PRODUCTION\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Development";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1113,8 +1166,10 @@
 			baseConfigurationReference = 651E9C762774E042F0FA1915 /* Pods-BitmarkRegistry.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K378H9Z4P2;
+				CODE_SIGN_ENTITLEMENTS = BitmarkRegistry/BitmarkRegistry.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = Z5CE7A3A7N;
 				INFOPLIST_FILE = BitmarkRegistry/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1125,8 +1180,10 @@
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
 				OTHER_SWIFT_FLAGS = "\"-D\" \"PRODUCTION\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Distribution";
+				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

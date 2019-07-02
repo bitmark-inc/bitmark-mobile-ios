@@ -14,6 +14,7 @@ class RegisterPropertyViewController: UIViewController {
   // MARK: - Properties
   var assetData: Data?
   var assetFileName: String?
+  var assetURL: URL?
 
   var registerByPhotoButton: UIButton!
   var registerByFileButton: UIButton!
@@ -91,6 +92,8 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
       assetFileName = assetResource.originalFilename
     }
 
+    assetURL = info[.imageURL] as? URL
+
     performMoveToRegisterPropertyRights()
   }
 
@@ -99,6 +102,7 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
     registerPropertyRightsVC.hidesBottomBarWhenPushed = true
     registerPropertyRightsVC.assetData = assetData
     registerPropertyRightsVC.assetFileName = assetFileName
+    registerPropertyRightsVC.assetURL = assetURL
     navigationController?.pushViewController(registerPropertyRightsVC)
   }
 }
@@ -124,6 +128,7 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
         return
       }
       assetFileName = newURL.lastPathComponent
+      assetURL = newURL
       performMoveToRegisterPropertyRights()
     }
   }

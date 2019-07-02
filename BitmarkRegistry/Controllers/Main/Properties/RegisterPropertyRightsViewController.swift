@@ -14,6 +14,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // MARK: - Properties
   var assetData: Data!
   var assetFileName: String?
+  var assetURL: URL?
 
   var scrollView: UIScrollView!
   var assetFingerprintLabel: UILabel!
@@ -127,6 +128,9 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           assetName: assetName,
           fingerprint: self.assetData,
           metadata: metadata)
+
+        self.moveFileToAppStorage(of: assetId)
+
         let _ = try AssetService.issueBitmarks(
           issuer: Global.currentAccount!,
           assetId: assetId,
@@ -149,6 +153,16 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           self.navigationController?.popToRootViewController(animated: true)
         })
       }
+    }
+  }
+
+  func moveFileToAppStorage(of assetId: String) {
+    guard let assetURL = assetURL else { return }
+    do {
+      try AssetFileService(owner: Global.currentAccount!, assetId: assetId)
+        .moveFileToAppStorage(fileURL: assetURL)
+    } catch {
+      print(error)
     }
   }
 

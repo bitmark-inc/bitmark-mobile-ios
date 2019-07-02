@@ -12,4 +12,9 @@ extension FileManager {
   static var documentDirectoryURL: URL {
     return `default`.urls(for: .documentDirectory, in: .userDomainMask)[0]
   }
+
+  static var sharedDirectoryURL: URL? {
+    let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as! String
+    return `default`.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
+  }
 }
