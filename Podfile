@@ -1,6 +1,9 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
+# ignore all warnings from all pods
+inhibit_all_warnings!
+
 def sharedPods
   pod 'BitmarkSDK', git: 'https://github.com/bitmark-inc/bitmark-sdk-swift.git', branch: 'master'
   pod 'KeychainAccess'
