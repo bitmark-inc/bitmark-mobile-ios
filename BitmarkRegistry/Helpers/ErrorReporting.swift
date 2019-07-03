@@ -36,6 +36,7 @@ struct ErrorReporting {
   public static func report(error err: Error) {
     let e = Event(level: .error)
     e.message = err.localizedDescription
+    Client.shared?.appendStacktrace(to: e)
     Client.shared?.send(event: e, completion: nil)
   }
   
