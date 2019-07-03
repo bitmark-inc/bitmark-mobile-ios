@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.rootViewController = initialVC
 
     evaluatePolicyWhenUserSetEnable()
+    initSentry()
 
     return true
   }
