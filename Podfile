@@ -10,6 +10,12 @@ def sharedPods
   pod 'SnapKit', '~> 5.0.0'
   pod 'SwifterSwift'
   pod 'PanModal'
+  
+  # error reporting
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.3.1'
+  
+  # custom logger
+  pod 'XCGLogger', '~> 7.0.0'
 end
 
 target 'BitmarkRegistry' do

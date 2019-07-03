@@ -4,7 +4,13 @@ PODS:
     - SwiftCentrifuge
     - TweetNacl
   - KeychainAccess (3.2.0)
+  - ObjcExceptionBridging (1.0.1):
+    - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
+  - ObjcExceptionBridging/ObjcExceptionBridging (1.0.1)
   - PanModal (1.2.4)
+  - Sentry (4.3.1):
+    - Sentry/Core (= 4.3.1)
+  - Sentry/Core (4.3.1)
   - SnapKit (5.0.0)
   - Starscream (3.1.0)
   - SwiftCentrifuge (0.0.2):
@@ -31,17 +37,24 @@ PODS:
   - SwifterSwift/UIKit (5.0.0)
   - SwiftProtobuf (1.5.0)
   - TweetNacl (1.0.1)
+  - XCGLogger (7.0.0):
+    - XCGLogger/Core (= 7.0.0)
+  - XCGLogger/Core (7.0.0):
+    - ObjcExceptionBridging
 
 DEPENDENCIES:
   - BitmarkSDK (from `https://github.com/bitmark-inc/bitmark-sdk-swift.git`, branch `master`)
   - KeychainAccess
   - PanModal
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.3.1`)
   - SnapKit (~> 5.0.0)
   - SwifterSwift
+  - XCGLogger (~> 7.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - KeychainAccess
+    - ObjcExceptionBridging
     - PanModal
     - SnapKit
     - Starscream
@@ -49,28 +62,38 @@ SPEC REPOS:
     - SwifterSwift
     - SwiftProtobuf
     - TweetNacl
+    - XCGLogger
 
 EXTERNAL SOURCES:
   BitmarkSDK:
     :branch: master
     :git: https://github.com/bitmark-inc/bitmark-sdk-swift.git
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 4.3.1
 
 CHECKOUT OPTIONS:
   BitmarkSDK:
     :commit: 366e1a98a5848045408ded51b52b9461e2a1b35a
     :git: https://github.com/bitmark-inc/bitmark-sdk-swift.git
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 4.3.1
 
 SPEC CHECKSUMS:
   BitmarkSDK: 94bf8ff769cb3252f107e0653b85f47fb22faa83
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
+  ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   PanModal: 275f6d4d07565ddf4ed16d7be5d9cd275682d80d
+  Sentry: 5267d493a398663538317e4dcc438c12c66202ed
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   Starscream: 08172b481e145289c4930cb567230fb55897cfa4
   SwiftCentrifuge: fa745a1fad5ace1c592eb8ceb21e06d28a080ae6
   SwifterSwift: 96f90594b370802f01647c2b1229c74a84ffafee
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   TweetNacl: ea279cd32bffee69c59c73631470d3419db675df
+  XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: e9dc3109eeac20f9ba1a5b6054dc12bdc00ac678
+PODFILE CHECKSUM: 48778b036c2f02fae472cd46f9745e549404d3e3
 
 COCOAPODS: 1.5.3

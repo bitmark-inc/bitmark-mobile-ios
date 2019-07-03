@@ -85,7 +85,8 @@ class PropertiesViewController: UIViewController {
         }
       }
     } catch let e {
-      showErrorAlert(message: e.localizedDescription)
+      showErrorAlert(message: "Error happened while loading data.")
+      ErrorReporting.report(error: e)
     }
   }
 
@@ -98,7 +99,8 @@ class PropertiesViewController: UIViewController {
         self?.syncUpdatedBitmarks()
       }
     } catch let e {
-      print(e)
+      Global.log.error(e)
+      ErrorReporting.report(error: e)
     }
   }
 
