@@ -12,10 +12,11 @@ import Sentry
 // Send error report to Sentry
 struct ErrorReporting {
   
-  // Set current bitmark account to sentry error report to be informative to debug
-  public static func setAccount(bitmarkAccount: String?) {
-    if let account = bitmarkAccount {
-      Client.shared?.user = User(userId: account)
+  // Set current bitmark account number to sentry error report to be informative to debug
+  // Set nil to remove user from current session
+  public static func setUser(bitmarkAccountNumber: String?) {
+    if let userId = bitmarkAccountNumber {
+      Client.shared?.user = User(userId: userId)
     } else {
       Client.shared?.user = nil
     }
