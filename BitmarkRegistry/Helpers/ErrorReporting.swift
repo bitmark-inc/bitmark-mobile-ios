@@ -40,10 +40,9 @@ struct ErrorReporting {
   }
   
   // Log info to sentry
-  public static func report(info msg: String, extra: [String: Any]? = nil) {
-    let e = Event(level: .info)
-    e.message = msg
-    e.extra = extra
-    Client.shared?.send(event: e, completion: nil)
+  public static func breadcrumbs(info msg: String, category: String) {
+    let b = Breadcrumb(level: .info, category: category)
+    b.message = msg
+    Client.shared?.breadcrumbs.add(b)
   }
 }
