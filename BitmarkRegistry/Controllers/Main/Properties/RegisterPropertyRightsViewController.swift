@@ -160,7 +160,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     guard let assetURL = assetURL else { return }
     do {
       try AssetFileService(owner: Global.currentAccount!, assetId: assetId)
-        .moveFileToAppStorage(fileURL: assetURL)
+                          .moveFileToAppStorage(fileURL: assetURL)
     } catch {
       print(error)
     }

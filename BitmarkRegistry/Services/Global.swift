@@ -12,14 +12,9 @@ import XCGLogger
 
 class Global {
   static var mobileServerURL = Credential.valueForKey(keyName: Constant.Key.mobileServerURL)
-
-  static var registryServerUrl: String = {
-    #if PRODUCTION
-      return "https://registry.bitmark.com"
-    #else
-      return "https://registry.test.bitmark.com"
-    #endif
-  }()
+  static var keyAccountAssetServerURL = Credential.valueForKey(keyName: Constant.Key.keyAccountAssetServerURL)
+  static var fileCourierServerURL = Credential.valueForKey(keyName: Constant.Key.fileCourierServerURL)
+  static var registryServerURL = Credential.valueForKey(keyName: Constant.Key.registryServerURL)
 
   static var currentAccount: Account? = nil {
     didSet {

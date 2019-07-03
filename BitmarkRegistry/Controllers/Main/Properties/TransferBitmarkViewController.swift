@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import BitmarkSDK
 import SnapKit
 
 class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
   // MARK: - Properties
-  var assetName: String!
+  var asset: Asset!
   var bitmarkId: String!
 
   var recipientAccountNumberTextfield: DesignedTextField!
@@ -25,7 +26,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = assetName
+    title = asset.name
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
@@ -68,6 +69,11 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
             bitmarkId: self.bitmarkId,
             to: recipientAccountNumber
           )
+
+          DispatchQueue.global().async {
+            AssetFileService(owner: Global.currentAccount!, assetId: self.asset.id)
+              .transferFile(to: recipientAccountNumber)
+          }
 
           guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else { return }
           propertiesVC.syncUpdatedBitmarks()

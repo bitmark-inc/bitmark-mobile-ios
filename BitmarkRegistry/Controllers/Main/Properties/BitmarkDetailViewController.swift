@@ -166,7 +166,7 @@ extension BitmarkDetailViewController {
   fileprivate func performMoveToTransferBitmark() {
     tapToToggleActionMenu(menuBarButton)
     let transferBitmarkVC = TransferBitmarkViewController()
-    transferBitmarkVC.assetName = asset.name
+    transferBitmarkVC.asset = asset
     transferBitmarkVC.bitmarkId = bitmark.id
     navigationController?.pushViewController(transferBitmarkVC)
   }

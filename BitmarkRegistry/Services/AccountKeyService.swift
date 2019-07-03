@@ -40,4 +40,31 @@ class AccountKeyService {
       completion(error)
     }
   }
+
+  static func getEncryptionPublicKey(accountNumber: String, completion: @escaping (Data?, Error?) -> Void) {
+    let url = URL(string: Global.keyAccountAssetServerURL + "/" + accountNumber)!
+    var request = URLRequest(url: url)
+    request.httpMethod = "GET"
+    request.allHTTPHeaderFields = [
+      "Accept" : "application/json",
+      "Content-Type": "application/json",
+    ]
+
+    URLSession.shared.dataTask(with: request) { (data, response, error) in
+      if let error = error {
+        completion(nil, error)
+        return
+      }
+
+      do {
+        if let data = data {
+          let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: String]
+          let encryptionPubkey = jsonObject["encryption_pubkey"]?.hexDecodedData
+          completion(encryptionPubkey, nil)
+        }
+      } catch {
+        completion(nil, error)
+      }
+    }.resume()
+  }
 }

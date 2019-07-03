@@ -53,8 +53,14 @@
 		<string>bmk-lljpzkhqdkzmblhg</string>
 		<key>API_SERVER_URL</key>
 		<string>https://api.test.bitmark.com</string>
+		<key>FILE_COURIER_SERVER_URL</key>
+		<string>https://file-courier.test.bitmark.com</string>
+		<key>KEY_ACCOUNT_ASSET_SERVER_URL</key>
+		<string>https://key.test.bitmarkaccountassets.com</string>
 		<key>MOBILE_SERVER_URL</key>
 		<string>https://bm.test.bitmark.com</string>
+		<key>REGISTRY_SERVER_URL</key>
+		<string>https://registry.test.bitmark.com</string>
 	</dict>
 </dict>
 </plist>
