@@ -18,7 +18,11 @@ class Global {
     #endif
   }()
 
-  static var currentAccount: Account? = nil
+  static var currentAccount: Account? = nil {
+    didSet {
+      ErrorReporting.setAccount(bitmarkAccount: currentAccount?.address)
+    }
+  }
   static var currentAssets = [Asset]()
   static var latestBitmarkOffset: Int64? = nil
 
