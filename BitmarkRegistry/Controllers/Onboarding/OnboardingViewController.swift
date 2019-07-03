@@ -41,7 +41,8 @@ class OnboardingViewController: UIViewController {
             Global.currentAccount = account // track and store currentAccount
             try KeychainStore.saveToKeychain(account.seed.core)
             DispatchQueue.main.async {
-              self.present(TouchAuthenticationViewController(), animated: true) // redirect to Onboarding Screens
+              let touchAuthenticationViewController = TouchAuthenticationViewController()
+              self.navigationController?.pushViewController(touchAuthenticationViewController) // redirect to Onboarding Screens
             }
           } catch {
             self.showErrorAlert(message: Constant.Error.keychainStore)
