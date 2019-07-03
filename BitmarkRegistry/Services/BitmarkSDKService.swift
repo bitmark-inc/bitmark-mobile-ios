@@ -23,5 +23,15 @@ class BitmarkSDKService {
   static func setupConfig() {
     let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared)
     BitmarkSDK.initialize(config: config)
+    
+  }
+}
+
+class BitmarkSDKServiceLogger: SDKLogger {
+  func log(level: SDKLogLevel, message: String) {
+    print("[BitmarkSDK]\t[\(level.rawValue)]\t\(message)")
+    if level == .error {
+      ErrorReporting.report(error: message)
+    }
   }
 }

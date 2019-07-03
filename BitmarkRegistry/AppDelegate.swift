@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Sentry
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -81,6 +82,17 @@ private extension AppDelegate {
           self.retryAuthenticationAlert!.show()
         }
       }
+    }
+  }
+  
+  // Create a Sentry client and start crash handler
+  func initSentry() {
+    do {
+      Client.shared = try Client(dsn: "https://92d49f612d5f4cd89427cef0cd39794f@sentry.io/1494841")
+      Client.shared?.trackMemoryPressureAsEvent()
+      try Client.shared?.startCrashHandler()
+    } catch let e {
+      print(e)
     }
   }
 }

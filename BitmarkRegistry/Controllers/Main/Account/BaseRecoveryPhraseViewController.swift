@@ -31,7 +31,8 @@ class BaseRecoveryPhraseViewController: UIViewController {
     do {
       phrases = try Global.currentAccount!.getRecoverPhrase(language: .english)
     } catch let e {
-      showErrorAlert(message: e.localizedDescription)
+      showErrorAlert(message: "Error happen while loading recovery phrase.")
+      ErrorReporting.report(error: e)
     }
   }
 
