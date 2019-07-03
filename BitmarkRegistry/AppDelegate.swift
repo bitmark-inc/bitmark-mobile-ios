@@ -26,7 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let initialVC = AccountService.existsCurrentAccount()
                           ? CustomTabBarViewController()
                           : OnboardingViewController()
-    window?.rootViewController = initialVC
+    
+    // Add navigation controller
+    let navigationController = UINavigationController(rootViewController: initialVC)
+    navigationController.isNavigationBarHidden = true
+    window?.rootViewController = navigationController
 
     evaluatePolicyWhenUserSetEnable()
 

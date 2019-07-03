@@ -37,7 +37,11 @@ class TouchAuthenticationViewController: UIViewController {
         }
         // save enable touch/face id for current account and move to main screen
         UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
-        self.present(CustomTabBarViewController(), animated: true)
+        
+        // Go to main screen
+        let homeTabbarViewController = CustomTabBarViewController()
+        self.navigationController?.setViewControllers([homeTabbarViewController],
+                                                      animated: true)
       }
     }
   }

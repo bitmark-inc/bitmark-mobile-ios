@@ -90,7 +90,18 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     } catch {
       showErrorAlert(message: Constant.Error.removeAccess)
     }
-    present(OnboardingViewController(), animated: true, completion: nil)
+    guard let rootNavigationController = self.navigationController?
+      .parent?
+      .navigationController else {
+        // Probably view hierarchy was changed
+        showErrorAlert(message: Constant.Error.cannotNavigate)
+        // TODO: Report error here
+        return
+    }
+    
+    let onboardingViewController = OnboardingViewController()
+    rootNavigationController.setViewControllers([onboardingViewController],
+                                                animated: true)
   }
 
   // MARK: Data Handlers
