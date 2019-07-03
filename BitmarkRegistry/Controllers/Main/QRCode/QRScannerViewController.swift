@@ -10,7 +10,7 @@
 import UIKit
 import AVFoundation
 
-protocol QRCodeScannerDelegate {
+protocol QRCodeScannerDelegate: class {
   func process(qrCode: String)
 }
 

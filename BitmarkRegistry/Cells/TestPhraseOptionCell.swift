@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SelectPhraseOptionDelegate {
+protocol SelectPhraseOptionDelegate: class {
   func selectPhraseOptionCell(_ phraseOptionCell: TestPhraseOptionCell)
 }
 

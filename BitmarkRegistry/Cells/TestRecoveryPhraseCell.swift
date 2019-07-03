@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ReselectHiddenPhraseBoxDelegate {
+protocol ReselectHiddenPhraseBoxDelegate: class {
   func reselectHiddenPhraseBoxCell(_ cell: TestRecoveryPhraseCell)
 }
 

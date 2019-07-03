@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MetadataLabelUpdationDelegate {
+protocol MetadataLabelUpdationDelegate: class {
   func updateMetadataLabel(_ label: String)
 }
 
