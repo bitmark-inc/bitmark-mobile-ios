@@ -66,6 +66,7 @@ class BitmarkStorage {
           DispatchQueue.main.async { handler(bitmarks, nil) }
         } catch let e {
           DispatchQueue.main.async { handler(nil, e) }
+          ErrorReporting.report(error: e)
         }
       }
     } else {

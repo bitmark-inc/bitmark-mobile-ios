@@ -85,7 +85,8 @@ class PropertiesViewController: UIViewController {
         }
       }
     } catch let e {
-      showErrorAlert(message: e.localizedDescription)
+      showErrorAlert(message: "Error happened while loading data.")
+      ErrorReporting.report(error: e)
     }
   }
 
@@ -99,6 +100,7 @@ class PropertiesViewController: UIViewController {
       }
     } catch let e {
       print(e)
+      ErrorReporting.report(error: e)
     }
   }
 
