@@ -8,6 +8,7 @@
 
 import Foundation
 import BitmarkSDK
+import XCGLogger
 
 class BitmarkSDKService {
 
@@ -21,7 +22,7 @@ class BitmarkSDKService {
   static let apiToken = Credential.valueForKey(keyName: "BITMARK_API_TOKEN")
 
   static func setupConfig() {
-    let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared)
+    let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared, logger: BitmarkSDKServiceLogger())
     BitmarkSDK.initialize(config: config)
     
   }
@@ -29,9 +30,28 @@ class BitmarkSDKService {
 
 class BitmarkSDKServiceLogger: SDKLogger {
   func log(level: SDKLogLevel, message: String) {
-    print("[BitmarkSDK]\t[\(level.rawValue)]\t\(message)")
+    Global.log.logln(message,
+                     level: sdkToAppLogLevel(level),
+                     functionName: "",
+                     fileName: "",
+                     lineNumber: 0,
+                     userInfo: ["Source": "BitmarkSDK"])
+    
     if level == .error {
       ErrorReporting.report(error: message)
+    }
+  }
+  
+  private func sdkToAppLogLevel(_ sdkLevel: SDKLogLevel) -> XCGLogger.Level {
+    switch sdkLevel {
+    case .debug:
+      return .debug
+    case .info:
+      return .info
+    case .warn:
+      return .warning
+    case .error:
+      return .error
     }
   }
 }

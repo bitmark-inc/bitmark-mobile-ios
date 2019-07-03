@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     evaluatePolicyWhenUserSetEnable()
     initSentry()
+    Global.log.logAppDetails()
 
     return true
   }
@@ -93,7 +94,7 @@ private extension AppDelegate {
       Client.shared?.trackMemoryPressureAsEvent()
       try Client.shared?.startCrashHandler()
     } catch let e {
-      print(e)
+      Global.log.error(e)
     }
   }
 }
