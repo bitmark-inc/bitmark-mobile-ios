@@ -159,7 +159,10 @@ extension RegisterPropertyViewController {
       $0.snp.makeConstraints( { $0.width.equalToSuperview() })
     }
 
-    descriptionLabel = CommonUI.descriptionLabel(text: "Property rights are registered on Bitmark through the creation of an asset record followed by an issue record. Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.")
+    descriptionLabel = CommonUI.descriptionLabel(text: """
+Property rights are registered on Bitmark through the creation of an asset record followed by an issue record.
+Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.
+""")
     descriptionLabel.lineHeightMultiple(1.2)
 
     // *** Setup UI in view ***

@@ -127,7 +127,10 @@ extension AccountViewController {
     copiedToClipboardNotifier.textAlignment = .right
     copiedToClipboardNotifier.isHidden = true
 
-    let accountNumberDescription = CommonUI.descriptionLabel(text: "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public. You can safely share it with others without compromising your security.")
+    let accountNumberDescription = CommonUI.descriptionLabel(text: """
+To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. 
+This number is public. You can safely share it with others without compromising your security.
+""")
     accountNumberDescription.lineHeightMultiple(1.2)
 
     let accountNumberBox = UIView()
