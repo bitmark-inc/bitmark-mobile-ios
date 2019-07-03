@@ -16,7 +16,7 @@ class TestPhraseOptionCell: UICollectionViewCell {
 
   // MARK: - Properties
   static let phraseOptionFont = UIFont(name: "Avenir", size: 15)!
-  var delegate: SelectPhraseOptionDelegate?
+  weak var delegate: SelectPhraseOptionDelegate?
   var phraseOptionBox: UIButton!
 
   // MARK: - Init

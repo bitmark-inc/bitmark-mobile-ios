@@ -24,7 +24,7 @@ class MetadataLabelViewController: UIViewController, UITextFieldDelegate {
                                 "type", "version"]
   var suggestedLabels = [String]()
   var metadataLabel: String!
-  var delegate: MetadataLabelUpdationDelegate?
+  weak var delegate: MetadataLabelUpdationDelegate?
 
   var labelTextField: DesignedTextField!
   var suggestedLabelTableView: UITableView!

@@ -15,7 +15,7 @@ protocol ReselectHiddenPhraseBoxDelegate: class {
 class TestRecoveryPhraseCell: RecoveryPhraseCell {
 
   // MARK: - Properties
-  var delegate: ReselectHiddenPhraseBoxDelegate?
+  weak var delegate: ReselectHiddenPhraseBoxDelegate?
   var matchingTestPhraseCell: TestPhraseOptionCell?
   var hiddenPhraseBox: UIView!
 

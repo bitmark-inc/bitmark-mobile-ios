@@ -18,7 +18,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
 
   // MARK: - Properties
   var captureSession: AVCaptureSession!
-  var delegate: QRCodeScannerDelegate!
+  weak var delegate: QRCodeScannerDelegate!
 
   override func viewDidLoad() {
     super.viewDidLoad()

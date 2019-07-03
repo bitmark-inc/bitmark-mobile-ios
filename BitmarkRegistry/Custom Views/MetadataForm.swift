@@ -36,7 +36,7 @@ class MetadataForm: UIView, UITextFieldDelegate {
   var metadataFormLeadingConstraint: Constraint!
   let estimatedFormFrame = CGRect(x: 0, y: 0, width: 350, height: 100)
 
-  unowned var delegate: MetadataFormDelegate?
+  weak var delegate: MetadataFormDelegate?
   var isValid: Bool = false
   var isOnDeleteMode: Bool = false {
     didSet {
