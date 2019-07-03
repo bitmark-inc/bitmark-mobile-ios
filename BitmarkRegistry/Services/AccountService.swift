@@ -31,7 +31,7 @@ class AccountService {
         let seed = try Seed.fromCore(seedCore, version: .v2)
         account = try Account(seed: seed)
       } catch let e {
-        print(e)
+        Global.log.error(e)
         ErrorReporting.report(error: e)
       }
     }

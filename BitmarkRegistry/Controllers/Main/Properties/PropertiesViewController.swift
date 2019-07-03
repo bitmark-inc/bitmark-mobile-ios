@@ -99,7 +99,7 @@ class PropertiesViewController: UIViewController {
         self?.syncUpdatedBitmarks()
       }
     } catch let e {
-      print(e)
+      Global.log.error(e)
       ErrorReporting.report(error: e)
     }
   }
