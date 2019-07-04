@@ -21,6 +21,7 @@ public struct Constant {
   // MARK: - Error Messages
   public struct Error {
     public static let createAccount = "There was a problem to create your account."
+    public static let downloadAsset = "Your bitmark isn't ready to download. Please try again later."
     public static let keychainStore = "There was a problem saving data in a safe place."
     public static let removeAccess = "There was a problem from removing the access."
     public static let accessFile = "There was a problem to access your selected file."
@@ -45,6 +46,10 @@ public struct Constant {
 
   public struct Key {
     public static let apiServerURL = "API_SERVER_URL"
+    public static let fileCourierServerURL = "FILE_COURIER_SERVER_URL"
+    public static let keyAccountAssetServerURL = "KEY_ACCOUNT_ASSET_SERVER_URL"
+    public static let mobileServerURL = "MOBILE_SERVER_URL"
+    public static let registryServerURL = "REGISTRY_SERVER_URL"
   }
 
   // MARK: - Success Message
@@ -56,5 +61,6 @@ public struct Constant {
   public struct Message {
     public static let sendingTransaction = "Sending your transaction to the Birmark network..."
     public static let transferringTransaction = "Transferring your bitmark to another account..."
+    public static let preparingToExport = "Preparing to export..."
   }
 }

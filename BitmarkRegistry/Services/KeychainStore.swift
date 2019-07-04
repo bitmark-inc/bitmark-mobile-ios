@@ -19,6 +19,7 @@ class KeychainStore {
   }()
 
   // MARK: - Handlers
+  // *** seed Core ***
   static func saveToKeychain(_ seedCore: Data) throws {
     try keychain.set(seedCore, key: bitmarkSeedCoreKey)
   }
@@ -31,11 +32,11 @@ class KeychainStore {
     return getDataFromKeychain(key: bitmarkSeedCoreKey)
   }
 
-  private static func getDataFromKeychain(key: String) -> Data? {
+  fileprivate static func getDataFromKeychain(key: String) -> Data? {
     do {
       return try keychain.getData(key)
     } catch {
-      print(error)
+      ErrorReporting.report(error: error)
       return nil
     }
   }

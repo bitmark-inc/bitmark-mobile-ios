@@ -41,11 +41,11 @@ class YourPropertyCell: UITableViewCell {
 // MARK: - Setup Views
 extension YourPropertyCell {
   fileprivate func statusInWord(status: String) -> String {
-    switch status {
-    case "issuing":
+    switch BitmarkStatus(rawValue: status)! {
+    case .issuing:
       return "REGISTERING..."
-    case "transferring":
-      return "DELIVERING..."
+    case .transferring:
+      return "INCOMING..."
     default:
       return ""
     }

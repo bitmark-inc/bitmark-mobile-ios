@@ -35,6 +35,10 @@ class BitmarkDetailViewController: UIViewController {
   var downloadButton: UIButton!
   var transferButton: UIButton!
   var deleteButton: UIButton!
+  var activityIndicator: UIActivityIndicatorView!
+  lazy var assetFileService = {
+    return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
+  }()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -98,9 +102,35 @@ class BitmarkDetailViewController: UIViewController {
     sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
   }
 
+  @objc func closeActionMenu(_ sender: UIGestureRecognizer) {
+    guard !actionMenuView.isHidden else { return }
+    actionMenuView.isHidden = true
+    menuBarButton.image = UIImage(named: "More Actions-close")
+  }
+
   @objc func tapToCopyId(_ sender: UIButton) {
     UIPasteboard.general.string = bitmark.id
     copiedToClipboardNotifier.showIn(period: 1.2)
+  }
+
+  @objc func tapToDownload(_ sender: UIButton) {
+    showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
+      self.assetFileService.getDownloadedFileURL { [weak self] (downloadedFileURL, error) in
+        guard let self = self else { return }
+
+        selfAlert.dismiss(animated: true, completion: {
+          if let error = error {
+            self.showErrorAlert(message: Constant.Error.downloadAsset)
+            ErrorReporting.report(error: error)
+            return
+          }
+
+          guard let downloadedFileURL = downloadedFileURL else { return }
+          let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
+          self.present(shareVC, animated: true)
+        })
+      }
+    }
   }
 }
 
@@ -151,6 +181,7 @@ extension BitmarkDetailViewController {
     transactionTableView.delegate = self
 
     copyIdButton.addTarget(self, action: #selector(tapToCopyId), for: .touchUpInside)
+    downloadButton.addTarget(self, action: #selector(tapToDownload), for: .touchUpInside)
 
     transferButton.addAction(for: .touchUpInside) {
       self.performMoveToTransferBitmark()
@@ -160,12 +191,13 @@ extension BitmarkDetailViewController {
   fileprivate func performMoveToTransferBitmark() {
     tapToToggleActionMenu(menuBarButton)
     let transferBitmarkVC = TransferBitmarkViewController()
-    transferBitmarkVC.assetName = asset.name
+    transferBitmarkVC.asset = asset
     transferBitmarkVC.bitmarkId = bitmark.id
     navigationController?.pushViewController(transferBitmarkVC)
   }
 
   fileprivate func setupViews() {
+
     view.backgroundColor = .white
 
     // *** Setup subviews ***
@@ -190,8 +222,15 @@ extension BitmarkDetailViewController {
     actionMenuView.addShadow(ofColor: .gray)
     actionMenuView.isHidden = true
 
+    let recognizer = UITapGestureRecognizer(target: self, action: #selector(closeActionMenu))
+    recognizer.cancelsTouchesInView = true
+
+    activityIndicator = CommonUI.appActivityIndicator()
+
     view.addSubview(stackView)
+    view.addGestureRecognizer(recognizer)
     view.addSubview(actionMenuView)
+    view.addSubview(activityIndicator)
 
     stackView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
@@ -201,6 +240,10 @@ extension BitmarkDetailViewController {
     actionMenuView.snp.makeConstraints { (make) in
       make.width.equalTo(180)
       make.top.trailing.equalTo(view.safeAreaLayoutGuide)
+    }
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
     }
   }
 
@@ -238,12 +281,24 @@ extension BitmarkDetailViewController {
       distribution: .fill
     )
 
+    stackview.arrangedSubviews.forEach { (subview) in
+      subview.snp.makeConstraints { $0.width.equalToSuperview() }
+    }
+
     let view = UIView()
     view.addSubview(stackview)
     stackview.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
         .inset(UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20))
     }
+
+    // enable status for menu buttons base on the bitmark's status
+    if BitmarkStatus(rawValue: bitmark.status) != .settled {
+      downloadButton.isEnabled = false
+      transferButton.isEnabled = false
+      deleteButton.isEnabled = false
+    }
+
     return view
   }
 
@@ -297,9 +352,7 @@ extension BitmarkDetailViewController {
     transactionTableView = UITableView()
     transactionTableView.separatorStyle = .none
 
-    transactionIndicator = UIActivityIndicatorView()
-    transactionIndicator.style = .whiteLarge
-    transactionIndicator.color = .gray
+    transactionIndicator = CommonUI.appActivityIndicator()
 
     let provenanceView = UIView()
     provenanceView.addSubview(provenanceTitle)

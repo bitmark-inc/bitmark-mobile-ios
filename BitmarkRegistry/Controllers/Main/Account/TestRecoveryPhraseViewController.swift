@@ -95,7 +95,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
       .navigationController else {
         // Probably view hierarchy was changed
         showErrorAlert(message: Constant.Error.cannotNavigate)
-        // TODO: Report error here
+        ErrorReporting.report(error: Constant.Error.cannotNavigate)
         return
     }
     

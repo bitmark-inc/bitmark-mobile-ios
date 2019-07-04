@@ -74,18 +74,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 private extension AppDelegate {
+
+  /**
+   1. evaluate Touch/Face Id
+   2. request mobile_server_url to get and store jwt
+   */
   func evaluatePolicyWhenUserSetEnable() {
-    guard Global.currentAccount != nil else { return }
-    guard UserSetting.shared.getTouchFaceIdSetting() else { return }
+    guard let currentAccount = Global.currentAccount else { return }
+    guard UserSetting.shared.getTouchFaceIdSetting() else {
+      AccountService.requestJWT(account: currentAccount)
+      return
+    }
     retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
 
     BiometricAuth().authorizeAccess { [weak self] (errorMessage) in
       guard let self = self else { return }
-      if let errorMessage = errorMessage {
-        DispatchQueue.main.async {
+      DispatchQueue.main.async {
+        if let errorMessage = errorMessage {
           self.retryAuthenticationAlert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
           self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
           self.retryAuthenticationAlert!.show()
+        } else {
+          AccountService.requestJWT(account: currentAccount)
         }
       }
     }

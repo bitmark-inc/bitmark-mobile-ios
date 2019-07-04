@@ -10,6 +10,7 @@ def sharedPods
   pod 'SnapKit', '~> 5.0.0'
   pod 'SwifterSwift'
   pod 'PanModal'
+  pod 'Alamofire'
   
   # error reporting
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.3.1'

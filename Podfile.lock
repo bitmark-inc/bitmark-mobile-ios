@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (4.8.2)
   - BitmarkSDK (2.6.0):
     - KeychainAccess
     - SwiftCentrifuge
@@ -43,6 +44,7 @@ PODS:
     - ObjcExceptionBridging
 
 DEPENDENCIES:
+  - Alamofire
   - BitmarkSDK (from `https://github.com/bitmark-inc/bitmark-sdk-swift.git`, branch `master`)
   - KeychainAccess
   - PanModal
@@ -53,6 +55,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
     - KeychainAccess
     - ObjcExceptionBridging
     - PanModal
@@ -81,6 +84,7 @@ CHECKOUT OPTIONS:
     :tag: 4.3.1
 
 SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   BitmarkSDK: 94bf8ff769cb3252f107e0653b85f47fb22faa83
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
