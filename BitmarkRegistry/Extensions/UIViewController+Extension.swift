@@ -28,7 +28,7 @@ extension UIViewController {
     present(alertController, animated: true, completion: nil)
   }
 
-  func showIndicatorAlert(message: String, handler: @escaping () -> Void) -> UIAlertController {
+  func showIndicatorAlert(message: String, handler: @escaping (_ selfAlert: UIAlertController) -> Void) {
     let alertController = UIAlertController(title: nil, message: "", preferredStyle: .alert)
     let activityIndicator = CommonUI.appActivityIndicator()
     activityIndicator.startAnimating()
@@ -50,8 +50,7 @@ extension UIViewController {
       make.width.equalTo(212)
     }
 
-    alertController.show { handler() }
-    return alertController
+    alertController.show { handler(alertController) }
   }
 
   // MARK: - Support Functions

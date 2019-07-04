@@ -61,5 +61,6 @@ public struct Constant {
   public struct Message {
     public static let sendingTransaction = "Sending your transaction to the Birmark network..."
     public static let transferringTransaction = "Transferring your bitmark to another account..."
+    public static let preparingToExport = "Preparing to export..."
   }
 }

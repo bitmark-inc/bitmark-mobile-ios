@@ -114,34 +114,22 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   @objc func tapToDownload(_ sender: UIButton) {
-    activityIndicator.startAnimating()
-    assetFileService.getSenderAccountNumber { [weak self] (senderAccountNumber, error) in
-      guard let self = self else { return }
-      if let error = error {
-        DispatchQueue.main.async {
-          self.activityIndicator.stopAnimating()
-          self.showErrorAlert(message: Constant.Error.downloadAsset)
-        }
-        ErrorReporting.report(error: error)
-        return
-      }
+    showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
+      self.assetFileService.getDownloadedFileURL { [weak self] (downloadedFileURL, error) in
+        guard let self = self else { return }
 
-      self.assetFileService.downloadFileFromCourierServer(senderAccountNumber: senderAccountNumber!, completion: { (downloadedFileURL, error) in
-        DispatchQueue.main.async {
-          self.activityIndicator.stopAnimating()
-
+        selfAlert.dismiss(animated: true, completion: {
           if let error = error {
-            ErrorReporting.report(error: error)
             self.showErrorAlert(message: Constant.Error.downloadAsset)
+            ErrorReporting.report(error: error)
             return
           }
 
-          if let downloadedFileURL = downloadedFileURL {
-            let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
-            self.present(shareVC, animated: true)
-          }
-        }
-      })
+          guard let downloadedFileURL = downloadedFileURL else { return }
+          let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
+          self.present(shareVC, animated: true)
+        })
+      }
     }
   }
 }

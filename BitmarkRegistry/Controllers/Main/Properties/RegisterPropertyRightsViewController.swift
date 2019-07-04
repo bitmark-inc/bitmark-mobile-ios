@@ -119,9 +119,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     let assetName = propertyNameTextField.text!
     let metadata = extractMetadataFromForms()
     let quantity = Int(numberOfBitmarksTextField.text!)!
-    var errorMessage: String? = nil
 
-    let alert = showIndicatorAlert(message: Constant.Message.sendingTransaction) {
+    showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
       do {
         let assetId = try AssetService.registerAsset(
           registrant: Global.currentAccount!,
@@ -136,25 +135,22 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           assetId: assetId,
           quantity: quantity)
 
-        guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-          self.showErrorAlert(message: Constant.Error.cannotNavigate)
-          ErrorReporting.report(error: Constant.Error.cannotNavigate)
-          return
-        }
-        propertiesVC.syncUpdatedBitmarks()
-      } catch {
-        errorMessage = error.localizedDescription
-        ErrorReporting.report(error: error)
-      }
-    }
+        selfAlert.dismiss(animated: true, completion: {
+          self.showSuccessAlert(message: Constant.Success.issue, handler: {
+            self.navigationController?.popToRootViewController(animated: true)
+          })
 
-    // show result alert
-    alert.dismiss(animated: true) {
-      if let errorMessage = errorMessage {
-        self.showErrorAlert(message: errorMessage)
-      } else {
-        self.showSuccessAlert(message: Constant.Success.issue, handler: {
-          self.navigationController?.popToRootViewController(animated: true)
+          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+            self.showErrorAlert(message: Constant.Error.cannotNavigate)
+            ErrorReporting.report(error: Constant.Error.cannotNavigate)
+            return
+          }
+          propertiesVC.syncUpdatedBitmarks()
+        })
+      } catch {
+        selfAlert.dismiss(animated: true, completion: {
+          self.showErrorAlert(message: error.localizedDescription)
+          ErrorReporting.report(error: error)
         })
       }
     }

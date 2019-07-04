@@ -88,6 +88,25 @@ class AssetFileService {
     }
   }
 
+  func getDownloadedFileURL(completion: @escaping (URL?, Error?) -> Void) {
+    getSenderAccountNumber { [weak self] (senderAccountNumber, error) in
+      guard let self = self else { return }
+      if let error = error {
+        completion(nil, error); return
+      }
+
+      guard let senderAccountNumber = senderAccountNumber else { return }
+      self.downloadFileFromCourierServer(senderAccountNumber: senderAccountNumber, completion: { (downloadedFileURL, error) in
+          if let error = error {
+            completion(nil, error); return
+          }
+
+          completion(downloadedFileURL, nil)
+        }
+      )
+    }
+  }
+
   func getSenderAccountNumber(completion: @escaping (String?, Error?) -> Void) {
     FileCourierServer.getDownloadableAssets(receiver: owner) { [weak self] (downloadableFileIds, error) in
       guard let self = self else { return }
