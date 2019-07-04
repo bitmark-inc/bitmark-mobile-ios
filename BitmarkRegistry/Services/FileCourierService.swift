@@ -18,7 +18,7 @@ class FileCourierServer {
     sender: Account, senderSessionData: SessionData,
     receiverAccountNumber: String, receiverSessionData: SessionData) {
 
-    guard let jwt = KeychainStore.getJwtFromKeychain() else { return }
+    guard let jwt = Global.currentJwt else { return }
     let assetFilename = encryptedFileURL.lastPathComponent
 
     do {
@@ -62,7 +62,7 @@ class FileCourierServer {
   }
 
   static func getDownloadableAssets(receiver: Account, completion: @escaping (Array<String>?, Error?) -> Void) {
-    guard let jwt = KeychainStore.getJwtFromKeychain() else { return }
+    guard let jwt = Global.currentJwt else { return }
 
     let url = URL(string: Global.ServerURL.fileCourier + "/v2/files?receiver=" + receiver.getAccountNumber())!
     var request = URLRequest(url: url)
@@ -97,13 +97,13 @@ class FileCourierServer {
     }.resume()
   }
 
-  typealias responseData = (sessionData: SessionData, filename: String, encryptedFileData: Data)
+  typealias ResponseData = (sessionData: SessionData, filename: String, encryptedFileData: Data)
   static func downloadFileFromCourierServer(
     assetId: String, receiver: Account,
     senderAccountNumber: String, senderPublicKey: Data,
-    completion: @escaping (responseData?, Error?) -> Void) {
+    completion: @escaping (ResponseData?, Error?) -> Void) {
 
-    guard let jwt = KeychainStore.getJwtFromKeychain() else { return }
+    guard let jwt = Global.currentJwt else { return }
 
     let downloadURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + senderAccountNumber + "?receiver=" + receiver.getAccountNumber())!
     var downloadRequest = URLRequest(url: downloadURL)
@@ -140,7 +140,7 @@ class FileCourierServer {
 
           completion(responseData, nil)
         } else {
-          let error = Global.appError(errorCode: 500, message: "header in download file response is formatted incorrectly")
+          let error = Global.appError(errorCode: 500, message: "Header in download file response is formatted incorrectly")
           completion(nil, error)
         }
 

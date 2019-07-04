@@ -11,8 +11,8 @@ import BitmarkSDK
 
 struct SessionData {
   static let CHACHA20_POLY1305_ALGORITHM = "chacha20poly1305"
-  var encryptedKey: Data
-  var algorithm: String
+  let encryptedKey: Data
+  let algorithm: String
 
   static func createSessionData(sender: Account, sessionKey: Data, receiverPublicKey: Data) throws -> SessionData {
     let encryptedSessionKey = try sender.encryptionKey.encrypt(message: sessionKey, receiverPublicKey: receiverPublicKey)

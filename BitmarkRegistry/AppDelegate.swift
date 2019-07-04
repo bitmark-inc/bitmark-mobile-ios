@@ -80,9 +80,9 @@ private extension AppDelegate {
    2. request mobile_server_url to get and store jwt
    */
   func evaluatePolicyWhenUserSetEnable() {
-    guard Global.currentAccount != nil else { return }
+    guard let currentAccount = Global.currentAccount else { return }
     guard UserSetting.shared.getTouchFaceIdSetting() else {
-      AccountService.requestJWT(account: Global.currentAccount!)
+      AccountService.requestJWT(account: currentAccount)
       return
     }
     retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
@@ -95,7 +95,7 @@ private extension AppDelegate {
           self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
           self.retryAuthenticationAlert!.show()
         } else {
-          AccountService.requestJWT(account: Global.currentAccount!)
+          AccountService.requestJWT(account: currentAccount)
         }
       }
     }

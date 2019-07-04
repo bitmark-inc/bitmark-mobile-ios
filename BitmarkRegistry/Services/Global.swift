@@ -24,6 +24,7 @@ class Global {
       ErrorReporting.setUser(bitmarkAccountNumber: currentAccount?.address)
     }
   }
+  static var currentJwt: String? = nil
   static var currentAssets = [Asset]()
   static var latestBitmarkOffset: Int64? = nil
 

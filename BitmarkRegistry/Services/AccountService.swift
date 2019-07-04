@@ -57,9 +57,7 @@ class AccountService {
       if let data = data {
         do {
           let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: String]
-          if let jwtToken = jsonObject["jwt_token"] {
-            try KeychainStore.saveToKeychain(jwt: jwtToken)
-          }
+          Global.currentJwt = jsonObject["jwt_token"]
         } catch {
           ErrorReporting.report(error: error)
         }
