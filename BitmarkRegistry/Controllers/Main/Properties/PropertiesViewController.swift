@@ -155,7 +155,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: BitmarkEventDelegate
 extension PropertiesViewController: BitmarkEventDelegate {
   @objc func syncUpdatedBitmarks() {
-    BitmarkStorage.shared().asyncUpdateBitmarksInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
+    BitmarkStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }

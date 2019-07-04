@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import BitmarkSDK
 
 class TransactionsViewController: UIViewController {
 
   // MARK: - Properties
   var emptyView: UIView!
+
+  var transactions = [Transaction]()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -19,8 +22,35 @@ class TransactionsViewController: UIViewController {
 
     title = "TRANSACTIONS"
     setupViews()
+
+    loadData()
   }
 
+  // MARK: - Data Handlers
+  private func loadData() {
+    do {
+      try TransactionStorage.shared().firstLoad { [weak self] (transactions, error) in
+        guard let self = self else { return }
+
+        if let error = error {
+          ErrorReporting.report(error: error)
+          self.showErrorAlert(message: Constant.Error.syncTransaction)
+        }
+
+        guard let transactions = transactions else { return }
+        self.transactions = transactions
+
+        if self.transactions.isEmpty {
+          self.emptyView.isHidden = false
+        } else {
+          self.emptyView.isHidden = true
+        }
+      }
+    } catch let e {
+      showErrorAlert(message: "Error happened while loading data.")
+      ErrorReporting.report(error: e)
+    }
+  }
 }
 
 // MARK: - Setup Views

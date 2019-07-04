@@ -19,7 +19,7 @@ class Global {
   }
   static var currentJwt: String?
   static var currentAssets = [Asset]()
-  static var latestBitmarkOffset: Int64?
+  static var latestOffset: [String: Int64] = [:]
 
   public static func addAssets(_ assets: [Asset]) {
     currentAssets += assets
