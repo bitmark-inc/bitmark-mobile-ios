@@ -89,6 +89,12 @@ class AssetFileService {
   }
 
   func getDownloadedFileURL(completion: @escaping (URL?, Error?) -> Void) {
+    //  return local asset file if it's existed
+    if let assetFileURL = try? getAssetFile() {
+      completion(assetFileURL, nil)
+      return
+    }
+
     getSenderAccountNumber { [weak self] (senderAccountNumber, error) in
       guard let self = self else { return }
       if let error = error {
