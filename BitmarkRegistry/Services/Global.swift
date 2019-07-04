@@ -21,7 +21,7 @@ class Global {
 
   static var currentAccount: Account? = nil {
     didSet {
-      ErrorReporting.setAccount(bitmarkAccount: currentAccount?.address)
+      ErrorReporting.setUser(bitmarkAccountNumber: currentAccount?.address)
     }
   }
   static var currentAssets = [Asset]()
