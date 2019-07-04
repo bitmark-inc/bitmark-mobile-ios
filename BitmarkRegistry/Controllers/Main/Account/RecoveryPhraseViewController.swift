@@ -9,8 +9,8 @@
 import UIKit
 
 enum RecoveryPhraseSource {
-  case TestRecoveryPhrase
-  case RemoveAccess
+  case testRecoveryPhrase
+  case removeAccess
 }
 
 class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
@@ -19,9 +19,9 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   var recoveryPhraseSource: RecoveryPhraseSource!
   lazy var screenTitle: String = {
     switch recoveryPhraseSource! {
-    case .TestRecoveryPhrase:
+    case .testRecoveryPhrase:
       return "RECOVERY PHRASE"
-    case .RemoveAccess:
+    case .removeAccess:
       return "WRITE DOWN RECOVERY PHRASE"
     }
   }()
@@ -117,13 +117,13 @@ extension RecoveryPhraseViewController {
 
   fileprivate func setupbuttonsGroup() -> UIStackView {
     switch recoveryPhraseSource! {
-    case .TestRecoveryPhrase:
+    case .testRecoveryPhrase:
       testRecoveryPhraseButton = CommonUI.blueButton(title: "TEST RECOVERY PHRASE")
       doneButton = CommonUI.lightButton(title: "DONE")
       testRecoveryPhraseButton.addTarget(self, action: #selector(moveToTestRecoveryPhrase), for: .touchUpInside)
       doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
       return UIStackView(arrangedSubviews: [testRecoveryPhraseButton, doneButton], axis: .vertical)
-    case .RemoveAccess:
+    case .removeAccess:
       doneButton = CommonUI.blueButton(title: "DONE")
       doneButton.addTarget(self, action: #selector(moveToTestRecoveryPhrase), for: .touchUpInside)
       return UIStackView(arrangedSubviews: [doneButton], axis: .vertical)

@@ -11,14 +11,14 @@ import BitmarkSDK
 
 class AccountKeyService {
 
-  static let apiServerURL = Credential.valueForKey(keyName: Constant.Key.apiServerURL)
+  static let apiServerURL = Credential.valueForKey(keyName: Constant.InfoKey.apiServerURL)
 
   static func registerEncryptionPublicKey(account: Account, completion: @escaping (Error?) -> Void) {
     do {
       let encryptionPublicKey = account.encryptionKey.publicKey
       let signature = try account.sign(message: encryptionPublicKey)
 
-      let data: [String : Any] = [
+      let data: [String: Any] = [
         "encryption_pubkey": encryptionPublicKey.hexEncodedString,
         "signature": signature.hexEncodedString
       ]
@@ -28,8 +28,8 @@ class AccountKeyService {
       var request = URLRequest(url: url)
       request.httpMethod = "POST"
       request.allHTTPHeaderFields = [
-        "Accept" : "application/json",
-        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Content-Type": "application/json"
       ]
       request.httpBody = jsonData
 
@@ -46,22 +46,24 @@ class AccountKeyService {
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
     request.allHTTPHeaderFields = [
-      "Accept" : "application/json",
-      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Content-Type": "application/json"
     ]
 
-    URLSession.shared.dataTask(with: request) { (data, response, error) in
+    URLSession.shared.dataTask(with: request) { (data, _, error) in
       if let error = error {
         completion(nil, error)
         return
       }
 
+      guard let data = data else { return }
       do {
-        if let data = data {
-          let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: String]
-          let encryptionPubkey = jsonObject["encryption_pubkey"]?.hexDecodedData
-          completion(encryptionPubkey, nil)
+        guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: String] else {
+          ErrorReporting.report(message: "response in downloadable assets API is incorrectly formatted.")
+          return
         }
+        let encryptionPubkey = jsonObject["encryption_pubkey"]?.hexDecodedData
+        completion(encryptionPubkey, nil)
       } catch {
         completion(nil, error)
       }

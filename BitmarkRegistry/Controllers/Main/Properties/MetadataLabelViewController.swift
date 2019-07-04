@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MetadataLabelUpdationDelegate {
+protocol MetadataLabelUpdationDelegate: class {
   func updateMetadataLabel(_ label: String)
 }
 
@@ -24,7 +24,7 @@ class MetadataLabelViewController: UIViewController, UITextFieldDelegate {
                                 "type", "version"]
   var suggestedLabels = [String]()
   var metadataLabel: String!
-  var delegate: MetadataLabelUpdationDelegate?
+  weak var delegate: MetadataLabelUpdationDelegate?
 
   var labelTextField: DesignedTextField!
   var suggestedLabelTableView: UITableView!
@@ -94,7 +94,7 @@ extension MetadataLabelViewController: UITableViewDataSource, UITableViewDelegat
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let cell = tableView.cellForRow(at: indexPath) as! LabelCell
+    guard let cell = tableView.cellForRow(at: indexPath) as? LabelCell else { return }
     labelTextField.text = cell.label.text
     doneUpdate()
   }

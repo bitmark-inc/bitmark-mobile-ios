@@ -26,7 +26,7 @@ public struct Constant {
     public static let removeAccess = "There was a problem from removing the access."
     public static let accessFile = "There was a problem to access your selected file."
     public static let syncBitmark = "There was a problem to sync your lastest bitmarks."
-    
+
     // Common UI error
     public static let cannotNavigate = "Cannot go to expected screen. Please try again with new app update."
 
@@ -44,7 +44,7 @@ public struct Constant {
     }
   }
 
-  public struct Key {
+  public struct InfoKey {
     public static let apiServerURL = "API_SERVER_URL"
     public static let fileCourierServerURL = "FILE_COURIER_SERVER_URL"
     public static let keyAccountAssetServerURL = "KEY_ACCOUNT_ASSET_SERVER_URL"

@@ -182,19 +182,7 @@ class MetadataForm: UIView, UITextFieldDelegate {
     descriptionTextField.returnKeyType = .done
 
     let fieldStackView = UIStackView(arrangedSubviews: [labelTextFieldCover, descriptionTextField], axis: .vertical, spacing: 25)
-
-    deleteButton = UIButton()
-    deleteButton.setImage(UIImage(named: "delete_label"), for: .normal)
-    deleteButton.contentMode = .scaleAspectFit
-
-    deleteView = UIView()
-    deleteView.isHidden = true
-    deleteView.addSubview(deleteButton)
-    deleteButton.snp.makeConstraints { (make) in
-      make.leading.trailing.centerX.equalToSuperview()
-      make.top.equalToSuperview().offset(3)
-    }
-
+    setupDeleteView()
     let spacingView = UIView()
 
     // *** Set up view ***
@@ -216,6 +204,20 @@ class MetadataForm: UIView, UITextFieldDelegate {
       make.top.equalTo(fieldStackView.snp.bottom)
       make.height.equalTo(25.0)
       make.leading.trailing.bottom.equalToSuperview()
+    }
+  }
+
+  fileprivate func setupDeleteView() {
+    deleteButton = UIButton()
+    deleteButton.setImage(UIImage(named: "delete_label"), for: .normal)
+    deleteButton.contentMode = .scaleAspectFit
+
+    deleteView = UIView()
+    deleteView.isHidden = true
+    deleteView.addSubview(deleteButton)
+    deleteButton.snp.makeConstraints { (make) in
+      make.leading.trailing.centerX.equalToSuperview()
+      make.top.equalToSuperview().offset(3)
     }
   }
 }

@@ -14,7 +14,7 @@ extension FileManager {
   }
 
   static var sharedDirectoryURL: URL? {
-    let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as! String
+    guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "AppGroupId") as? String else { return nil }
     return `default`.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
   }
 }

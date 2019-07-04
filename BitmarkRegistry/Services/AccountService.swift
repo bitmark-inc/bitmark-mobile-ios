@@ -11,7 +11,7 @@ import BitmarkSDK
 
 class AccountService {
 
-  static func createNewAccount(completion: @escaping (Account?, Error?) -> Void) throws  {
+  static func createNewAccount(completion: @escaping (Account?, Error?) -> Void) throws {
     let account = try Account()
 
     AccountKeyService.registerEncryptionPublicKey(account: account) {
@@ -24,15 +24,14 @@ class AccountService {
   }
 
   static func getCurrentAccount() -> Account? {
-    var account: Account? = nil
+    var account: Account?
     let seedCore = KeychainStore.getSeedDataFromKeychain()
     if let seedCore = seedCore {
       do {
         let seed = try Seed.fromCore(seedCore, version: .v2)
         account = try Account(seed: seed)
-      } catch let e {
-        Global.log.error(e)
-        ErrorReporting.report(error: e)
+      } catch {
+        ErrorReporting.report(error: error)
       }
     }
     Global.currentAccount = account
@@ -48,7 +47,7 @@ class AccountService {
     }
 
     guard let authRequest = createJWTRequestURL(for: account) else { return }
-    URLSession.shared.dataTask(with: authRequest) { (data, response, error) in
+    URLSession.shared.dataTask(with: authRequest) { (data, _, error) in
       if let error = error {
         ErrorReporting.report(error: error)
         return
@@ -56,7 +55,10 @@ class AccountService {
 
       if let data = data {
         do {
-          let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: String]
+          guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: String] else {
+            ErrorReporting.report(message: "response in request JWT Request is incorrectly formatted.")
+            return
+          }
           Global.currentJwt = jsonObject["jwt_token"]
         } catch {
           ErrorReporting.report(error: error)
@@ -70,18 +72,18 @@ class AccountService {
       let timestamp = Common.timestamp()
       let signature = try account.sign(message: timestamp.data(using: .utf8)!)
 
-      let data: [String : Any] = [
-        "requester" : account.getAccountNumber(),
-        "timestamp" : timestamp,
-        "signature" : signature.hexEncodedString
+      let data: [String: Any] = [
+        "requester": account.getAccountNumber(),
+        "timestamp": timestamp,
+        "signature": signature.hexEncodedString
       ]
       let jsonData = try JSONSerialization.data(withJSONObject: data)
 
-      let url = URL(string:  Global.ServerURL.mobile + "/api/auth")!
+      let url = URL(string: Global.ServerURL.mobile + "/api/auth")!
       var authRequest = URLRequest(url: url)
       authRequest.httpMethod = "POST"
       authRequest.allHTTPHeaderFields = [
-        "Accept" : "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json"
       ]
       authRequest.httpBody = jsonData

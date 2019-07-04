@@ -10,7 +10,7 @@ import Foundation
 import BitmarkSDK
 
 struct SessionData {
-  static let CHACHA20_POLY1305_ALGORITHM = "chacha20poly1305"
+  static let Chacha20Poly1305Algorithm = "chacha20poly1305"
   let encryptedKey: Data
   let algorithm: String
 
@@ -18,8 +18,6 @@ struct SessionData {
     let encryptedSessionKey = try sender.encryptionKey.encrypt(message: sessionKey, receiverPublicKey: receiverPublicKey)
 
     return SessionData(encryptedKey: encryptedSessionKey,
-                       algorithm: CHACHA20_POLY1305_ALGORITHM)
+                       algorithm: Chacha20Poly1305Algorithm)
   }
-
 }
-

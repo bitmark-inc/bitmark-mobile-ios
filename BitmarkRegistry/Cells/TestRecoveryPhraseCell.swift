@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol ReselectHiddenPhraseBoxDelegate {
+protocol ReselectHiddenPhraseBoxDelegate: class {
   func reselectHiddenPhraseBoxCell(_ cell: TestRecoveryPhraseCell)
 }
 
 class TestRecoveryPhraseCell: RecoveryPhraseCell {
 
   // MARK: - Properties
-  var delegate: ReselectHiddenPhraseBoxDelegate?
+  weak var delegate: ReselectHiddenPhraseBoxDelegate?
   var matchingTestPhraseCell: TestPhraseOptionCell?
   var hiddenPhraseBox: UIView!
 
@@ -50,7 +50,9 @@ class TestRecoveryPhraseCell: RecoveryPhraseCell {
   override var isSelected: Bool {
     didSet {
       hiddenPhraseBox.borderWidth = isSelected ? 1 : 0
-      if (isSelected && hiddenPhraseBox.isHidden) { delegate?.reselectHiddenPhraseBoxCell(self) }
+      if isSelected && hiddenPhraseBox.isHidden {
+        delegate?.reselectHiddenPhraseBoxCell(self)
+      }
     }
   }
 

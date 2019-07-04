@@ -10,8 +10,8 @@ import Foundation
 import BitmarkSDK
 
 extension Array where Iterator.Element == Bitmark {
-  func firstIndexWithId(_ id: String) -> Int? {
-    return self.firstIndex(where: { $0.id == id })
+  func firstIndexWithId(_ bitmarkId: String) -> Int? {
+    return self.firstIndex(where: { $0.id == bitmarkId })
   }
 
   /** - Returns: the unique asc-offset bitmarks */

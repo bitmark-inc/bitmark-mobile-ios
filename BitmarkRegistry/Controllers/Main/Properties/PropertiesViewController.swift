@@ -73,20 +73,19 @@ class PropertiesViewController: UIViewController {
           ErrorReporting.report(error: error)
         }
 
-        if let bitmarks = bitmarks {
-          self.bitmarks = bitmarks
+        guard let bitmarks = bitmarks else { return }
+        self.bitmarks = bitmarks
 
-          if self.bitmarks.isEmpty {
-            self.emptyViewInYoursTab.isHidden = false
-          } else {
-            self.emptyViewInYoursTab.isHidden = true
-            self.yoursTableView.reloadData()
-          }
+        if self.bitmarks.isEmpty {
+          self.emptyViewInYoursTab.isHidden = false
+        } else {
+          self.emptyViewInYoursTab.isHidden = true
+          self.yoursTableView.reloadData()
         }
       }
-    } catch let e {
+    } catch {
       showErrorAlert(message: "Error happened while loading data.")
-      ErrorReporting.report(error: e)
+      ErrorReporting.report(error: error)
     }
   }
 
@@ -98,9 +97,8 @@ class PropertiesViewController: UIViewController {
       try eventSubscription.listenBitmarkChanged { [weak self] (_) in
         self?.syncUpdatedBitmarks()
       }
-    } catch let e {
-      Global.log.error(e)
-      ErrorReporting.report(error: e)
+    } catch {
+      ErrorReporting.report(error: error)
     }
   }
 

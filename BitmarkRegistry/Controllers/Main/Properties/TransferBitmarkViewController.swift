@@ -197,7 +197,7 @@ extension TransferBitmarkViewController {
 extension TransferBitmarkViewController {
   @objc func keyboardWillBeShow(notification: Notification) {
     guard let userInfo = notification.userInfo else { return }
-    let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+    guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
     transferButtonBottomConstraint.update(offset: -keyboardSize.height + view.safeAreaInsets.bottom)
     view.layoutIfNeeded()

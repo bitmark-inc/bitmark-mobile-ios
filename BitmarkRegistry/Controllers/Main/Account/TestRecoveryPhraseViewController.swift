@@ -26,7 +26,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   private let heightPerPhraseOptionItem: CGFloat = 25.0
   private let phraseOptionPadding: CGFloat = 15.0
   private var userPhraseChoice = [String?](repeating: nil, count: 12)
-  
+
   lazy var phraseOptionCollectionView: UICollectionView = {
     let flowlayout = UICollectionViewFlowLayout()
     let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: flowlayout)
@@ -87,6 +87,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     do {
       try KeychainStore.removeSeedCoreFromKeychain()
       BitmarkStorage._shared = nil
+      Global.clearData()
     } catch {
       showErrorAlert(message: Constant.Error.removeAccess)
     }
@@ -98,7 +99,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
         ErrorReporting.report(error: Constant.Error.cannotNavigate)
         return
     }
-    
+
     let onboardingViewController = OnboardingViewController()
     rootNavigationController.setViewControllers([onboardingViewController],
                                                 animated: true)
@@ -193,7 +194,7 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
    - 5. if user finish to test recovery phrases, check the result
    */
   func selectPhraseOptionCell(_ phraseOptionCell: TestPhraseOptionCell) {
-    let selectedHiddenPhraseBoxCell = recoveryPhraseCollectionView.cellForItem(at: selectedHiddenPhraseBoxIndexPath) as! TestRecoveryPhraseCell
+    guard let selectedHiddenPhraseBoxCell = recoveryPhraseCollectionView.cellForItem(at: selectedHiddenPhraseBoxIndexPath) as? TestRecoveryPhraseCell else { return }
 
     phraseOptionCell.isHidden = true // 1
     let phraseOption = phraseOptionCell.phraseOptionBox.currentTitle!
@@ -296,11 +297,11 @@ extension TestRecoveryPhraseViewController {
     let successButton: UIButton!
 
     switch recoveryPhraseSource! {
-    case .TestRecoveryPhrase:
+    case .testRecoveryPhrase:
       doneButton = CommonUI.blueButton(title: "DONE")
       doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
       successButton = doneButton
-    case .RemoveAccess:
+    case .removeAccess:
       removeAccessButton = CommonUI.blueButton(title: "REMOVE ACCESS")
       removeAccessButton.addTarget(self, action: #selector(removeAccess), for: .touchUpInside)
       successButton = removeAccessButton
@@ -398,12 +399,7 @@ extension TestRecoveryPhraseViewController {
   }
 
   func isResultCorrect() -> Bool {
-    for hiddenIndex in hiddenPhraseIndexes {
-      if recoveryPhrases[hiddenIndex] != userPhraseChoice[hiddenIndex] {
-        return false
-      }
-    }
-    return true
+    return hiddenPhraseIndexes.firstIndex(where: { recoveryPhrases[$0] != userPhraseChoice[$0] }) == nil
   }
 
   /*
@@ -413,7 +409,7 @@ extension TestRecoveryPhraseViewController {
   func setStyleForRecoveryPhraseCell(isError: Bool) {
     for index in (0..<numberOfPhrases) {
       let indexPath = IndexPath(row: index, section: 0)
-      let cell = recoveryPhraseCollectionView.cellForItem(at: indexPath) as! TestRecoveryPhraseCell
+      guard let cell = recoveryPhraseCollectionView.cellForItem(at: indexPath) as? TestRecoveryPhraseCell else { return }
       if isError {
         cell.setErrorStyle()
       } else {

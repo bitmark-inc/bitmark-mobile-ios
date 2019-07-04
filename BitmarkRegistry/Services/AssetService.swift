@@ -15,7 +15,24 @@ class AssetService {
     return FileUtil.computeFingerprint(data: data)
   }
 
-  static func registerAsset(registrant: Account, assetName: String, fingerprint: Data, metadata: [String:String]) throws -> String {
+  typealias AssetInfo = (registrant: Account, assetName: String, fingerprint: Data, metadata: [String: String])
+  static func registerProperty(assetInfo: AssetInfo, quantity: Int) throws -> String {
+    let assetId = try AssetService.registerAsset(
+      registrant: assetInfo.registrant,
+      assetName: assetInfo.assetName,
+      fingerprint: assetInfo.fingerprint,
+      metadata: assetInfo.metadata)
+
+    try AssetService.issueBitmarks(
+      issuer: assetInfo.registrant,
+      assetId: assetId,
+      quantity: quantity
+    )
+
+    return assetId
+  }
+
+  static func registerAsset(registrant: Account, assetName: String, fingerprint: Data, metadata: [String: String]) throws -> String {
     var assetParams = try Asset.newRegistrationParams(name: assetName, metadata: metadata)
     try assetParams.setFingerprint(fromData: fingerprint)
     try assetParams.sign(registrant)

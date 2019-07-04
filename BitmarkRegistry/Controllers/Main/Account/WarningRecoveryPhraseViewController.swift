@@ -29,7 +29,7 @@ extension WarningRecoveryPhraseViewController {
   fileprivate func setupEvents() {
     writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
       let recoveryPhraseVC = RecoveryPhraseViewController()
-      recoveryPhraseVC.recoveryPhraseSource = RecoveryPhraseSource.TestRecoveryPhrase
+      recoveryPhraseVC.recoveryPhraseSource = RecoveryPhraseSource.testRecoveryPhrase
       self.navigationController?.pushViewController(recoveryPhraseVC)
     })
   }

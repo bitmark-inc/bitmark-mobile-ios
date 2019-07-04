@@ -138,7 +138,7 @@ class AssetFileService {
         senderAccountNumber: senderAccountNumber, senderPublicKey: senderPublicKey, completion: { (responseData, error) in
 
         if let error = error {
-          ErrorReporting.report(error: error);
+          ErrorReporting.report(error: error)
           return
         }
 
