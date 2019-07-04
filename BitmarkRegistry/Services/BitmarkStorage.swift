@@ -84,7 +84,7 @@ class BitmarkStorage {
         try self?.syncBitmarks(notifyNew: notifyNew, doRepeat: doRepeat)
         completion?({})
       } catch {
-        print(error)
+        ErrorReporting.report(error: error)
         completion?({ throw error })
       }
     }

@@ -30,8 +30,7 @@ extension UIViewController {
 
   func showIndicatorAlert(message: String, handler: @escaping () -> Void) -> UIAlertController {
     let alertController = UIAlertController(title: nil, message: "", preferredStyle: .alert)
-    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-    activityIndicator.color = .black
+    let activityIndicator = CommonUI.appActivityIndicator()
     activityIndicator.startAnimating()
 
     let messageLabel = CommonUI.alertMessageLabel(text: message)

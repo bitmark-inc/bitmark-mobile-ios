@@ -50,8 +50,8 @@ class OnboardingViewController: UIViewController {
         }
       }
     } catch {
-      print(error)
       showErrorAlert(message: Constant.Error.createAccount)
+      ErrorReporting.report(error: error)
     }
   }
 }
@@ -69,9 +69,7 @@ extension OnboardingViewController {
     let logoImageView = UIImageView()
     logoImageView.image = UIImage(named: "Bitmark_Logo-8")
 
-    activityIndicator = UIActivityIndicatorView()
-    activityIndicator.style = .whiteLarge
-    activityIndicator.color = .gray
+    activityIndicator = CommonUI.appActivityIndicator()
 
     let contentView = UIView()
     contentView.addSubview(logoImageView)

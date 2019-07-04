@@ -11,10 +11,13 @@ import BitmarkSDK
 import XCGLogger
 
 class Global {
-  static var mobileServerURL = Credential.valueForKey(keyName: Constant.Key.mobileServerURL)
-  static var keyAccountAssetServerURL = Credential.valueForKey(keyName: Constant.Key.keyAccountAssetServerURL)
-  static var fileCourierServerURL = Credential.valueForKey(keyName: Constant.Key.fileCourierServerURL)
-  static var registryServerURL = Credential.valueForKey(keyName: Constant.Key.registryServerURL)
+
+  public struct ServerURL {
+    public static let mobile = Credential.valueForKey(keyName: Constant.Key.mobileServerURL)
+    public static let keyAccountAsset = Credential.valueForKey(keyName: Constant.Key.keyAccountAssetServerURL)
+    public static let fileCourier = Credential.valueForKey(keyName: Constant.Key.fileCourierServerURL)
+    public static let registry = Credential.valueForKey(keyName: Constant.Key.registryServerURL)
+  }
 
   static var currentAccount: Account? = nil {
     didSet {
@@ -77,4 +80,18 @@ class Global {
     
     return log
   }()
+
+  static func appError(errorCode: Int, message: String) -> NSError {
+    let hostDomain = "come.bitmark.registry"
+    let hostErrorCode = errorCode
+
+    return NSError(domain: hostDomain, code: hostErrorCode, userInfo: [NSLocalizedDescriptionKey: message])
+  }
 }
+
+enum BitmarkStatus: String {
+  case settled
+  case issuing
+  case transferring
+}
+

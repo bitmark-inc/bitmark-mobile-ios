@@ -42,7 +42,7 @@ class PropertiesViewController: UIViewController {
   var backButton: UIButton!
   var forwardButton: UIButton!
   var globalActivityIndicator: UIActivityIndicatorView!
-  let globalRegisterApp = Global.registryServerURL + "?env=app"
+  let globalRegisterApp = Global.ServerURL.registry + "?env=app"
   var didLoadWebview: Bool = false
 
   // MARK: - Init
@@ -69,8 +69,8 @@ class PropertiesViewController: UIViewController {
         self.yoursActivityIndicator.stopAnimating()
 
         if let error = error {
-          print(error)
           self.showErrorAlert(message: Constant.Error.syncBitmark)
+          ErrorReporting.report(error: error)
         }
 
         if let bitmarks = bitmarks {
@@ -262,9 +262,7 @@ extension PropertiesViewController {
 
     emptyViewInYoursTab = setupYoursEmptyView()
 
-    yoursActivityIndicator = UIActivityIndicatorView()
-    yoursActivityIndicator.style = .whiteLarge
-    yoursActivityIndicator.color = .gray
+    yoursActivityIndicator = CommonUI.appActivityIndicator()
 
     let view = UIView()
     view.addSubview(yoursTableView)
@@ -353,9 +351,7 @@ extension PropertiesViewController {
       make.centerX.equalToSuperview()
     }
 
-    globalActivityIndicator = UIActivityIndicatorView()
-    globalActivityIndicator.style = .whiteLarge
-    globalActivityIndicator.color = .gray
+    globalActivityIndicator = CommonUI.appActivityIndicator()
 
     let view = UIView()
     view.addSubview(webView)

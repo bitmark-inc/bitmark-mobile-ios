@@ -46,7 +46,7 @@ class KeychainStore {
     do {
       return try keychain.getData(key)
     } catch {
-      print(error)
+      ErrorReporting.report(error: error)
       return nil
     }
   }
@@ -55,7 +55,7 @@ class KeychainStore {
     do {
       return try keychain.getString(key)
     } catch {
-      print(error)
+      ErrorReporting.report(error: error)
       return nil
     }
   }

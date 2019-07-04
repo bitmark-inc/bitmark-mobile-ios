@@ -42,7 +42,7 @@ class AccountKeyService {
   }
 
   static func getEncryptionPublicKey(accountNumber: String, completion: @escaping (Data?, Error?) -> Void) {
-    let url = URL(string: Global.keyAccountAssetServerURL + "/" + accountNumber)!
+    let url = URL(string: Global.ServerURL.keyAccountAsset + "/" + accountNumber)!
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
     request.allHTTPHeaderFields = [

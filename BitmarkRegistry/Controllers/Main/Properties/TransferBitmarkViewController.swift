@@ -21,6 +21,9 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   var transferButton: SubmitButton!
   var transferButtonBottomConstraint: Constraint!
   var scanQRButton: UIButton!
+  lazy var assetFileService = {
+    return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
+  }()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -70,16 +73,18 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
             to: recipientAccountNumber
           )
 
-          DispatchQueue.global().async {
-            AssetFileService(owner: Global.currentAccount!, assetId: self.asset.id)
-              .transferFile(to: recipientAccountNumber)
-          }
+          // upload transferred file into file courier server
+          self.assetFileService.transferFile(to: recipientAccountNumber)
 
-          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else { return }
+          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+            self.showErrorAlert(message: Constant.Error.cannotNavigate)
+            ErrorReporting.report(error: Constant.Error.cannotNavigate)
+            return
+          }
           propertiesVC.syncUpdatedBitmarks()
         } catch {
-          print(error)
           errorMessage = error.localizedDescription
+          ErrorReporting.report(error: error)
         }
       }
 

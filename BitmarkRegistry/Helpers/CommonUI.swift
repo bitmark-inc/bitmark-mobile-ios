@@ -43,6 +43,7 @@ class CommonUI {
     let button = UIButton(type: .system)
     button.setTitle(title.uppercased(), for: .normal)
     button.setTitleColor(.mainBlueColor, for: .normal)
+    button.setTitleColor(.gray, for: .disabled)
     button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 16)
     button.contentHorizontalAlignment = .right
     return button
@@ -99,5 +100,12 @@ class CommonUI {
     label.font = UIFont(name: "SF Pro Text", size: 16)
     label.textAlignment = .center
     return label
+  }
+
+  static func appActivityIndicator() -> UIActivityIndicatorView {
+    let indicator = UIActivityIndicatorView()
+    indicator.style = .whiteLarge
+    indicator.color = .gray
+    return indicator
   }
 }

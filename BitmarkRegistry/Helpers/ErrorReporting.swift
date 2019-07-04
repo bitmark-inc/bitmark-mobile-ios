@@ -40,6 +40,13 @@ struct ErrorReporting {
     Client.shared?.appendStacktrace(to: e)
     Client.shared?.send(event: e, completion: nil)
   }
+
+  public static func report(message: String) {
+    let e = Event(level: .error)
+    e.message = message
+    Client.shared?.appendStacktrace(to: e)
+    Client.shared?.send(event: e, completion: nil)
+  }
   
   // Log info to sentry
   public static func breadcrumbs(info msg: String, category: String) {

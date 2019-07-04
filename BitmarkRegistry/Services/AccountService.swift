@@ -47,7 +47,27 @@ class AccountService {
       UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 
-    var authRequest: URLRequest!
+    guard let authRequest = createJWTRequestURL(for: account) else { return }
+    URLSession.shared.dataTask(with: authRequest) { (data, response, error) in
+      if let error = error {
+        ErrorReporting.report(error: error)
+        return
+      }
+
+      if let data = data {
+        do {
+          let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: String]
+          if let jwtToken = jsonObject["jwt_token"] {
+            try KeychainStore.saveToKeychain(jwt: jwtToken)
+          }
+        } catch {
+          ErrorReporting.report(error: error)
+        }
+      }
+    }.resume()
+  }
+
+  fileprivate static func createJWTRequestURL(for account: Account) -> URLRequest? {
     do {
       let timestamp = Common.timestamp()
       let signature = try account.sign(message: timestamp.data(using: .utf8)!)
@@ -59,34 +79,18 @@ class AccountService {
       ]
       let jsonData = try JSONSerialization.data(withJSONObject: data)
 
-      let url = URL(string:  Global.mobileServerURL + "/api/auth")!
-      authRequest = URLRequest(url: url)
+      let url = URL(string:  Global.ServerURL.mobile + "/api/auth")!
+      var authRequest = URLRequest(url: url)
       authRequest.httpMethod = "POST"
       authRequest.allHTTPHeaderFields = [
         "Accept" : "application/json",
         "Content-Type": "application/json"
       ]
       authRequest.httpBody = jsonData
+      return authRequest
     } catch {
-      print(error)
+      ErrorReporting.report(error: error)
+      return nil
     }
-
-    URLSession.shared.dataTask(with: authRequest) { (data, response, error) in
-      if let error = error {
-        print(error)
-        return
-      }
-
-      if let data = data {
-        do {
-          let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String: String]
-          if let jwtToken = jsonObject["jwt_token"] {
-            try KeychainStore.saveToKeychain(jwt: jwtToken)
-          }
-        } catch {
-          print(error)
-        }
-      }
-    }.resume()
   }
 }

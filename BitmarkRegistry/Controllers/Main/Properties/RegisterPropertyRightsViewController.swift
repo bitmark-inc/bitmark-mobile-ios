@@ -136,11 +136,15 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           assetId: assetId,
           quantity: quantity)
 
-        guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else { return }
+        guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+          self.showErrorAlert(message: Constant.Error.cannotNavigate)
+          ErrorReporting.report(error: Constant.Error.cannotNavigate)
+          return
+        }
         propertiesVC.syncUpdatedBitmarks()
       } catch {
-        print(error)
         errorMessage = error.localizedDescription
+        ErrorReporting.report(error: error)
       }
     }
 
@@ -162,7 +166,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       try AssetFileService(owner: Global.currentAccount!, assetId: assetId)
                           .moveFileToAppStorage(fileURL: assetURL)
     } catch {
-      print(error)
+      ErrorReporting.report(error: error)
     }
   }
 

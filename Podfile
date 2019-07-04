@@ -17,7 +17,6 @@ def sharedPods
   
   # custom logger
   pod 'XCGLogger', '~> 7.0.0'
-
 end
 
 target 'BitmarkRegistry' do

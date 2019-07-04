@@ -21,8 +21,16 @@ struct AssetEncryption {
     self.key = key
   }
 
+  init(from sessionData: SessionData, receiverAccount: Account, senderEncryptionPublicKey: Data) throws {
+    self.key = try receiverAccount.encryptionKey.decrypt(cipher: sessionData.encryptedKey, senderPublicKey: senderEncryptionPublicKey)
+  }
+
   func encryptData(_ data: Data) throws -> Data {
     return try Chacha20Poly1305.seal(withKey: key, nonce: nonce, plainText: data, additionalData: nil)
+  }
+
+  func decryptData(_ data: Data) throws -> Data {
+    return try Chacha20Poly1305.open(withKey: key, nonce: nonce, cipherText: data, additionalData: nil)
   }
 
   func getSessionData(sender: Account, receiverPublicKey: Data) throws -> SessionData {
