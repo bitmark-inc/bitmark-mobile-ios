@@ -25,11 +25,11 @@ class FileCourierServer {
       let uploadURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + sender.getAccountNumber())!
 
       let access = "\(receiverAccountNumber):\(receiverSessionData.encryptedKey.hexEncodedString)"
-      let parameters: [String : String] = [
-        "data_key_alg" : senderSessionData.algorithm,
-        "enc_data_key" : senderSessionData.encryptedKey.hexEncodedString,
-        "orig_content_type" : "*",
-        "access" : access
+      let parameters: [String: String] = [
+        "data_key_alg": senderSessionData.algorithm,
+        "enc_data_key": senderSessionData.encryptedKey.hexEncodedString,
+        "orig_content_type": "*",
+        "access": access
       ]
 
       let headers = [
@@ -37,6 +37,7 @@ class FileCourierServer {
       ]
 
       let assetData = try Data(contentsOf: encryptedFileURL)
+
       Alamofire.upload(multipartFormData: { (multipartFormData) in
         for (key, value) in parameters {
           multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
@@ -44,42 +45,45 @@ class FileCourierServer {
 
         let mineType = getMineType(of: encryptedFileURL)
         multipartFormData.append(assetData, withName: "file", fileName: assetFilename, mimeType: mineType)
-      }, usingThreshold: UInt64(), to: uploadURL, method: .post, headers: headers) { (result) in
-        switch result{
+      }, usingThreshold: UInt64(), to: uploadURL, method: .post, headers: headers, encodingCompletion: { (result) in
+        switch result {
         case .success(let upload, _, _):
           upload.responseJSON { response in
-            if let error = response.error {
-              ErrorReporting.report(error: error)
-            }
+          if let error = response.error {
+            ErrorReporting.report(error: error)
           }
+        }
         case .failure(let error):
           ErrorReporting.report(error: error)
         }
-      }
+      })
     } catch {
       ErrorReporting.report(error: error)
     }
   }
 
-  static func getDownloadableAssets(receiver: Account, completion: @escaping (Array<String>?, Error?) -> Void) {
+  static func getDownloadableAssets(receiver: Account, completion: @escaping ([String]?, Error?) -> Void) {
     guard let jwt = Global.currentJwt else { return }
 
     let url = URL(string: Global.ServerURL.fileCourier + "/v2/files?receiver=" + receiver.getAccountNumber())!
     var request = URLRequest(url: url)
     request.allHTTPHeaderFields = [
-      "Accept" : "application/json",
-      "Content-Type" : "application/json",
-      "Authorization" : "Bearer " + jwt
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + jwt
     ]
 
-    URLSession.shared.dataTask(with: request) { (data, response, error) in
+    URLSession.shared.dataTask(with: request) { (data, _, error) in
       if let error = error {
         completion(nil, error); return
       }
 
       if let data = data {
         do {
-          let jsonObject = try JSONSerialization.jsonObject(with: data) as! [String : Array<String>]
+          guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: [String]] else {
+            ErrorReporting.report(message: "response in downloadable assets API is incorrectly formatted.")
+            return
+          }
           let downloadableFileInfos = jsonObject["file_ids"]
 
           // validate file_ids response
@@ -124,7 +128,11 @@ class FileCourierServer {
       }
 
       do {
-        let headers = httpResponse.allHeaderFields as! [String: String]
+        guard let headers = httpResponse.allHeaderFields as? [String: String] else {
+          ErrorReporting.report(message: "Header in download file API is incorrectly formatted.")
+          return
+        }
+
         if let filename = headers["File-Name"],
            let encryptedKey = headers["Enc-Data-Key"],
            let algorithm = headers["Data-Key-Alg"] {
@@ -140,7 +148,7 @@ class FileCourierServer {
 
           completion(responseData, nil)
         } else {
-          let error = Global.appError(errorCode: 500, message: "Header in download file response is formatted incorrectly")
+          let error = Global.appError(errorCode: 500, message: "Header in download file response is incorrectly formatted.")
           completion(nil, error)
         }
 
@@ -165,4 +173,3 @@ class FileCourierServer {
     return String(mineUTI.takeRetainedValue())
   }
 }
-

@@ -10,9 +10,9 @@
 import UIKit
 
 class ClosureSleeve {
-  let closure: ()->()
+  let closure: () -> Void
 
-  init (_ closure: @escaping ()->()) {
+  init (_ closure: @escaping () -> Void) {
     self.closure = closure
   }
 
@@ -23,7 +23,7 @@ class ClosureSleeve {
 
 extension UIControl {
 
-  func addAction(for controlEvents: UIControl.Event, _ closure: @escaping ()->()) {
+  func addAction(for controlEvents: UIControl.Event, _ closure: @escaping () -> Void) {
     let sleeve = ClosureSleeve(closure)
     addTarget(sleeve, action: #selector(ClosureSleeve.invoke), for: controlEvents)
 

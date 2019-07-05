@@ -30,9 +30,9 @@ class BaseRecoveryPhraseViewController: UIViewController {
   func loadRecoveryPhrases(_ phrases: inout [String]) {
     do {
       phrases = try Global.currentAccount!.getRecoverPhrase(language: .english)
-    } catch let e {
+    } catch {
       showErrorAlert(message: "Error happened while loading recovery phrase.")
-      ErrorReporting.report(error: e)
+      ErrorReporting.report(error: error)
     }
   }
 

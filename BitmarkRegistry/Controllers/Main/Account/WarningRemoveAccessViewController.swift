@@ -29,7 +29,7 @@ extension WarningRemoveAccessViewController {
   fileprivate func setupEvents() {
     writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
       let recoveryPhraseVC = RecoveryPhraseViewController()
-      recoveryPhraseVC.recoveryPhraseSource = RecoveryPhraseSource.RemoveAccess
+      recoveryPhraseVC.recoveryPhraseSource = RecoveryPhraseSource.removeAccess
       self.navigationController?.pushViewController(recoveryPhraseVC)
     })
   }
@@ -57,7 +57,8 @@ extension WarningRemoveAccessViewController {
     warningTextView.font = UIFont(name: "Avenir", size: 17)
     warningTextView.isUserInteractionEnabled = false
     warningTextView.text =
-      "Your recovery phrase is the only way to access your Bitmark account after signing out. If you have not already written down your recovery phrase, you must do so now or you will be permanently lose access to your account and lose ownership of all your digital properties.\n\n" +
+      "Your recovery phrase is the only way to access your Bitmark account after signing out." +
+      "If you have not already written down your recovery phrase, you must do so now or you will be permanently lose access to your account and lose ownership of all your digital properties.\n\n" +
       "Your recovery phrase is a list of 24 words to write on a piece of paper and keep safe. Make sure you are in a private location when you write it down.\n\n" +
       "This will completely remove access to your account on this device. Regular data bitmarking and data donations will be paused until you sign back in with your recovery phrase."
 

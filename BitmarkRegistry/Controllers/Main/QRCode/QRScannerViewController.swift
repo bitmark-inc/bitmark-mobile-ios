@@ -10,7 +10,7 @@
 import UIKit
 import AVFoundation
 
-protocol QRCodeScannerDelegate {
+protocol QRCodeScannerDelegate: class {
   func process(qrCode: String)
 }
 
@@ -18,7 +18,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
 
   // MARK: - Properties
   var captureSession: AVCaptureSession!
-  var delegate: QRCodeScannerDelegate!
+  weak var delegate: QRCodeScannerDelegate!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -63,10 +63,9 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
   }
 
   func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-    guard metadataObjects.count > 0 else { return }
+    guard !metadataObjects.isEmpty else { return }
 
-    let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-
+    guard let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else { return }
     if metadataObj.type == AVMetadataObject.ObjectType.qr, let qrCode = metadataObj.stringValue {
       captureSession.stopRunning()
       delegate.process(qrCode: qrCode)

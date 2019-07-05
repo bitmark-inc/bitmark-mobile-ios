@@ -11,7 +11,7 @@ import BitmarkSDK
 
 struct AssetEncryption {
   let key: Data
-  private let nonce = Data(Array<UInt8>(repeating: 0x00, count: 12))
+  private let nonce = Data([UInt8](repeating: 0x00, count: 12))
 
   init() {
     var key = Data(count: 32)

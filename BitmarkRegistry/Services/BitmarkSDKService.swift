@@ -24,7 +24,6 @@ class BitmarkSDKService {
   static func setupConfig() {
     let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared, logger: BitmarkSDKServiceLogger())
     BitmarkSDK.initialize(config: config)
-    
   }
 }
 
@@ -36,14 +35,14 @@ class BitmarkSDKServiceLogger: SDKLogger {
                      fileName: "",
                      lineNumber: 0,
                      userInfo: ["Source": "BitmarkSDK"])
-    
+
     if level == .error {
       ErrorReporting.report(error: message)
     } else {
       ErrorReporting.breadcrumbs(info: message, category: "BitmarkSDK")
     }
   }
-  
+
   private func sdkToAppLogLevel(_ sdkLevel: SDKLogLevel) -> XCGLogger.Level {
     switch sdkLevel {
     case .debug:

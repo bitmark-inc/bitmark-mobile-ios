@@ -29,8 +29,8 @@ class YourPropertyCell: UITableViewCell {
   // MARK: - Handlers
   func loadWith(_ asset: Asset?, _ bitmark: Bitmark) {
     assetNameLabel.text = asset?.name
-    if let confirmed_at = bitmark.confirmed_at {
-      dateLabel.text = confirmed_at.string(withFormat: Constant.systemFullFormatDate)
+    if let confirmedAt = bitmark.confirmed_at {
+      dateLabel.text = confirmedAt.string(withFormat: Constant.systemFullFormatDate)
     } else {
       dateLabel.text = statusInWord(status: bitmark.status)
     }

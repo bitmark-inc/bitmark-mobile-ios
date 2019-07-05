@@ -26,9 +26,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     }
   }
   var isMetadataViewOnEditMode: Bool {
-    get {
-      return metadataEditModeButton.isSelected
-    }
+    return metadataEditModeButton.isSelected
   }
   var metadataStackView: UIStackView!
   var metadataAddButton: UIButton!
@@ -122,18 +120,15 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
       do {
-        let assetId = try AssetService.registerAsset(
+        guard let fingerprint = self.assetData else { return }
+        let assetInfo = (
           registrant: Global.currentAccount!,
           assetName: assetName,
-          fingerprint: self.assetData,
-          metadata: metadata)
-
+          fingerprint: fingerprint,
+          metadata: metadata
+        )
+        let assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
         self.moveFileToAppStorage(of: assetId)
-
-        let _ = try AssetService.issueBitmarks(
-          issuer: Global.currentAccount!,
-          assetId: assetId,
-          quantity: quantity)
 
         selfAlert.dismiss(animated: true, completion: {
           self.showSuccessAlert(message: Constant.Success.issue, handler: {
@@ -230,10 +225,7 @@ extension RegisterPropertyRightsViewController: MetadataFormDelegate, MetadataLa
 extension RegisterPropertyRightsViewController {
 
   func validMetadata() -> Bool {
-    for metadataForm in metadataForms {
-      if !metadataForm.isValid { return false }
-    }
-    return true
+    return metadataForms.firstIndex(where: { !$0.isValid }) == nil
   }
 
   func validateLabelDuplication() {
@@ -439,25 +431,8 @@ extension RegisterPropertyRightsViewController {
 
     metadataStackView = UIStackView(arrangedSubviews: [], axis: .vertical, spacing: 15)
 
-    metadataAddButton = UIButton()
-    metadataAddButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
-    metadataAddButton.setImage(UIImage(named: "add_label"), for: .normal)
-    metadataAddButton.setImage(UIImage(named: "add_label_disabled"), for: .disabled)
-    metadataAddButton.setTitle("ADD LABEL", for: .normal)
-    metadataAddButton.setTitleColor(.mainBlueColor, for: .normal)
-    metadataAddButton.setTitleColor(.silver, for: .disabled)
-    metadataAddButton.centerTextAndImage(spacing: 5.0)
-    metadataAddButton.contentHorizontalAlignment = .left
-    metadataAddButton.titleEdgeInsets.top = 2.0
-
-    metadataEditModeButton = UIButton()
-    metadataEditModeButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
-    metadataEditModeButton.setTitle("EDIT", for: .normal)
-    metadataEditModeButton.setTitle("DONE", for: .selected)
-    metadataEditModeButton.setTitleColor(.mainBlueColor, for: .normal)
-    metadataEditModeButton.titleEdgeInsets.top = 2.0
-    metadataEditModeButton.isHidden = true
-
+    setupMetadataAddButton()
+    setupMetadataEditModeButton()
     let settingButtons = UIStackView(arrangedSubviews: [metadataAddButton, UIView(), metadataEditModeButton])
 
     errorForMetadata = CommonUI.errorFieldLabel()
@@ -519,8 +494,30 @@ extension RegisterPropertyRightsViewController {
   fileprivate func ownershipClaimView() -> UIStackView {
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "OWNERSHIP CLAIM")
     let description = CommonUI.descriptionLabel(text: "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.")
-
     return UIStackView(arrangedSubviews: [fieldLabel, description], axis: .vertical, spacing: 15)
+  }
+
+  fileprivate func setupMetadataAddButton() {
+    metadataAddButton = UIButton(type: .system)
+    metadataAddButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
+    metadataAddButton.setImage(UIImage(named: "add_label"), for: .normal)
+    metadataAddButton.setImage(UIImage(named: "add_label_disabled"), for: .disabled)
+    metadataAddButton.setTitle("ADD LABEL", for: .normal)
+    metadataAddButton.setTitleColor(.mainBlueColor, for: .normal)
+    metadataAddButton.setTitleColor(.silver, for: .disabled)
+    metadataAddButton.centerTextAndImage(spacing: 5.0)
+    metadataAddButton.contentHorizontalAlignment = .left
+    metadataAddButton.titleEdgeInsets.top = 2.0
+  }
+
+  fileprivate func setupMetadataEditModeButton() {
+    metadataEditModeButton = UIButton(type: .system)
+    metadataEditModeButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
+    metadataEditModeButton.setTitle("EDIT", for: .normal)
+    metadataEditModeButton.setTitle("DONE", for: .selected)
+    metadataEditModeButton.setTitleColor(.mainBlueColor, for: .normal)
+    metadataEditModeButton.titleEdgeInsets.top = 2.0
+    metadataEditModeButton.isHidden = true
   }
 }
 
@@ -528,7 +525,7 @@ extension RegisterPropertyRightsViewController {
 extension RegisterPropertyRightsViewController {
   @objc func keyboardWillBeShow(notification: Notification) {
     guard let userInfo = notification.userInfo else { return }
-    let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+    guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
     issueButtonBottomConstraint.update(offset: -keyboardSize.height + view.safeAreaInsets.bottom)
     view.layoutIfNeeded()

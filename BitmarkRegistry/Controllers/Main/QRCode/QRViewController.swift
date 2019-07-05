@@ -88,20 +88,8 @@ extension QRViewController {
     separateLine.backgroundColor = .rockBlue
 
     qrImage = UIImageView()
-
-    accountNumberLabel = UILabel()
-    accountNumberLabel.font = UIFont(name: "Courier", size: 11)
-    accountNumberLabel.textAlignment = .center
-    accountNumberLabel.numberOfLines = 0
-
-    shareButton = UIButton(type: .system)
-    shareButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 17)
-    shareButton.setTitle("SHARE", for: .normal)
-    shareButton.setTitleColor(.white, for: .normal)
-    shareButton.setImage(UIImage(named: "white-share-icon"), for: .normal)
-    shareButton.tintColor = .white
-    shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 13)
-    shareButton.backgroundColor = .mainBlueColor
+    setupAccountNumberLabel()
+    shareButton = setupShareButton()
 
     // *** Setup UI in view ***
     let mainView = UIView()
@@ -144,5 +132,24 @@ extension QRViewController {
       make.edges.equalTo(view.safeAreaInsets)
           .inset(UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
     }
+  }
+
+  fileprivate func setupShareButton() -> UIButton {
+    let shareButton = UIButton(type: .system)
+    shareButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 17)
+    shareButton.setTitle("SHARE", for: .normal)
+    shareButton.setTitleColor(.white, for: .normal)
+    shareButton.setImage(UIImage(named: "white-share-icon"), for: .normal)
+    shareButton.tintColor = .white
+    shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 13)
+    shareButton.backgroundColor = .mainBlueColor
+    return shareButton
+  }
+
+  fileprivate func setupAccountNumberLabel() {
+    accountNumberLabel = UILabel()
+    accountNumberLabel.font = UIFont(name: "Courier", size: 11)
+    accountNumberLabel.textAlignment = .center
+    accountNumberLabel.numberOfLines = 0
   }
 }

@@ -64,9 +64,9 @@ class BitmarkStorage {
           try executeSyncResult()
           let bitmarks = try self.getBitmarkData()
           DispatchQueue.main.async { handler(bitmarks, nil) }
-        } catch let e {
-          DispatchQueue.main.async { handler(nil, e) }
-          ErrorReporting.report(error: e)
+        } catch {
+          DispatchQueue.main.async { handler(nil, error) }
+          ErrorReporting.report(error: error)
         }
       }
     } else {
@@ -77,8 +77,8 @@ class BitmarkStorage {
   }
 
   // Call Async function in serial queue
-  typealias throwsFunction = () throws -> Void
-  func asyncUpdateBitmarksInSerialQueue(notifyNew: Bool, doRepeat: Bool = true, completion: ((_ inner: throwsFunction) -> Void)?) {
+  typealias ThrowsFunction = () throws -> Void
+  func asyncUpdateBitmarksInSerialQueue(notifyNew: Bool, doRepeat: Bool = true, completion: ((_ inner: ThrowsFunction) -> Void)?) {
     serialSyncBitmarkQueue.async { [weak self] in
       do {
         try self?.syncBitmarks(notifyNew: notifyNew, doRepeat: doRepeat)
@@ -109,7 +109,7 @@ class BitmarkStorage {
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
-      guard bitmarks.count > 0 else { break }
+      guard !bitmarks.isEmpty else { break }
 
       var bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
 

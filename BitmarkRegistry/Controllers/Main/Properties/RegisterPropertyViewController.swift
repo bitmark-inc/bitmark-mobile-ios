@@ -79,7 +79,7 @@ class RegisterPropertyViewController: UIViewController {
 
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
     picker.dismiss(animated: true, completion: nil)
 
     // get image
@@ -107,7 +107,6 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
   }
 }
 
-
 // MARK: - UIDocumentPickerDelegate
 extension RegisterPropertyViewController: UIDocumentPickerDelegate {
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
@@ -119,7 +118,7 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
     }
 
     let fileCoordinator = NSFileCoordinator()
-    var error: NSError? = nil
+    var error: NSError?
     fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { (newURL) in
       do {
         assetData = try Data(contentsOf: newURL)
@@ -155,11 +154,12 @@ extension RegisterPropertyViewController {
       alignment: .leading,
       distribution: .fill
     )
-    registerSelectionView.arrangedSubviews.forEach {
-      $0.snp.makeConstraints( { $0.width.equalToSuperview() })
-    }
+    registerSelectionView.arrangedSubviews.forEach({
+      $0.snp.makeConstraints { $0.width.equalToSuperview() }
+    })
 
-    descriptionLabel = CommonUI.descriptionLabel(text: "Property rights are registered on Bitmark through the creation of an asset record followed by an issue record. Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.")
+    descriptionLabel = CommonUI.descriptionLabel(text: "Property rights are registered on Bitmark through the creation of an asset record followed by an issue record." +
+      " Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.")
     descriptionLabel.lineHeightMultiple(1.2)
 
     // *** Setup UI in view ***
@@ -178,7 +178,7 @@ extension RegisterPropertyViewController {
     }
   }
 
-  private func registerButton(by text: String) -> UIButton{
+  private func registerButton(by text: String) -> UIButton {
     let button = UIButton()
     button.backgroundColor = .aliceBlue
     button.setTitle(text, for: .normal)
