@@ -31,21 +31,21 @@ class OnboardingViewController: UIViewController {
     do {
       try AccountService.createNewAccount { [weak self] (account, error) in
         guard let self = self else { return }
-        DispatchQueue.main.async { self.activityIndicator.stopAnimating() }
-        if let error = error {
-          self.showErrorAlert(message: error.localizedDescription)
-        }
+        DispatchQueue.main.async {
+          self.activityIndicator.stopAnimating()
+          if let error = error {
+            self.showErrorAlert(message: error.localizedDescription)
+          }
 
-        if let account = account {
-          do {
-            Global.currentAccount = account // track and store currentAccount
-            try KeychainStore.saveToKeychain(account.seed.core)
-            DispatchQueue.main.async {
+          if let account = account {
+            do {
+              Global.currentAccount = account // track and store currentAccount
+              try KeychainStore.saveToKeychain(account.seed.core)
               let touchAuthenticationViewController = TouchAuthenticationViewController()
               self.navigationController?.pushViewController(touchAuthenticationViewController) // redirect to Onboarding Screens
+            } catch {
+              self.showErrorAlert(message: Constant.Error.keychainStore)
             }
-          } catch {
-            self.showErrorAlert(message: Constant.Error.keychainStore)
           }
         }
       }

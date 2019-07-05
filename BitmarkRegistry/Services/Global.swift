@@ -33,7 +33,7 @@ class Global {
     currentAccount = nil
     currentJwt = nil
     currentAssets.removeAll()
-    latestOffset = [:]
+    latestBitmarkOffset = nil
   }
 
   // Global logger
