@@ -134,6 +134,45 @@ class BitmarkDetailViewController: UIViewController {
       }
     }
   }
+
+  @objc func tapToDelete(_ sender: UIButton) {
+    let alertController = UIAlertController(title: "This bitmark will be deleted.", message: nil, preferredStyle: .actionSheet)
+    alertController.addAction(title: "Delete", style: .destructive, handler: deleteBitmark)
+    alertController.addAction(title: "Cancel", style: .cancel)
+    present(alertController, animated: true, completion: nil)
+  }
+
+  // delete bitmark means transfer bitmark to zero address
+  fileprivate func deleteBitmark(_ sender: UIAlertAction) {
+    let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
+    showIndicatorAlert(message: Constant.Message.deletingBitmark) { (selfAlert) in
+      do {
+        _ = try BitmarkService.directTransfer(
+          account: Global.currentAccount!,
+          bitmarkId: self.bitmark.id,
+          to: zeroAccountNumber
+        )
+
+        selfAlert.dismiss(animated: true, completion: {
+          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+            self.showErrorAlert(message: Constant.Error.cannotNavigate)
+            ErrorReporting.report(error: Constant.Error.cannotNavigate)
+            return
+          }
+          propertiesVC.syncUpdatedBitmarks()
+
+          self.showSuccessAlert(message: Constant.Success.delete, handler: {
+            self.navigationController?.popToRootViewController(animated: true)
+          })
+        })
+      } catch {
+        selfAlert.dismiss(animated: true, completion: {
+          self.showErrorAlert(message: error.localizedDescription)
+          ErrorReporting.report(error: error)
+        })
+      }
+    }
+  }
 }
 
 // MARK: - UITableViewDataSource
@@ -184,6 +223,7 @@ extension BitmarkDetailViewController {
 
     copyIdButton.addTarget(self, action: #selector(tapToCopyId), for: .touchUpInside)
     downloadButton.addTarget(self, action: #selector(tapToDownload), for: .touchUpInside)
+    deleteButton.addTarget(self, action: #selector(tapToDelete), for: .touchUpInside)
 
     transferButton.addAction(for: .touchUpInside) {
       self.performMoveToTransferBitmark()
