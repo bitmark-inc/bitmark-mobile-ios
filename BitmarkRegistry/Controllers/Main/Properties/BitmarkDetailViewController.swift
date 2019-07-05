@@ -78,14 +78,16 @@ class BitmarkDetailViewController: UIViewController {
     transactionIndicator.startAnimating()
     TransactionService.listAllTransactions(of: bitmark.id) { [weak self] (transactions, error) in
       guard let self = self else { return }
-      DispatchQueue.main.async { self.transactionIndicator.stopAnimating() }
-      guard error == nil else {
-        self.showErrorAlert(message: error!.localizedDescription)
-        return
-      }
+      DispatchQueue.main.async {
+        self.transactionIndicator.stopAnimating()
+        guard error == nil else {
+          self.showErrorAlert(message: error!.localizedDescription)
+          return
+        }
 
-      self.transactions = transactions!
-      DispatchQueue.main.async { self.transactionTableView.reloadData() }
+        self.transactions = transactions!
+        self.transactionTableView.reloadData()
+      }
     }
   }
 
