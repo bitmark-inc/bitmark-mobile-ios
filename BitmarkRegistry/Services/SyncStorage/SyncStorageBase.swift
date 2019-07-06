@@ -14,7 +14,6 @@ class SyncStorageBase<Item> {
   // MARK: - Properties
   let owner: Account
   let pathExtension = "json"
-  var delegate: BitmarkEventDelegate?
   
   lazy var serialSyncQueue: DispatchQueue = {
     return DispatchQueue(label: "com.bitmark.registry.sync\(Item.self)Queue")
@@ -52,6 +51,7 @@ class SyncStorageBase<Item> {
       * execute sync in background and update bitmark rows if any change
    */
   func firstLoad(handler: @escaping ([Item]?, Error?) -> Void) throws {
+    Global.latestOffset[itemClassName] = try getStoredPathName()
     if Global.latestOffset[itemClassName] == nil {
       asyncUpdateInSerialQueue(notifyNew: false) { (executeSyncResult) in
         do {

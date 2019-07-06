@@ -19,21 +19,14 @@ class Global {
   }
   static var currentJwt: String?
   static var currentAssets = [Asset]()
+  static var currentBlocks = [Block]()
   static var latestOffset: [String: Int64] = [:]
-
-  public static func addAssets(_ assets: [Asset]) {
-    currentAssets += assets
-  }
-
-  public static func findAsset(with assetId: String) -> Asset? {
-    return currentAssets.last(where: { $0.id == assetId })
-  }
 
   public static func clearData() {
     currentAccount = nil
     currentJwt = nil
     currentAssets.removeAll()
-    latestBitmarkOffset = nil
+    latestOffset = [:]
   }
 
   // Global logger
@@ -97,8 +90,32 @@ class Global {
   }
 }
 
+// MARK: - Support Functions
+extension Global {
+  public static func addAssets(_ assets: [Asset]) {
+    currentAssets += assets
+  }
+
+  public static func findAsset(with assetId: String) -> Asset? {
+    return currentAssets.last(where: { $0.id == assetId })
+  }
+
+  public static func addBlocks(_ blocks: [Block]) {
+    currentBlocks += blocks
+  }
+
+  public static func findBlock(with blockId: Int64) -> Block? {
+    return currentBlocks.last(where: { $0.number == blockId })
+  }
+}
+
 enum BitmarkStatus: String {
   case settled
   case issuing
   case transferring
+}
+
+enum TransactionStatus: String {
+  case confirmed
+  case pending
 }

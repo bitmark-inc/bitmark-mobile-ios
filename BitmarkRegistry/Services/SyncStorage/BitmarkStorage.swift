@@ -12,6 +12,7 @@ import BitmarkSDK
 class BitmarkStorage: SyncStorageBase<Bitmark> {
 
   // MARK: - Properties
+  weak var delegate: BitmarkEventDelegate?
   static var _shared: BitmarkStorage?
   static func shared() -> BitmarkStorage {
     _shared = _shared ?? BitmarkStorage(owner: Global.currentAccount!)
@@ -47,7 +48,7 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
-      guard bitmarks.count > 0 else { break }
+      guard !bitmarks.isEmpty else { break }
 
       var bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
 

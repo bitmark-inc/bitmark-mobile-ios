@@ -57,8 +57,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillEnterForeground(_ application: UIApplication) {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     evaluatePolicyWhenUserSetEnable()
-    if Global.currentAccount != nil {
+    if Global.currentAccount != nil { 
       BitmarkStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, completion: nil)
+      TransactionStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, completion: nil)
     }
   }
 

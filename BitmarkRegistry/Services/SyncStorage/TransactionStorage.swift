@@ -12,6 +12,7 @@ import BitmarkSDK
 class TransactionStorage: SyncStorageBase<Transaction> {
 
   // MARK: - Properties
+  weak var delegate: TransactionEventDelegate?
   static var _shared: TransactionStorage?
   static func shared() -> TransactionStorage {
     _shared = _shared ?? TransactionStorage(owner: Global.currentAccount!)
@@ -23,6 +24,7 @@ class TransactionStorage: SyncStorageBase<Transaction> {
     if let txsURL = try getLatestURL() {
       let transactionsWithAsset = try TransactionsWithAsset(from: txsURL)
       Global.addAssets(transactionsWithAsset.assets)
+      Global.addBlocks(transactionsWithAsset.blocks)
       return transactionsWithAsset.txs.reversed()
     }
     return [Transaction]()
@@ -38,43 +40,39 @@ class TransactionStorage: SyncStorageBase<Transaction> {
    */
   override func sync(notifyNew: Bool, doRepeat: Bool = true) throws {
     DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }
+    defer {
+      DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
+    }
 
     Global.latestOffset["Transaction"]  = try getStoredPathName()
     var latestOffset = Global.latestOffset["Transaction"] ?? 0
 
-    TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later, handler: { [weak self] (txs, assets, error) in
-      guard let self = self else { return }
-      if let error = error {
-        ErrorReporting.report(error: error); return
-      }
+    repeat {
+      let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
+      guard !txs.isEmpty else { return }
 
-      guard let txs = txs, !txs.isEmpty, let assets = assets else { return }
-      var txsWithAsset = TransactionsWithAsset(assets: assets, txs: txs)
+      var txsWithAsset = TransactionsWithAsset(assets: assets, blocks: blocks, txs: txs)
+
+      if notifyNew {
+        Global.addAssets(txsWithAsset.assets)
+        Global.addBlocks(txsWithAsset.blocks)
+        DispatchQueue.main.async { [weak self] in
+          self?.delegate?.receiveNewTxs(txsWithAsset.txs)
+        }
+      }
 
       let baseOffset = txs.last!.offset // the last offset is the latest offset cause response transactions is asc-offset
       let txsURL = self.fileURL(pathName: baseOffset)
 
-      do {
-        if latestOffset == 0 {
-          try txsWithAsset.store(in: txsURL)
-        } else {
-          try self.mergeNewTxs(txsURL, txsWithAsset)
-        }
-      } catch {
-        ErrorReporting.report(error: error);
+      if latestOffset == 0 {
+        try txsWithAsset.store(in: txsURL)
+      } else {
+        try mergeNewTxs(txsURL, txsWithAsset)
       }
 
       latestOffset = baseOffset
       Global.latestOffset["Transaction"] = latestOffset
-
-      DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
-
-      /* TODO: uncomment after server fix data response
-      if doRepeat {
-        try? self.sync(notifyNew: notifyNew, doRepeat: doRepeat) // try? cause we surely it didn't throws exception; just want to make function signature with BitmarkStorage
-      }
-      */
-    })
+    } while doRepeat
   }
 
   // Merge new bitmarks into the bitmarks file

@@ -9,10 +9,18 @@
 import UIKit
 import BitmarkSDK
 
+protocol TransactionEventDelegate: class {
+  func receiveNewTxs(_ newTxs: [Transaction])
+  func syncUpdatedTxs()
+}
+
 class TransactionsViewController: UIViewController {
 
   // MARK: - Properties
   var emptyView: UIView!
+  var activityIndicator: UIActivityIndicatorView!
+  var txsTableView: UITableView!
+  var refreshControl: UIRefreshControl!
 
   var transactions = [Transaction]()
 
@@ -22,19 +30,22 @@ class TransactionsViewController: UIViewController {
 
     title = "TRANSACTIONS"
     setupViews()
+    setupEvents()
 
     loadData()
   }
 
   // MARK: - Data Handlers
   private func loadData() {
+    activityIndicator.startAnimating()
     do {
       try TransactionStorage.shared().firstLoad { [weak self] (transactions, error) in
         guard let self = self else { return }
+        self.activityIndicator.stopAnimating()
 
         if let error = error {
-          ErrorReporting.report(error: error)
           self.showErrorAlert(message: Constant.Error.syncTransaction)
+          ErrorReporting.report(error: error)
         }
 
         guard let transactions = transactions else { return }
@@ -44,6 +55,7 @@ class TransactionsViewController: UIViewController {
           self.emptyView.isHidden = false
         } else {
           self.emptyView.isHidden = true
+          self.txsTableView.reloadData()
         }
       }
     } catch let e {
@@ -53,19 +65,86 @@ class TransactionsViewController: UIViewController {
   }
 }
 
-// MARK: - Setup Views
+extension TransactionsViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return transactions.count
+  }
+
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withClass: TransactionListCell.self, for: indexPath)
+    let transaction = transactions[indexPath.row]
+    cell.loadWith(transaction)
+    return cell
+  }
+}
+
+extension TransactionsViewController: TransactionEventDelegate {
+  func receiveNewTxs(_ newTxs: [Transaction]) {
+    for newTx in newTxs {
+      txsTableView.beginUpdates()
+      // Remove obsolete bitmark which is displaying in table
+      if let index = transactions.firstIndexWithId(newTx.id) {
+        transactions.remove(at: index)
+        txsTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
+      }
+
+      // Add new transaction
+      transactions.prepend(newTx)
+      txsTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+
+      emptyView.isHidden = !transactions.isEmpty
+      txsTableView.endUpdates()
+    }
+  }
+
+  @objc func syncUpdatedTxs() {
+    TransactionStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
+      DispatchQueue.main.async {
+        self?.refreshControl.endRefreshing()
+      }
+    }
+  }
+}
+
+// MARK: - Setup Views/Events
 extension TransactionsViewController {
+  fileprivate func setupEvents() {
+    TransactionStorage.shared().delegate = self
+
+    txsTableView.register(cellWithClass: TransactionListCell.self)
+    txsTableView.dataSource = self
+  }
+
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
+    refreshControl = UIRefreshControl()
+    refreshControl.addTarget(self, action: #selector(syncUpdatedTxs), for: .valueChanged)
+    refreshControl.tintColor = UIColor.gray
+
+    txsTableView = UITableView()
+    txsTableView.tableFooterView = UIView()
+    txsTableView.addSubview(refreshControl)
+
     emptyView = setupEmptyView()
+    activityIndicator = CommonUI.appActivityIndicator()
 
     let mainView = UIView()
+    mainView.addSubview(txsTableView)
     mainView.addSubview(emptyView)
+    mainView.addSubview(activityIndicator)
+
+    txsTableView.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
 
     emptyView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
+    }
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
     }
 
     // *** Setup UI in view ***
@@ -83,6 +162,7 @@ extension TransactionsViewController {
     let descriptionLabel = CommonUI.descriptionLabel(text: "Your transaction history will be available here.")
 
     let view = UIView()
+    view.isHidden = true
     view.addSubview(titleLabel)
     view.addSubview(descriptionLabel)
 

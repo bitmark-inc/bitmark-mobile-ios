@@ -11,6 +11,7 @@ import BitmarkSDK
 
 struct TransactionsWithAsset: Codable {
   var assets: [Asset]
+  var blocks: [Block]
   var txs: [Transaction]
 
   init(from txsURL: URL) throws {
@@ -19,8 +20,9 @@ struct TransactionsWithAsset: Codable {
     self = try jsonDecoder.decode(TransactionsWithAsset.self, from: data)
   }
 
-  init(assets: [Asset], txs: [Transaction]) {
+  init(assets: [Asset], blocks: [Block], txs: [Transaction]) {
     self.assets = assets
+    self.blocks = blocks
     self.txs = txs
   }
 
@@ -36,10 +38,22 @@ struct TransactionsWithAsset: Codable {
   mutating func merge(with other: TransactionsWithAsset , from txsURL: URL, to newTxsURL: URL) throws {
     self.assets += other.assets
     self.assets.removeDuplicates()
+    self.blocks += other.blocks
+    self.blocks.removeDuplicates()
     self.txs += other.txs
     self.txs.removeObsoleteTxs()
 
     try store(in: txsURL)
     try FileManager.default.moveItem(at: txsURL, to: newTxsURL)
+  }
+}
+
+extension Transaction {
+  func confirmedAt() -> Date? {
+    if status == TransactionStatus.confirmed.rawValue,
+      let block = Global.findBlock(with: block_number) {
+      return block.created_at
+    }
+    return nil
   }
 }

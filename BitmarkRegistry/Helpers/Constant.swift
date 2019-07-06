@@ -10,7 +10,7 @@ import Foundation
 
 public struct Constant {
 
-  public static let systemFullFormatDate = "yyyy MMM dd HH:MM:SS"
+  public static let systemFullFormatDate = "yyyy MMM dd HH:mm:ss"
 
   // MARK: - Confirmation
   public struct Confirmation {
