@@ -14,4 +14,8 @@ extension String {
     let suffixPart = self[safe: count - eachMaxChars..<count]!
     return "[" + prefixPart + "..." + suffixPart + "]"
   }
+
+  func embedInApp() -> String {
+    return self + "?env=app"
+  }
 }

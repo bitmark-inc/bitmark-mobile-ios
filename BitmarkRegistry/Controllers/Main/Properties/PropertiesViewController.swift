@@ -183,7 +183,7 @@ extension PropertiesViewController {
 
     // *** Setup subviews ***
     yoursView = setupYoursView()
-    globalView = DesignedWebView(urlString: globalRegisterApp)
+    globalView = DesignedWebView(urlString: Global.ServerURL.registry.embedInApp())
 
     // *** Setup UI in view ***
     view.addSubview(segmentControl)

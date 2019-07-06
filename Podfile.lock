@@ -77,7 +77,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BitmarkSDK:
-    :commit: 366e1a98a5848045408ded51b52b9461e2a1b35a
+    :commit: a184a778761b70d6418df0f93f4c79b33c335986
     :git: https://github.com/bitmark-inc/bitmark-sdk-swift.git
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
@@ -98,6 +98,6 @@ SPEC CHECKSUMS:
   TweetNacl: ea279cd32bffee69c59c73631470d3419db675df
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: 5d88e278bcdf1e857bef68fbae6e624ee075f3a8
+PODFILE CHECKSUM: 7b65963a329cb1939f80fde9569c0dfdf45e95d5
 
 COCOAPODS: 1.5.3

@@ -56,4 +56,8 @@ extension Transaction {
     }
     return nil
   }
+
+  func isTransferTx() -> Bool {
+    return previous_owner != nil
+  }
 }

@@ -159,7 +159,7 @@ class BitmarkDetailViewController: UIViewController {
             ErrorReporting.report(error: Constant.Error.cannotNavigate)
             return
           }
-          propertiesVC.syncUpdatedBitmarks()
+          propertiesVC.syncUpdatedRecords()
 
           self.showSuccessAlert(message: Constant.Success.delete, handler: {
             self.navigationController?.popToRootViewController(animated: true)
