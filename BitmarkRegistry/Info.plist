@@ -61,6 +61,8 @@
 		<string>https://bm.bitmark.com</string>
 		<key>REGISTRY_SERVER_URL</key>
 		<string>https://registry.bitmark.com</string>
+		<key>ZERO_ADDRESS</key>
+		<string>a3ezwdYVEVrHwszQrYzDTCAZwUD3yKtNsCq9YhEu97bPaGAKy1</string>
 	</dict>
 </dict>
 </plist>

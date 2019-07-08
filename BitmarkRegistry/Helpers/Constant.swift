@@ -50,17 +50,20 @@ public struct Constant {
     public static let keyAccountAssetServerURL = "KEY_ACCOUNT_ASSET_SERVER_URL"
     public static let mobileServerURL = "MOBILE_SERVER_URL"
     public static let registryServerURL = "REGISTRY_SERVER_URL"
+    public static let zeroAddress = "ZERO_ADDRESS"
   }
 
   // MARK: - Success Message
   public struct Success {
     public static let issue = "Your property rights have been registerred."
-    public static let transfer = "Your bitmark have been transferring."
+    public static let transfer = "Your bitmark has been transferring."
+    public static let delete = "Your bitmark has been deleted."
   }
 
   public struct Message {
     public static let sendingTransaction = "Sending your transaction to the Birmark network..."
     public static let transferringTransaction = "Transferring your bitmark to another account..."
+    public static let deletingBitmark = "Deleting your bitmark..."
     public static let preparingToExport = "Preparing to export..."
   }
 }
