@@ -140,7 +140,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
             ErrorReporting.report(error: Constant.Error.cannotNavigate)
             return
           }
-          propertiesVC.syncUpdatedBitmarks()
+          propertiesVC.syncUpdatedRecords()
         })
       } catch {
         selfAlert.dismiss(animated: true, completion: {

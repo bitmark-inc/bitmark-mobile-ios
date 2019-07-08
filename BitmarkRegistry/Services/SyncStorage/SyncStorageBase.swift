@@ -69,9 +69,8 @@ class SyncStorageBase<Item> {
     }
   }
 
-  // Call Async function in serial queue
-  func sync(notifyNew: Bool, doRepeat: Bool = true) throws {
-    fatalError("sync has not been implemented")
+  func syncData(at latestOffset: Int64, notifyNew: Bool) throws -> Int64? {
+    fatalError("syncData has not been implemented")
   }
 
   func getData() throws -> [Item] {
@@ -89,6 +88,30 @@ class SyncStorageBase<Item> {
         completion?({ throw error })
       }
     }
+  }
+
+  /**
+   Sync and merge all bitmarks into a file; set the latest offset as the filename
+   - Parameters:
+   - notifyNew: when true, notify receiveNewBitmarks to update in UI
+   - doRepeat: when false, make one call listBitmarks API one only
+   when we're sure that there are no remain bitmarks in next API,
+   such as: in eventSubscription
+   */
+  func sync(notifyNew: Bool, doRepeat: Bool = true) throws {
+    DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }
+    defer {
+      DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
+    }
+
+    Global.latestOffset[itemClassName] = try getStoredPathName()
+    var latestOffset = Global.latestOffset[itemClassName] ?? 0
+
+    repeat {
+      guard let newOffset = try syncData(at: latestOffset, notifyNew: notifyNew) else { break }
+      latestOffset = newOffset
+      Global.latestOffset[itemClassName] = latestOffset
+    } while doRepeat
   }
 
   // MARK: - Support Functions

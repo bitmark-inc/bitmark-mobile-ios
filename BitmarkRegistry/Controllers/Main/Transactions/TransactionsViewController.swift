@@ -9,11 +9,6 @@
 import UIKit
 import BitmarkSDK
 
-protocol TransactionEventDelegate: class {
-  func receiveNewTxs(_ newTxs: [Transaction])
-  func syncUpdatedTxs()
-}
-
 class TransactionsViewController: UIViewController {
 
   // MARK: - Properties
@@ -78,9 +73,11 @@ extension TransactionsViewController: UITableViewDataSource {
   }
 }
 
-extension TransactionsViewController: TransactionEventDelegate {
-  func receiveNewTxs(_ newTxs: [Transaction]) {
-    for newTx in newTxs {
+extension TransactionsViewController: EventDelegate {
+  typealias Record = Transaction
+
+  func receiveNewRecords(_ newRecords: [Transaction]) {
+    for newTx in newRecords {
       txsTableView.beginUpdates()
       // Remove obsolete bitmark which is displaying in table
       if let index = transactions.firstIndexWithId(newTx.id) {
@@ -97,7 +94,7 @@ extension TransactionsViewController: TransactionEventDelegate {
     }
   }
 
-  @objc func syncUpdatedTxs() {
+  @objc func syncUpdatedRecords() {
     TransactionStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
@@ -120,7 +117,7 @@ extension TransactionsViewController {
 
     // *** Setup subviews ***
     refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: #selector(syncUpdatedTxs), for: .valueChanged)
+    refreshControl.addTarget(self, action: #selector(syncUpdatedRecords), for: .valueChanged)
     refreshControl.tintColor = UIColor.gray
 
     txsTableView = UITableView()
@@ -151,7 +148,7 @@ extension TransactionsViewController {
     view.addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
-          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
+          .inset(UIEdgeInsets(top: 25, left: 0, bottom: 25, right: 0))
     }
   }
 
@@ -177,6 +174,4 @@ extension TransactionsViewController {
 
     return view
   }
-
-  
 }

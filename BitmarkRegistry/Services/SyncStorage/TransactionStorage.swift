@@ -12,7 +12,7 @@ import BitmarkSDK
 class TransactionStorage: SyncStorageBase<Transaction> {
 
   // MARK: - Properties
-  weak var delegate: TransactionEventDelegate?
+  weak var delegate: TransactionsViewController?
   static var _shared: TransactionStorage?
   static func shared() -> TransactionStorage {
     _shared = _shared ?? TransactionStorage(owner: Global.currentAccount!)
@@ -22,7 +22,7 @@ class TransactionStorage: SyncStorageBase<Transaction> {
   // MARK: - Handlers
   override func getData() throws -> [Transaction] {
     if let txsURL = try getLatestURL() {
-      let transactionsWithAsset = try TransactionsWithAsset(from: txsURL)
+      let transactionsWithAsset = try TransactionsWithRelative(from: txsURL)
       Global.addAssets(transactionsWithAsset.assets)
       Global.addBlocks(transactionsWithAsset.blocks)
       return transactionsWithAsset.txs.reversed()
@@ -30,56 +30,36 @@ class TransactionStorage: SyncStorageBase<Transaction> {
     return [Transaction]()
   }
 
-  /**
-   Sync and merge all transactions into a file; set the latest offset as the filename
-   - Parameters:
-      - notifyNew: when true, notify receiveNewTransactions to update in UI
-      - doRepeat: when false, make one call listTransactions API one only
-   when we're sure that there are no remain transactions in next API,
-   such as: in eventSubscription
-   */
-  override func sync(notifyNew: Bool, doRepeat: Bool = true) throws {
-    DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }
-    defer {
-      DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
+  override func syncData(at latestOffset: Int64, notifyNew: Bool) throws -> Int64? {
+    let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
+    guard !txs.isEmpty else { return nil }
+
+    var txsWithRelative = TransactionsWithRelative(assets: assets, blocks: blocks, txs: txs)
+
+    if notifyNew {
+      Global.addAssets(txsWithRelative.assets)
+      Global.addBlocks(txsWithRelative.blocks)
+      DispatchQueue.main.async { [weak self] in
+        self?.delegate?.receiveNewRecords(txsWithRelative.txs)
+      }
     }
 
-    Global.latestOffset["Transaction"]  = try getStoredPathName()
-    var latestOffset = Global.latestOffset["Transaction"] ?? 0
+    let baseOffset = txs.last!.offset // the last offset is the latest offset cause response transactions is asc-offset
+    let txsURL = self.fileURL(pathName: baseOffset)
 
-    repeat {
-      let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
-      guard !txs.isEmpty else { return }
-
-      var txsWithAsset = TransactionsWithAsset(assets: assets, blocks: blocks, txs: txs)
-
-      if notifyNew {
-        Global.addAssets(txsWithAsset.assets)
-        Global.addBlocks(txsWithAsset.blocks)
-        DispatchQueue.main.async { [weak self] in
-          self?.delegate?.receiveNewTxs(txsWithAsset.txs)
-        }
-      }
-
-      let baseOffset = txs.last!.offset // the last offset is the latest offset cause response transactions is asc-offset
-      let txsURL = self.fileURL(pathName: baseOffset)
-
-      if latestOffset == 0 {
-        try txsWithAsset.store(in: txsURL)
-      } else {
-        try mergeNewTxs(txsURL, txsWithAsset)
-      }
-
-      latestOffset = baseOffset
-      Global.latestOffset["Transaction"] = latestOffset
-    } while doRepeat
+    if latestOffset == 0 {
+      try txsWithRelative.store(in: txsURL)
+    } else {
+      try mergeNewTxs(txsURL, txsWithRelative)
+    }
+    return baseOffset
   }
 
   // Merge new bitmarks into the bitmarks file
-  fileprivate func mergeNewTxs(_ newTxsURL: URL, _ txsWithAsset: TransactionsWithAsset) throws {
+  fileprivate func mergeNewTxs(_ newTxsURL: URL, _ txsWithAsset: TransactionsWithRelative) throws {
     guard let latestPathName = Global.latestOffset["Transaction"] else { return }
     let latestTxsURL = fileURL(pathName: latestPathName)
-    var oldTxsWithAsset = try TransactionsWithAsset(from: latestTxsURL)
+    var oldTxsWithAsset = try TransactionsWithRelative(from: latestTxsURL)
     try oldTxsWithAsset.merge(
       with: txsWithAsset,
       from: latestTxsURL,

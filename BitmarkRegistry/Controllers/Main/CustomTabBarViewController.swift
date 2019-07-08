@@ -10,34 +10,48 @@ import UIKit
 
 class CustomTabBarViewController: UITabBarController {
 
+  // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
 
     let propertiesVC = PropertiesViewController()
-    propertiesVC.tabBarItem = UITabBarItem(
-      title: "Account",
-      image: UIImage(named: "Properties - inactive"),
-      selectedImage: UIImage(named: "Properties - selected")
-    )
+    propertiesVC.tabBarItem = setupPropertiesTabBarItem()
 
     let transactionsVC = TransactionsViewController()
-    transactionsVC.tabBarItem = UITabBarItem(
-      title: "Transactions",
-      image: UIImage(named: "Transactions - inactive"),
-      selectedImage: UIImage(named: "Transactions - selected")
-    )
+    transactionsVC.tabBarItem = setupTransactionsTabBarItem()
 
     let accountVC = AccountViewController()
-    accountVC.tabBarItem = UITabBarItem(
-      title: "Account",
-      image: UIImage(named: "Account-inactive"),
-      selectedImage: UIImage(named: "AccountSelected")
-    )
+    accountVC.tabBarItem = setupAccountTabBarItem()
 
     viewControllers = [
       UINavigationController(rootViewController: propertiesVC),
       UINavigationController(rootViewController: transactionsVC),
       UINavigationController(rootViewController: accountVC)
     ]
+  }
+
+  // MARK: - Setup TabBarItems
+  fileprivate func setupPropertiesTabBarItem() -> UITabBarItem {
+    return UITabBarItem(
+      title: "Account",
+      image: UIImage(named: "Properties - inactive"),
+      selectedImage: UIImage(named: "Properties - selected")
+   )
+  }
+
+  fileprivate func setupTransactionsTabBarItem() -> UITabBarItem {
+    return UITabBarItem(
+      title: "Transactions",
+      image: UIImage(named: "Transactions - inactive"),
+      selectedImage: UIImage(named: "Transactions - selected")
+    )
+  }
+
+  fileprivate func setupAccountTabBarItem() -> UITabBarItem {
+    return UITabBarItem(
+      title: "Account",
+      image: UIImage(named: "Account-inactive"),
+      selectedImage: UIImage(named: "AccountSelected")
+    )
   }
 }

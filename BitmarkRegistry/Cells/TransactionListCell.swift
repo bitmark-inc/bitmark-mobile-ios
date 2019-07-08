@@ -70,10 +70,35 @@ extension TransactionListCell {
     layoutMargins = UIEdgeInsets.zero
 
     // *** Setup subviews ***
+    let heading = setupHeading()
+    let infoView = setupInfoView()
+
+    let mainView = UIView()
+    mainView.addSubview(heading)
+    mainView.addSubview(infoView)
+
+    heading.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    infoView.snp.makeConstraints { (make) in
+      make.top.equalTo(heading.snp.bottom).offset(12)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    // *** Setup UI in view ***
+    addSubview(mainView)
+    mainView.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+          .inset(UIEdgeInsets(top: 18, left: 27, bottom: 18, right: 27))
+    }
+  }
+
+  fileprivate func setupHeading() -> UIStackView {
     txTitle = CommonUI.infoLabel()
     txTimestampLabel = CommonUI.infoLabel()
 
-    let heading = UIStackView(
+    let stackview = UIStackView(
       arrangedSubviews: [txTitle, txTimestampLabel],
       axis: .horizontal,
       distribution: .fillProportionally
@@ -83,8 +108,11 @@ extension TransactionListCell {
       make.width.equalTo(txTimestampLabel).multipliedBy(0.7)
     }
 
-    let rowSpacing: CGFloat = 3
+    return stackview
+  }
 
+  fileprivate func setupInfoView() -> UIStackView {
+    let rowSpacing: CGFloat = 3
     accountToTitleLabel = CommonUI.infoLabel()
     let titleStackView = UIStackView(
       arrangedSubviews: [
@@ -117,19 +145,6 @@ extension TransactionListCell {
       make.width.equalTo(valueStackView).multipliedBy(0.7)
     }
 
-    // *** Setup UI in view ***
-    addSubview(heading)
-    addSubview(infoView)
-
-    heading.snp.makeConstraints { (make) in
-      make.top.equalToSuperview().offset(18)
-      make.leading.trailing.equalToSuperview()
-    }
-
-    infoView.snp.makeConstraints { (make) in
-      make.top.equalTo(heading.snp.bottom).offset(12)
-      make.leading.trailing.equalToSuperview()
-      make.bottom.equalToSuperview().offset(-18)
-    }
+    return infoView
   }
 }

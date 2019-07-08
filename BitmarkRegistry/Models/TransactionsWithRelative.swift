@@ -9,7 +9,7 @@
 import Foundation
 import BitmarkSDK
 
-struct TransactionsWithAsset: Codable {
+struct TransactionsWithRelative: Codable {
   var assets: [Asset]
   var blocks: [Block]
   var txs: [Transaction]
@@ -17,7 +17,7 @@ struct TransactionsWithAsset: Codable {
   init(from txsURL: URL) throws {
     let data = try Data(contentsOf: txsURL)
     let jsonDecoder = JSONDecoder()
-    self = try jsonDecoder.decode(TransactionsWithAsset.self, from: data)
+    self = try jsonDecoder.decode(TransactionsWithRelative.self, from: data)
   }
 
   init(assets: [Asset], blocks: [Block], txs: [Transaction]) {
@@ -35,7 +35,7 @@ struct TransactionsWithAsset: Codable {
     try jsonData.write(to: txsURL, options: .atomic)
   }
 
-  mutating func merge(with other: TransactionsWithAsset , from txsURL: URL, to newTxsURL: URL) throws {
+  mutating func merge(with other: TransactionsWithRelative , from txsURL: URL, to newTxsURL: URL) throws {
     self.assets += other.assets
     self.assets.removeDuplicates()
     self.blocks += other.blocks

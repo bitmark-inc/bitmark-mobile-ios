@@ -84,7 +84,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
             ErrorReporting.report(error: Constant.Error.cannotNavigate)
             return
           }
-          propertiesVC.syncUpdatedBitmarks()
+          propertiesVC.syncUpdatedRecords()
 
           self.showSuccessAlert(message: Constant.Success.transfer, handler: {
             self.navigationController?.popToRootViewController(animated: true)

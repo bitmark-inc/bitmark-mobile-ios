@@ -10,11 +10,6 @@ import UIKit
 import BitmarkSDK
 import WebKit
 
-protocol BitmarkEventDelegate: class {
-  func receiveNewBitmarks(_ newBitmarks: [Bitmark])
-  func syncUpdatedBitmarks()
-}
-
 class PropertiesViewController: UIViewController {
 
   // MARK: - Properties
@@ -95,7 +90,7 @@ class PropertiesViewController: UIViewController {
       try eventSubscription.connect(Global.currentAccount!)
 
       try eventSubscription.listenBitmarkChanged { [weak self] (_) in
-        self?.syncUpdatedBitmarks()
+        self?.syncUpdatedRecords()
       }
     } catch {
       ErrorReporting.report(error: error)
@@ -153,8 +148,10 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 // MARK: BitmarkEventDelegate
-extension PropertiesViewController: BitmarkEventDelegate {
-  @objc func syncUpdatedBitmarks() {
+extension PropertiesViewController: EventDelegate {
+  typealias Record = Bitmark
+
+  @objc func syncUpdatedRecords() {
     BitmarkStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
@@ -162,8 +159,8 @@ extension PropertiesViewController: BitmarkEventDelegate {
     }
   }
 
-  func receiveNewBitmarks(_ newBitmarks: [Bitmark]) {
-    for newBitmark in newBitmarks {
+  func receiveNewRecords(_ newRecords: [Bitmark]) {
+    for newBitmark in newRecords {
       yoursTableView.beginUpdates()
       // Remove obsolete bitmark which is displaying in table
       if let index = bitmarks.firstIndexWithId(newBitmark.id) {
@@ -251,7 +248,7 @@ extension PropertiesViewController {
 
   fileprivate func setupYoursView() -> UIView {
     refreshControl = UIRefreshControl()
-    refreshControl.addTarget(self, action: #selector(syncUpdatedBitmarks), for: .valueChanged)
+    refreshControl.addTarget(self, action: #selector(syncUpdatedRecords), for: .valueChanged)
     refreshControl.tintColor = UIColor.gray
 
     yoursTableView = UITableView()
