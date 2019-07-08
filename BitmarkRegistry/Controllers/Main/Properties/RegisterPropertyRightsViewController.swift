@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import BitmarkSDK
 import SnapKit
 
 class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
 
   // MARK: - Properties
+  var asset: Asset?
   var assetData: Data!
+  var assetFingerprint: String!
   var assetFileName: String?
   var assetURL: URL?
 
@@ -64,15 +67,26 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   // MARK: - Load Data
   fileprivate func loadData() {
-    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-      guard let self = self else { return }
-      let assetFingerprint = AssetService.getFingerprintFrom(self.assetData)
-
-      DispatchQueue.main.async {
-        self.assetFingerprintLabel.text = assetFingerprint
-      }
-    }
+    assetFingerprintLabel.text = assetFingerprint
     assetFilenameLabel.text = assetFileName
+
+    if let asset = asset {
+      propertyNameTextField.text = asset.name
+
+      asset.metadata.forEach { (label, description) in
+        metadataAddButton.sendActions(for: .touchUpInside)
+        guard let metadataForm = metadataForms.last else { return }
+        metadataForm.labelTextField.text = label
+        metadataForm.descriptionTextField.text = description
+        metadataForm.labelTextField.isEnabled = false
+        metadataForm.descriptionTextField.isEnabled = false
+      }
+
+      // Disable assetForm when asset has been existed
+      propertyNameTextField.isEnabled = false
+      metadataAddButton.removeFromSuperview()
+      metadataEditModeButton.removeFromSuperview()
+    }
   }
 
   // MARK: - Handlers
@@ -120,14 +134,22 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
       do {
-        guard let fingerprint = self.assetData else { return }
-        let assetInfo = (
-          registrant: Global.currentAccount!,
-          assetName: assetName,
-          fingerprint: fingerprint,
-          metadata: metadata
-        )
-        let assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
+        let assetId: String
+        // *** Register Asset if asset has not existed; then issue ***
+        if let asset = self.asset {
+          assetId = asset.id
+          try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
+        } else {
+          guard let fingerprint = self.assetData else { return }
+          let assetInfo = (
+            registrant: Global.currentAccount!,
+            assetName: assetName,
+            fingerprint: fingerprint,
+            metadata: metadata
+          )
+          assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
+        }
+
         self.moveFileToAppStorage(of: assetId)
 
         selfAlert.dismiss(animated: true, completion: {
@@ -266,13 +288,14 @@ extension RegisterPropertyRightsViewController {
   }
 
   func validToIssue() -> Bool {
-    if !propertyNameTextField.isEmpty, !numberOfBitmarksTextField.isEmpty,
-       errorForNumberOfBitmarksToIssue.text?.isEmpty ?? true,
-       errorForMetadata.text?.isEmpty ?? true,
-       validMetadata() {
-      return true
+    if asset == nil {
+      return !propertyNameTextField.isEmpty && !numberOfBitmarksTextField.isEmpty &&
+              errorForNumberOfBitmarksToIssue.text?.isEmpty ?? true &&
+              errorForMetadata.text?.isEmpty ?? true &&
+              validMetadata()
+    } else {
+      return !numberOfBitmarksTextField.isEmpty
     }
-    return false
   }
 
   func setNumberOfBitmarksBoxStyle(with errorMessage: String? = nil) {
