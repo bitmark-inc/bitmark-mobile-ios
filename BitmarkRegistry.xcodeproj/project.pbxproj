@@ -49,7 +49,7 @@
 		E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */; };
 		E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */; };
 		E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */; };
-		E24D9C5E22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */; };
+		E24D9C5E22AE5E480095E11D /* UIControl+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIControl+AddTargetClosure+Extension.swift */; };
 		E25DF1C122CB3C8600AC270E /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1BF22CB3C8500AC270E /* SessionData.swift */; };
 		E25DF1C222CB3C8600AC270E /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1BF22CB3C8500AC270E /* SessionData.swift */; };
 		E25DF1C322CB3C8600AC270E /* AssetEncryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1C022CB3C8600AC270E /* AssetEncryption.swift */; };
@@ -73,6 +73,8 @@
 		E27CD23E229E407C00503D6A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E283CB0622B3B1EA00CCB4E5 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */; };
 		E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */; };
+		E283FC6E22D448160035210D /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283FC6D22D448160035210D /* UIButton+Extension.swift */; };
+		E283FC6F22D448160035210D /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283FC6D22D448160035210D /* UIButton+Extension.swift */; };
 		E28F1AFD22CA428000B0256F /* libsodium-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E28F1AEA22CA428000B0256F /* libsodium-ios.a */; };
 		E28F1AFE22CA428000B0256F /* Chacha20Poly1305.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F1AFC22CA428000B0256F /* Chacha20Poly1305.swift */; };
 		E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
@@ -108,7 +110,7 @@
 		E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
 		E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94C22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift */; };
 		E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC94E22AF699D009F7DF5 /* TestPhraseOptionCell.swift */; };
-		E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */; };
+		E2BEC95822AF9889009F7DF5 /* UIControl+AddTargetClosure+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D9C5D22AE5E480095E11D /* UIControl+AddTargetClosure+Extension.swift */; };
 		E2BEC95B22AFA6F8009F7DF5 /* PropertiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */; };
 		E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */; };
 		E2BEC95E22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC95D22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift */; };
@@ -188,7 +190,7 @@
 		E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarViewController.swift; sourceTree = "<group>"; };
 		E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningRecoveryPhraseViewController.swift; sourceTree = "<group>"; };
-		E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+AddTargetClosure+Extension.swift"; sourceTree = "<group>"; };
+		E24D9C5D22AE5E480095E11D /* UIControl+AddTargetClosure+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+AddTargetClosure+Extension.swift"; sourceTree = "<group>"; };
 		E25DF1BF22CB3C8500AC270E /* SessionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		E25DF1C022CB3C8600AC270E /* AssetEncryption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetEncryption.swift; sourceTree = "<group>"; };
 		E25DF1C822CB3EA100AC270E /* TransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 		E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionStorage.swift; sourceTree = "<group>"; };
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
+		E283FC6D22D448160035210D /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		E28F1ABC22CA428000B0256F /* crypto_stream_salsa2012.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_stream_salsa2012.h; sourceTree = "<group>"; };
 		E28F1ABD22CA428000B0256F /* sodium_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sodium_lib.h; sourceTree = "<group>"; };
 		E28F1ABE22CA428000B0256F /* crypto_auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_auth.h; sourceTree = "<group>"; };
@@ -580,7 +583,8 @@
 				E25DF1CC22CB3F1E00AC270E /* Array+Transaction+Extension.swift */,
 				E2CEDC7C22BB94D800B5BBF9 /* FileManager+Extension.swift */,
 				E2CEDC7B22BB94D800B5BBF9 /* String+Extension.swift */,
-				E24D9C5D22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift */,
+				E283FC6D22D448160035210D /* UIButton+Extension.swift */,
+				E24D9C5D22AE5E480095E11D /* UIControl+AddTargetClosure+Extension.swift */,
 				E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */,
 				E27CD23D229E407C00503D6A /* UILabel+Extension.swift */,
 				E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */,
@@ -934,7 +938,7 @@
 				E2BEC95F22AFB4CF009F7DF5 /* RegisterPropertyViewController.swift in Sources */,
 				E2ADFD2722BCE37700FC46D8 /* BiometricAuth.swift in Sources */,
 				E216890922C1F09A00E943B9 /* UserSetting.swift in Sources */,
-				E2BEC95822AF9889009F7DF5 /* UIButton+AddTargetClosure+Extension.swift in Sources */,
+				E2BEC95822AF9889009F7DF5 /* UIControl+AddTargetClosure+Extension.swift in Sources */,
 				E2ADFD2022BC742900FC46D8 /* QRCode.swift in Sources */,
 				E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
@@ -971,6 +975,7 @@
 				E24D795D22CA169C00BC9912 /* AssetFileService.swift in Sources */,
 				E25DF1DB22CB3F4700AC270E /* BitmarkStorage.swift in Sources */,
 				E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */,
+				E283FC6F22D448160035210D /* UIButton+Extension.swift in Sources */,
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
 				E2CEDC8422BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
@@ -1049,6 +1054,7 @@
 				E2F08CE622C06EA400FFFCCE /* LoginViewController.swift in Sources */,
 				E2CEDC7722BB93CC00B5BBF9 /* BitmarkService.swift in Sources */,
 				E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */,
+				E283FC6E22D448160035210D /* UIButton+Extension.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2CEDC8322BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
@@ -1071,7 +1077,7 @@
 				E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */,
 				E25DF1DA22CB3F4700AC270E /* BitmarkStorage.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
-				E24D9C5E22AE5E480095E11D /* UIButton+AddTargetClosure+Extension.swift in Sources */,
+				E24D9C5E22AE5E480095E11D /* UIControl+AddTargetClosure+Extension.swift in Sources */,
 				E283CB0622B3B1EA00CCB4E5 /* AssetService.swift in Sources */,
 				E25DF1CD22CB3F1E00AC270E /* Array+Bitmark+Extension.swift in Sources */,
 				E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */,

@@ -73,21 +73,13 @@ extension LoginViewController: UICollectionViewDataSource {
 
 // MARK: - TestRecoverPhraseLoginDelegate
 extension LoginViewController: TestRecoverPhraseLoginDelegate {
-  func beginEditing(in cell: TestRecoveryPhraseLoginCell) {
-    currentCell = cell
-  }
-
   func editingTextfield() {
     submitButton.isEnabled = validToSubmit()
   }
 
-  func finishEditing(in cell: TestRecoveryPhraseLoginCell) {
-    let currentRow = recoveryPhraseCollectionView.indexPath(for: cell)!.row
-    var nextRow = currentRow + 1
-    if nextRow >= numberOfPhrases { nextRow = 0 }
-
-    let nextCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: nextRow, section: 0)) as! TestRecoveryPhraseLoginCell
-    nextCell.select()
+  func rollbackToBeginningCell() {
+    let beginCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as! TestRecoveryPhraseLoginCell
+    beginCell.testPhraseTextField.becomeFirstResponder()
   }
 }
 
