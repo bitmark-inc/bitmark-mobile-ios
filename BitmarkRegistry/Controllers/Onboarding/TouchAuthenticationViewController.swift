@@ -38,11 +38,7 @@ class TouchAuthenticationViewController: UIViewController {
         // save enable touch/face id for current account and move to main screen
         UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
         AccountService.requestJWT(account: Global.currentAccount!)
-
-        // Go to main screen
-        let homeTabbarViewController = CustomTabBarViewController()
-        self.navigationController?.setViewControllers([homeTabbarViewController],
-                                                      animated: true)
+        self.gotoMainScreen()
       }
     }
   }
@@ -51,7 +47,7 @@ class TouchAuthenticationViewController: UIViewController {
     showConfirmationAlert(message: Constant.Confirmation.skipTouchFaceIdAuthentication) {
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
       AccountService.requestJWT(account: Global.currentAccount!)
-      self.present(CustomTabBarViewController(), animated: true)
+      self.gotoMainScreen()
     }
   }
 }

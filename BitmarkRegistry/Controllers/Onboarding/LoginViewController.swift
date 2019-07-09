@@ -13,11 +13,9 @@ import BitmarkSDK
 class LoginViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Properties
-  var scrollView: UIScrollView!
   var submitButton: SubmitButton!
   var submitButtonBottomConstraint: Constraint!
   var currentCell: TestRecoveryPhraseLoginCell?
-  var keyboardDuration: Double!
 
   let errorResultView = UIView()
   var retryButton: UIButton!
@@ -27,18 +25,9 @@ class LoginViewController: BaseRecoveryPhraseViewController {
     super.viewDidLoad()
 
     title = "RECOVERY PHRASE SIGN-IN"
+    navigationController?.isNavigationBarHidden = false
     setupViews()
     setupEvents()
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    addNotificationObserver(name: UIWindow.keyboardWillShowNotification, selector: #selector(keyboardWillBeShow))
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    removeNotificationsObserver()
   }
 
   // MARK: - Handlers
@@ -56,7 +45,7 @@ class LoginViewController: BaseRecoveryPhraseViewController {
     }
 
     // redirect to Main Screen
-    present(CustomTabBarViewController(), animated: true)
+    gotoMainScreen()
   }
 
   // clear text in all textfields and hide errorResultView
@@ -65,11 +54,6 @@ class LoginViewController: BaseRecoveryPhraseViewController {
       (cell as! TestRecoveryPhraseLoginCell).clear()
     }
     errorResultView.isHidden = true
-  }
-
-  @objc func dismissKeyboard() {
-    view.endEditing(true)
-    adjustElementsAsKeyboardHide()
   }
 }
 
@@ -156,36 +140,24 @@ extension LoginViewController {
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
       make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
-      make.leading.trailing.bottom.equalToSuperview()
-    }
-
-    scrollView = UIScrollView()
-    scrollView.addSubview(mainView)
-
-    mainView.snp.makeConstraints { (make) in
-      make.edges.equalToSuperview()
-          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
-      make.width.equalToSuperview().offset(-40)
+      make.leading.trailing.equalToSuperview()
     }
 
     submitButton = SubmitButton(title: "SUBMIT")
 
     // *** Setup UI in view ***
-    view.addSubview(scrollView)
+    view.addSubview(mainView)
     view.addSubview(submitButton)
 
-    scrollView.snp.makeConstraints { (make) in
+    mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
+          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
     }
 
     submitButton.snp.makeConstraints { (make) in
       make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
       submitButtonBottomConstraint = make.bottom.equalTo(view.safeAreaLayoutGuide).constraint
     }
-
-    let recognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-    recognizer.cancelsTouchesInView = false
-    view.addGestureRecognizer(recognizer)
 
     // Setup Error Result View
     setupErrorResultView()
@@ -237,48 +209,5 @@ extension LoginViewController {
     retryButton.snp.makeConstraints { (make) in
       make.leading.trailing.bottom.equalToSuperview()
     }
-  }
-}
-
-// MARK: - KeyboardObserver
-extension LoginViewController {
-  @objc func keyboardWillBeShow(notification: Notification) {
-    guard let userInfo = notification.userInfo else { return }
-    let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
-    keyboardDuration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-
-    submitButtonBottomConstraint.update(offset: -keyboardSize.height + view.safeAreaInsets.bottom)
-
-    // adjust to scroll scrollview to show textfield when selecting
-    let contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
-    scrollView.contentInset = contentInset
-    scrollView.scrollIndicatorInsets = contentInset
-
-    guard let currentCell = currentCell else { return }
-    let pointY = currentCell.frame.origin.y - keyboardSize.height + 100
-    if pointY > 0 {
-      scrollView.setContentOffset(CGPoint(x: 0, y: pointY), animated: true)
-    } else {
-      self.scrollView.setContentOffset(CGPoint.zero, animated: true)
-    }
-    view.layoutIfNeeded()
-  }
-
-  /**
-   have to implement to call this function manually instead of keyboardWillHide Observers cause
-   when moving first responder from a textfield into another textfield;
-   keyboardWillHide call will make submit button bounce unexpected
-   */
-  func adjustElementsAsKeyboardHide() {
-    guard let keyboardDuration = keyboardDuration else { return }
-    UIView.animate(withDuration: keyboardDuration, delay: 0, options: .curveEaseOut, animations: {
-      self.submitButtonBottomConstraint.update(offset: 0)
-
-      let contentInset = UIEdgeInsets.zero
-      self.scrollView.contentInset = contentInset
-      self.scrollView.scrollIndicatorInsets = contentInset
-      self.scrollView.setContentOffset(CGPoint.zero, animated: true)
-      self.view.layoutIfNeeded()
-    })
   }
 }

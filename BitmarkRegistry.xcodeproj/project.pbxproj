@@ -152,12 +152,12 @@
 		E2E798E1229E267500508B69 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
 		E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
-		E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */; };
-		E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */; };
 		E2F08CE622C06EA400FFFCCE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */; };
 		E2F08CE722C06EA400FFFCCE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */; };
 		E2F08CE922C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F08CE822C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift */; };
 		E2F08CEA22C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F08CE822C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift */; };
+		E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */; };
+		E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -305,9 +305,9 @@
 		E2E798E0229E267500508B69 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E2E798E6229E285600508B69 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
-		E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningRemoveAccessViewController.swift; sourceTree = "<group>"; };
 		E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E2F08CE822C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseLoginCell.swift; sourceTree = "<group>"; };
+		E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningRemoveAccessViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -358,10 +358,10 @@
 			children = (
 				E2E798D8229E238900508B69 /* AccountViewController.swift */,
 				E24D9C5B22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift */,
+				E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */,
 				E2BEC94A22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift */,
 				E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */,
 				E2BEC94822AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift */,
-				E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -812,6 +812,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
@@ -830,6 +831,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
@@ -858,6 +860,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BitmarkSDK/BitmarkSDK.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
@@ -876,6 +879,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BitmarkSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",

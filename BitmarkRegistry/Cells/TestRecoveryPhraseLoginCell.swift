@@ -93,6 +93,7 @@ class TestRecoveryPhraseLoginCell: UICollectionViewCell, UITextFieldDelegate {
     testPhraseTextField.borderColor = .mainBlueColor
     testPhraseTextField.returnKeyType = .done
     testPhraseTextField.autocapitalizationType = .none
+    testPhraseTextField.autocorrectionType = .no
 
     // *** Setup UI in cell ***
     let mainView = UIView()

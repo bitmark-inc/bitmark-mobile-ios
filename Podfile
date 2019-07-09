@@ -11,6 +11,7 @@ def sharedPods
   pod 'SwifterSwift'
   pod 'PanModal'
   pod 'Alamofire'
+  pod 'IQKeyboardManagerSwift'
   
   # error reporting
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.3.1'
