@@ -18,6 +18,8 @@ class TouchAuthenticationViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    navigationController?.isNavigationBarHidden = true
+
     setupViews()
     setupEvents()
   }

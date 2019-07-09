@@ -26,6 +26,7 @@ class LoginViewController: BaseRecoveryPhraseViewController {
 
     title = "RECOVERY PHRASE SIGN-IN"
     navigationController?.isNavigationBarHidden = false
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
   }
@@ -44,15 +45,13 @@ class LoginViewController: BaseRecoveryPhraseViewController {
       return
     }
 
-    // redirect to Main Screen
-    gotoMainScreen()
+    let touchAuthenticationVC = TouchAuthenticationViewController()
+    navigationController?.pushViewController(touchAuthenticationVC)
   }
 
   // clear text in all textfields and hide errorResultView
   @objc func tapToRetry(_ sender: UIButton) {
-    recoveryPhraseCollectionView.visibleCells.forEach { (cell) in
-      (cell as! TestRecoveryPhraseLoginCell).clear()
-    }
+    recoveryPhraseCollectionView.visibleCells.forEach { ($0 as? TestRecoveryPhraseLoginCell)?.clear() }
     errorResultView.isHidden = true
   }
 }
@@ -77,9 +76,24 @@ extension LoginViewController: TestRecoverPhraseLoginDelegate {
     submitButton.isEnabled = validToSubmit()
   }
 
-  func rollbackToBeginningCell() {
-    let beginCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as! TestRecoveryPhraseLoginCell
-    beginCell.testPhraseTextField.becomeFirstResponder()
+  func goNextCell() {
+    guard let currentCell = currentCell, let currentRow = recoveryPhraseCollectionView.indexPath(for: currentCell)?.row else { return }
+    var nextRow = currentRow + 1
+    if nextRow >= numberOfPhrases { nextRow = 0 }
+
+    guard let nextCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: nextRow, section: 0)) as? TestRecoveryPhraseLoginCell else { return }
+    nextCell.testPhraseTextField.becomeFirstResponder()
+    nextCell.testPhraseTextField.sendActions(for: .editingDidBegin)
+  }
+
+  func goPrevCell() {
+    guard let currentCell = currentCell, let currentRow = recoveryPhraseCollectionView.indexPath(for: currentCell)?.row else { return }
+    var prevRow = currentRow - 1
+    if prevRow < 0 { prevRow = numberOfPhrases - 1 }
+
+    guard let prevCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: prevRow, section: 0)) as? TestRecoveryPhraseLoginCell else { return }
+    prevCell.testPhraseTextField.becomeFirstResponder()
+    prevCell.testPhraseTextField.sendActions(for: .editingDidBegin)
   }
 }
 
