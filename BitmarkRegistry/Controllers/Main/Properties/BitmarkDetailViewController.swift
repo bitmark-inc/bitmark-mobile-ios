@@ -76,7 +76,7 @@ class BitmarkDetailViewController: UIViewController {
 
   fileprivate func loadTransactions() {
     transactionIndicator.startAnimating()
-    TransactionService.listAllTransactions(of: bitmark.id) { [weak self] (transactions, error) in
+    TransactionService.listAllTransactions(of: bitmark.id) { [weak self] (transactions, blocks, error) in
       guard let self = self else { return }
       DispatchQueue.main.async {
         self.transactionIndicator.stopAnimating()
@@ -192,8 +192,8 @@ extension BitmarkDetailViewController: UITableViewDataSource {
     } else {
       let cell = tableView.dequeueReusableCell(withClass: TransactionCell.self)
       let transaction = transactions[indexPath.row]
-      // TODO: Set Date() for now cause transaction data hasn't had timestamp yet
-      cell.setData(timestamp: Date(), ownerNumber: transaction.owner)
+      let timestamp = transaction.confirmedAt()
+      cell.setData(timestamp: timestamp, ownerNumber: transaction.owner)
       return cell
     }
   }

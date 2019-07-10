@@ -10,7 +10,7 @@ import Foundation
 
 public struct Constant {
 
-  public static let systemFullFormatDate = "yyyy MMM dd HH:MM:SS"
+  public static let systemFullFormatDate = "yyyy MMM dd HH:mm:ss"
 
   // MARK: - Confirmation
   public struct Confirmation {
@@ -26,7 +26,7 @@ public struct Constant {
     public static let removeAccess = "There was a problem from removing the access."
     public static let accessFile = "There was a problem to access your selected file."
     public static let syncBitmark = "There was a problem to sync your lastest bitmarks."
-
+    public static let syncTransaction = "There was a problem to sync your lastest transactions."
     // Common UI error
     public static let cannotNavigate = "Cannot go to expected screen. Please try again with new app update."
 

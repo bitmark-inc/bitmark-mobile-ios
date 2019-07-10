@@ -23,7 +23,7 @@ class AssetService {
       fingerprint: assetInfo.fingerprint,
       metadata: assetInfo.metadata)
 
-    try AssetService.issueBitmarks(
+    _ = try AssetService.issueBitmarks(
       issuer: assetInfo.registrant,
       assetId: assetId,
       quantity: quantity

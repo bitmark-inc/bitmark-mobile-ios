@@ -11,14 +11,29 @@ import BitmarkSDK
 
 class TransactionService {
 
-  typealias TransactionHandler = ([Transaction]?, Error?) -> Void
+  typealias TransactionHandler = ([Transaction]?, [Block]?, Error?) -> Void
+  typealias TransactionAsset = ([Transaction], [Asset], [Block])
 
   static func listAllTransactions(of bitmarkId: String, handler: @escaping TransactionHandler) {
     let transactionQuery = Transaction.newTransactionQueryParams()
                                       .referencedBitmark(bitmarkID: bitmarkId)
                                       .pending(true)
-    Transaction.list(params: transactionQuery) { (transactions, assets, error) in
-      handler(transactions, error)
+    Transaction.list(params: transactionQuery) { (txs, assets, blocks, error) in
+      handler(txs, blocks, error)
     }
+  }
+
+  static func listAllTransactions(ownerNumber: String, at fromOffset: Int64, direction: QueryDirection)  throws -> TransactionAsset {
+    let txQuery = try Transaction.newTransactionQueryParams()
+                                 .loadAsset(true)
+                                 .loadBlock(true)
+                                 .limit(size: 100)
+                                 .ownedByWithTransient(ownerNumber)
+                                 .at(fromOffset)
+                                 .to(direction: direction)
+                                 .pending(true)
+
+    let (txs, assets, blocks) = try Transaction.list(params: txQuery)
+    return (txs ?? [Transaction](), assets ?? [Asset](), blocks ?? [Block]())
   }
 }
