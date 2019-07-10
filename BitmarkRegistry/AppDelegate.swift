@@ -35,6 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     evaluatePolicyWhenUserSetEnable()
     initSentry()
     Global.log.logAppDetails()
+    
+    // Register APNS
+    UIApplication.shared.registerForRemoteNotifications()
 
     return true
   }
@@ -70,6 +73,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
+  
+  func application(_ application: UIApplication,
+                   didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    var token = ""
+    for i in 0..<deviceToken.count {
+      token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+    }
+    
+    // Assign the token for later registering
+    Global.apnsToken = token
+  }
+  
+  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    Global.log.error(error)
+  }
 
 }
 
@@ -81,8 +99,13 @@ private extension AppDelegate {
    */
   func evaluatePolicyWhenUserSetEnable() {
     guard let currentAccount = Global.currentAccount else { return }
+    let requestJWTHandler: (Bool) -> Void = { (success) in
+      if success {
+        AccountService.registerAPNS()
+      }
+    }
     guard UserSetting.shared.getTouchFaceIdSetting() else {
-      AccountService.requestJWT(account: currentAccount)
+      AccountService.requestJWT(account: currentAccount, completionHandler: requestJWTHandler)
       return
     }
     retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
@@ -95,7 +118,7 @@ private extension AppDelegate {
           self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
           self.retryAuthenticationAlert!.show()
         } else {
-          AccountService.requestJWT(account: currentAccount)
+          AccountService.requestJWT(account: currentAccount, completionHandler: requestJWTHandler)
         }
       }
     }

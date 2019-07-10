@@ -8,6 +8,7 @@
 
 import Foundation
 import BitmarkSDK
+import Alamofire
 
 class AccountService {
 
@@ -40,7 +41,7 @@ class AccountService {
 
   // request jwt from mobile_server;
   // for now, just report error to developers; without bothering user
-  static func requestJWT(account: Account) {
+  static func requestJWT(account: Account, completionHandler: ((Bool) -> Void)? = nil) {
     UIApplication.shared.isNetworkActivityIndicatorVisible = true
     defer {
       UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -50,6 +51,7 @@ class AccountService {
     URLSession.shared.dataTask(with: authRequest) { (data, _, error) in
       if let error = error {
         ErrorReporting.report(error: error)
+        completionHandler?(false)
         return
       }
 
@@ -57,11 +59,14 @@ class AccountService {
         do {
           guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: String] else {
             ErrorReporting.report(message: "response in request JWT Request is incorrectly formatted.")
+            completionHandler?(false)
             return
           }
           Global.currentJwt = jsonObject["jwt_token"]
+          completionHandler?(true)
         } catch {
           ErrorReporting.report(error: error)
+          completionHandler?(false)
         }
       }
     }.resume()
@@ -91,6 +96,35 @@ class AccountService {
     } catch {
       ErrorReporting.report(error: error)
       return nil
+    }
+  }
+  
+  // Register push notification service with device token to server
+  static func registerAPNS() {
+    guard let token = Global.apnsToken else {
+      Global.log.error("No APNS token")
+      return
+    }
+    
+    ErrorReporting.breadcrumbs(info: token, category: "APNS")
+    Global.log.info("Registering user notification with token: \(token)")
+    
+    do {
+      var request = try URLRequest(url: URL(string: "\(Global.ServerURL.mobile)/api/push_uuids")!, method: .post)
+      try request.attachAuth()
+      request.httpBody = try JSONEncoder().encode(["intercom_user_id": "",
+                                                   "token": token,
+                                                   "platform": "ios",
+                                                   "client":"registry"])
+      
+      Alamofire.request(request).response { (result) in
+        if let resp = result.response,
+          resp.statusCode >= 300 {
+          Global.log.error("Cannot register notification")
+        }
+      }
+    } catch let error {
+      ErrorReporting.report(error: error)
     }
   }
 }

@@ -18,6 +18,7 @@ class Global {
     }
   }
   static var currentJwt: String?
+  static var apnsToken: String? // Push notification token
   static var currentAssets = [Asset]()
   static var currentBlocks = [Block]()
   static var latestOffset: [String: Int64] = [:]

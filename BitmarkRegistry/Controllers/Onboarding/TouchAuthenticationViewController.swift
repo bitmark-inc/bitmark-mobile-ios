@@ -13,6 +13,13 @@ class TouchAuthenticationViewController: UIViewController {
   // MARK: - Properties
   var enableButton: UIButton!
   var skipButton: UIButton!
+  
+  static let requestJWTHandler: (Bool) -> Void = { (success) in
+    if success {
+      // Register APNS after successfully creating new account
+      AccountService.registerAPNS()
+    }
+  }
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -37,7 +44,8 @@ class TouchAuthenticationViewController: UIViewController {
         }
         // save enable touch/face id for current account and move to main screen
         UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
-        AccountService.requestJWT(account: Global.currentAccount!)
+        AccountService.requestJWT(account: Global.currentAccount!,
+                                  completionHandler: TouchAuthenticationViewController.requestJWTHandler)
 
         // Go to main screen
         let homeTabbarViewController = CustomTabBarViewController()
@@ -50,7 +58,8 @@ class TouchAuthenticationViewController: UIViewController {
   @objc func skipTouchId(_ sender: UIButton) {
     showConfirmationAlert(message: Constant.Confirmation.skipTouchFaceIdAuthentication) {
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-      AccountService.requestJWT(account: Global.currentAccount!)
+      AccountService.requestJWT(account: Global.currentAccount!,
+                                completionHandler: TouchAuthenticationViewController.requestJWTHandler)
       self.present(CustomTabBarViewController(), animated: true)
     }
   }
