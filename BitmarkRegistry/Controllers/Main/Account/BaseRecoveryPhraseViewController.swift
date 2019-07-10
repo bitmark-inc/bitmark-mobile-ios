@@ -11,9 +11,9 @@ import UIKit
 class BaseRecoveryPhraseViewController: UIViewController {
 
   // MARK: Properties
-  private let sectionInsets = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 0.0, right: 0.0)
+  private let sectionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 0.0, right: 0.0)
   private let collectionViewPadding: CGFloat = 40.0
-  private let heightPerRecoveryPhraseItem: CGFloat = 22.0
+  private let heightPerRecoveryPhraseItem: CGFloat = 25.0
   public let screenHeightLimitationForRecoveryPhase: CGFloat = 680
   public lazy var columns: Int = {
     // adjust number of columns: 2 columns for iphone 4'; other should be 1 column

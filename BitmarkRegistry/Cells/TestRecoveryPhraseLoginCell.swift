@@ -12,10 +12,9 @@ import IQKeyboardManagerSwift
 
 protocol TestRecoverPhraseLoginDelegate {
   var currentCell: TestRecoveryPhraseLoginCell? { get set }
-  func editingTextfield()
-  func validToSubmit() -> Bool
+  func beginEditingTextfield(_ textfield: UITextField)
+  func editingTextfield(_ textfield: UITextField)
   func goNextCell()
-  func goPrevCell()
 }
 
 class TestRecoveryPhraseLoginCell: UICollectionViewCell, UITextFieldDelegate {
@@ -24,11 +23,6 @@ class TestRecoveryPhraseLoginCell: UICollectionViewCell, UITextFieldDelegate {
   var delegate: TestRecoverPhraseLoginDelegate?
   var numericOrderLabel: UILabel!
   var testPhraseTextField: UITextField!
-  var autoCorrectStackView: UIStackView!
-  var prevButton: UIButton!
-  var nextButton: UIButton!
-  let recoveryPhraseWords = RecoverPhrase.bip39ENWords
-  let numberOfShowWord = 3
 
   // MARK: - Init
   override init(frame: CGRect) {
@@ -54,19 +48,17 @@ class TestRecoveryPhraseLoginCell: UICollectionViewCell, UITextFieldDelegate {
   @objc func beginEditingTextfield(_ textfield: UITextField) {
     testPhraseTextField.borderWidth = 1
     delegate?.currentCell = self
-    adjustReturnKeyType()
+    delegate?.beginEditingTextfield(textfield)
   }
 
   @objc func editingTextfield(_ textfield: UITextField) {
     guard let typingText = testPhraseTextField.text else { return }
-    adjustReturnKeyType()
     testPhraseTextField.backgroundColor = typingText.isEmpty ? .wildSand : .white
-    filterAutoCorrectWords(typingText)
+    delegate?.editingTextfield(textfield)
   }
 
   @objc func endEditingTextfield(_ textfield: UITextField) {
     testPhraseTextField.borderWidth = 0
-    delegate?.editingTextfield()
   }
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -79,33 +71,6 @@ class TestRecoveryPhraseLoginCell: UICollectionViewCell, UITextFieldDelegate {
   }
 }
 
-// MARK: - Support Functions
-extension TestRecoveryPhraseLoginCell {
-  fileprivate func adjustReturnKeyType() {
-    let validToSubmit = delegate?.validToSubmit() ?? false
-    testPhraseTextField.returnKeyType = validToSubmit ? .done : .next
-    testPhraseTextField.reloadInputViews()
-  }
-
-  fileprivate func filterAutoCorrectWords(_ typingText: String) {
-    var filterWords = [String]()
-    if !typingText.isEmpty {
-      filterWords = recoveryPhraseWords.filter( { $0.hasPrefix(typingText) })
-      if filterWords.count > numberOfShowWord { filterWords = Array(filterWords[0..<numberOfShowWord]) }
-    }
-
-    autoCorrectStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-    filterWords.forEach { (word) in
-      autoCorrectStackView.addArrangedSubview(autoCorrectWordButton(word))
-    }
-  }
-
-  @objc func pickAutoCorrectWord(_ sender: UIButton) {
-    delegate?.currentCell?.testPhraseTextField.text = sender.title(for: .normal)
-    delegate?.goNextCell()
-  }
-}
-
 // MARK: - Setup Views/Events
 extension TestRecoveryPhraseLoginCell {
   fileprivate func setupEvents() {
@@ -113,9 +78,6 @@ extension TestRecoveryPhraseLoginCell {
     testPhraseTextField.addTarget(self, action: #selector(beginEditingTextfield), for: .editingDidBegin)
     testPhraseTextField.addTarget(self, action: #selector(editingTextfield), for: .editingChanged)
     testPhraseTextField.addTarget(self, action: #selector(endEditingTextfield), for: .editingDidEnd)
-
-    prevButton.addAction(for: .touchUpInside) { [weak self] in self?.delegate?.goPrevCell() }
-    nextButton.addAction(for: .touchUpInside) { [weak self] in self?.delegate?.goNextCell() }
   }
 
   // MARK: - Setup Views
@@ -164,59 +126,6 @@ extension TestRecoveryPhraseLoginCell {
     testPhraseTextField.borderColor = .mainBlueColor
     testPhraseTextField.autocapitalizationType = .none
     testPhraseTextField.autocorrectionType = .no
-    testPhraseTextField.inputAccessoryView = setupCustomInputAccessoryView()
     return testPhraseTextField
-  }
-
-  fileprivate func setupCustomInputAccessoryView() -> UIView {
-    prevButton = UIButton(type: .system, imageName: "IQButtonBarArrowUp")
-    nextButton = UIButton(type: .system, imageName: "IQButtonBarArrowDown")
-
-    autoCorrectStackView = UIStackView(arrangedSubviews: [], axis: .horizontal, spacing: 44, alignment: .center, distribution: .fill)
-    let scrollView = UIScrollView()
-    scrollView.showsHorizontalScrollIndicator = false
-    scrollView.addSubview(autoCorrectStackView)
-
-    autoCorrectStackView.snp.makeConstraints({ (make) in
-      make.edges.equalToSuperview()
-    })
-
-    let navButtonsGroup = UIStackView(arrangedSubviews: [prevButton, nextButton], axis: .horizontal, spacing: 20)
-    let stackView = UIStackView(arrangedSubviews: [navButtonsGroup, scrollView], axis: .horizontal, spacing: 30)
-
-    navButtonsGroup.snp.makeConstraints({ (make) in
-      make.centerY.equalToSuperview()
-    })
-
-    scrollView.snp.makeConstraints({ (make) in
-      make.height.centerY.equalToSuperview()
-    })
-
-    let customView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 44))
-    customView.addSubview(stackView)
-    customView.backgroundColor = UIColor.wildSand
-
-    stackView.snp.makeConstraints({ (make) in
-      make.centerX.centerY.equalToSuperview()
-      make.height.equalTo(30)
-      make.leading.trailing.equalToSuperview()
-          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
-    })
-
-    return customView
-  }
-
-  fileprivate func autoCorrectWordButton(_ word: String) -> UIButton {
-    let button = UIButton(type: .system)
-    button.setTitle(word, for: .normal)
-    button.setTitleColor(.gray, for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-
-    button.snp.makeConstraints { (make) in
-      make.height.equalTo(30)
-    }
-
-    button.addTarget(self, action: #selector(pickAutoCorrectWord), for: .touchUpInside)
-    return button
   }
 }
