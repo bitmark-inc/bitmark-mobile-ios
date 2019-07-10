@@ -16,13 +16,13 @@ class BaseRecoveryPhraseViewController: UIViewController {
   private let heightPerRecoveryPhraseItem: CGFloat = 22.0
   public let screenHeightLimitationForRecoveryPhase: CGFloat = 680
   public lazy var columns: Int = {
+    // adjust number of columns: 2 columns for iphone 4'; other should be 1 column
     return view.frame.height >= screenHeightLimitationForRecoveryPhase ? 1 : 2
   }()
   public var customFlowDirection: UICollectionView.ScrollDirection? { return nil }
   public let numberOfPhrases = 12
 
   lazy var recoveryPhraseCollectionView: UICollectionView = {
-    // adjust number of columns: 2 columns for iphone 4'; other should be 1 column
     let flowlayout = UICollectionViewFlowLayout()
     flowlayout.scrollDirection = customFlowDirection ?? (columns == 1 ? .vertical : .horizontal)
     let collectionView = UICollectionView(frame: view.frame, collectionViewLayout: flowlayout)

@@ -109,8 +109,7 @@ extension AccountViewController {
   fileprivate func setupAccountNumberBox() -> UIView {
     let accountNumberTitleLabel = CommonUI.fieldTitleLabel(text: "YOUR BITMARK ACCOUNT NUMBER")
 
-    qrShowButton = UIButton(type: .system)
-    qrShowButton.setImage(UIImage(named: "qr-code-icon"), for: .normal)
+    qrShowButton = UIButton(type: .system, imageName: "qr-code-icon")
     qrShowButton.snp.makeConstraints { $0.width.height.equalTo(19) }
 
     let accountNumberView = UIStackView(arrangedSubviews: [accountNumberTitleLabel, qrShowButton])

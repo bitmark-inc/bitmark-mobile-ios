@@ -36,7 +36,7 @@ class LoginViewController: BaseRecoveryPhraseViewController {
   // MARK: - Handlers
   @objc func tapToSubmit(_ sender: UIButton) {
     do {
-      let account = try AccountService.getCurrentAccount(phrases: getUserInputPhrases())
+      let account = try AccountService.getAccount(phrases: getUserInputPhrases())
       Global.currentAccount = account // track and store currentAccount
       try KeychainStore.saveToKeychain(account.seed.core)
     } catch is RecoverPhrase.RecoverPhraseError  {
@@ -143,11 +143,11 @@ extension LoginViewController {
    when columns is 1, simply [1...12]
    when columns is 2, customize to numeric number show as horizontal collection view; (but in fact the collection view is vertical collection view)
    */
-  fileprivate func extractNumericOrder(_ i: Int) -> Int {
+  fileprivate func extractNumericOrder(_ rowIndex: Int) -> Int {
     if columns == 1 {
-      return i + 1
+      return rowIndex + 1
     } else {
-      return (i % 2 == 0) ? (i / 2 + 1) : (i + 1)/2 + (numberOfPhrases / 2)
+      return (rowIndex % 2 == 0) ? (rowIndex / 2 + 1) : (rowIndex + 1)/2 + (numberOfPhrases / 2)
     }
   }
 }

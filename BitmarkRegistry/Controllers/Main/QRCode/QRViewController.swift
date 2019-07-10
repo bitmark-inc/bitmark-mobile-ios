@@ -76,8 +76,7 @@ extension QRViewController {
     // *** Setup subviews ***
     let title = CommonUI.pageTitleLabel(text: "RECEIVE PROPERTY")
 
-    closeButton = UIButton()
-    closeButton.setImage(UIImage(named: "close-icon-blue"), for: .normal)
+    closeButton = UIButton(type: .system, imageName: "close-icon-blue")
     closeButton.snp.makeConstraints { (make) in
       make.width.height.equalTo(21)
     }
@@ -135,11 +134,10 @@ extension QRViewController {
   }
 
   fileprivate func setupShareButton() -> UIButton {
-    let shareButton = UIButton(type: .system)
+    let shareButton = UIButton(type: .system, imageName: "white-share-icon")
     shareButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 17)
     shareButton.setTitle("SHARE", for: .normal)
     shareButton.setTitleColor(.white, for: .normal)
-    shareButton.setImage(UIImage(named: "white-share-icon"), for: .normal)
     shareButton.tintColor = .white
     shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 13)
     shareButton.backgroundColor = .mainBlueColor

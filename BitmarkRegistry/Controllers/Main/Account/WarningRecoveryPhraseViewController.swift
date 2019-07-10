@@ -55,7 +55,9 @@ extension WarningRecoveryPhraseViewController {
 
     let warningTextView = UITextView()
     warningTextView.font = UIFont(name: "Avenir", size: 17)
-    warningTextView.isUserInteractionEnabled = false
+    warningTextView.isUserInteractionEnabled = true
+    warningTextView.isEditable = false
+    warningTextView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20)
     warningTextView.text =
       "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\n" +
       "We will show you a list of words to write down on a piece of paper and keep safe.\n\n" +
@@ -82,8 +84,7 @@ extension WarningRecoveryPhraseViewController {
 
     mainView.snp.makeConstraints { (make) in
       make.top.equalTo(view.safeAreaLayoutGuide).offset(38)
-      make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-      make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
+      make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
 
     writeDownRecoveryPhraseButton.snp.makeConstraints { (make) in

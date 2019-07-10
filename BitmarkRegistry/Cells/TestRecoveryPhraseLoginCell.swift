@@ -25,6 +25,8 @@ class TestRecoveryPhraseLoginCell: UICollectionViewCell, UITextFieldDelegate {
   var numericOrderLabel: UILabel!
   var testPhraseTextField: UITextField!
   var autoCorrectStackView: UIStackView!
+  var prevButton: UIButton!
+  var nextButton: UIButton!
   let recoveryPhraseWords = RecoverPhrase.bip39ENWords
   let numberOfShowWord = 3
 
@@ -111,6 +113,9 @@ extension TestRecoveryPhraseLoginCell {
     testPhraseTextField.addTarget(self, action: #selector(beginEditingTextfield), for: .editingDidBegin)
     testPhraseTextField.addTarget(self, action: #selector(editingTextfield), for: .editingChanged)
     testPhraseTextField.addTarget(self, action: #selector(endEditingTextfield), for: .editingDidEnd)
+
+    prevButton.addAction(for: .touchUpInside) { [weak self] in self?.delegate?.goPrevCell() }
+    nextButton.addAction(for: .touchUpInside) { [weak self] in self?.delegate?.goNextCell() }
   }
 
   // MARK: - Setup Views
@@ -126,14 +131,7 @@ extension TestRecoveryPhraseLoginCell {
       make.centerY.leading.trailing.height.equalToSuperview()
     }
 
-    testPhraseTextField = UITextField()
-    testPhraseTextField.backgroundColor = .wildSand
-    testPhraseTextField.textColor = .mainBlueColor
-    testPhraseTextField.font = UIFont(name: "Avenir", size: 15)
-    testPhraseTextField.borderColor = .mainBlueColor
-    testPhraseTextField.autocapitalizationType = .none
-    testPhraseTextField.autocorrectionType = .no
-    testPhraseTextField.inputAccessoryView = setupCustomInputAccessoryView()
+    testPhraseTextField = setupTestPhraseTextField()
 
     // *** Setup UI in cell ***
     let mainView = UIView()
@@ -158,11 +156,21 @@ extension TestRecoveryPhraseLoginCell {
     }
   }
 
+  fileprivate func setupTestPhraseTextField() -> UITextField {
+    let testPhraseTextField = UITextField()
+    testPhraseTextField.backgroundColor = .wildSand
+    testPhraseTextField.textColor = .mainBlueColor
+    testPhraseTextField.font = UIFont(name: "Avenir", size: 15)
+    testPhraseTextField.borderColor = .mainBlueColor
+    testPhraseTextField.autocapitalizationType = .none
+    testPhraseTextField.autocorrectionType = .no
+    testPhraseTextField.inputAccessoryView = setupCustomInputAccessoryView()
+    return testPhraseTextField
+  }
+
   fileprivate func setupCustomInputAccessoryView() -> UIView {
-    let prevButton = UIButton(type: .system, imageName: "IQButtonBarArrowUp")
-    let nextButton = UIButton(type: .system, imageName: "IQButtonBarArrowDown")
-    prevButton.addAction(for: .touchUpInside) { [weak self] in self?.delegate?.goPrevCell() }
-    nextButton.addAction(for: .touchUpInside) { [weak self] in self?.delegate?.goNextCell() }
+    prevButton = UIButton(type: .system, imageName: "IQButtonBarArrowUp")
+    nextButton = UIButton(type: .system, imageName: "IQButtonBarArrowDown")
 
     autoCorrectStackView = UIStackView(arrangedSubviews: [], axis: .horizontal, spacing: 44, alignment: .center, distribution: .fill)
     let scrollView = UIScrollView()
