@@ -142,13 +142,13 @@ extension TestRecoveryPhraseLoginCell {
 
     numericOrderCover.snp.makeConstraints { (make) in
       make.top.leading.bottom.equalToSuperview()
-      make.width.equalTo(26)
+      make.width.equalTo(23)
     }
 
     testPhraseTextField.snp.makeConstraints { (make) in
       make.leading.equalTo(numericOrderCover.snp.trailing).offset(7)
       make.centerY.trailing.equalToSuperview()
-      make.width.equalTo(120)
+      make.width.equalTo(100)
     }
 
     addSubview(mainView)

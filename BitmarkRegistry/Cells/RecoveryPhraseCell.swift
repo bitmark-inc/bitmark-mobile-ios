@@ -55,7 +55,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
 
     numericOrderCover.snp.makeConstraints { (make) in
       make.top.leading.bottom.equalToSuperview()
-      make.width.equalTo(26)
+      make.width.equalTo(23)
     }
 
     phraseLabel.snp.makeConstraints { (make) in
@@ -66,7 +66,7 @@ class RecoveryPhraseCell: UICollectionViewCell {
     addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.centerX.centerY.top.equalToSuperview()
-      make.width.greaterThanOrEqualTo(120)
+      make.width.greaterThanOrEqualTo(100)
     }
   }
 }

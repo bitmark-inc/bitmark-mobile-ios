@@ -13,12 +13,14 @@ import BitmarkSDK
 class LoginViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Properties
+  override public var customFlowDirection: UICollectionView.ScrollDirection? { return .vertical }
   var submitButton: SubmitButton!
   var submitButtonBottomConstraint: Constraint!
   var currentCell: TestRecoveryPhraseLoginCell?
 
   let errorResultView = UIView()
   var retryButton: UIButton!
+  private lazy var numericOrders: [Int] = { (0..<numberOfPhrases).map { extractNumericOrder($0) } }()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -37,11 +39,16 @@ class LoginViewController: BaseRecoveryPhraseViewController {
       let account = try AccountService.getCurrentAccount(phrases: getUserInputPhrases())
       Global.currentAccount = account // track and store currentAccount
       try KeychainStore.saveToKeychain(account.seed.core)
-    } catch RecoverPhrase.RecoverPhraseError.wordNotFound {
+    } catch is RecoverPhrase.RecoverPhraseError  {
+      errorResultView.isHidden = false
+      return
+    } catch BitmarkSDK.SeedError.wrongNetwork {
       errorResultView.isHidden = false
       return
     } catch {
       showErrorAlert(message: Constant.Error.keychainStore)
+      ErrorReporting.report(error: error)
+      errorResultView.isHidden = false
       return
     }
 
@@ -65,7 +72,7 @@ extension LoginViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withClass: TestRecoveryPhraseLoginCell.self, for: indexPath)
     cell.delegate = self
-    cell.setData(numericOrder: indexPath.row + 1)
+    cell.setData(numericOrder: numericOrders[indexPath.row])
     return cell
   }
 }
@@ -78,22 +85,29 @@ extension LoginViewController: TestRecoverPhraseLoginDelegate {
 
   func goNextCell() {
     guard let currentCell = currentCell, let currentRow = recoveryPhraseCollectionView.indexPath(for: currentCell)?.row else { return }
-    var nextRow = currentRow + 1
-    if nextRow >= numberOfPhrases { nextRow = 0 }
+    var nextNumericRow = extractNumericOrder(currentRow) + 1
+    if nextNumericRow > numberOfPhrases { nextNumericRow = 1 }
 
-    guard let nextCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: nextRow, section: 0)) as? TestRecoveryPhraseLoginCell else { return }
-    nextCell.testPhraseTextField.becomeFirstResponder()
-    nextCell.testPhraseTextField.sendActions(for: .editingDidBegin)
+    guard let nextRow = numericOrders.firstIndex(of: nextNumericRow) else { return }
+    gotoCell(row: nextRow)
   }
 
   func goPrevCell() {
     guard let currentCell = currentCell, let currentRow = recoveryPhraseCollectionView.indexPath(for: currentCell)?.row else { return }
-    var prevRow = currentRow - 1
-    if prevRow < 0 { prevRow = numberOfPhrases - 1 }
+    var prevNumericRow = extractNumericOrder(currentRow) - 1
+    if prevNumericRow <= 0 { prevNumericRow = numberOfPhrases }
 
-    guard let prevCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: prevRow, section: 0)) as? TestRecoveryPhraseLoginCell else { return }
-    prevCell.testPhraseTextField.becomeFirstResponder()
-    prevCell.testPhraseTextField.sendActions(for: .editingDidBegin)
+    guard let prevRow = numericOrders.firstIndex(of: prevNumericRow) else { return }
+    gotoCell(row: prevRow)
+  }
+
+  fileprivate func gotoCell(row: Int) {
+    if let _ = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: row, section: 0)) {
+      view.endEditing(true)
+    }
+    guard let nextCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: row, section: 0)) as? TestRecoveryPhraseLoginCell else { return }
+    nextCell.testPhraseTextField.becomeFirstResponder()
+    nextCell.testPhraseTextField.sendActions(for: .editingDidBegin)
   }
 }
 
@@ -111,9 +125,29 @@ extension LoginViewController {
   }
 
   func getUserInputPhrases() -> [String] {
-    return (0..<numberOfPhrases).map { (row) -> String in
-      let cell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: row, section: 0)) as! TestRecoveryPhraseLoginCell
-      return cell.testPhraseTextField.text!
+    return (1...numberOfPhrases).map { (numericOrder) -> String in
+      if let row = numericOrders.firstIndex(of: numericOrder),
+        let cell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: row, section: 0)) as? TestRecoveryPhraseLoginCell {
+        return cell.testPhraseTextField.text!
+      }
+      return ""
+    }
+  }
+}
+
+// MARK: - Support Functions
+extension LoginViewController {
+
+  /**
+   Extract numeric number - prefix's cell.
+   when columns is 1, simply [1...12]
+   when columns is 2, customize to numeric number show as horizontal collection view; (but in fact the collection view is vertical collection view)
+   */
+  fileprivate func extractNumericOrder(_ i: Int) -> Int {
+    if columns == 1 {
+      return i + 1
+    } else {
+      return (i % 2 == 0) ? (i / 2 + 1) : (i + 1)/2 + (numberOfPhrases / 2)
     }
   }
 }
