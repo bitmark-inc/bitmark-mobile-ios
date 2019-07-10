@@ -22,6 +22,26 @@ class DesignedTextField: UITextField {
   }
   var bottomLine: UIView!
 
+  var setTextColor: UIColor = .black {
+    didSet {
+      textColor = self.setTextColor
+    }
+  }
+
+  override var isEnabled: Bool {
+    didSet {
+      if self.isEnabled {
+        textColor = setTextColor
+        bottomLine.backgroundColor = bottomLineColor
+        rightViewMode = .always
+      } else {
+        textColor = .silver
+        bottomLine.backgroundColor = .wildSand
+        rightViewMode = .never
+      }
+    }
+  }
+
   init(placeholder: String) {
     super.init(frame: CGRect.zero)
     self.placeholder = placeholder
@@ -46,12 +66,12 @@ class DesignedTextField: UITextField {
 
   // MARK: - Handlers
   func onErrorStyle() {
-    textColor = .mainRedColor
+    setTextColor = .mainRedColor
     bottomLine.backgroundColor = .mainRedColor
   }
 
   func offErrorStyle() {
-    textColor = .black
+    setTextColor = .black
     bottomLine.backgroundColor = bottomLineColor
   }
 

@@ -109,6 +109,7 @@ class MetadataForm: UIView, UITextFieldDelegate {
   // MARK: - Setup Views/Events
   fileprivate func setupEvents() {
     labelTextFieldDeputy.addAction(for: .touchUpInside) { [unowned self] in
+      guard self.labelTextField.isEnabled else { return }
       self.endEditing(true)
       self.delegate?.gotoUpdateLabel(from: self)
     }

@@ -12,7 +12,7 @@ import Photos
 class RegisterPropertyViewController: UIViewController {
 
   // MARK: - Properties
-  var assetData: Data?
+  var assetData: Data!
   var assetFileName: String?
   var assetURL: URL?
 
@@ -20,6 +20,8 @@ class RegisterPropertyViewController: UIViewController {
   var registerByFileButton: UIButton!
   var descriptionLabel: UILabel!
   var browserFileAlertController: UIAlertController!
+  var disabledScreen: UIView!
+  var activityIndicator: UIActivityIndicatorView!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -29,6 +31,13 @@ class RegisterPropertyViewController: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    activityIndicator.stopAnimating()
+    disabledScreen.isHidden = true
+    UIApplication.shared.endIgnoringInteractionEvents()
   }
 
   // MARK: - Handlers
@@ -80,27 +89,38 @@ class RegisterPropertyViewController: UIViewController {
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-    picker.dismiss(animated: true, completion: nil)
+    activityIndicator.startAnimating()
+    disabledScreen.isHidden = false
+    UIApplication.shared.beginIgnoringInteractionEvents()
 
-    // get image
-    guard let image = info[.originalImage] as? UIImage else { return }
-    assetData = image.pngData()
+    picker.dismiss(animated: true) { [weak self] in
+      guard let self = self else { return }
 
-    // get image name
-    if let asset = info[.phAsset] as? PHAsset,
-      let assetResource = PHAssetResource.assetResources(for: asset).first {
-      assetFileName = assetResource.originalFilename
+      // get image
+      guard let image = info[.originalImage] as? UIImage else { return }
+      self.assetData = image.pngData()
+
+      // get image name
+      if let asset = info[.phAsset] as? PHAsset,
+        let assetResource = PHAssetResource.assetResources(for: asset).first {
+        self.assetFileName = assetResource.originalFilename
+      }
+
+      self.assetURL = info[.imageURL] as? URL
+
+      self.performMoveToRegisterPropertyRights()
     }
-
-    assetURL = info[.imageURL] as? URL
-
-    performMoveToRegisterPropertyRights()
   }
 
   fileprivate func performMoveToRegisterPropertyRights() {
+    let assetFingerprint = AssetService.getFingerprintFrom(assetData)
+    let assetIfExisted = AssetService.getAsset(from: assetFingerprint)
+
     let registerPropertyRightsVC = RegisterPropertyRightsViewController()
     registerPropertyRightsVC.hidesBottomBarWhenPushed = true
+    registerPropertyRightsVC.asset = assetIfExisted
     registerPropertyRightsVC.assetData = assetData
+    registerPropertyRightsVC.assetFingerprint = assetFingerprint
     registerPropertyRightsVC.assetFileName = assetFileName
     registerPropertyRightsVC.assetURL = assetURL
     navigationController?.pushViewController(registerPropertyRightsVC)
@@ -162,9 +182,18 @@ extension RegisterPropertyViewController {
       " Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.")
     descriptionLabel.lineHeightMultiple(1.2)
 
+    disabledScreen = UIView()
+    disabledScreen.backgroundColor = .wildSand
+    disabledScreen.alpha = 0.7
+    disabledScreen.isHidden = true
+
+    activityIndicator = CommonUI.appActivityIndicator()
+
     // *** Setup UI in view ***
     view.addSubview(registerSelectionView)
     view.addSubview(descriptionLabel)
+    view.addSubview(disabledScreen)
+    view.addSubview(activityIndicator)
 
     registerSelectionView.snp.makeConstraints { (make) in
       make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
@@ -175,6 +204,14 @@ extension RegisterPropertyViewController {
       make.top.equalTo(registerSelectionView.snp.bottom).offset(18)
       make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
       make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
+    }
+
+    disabledScreen.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
     }
   }
 
