@@ -34,6 +34,6 @@ class TransactionService {
                                  .pending(true)
 
     let (txs, assets, blocks) = try Transaction.list(params: txQuery)
-    return (txs ?? [Transaction](), assets ?? [Asset](), blocks ?? [Block]())
+    return (txs , assets ?? [Asset](), blocks ?? [Block]())
   }
 }

@@ -24,6 +24,7 @@ class TransactionsViewController: UIViewController {
     super.viewDidLoad()
 
     title = "TRANSACTIONS"
+    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
 
@@ -60,7 +61,7 @@ class TransactionsViewController: UIViewController {
   }
 }
 
-extension TransactionsViewController: UITableViewDataSource {
+extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return transactions.count
   }
@@ -70,6 +71,13 @@ extension TransactionsViewController: UITableViewDataSource {
     let transaction = transactions[indexPath.row]
     cell.loadWith(transaction)
     return cell
+  }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let transaction = transactions[indexPath.row]
+    let txDetailVC = TransactionDetailViewController()
+    txDetailVC.transaction = transaction
+    navigationController?.pushViewController(txDetailVC)
   }
 }
 
@@ -110,6 +118,7 @@ extension TransactionsViewController {
 
     txsTableView.register(cellWithClass: TransactionListCell.self)
     txsTableView.dataSource = self
+    txsTableView.delegate = self
   }
 
   fileprivate func setupViews() {

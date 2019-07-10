@@ -32,10 +32,10 @@ class TransactionListCell: UITableViewCell {
 
   // MARK: - Data Handlers
   func loadWith(_ transaction: Transaction) {
-    if let previous_owner = transaction.previous_owner {
+    if transaction.isTransferTx() {
       txTypeLabel.text = "P2P TRANSFER"
       txTitle.text = "SEND"
-      accountFromLabel.text = previous_owner.middleShorten()
+      accountFromLabel.text = transaction.previous_owner?.middleShorten()
       accountToTitleLabel.text = "TO"
       accountToLabel.text = transaction.owner.middleShorten()
     } else {
@@ -68,6 +68,7 @@ extension TransactionListCell {
   fileprivate func setupViews() {
     separatorInset = UIEdgeInsets.zero
     layoutMargins = UIEdgeInsets.zero
+    selectionStyle = .none
 
     // *** Setup subviews ***
     let heading = setupHeading()

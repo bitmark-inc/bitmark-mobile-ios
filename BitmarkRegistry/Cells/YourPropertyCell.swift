@@ -54,6 +54,7 @@ extension YourPropertyCell {
   fileprivate func setupViews() {
     separatorInset = UIEdgeInsets.zero
     layoutMargins = UIEdgeInsets.zero
+    selectionStyle = .none
 
     // *** Setup subviews ***
     dateLabel.font = UIFont(name: "Courier", size: 13)

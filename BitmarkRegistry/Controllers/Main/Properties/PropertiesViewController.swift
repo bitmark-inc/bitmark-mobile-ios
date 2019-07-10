@@ -8,13 +8,12 @@
 
 import UIKit
 import BitmarkSDK
-import WebKit
 
 class PropertiesViewController: UIViewController {
 
   // MARK: - Properties
   var yoursView: UIView!
-  var globalView: UIView!
+  var globalView: DesignedWebView!
 
   lazy var segmentControl: UISegmentedControl = {
     let segmentControl = UISegmentedControl()
@@ -31,14 +30,6 @@ class PropertiesViewController: UIViewController {
   var emptyViewInYoursTab: UIView!
   var yoursActivityIndicator: UIActivityIndicatorView!
   var bitmarks = [Bitmark]()
-
-  // *** Global Segment ***
-  var webView: WKWebView!
-  var backButton: UIButton!
-  var forwardButton: UIButton!
-  var globalActivityIndicator: UIActivityIndicatorView!
-  let globalRegisterApp = Global.ServerURL.registry + "?env=app"
-  var didLoadWebview: Bool = false
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -112,12 +103,7 @@ class PropertiesViewController: UIViewController {
     case 1:
       yoursView.isHidden = true
       globalView.isHidden = false
-
-      if !globalActivityIndicator.isAnimating && !didLoadWebview {
-        let url = URL(string: globalRegisterApp)!
-        globalActivityIndicator.startAnimating()
-        webView.load(URLRequest(url: url))
-      }
+      globalView.loadWeb()
     default:
       break
     }
@@ -179,26 +165,6 @@ extension PropertiesViewController: EventDelegate {
   }
 }
 
-// MARK: - WKWebView, WKNavigationDelegate
-extension PropertiesViewController: WKNavigationDelegate {
-  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    didLoadWebview = true
-    globalActivityIndicator.stopAnimating()
-  }
-
-  @objc func navigateBack(_ sender: UIButton) {
-    if webView.canGoBack {
-      webView.goBack()
-    }
-  }
-
-  @objc func navigateForward(_ sender: UIButton) {
-    if webView.canGoForward {
-      webView.goForward()
-    }
-  }
-}
-
 // MARK: - Setup Views/Events
 extension PropertiesViewController {
   fileprivate func setupEvents() {
@@ -209,12 +175,6 @@ extension PropertiesViewController {
     yoursTableView.delegate = self
 
     createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)
-
-    // *** Global Segment ***
-    webView.navigationDelegate = self
-    backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
-    forwardButton.addTarget(self, action: #selector(navigateForward), for: .touchUpInside)
-
     segmentControl.sendActions(for: .valueChanged)
   }
 
@@ -223,7 +183,7 @@ extension PropertiesViewController {
 
     // *** Setup subviews ***
     yoursView = setupYoursView()
-    globalView = setupGlobalView()
+    globalView = DesignedWebView(urlString: Global.ServerURL.registry.embedInApp())
 
     // *** Setup UI in view ***
     view.addSubview(segmentControl)
@@ -314,54 +274,6 @@ extension PropertiesViewController {
     createFirstProperty.snp.makeConstraints { (make) in
       make.top.equalTo(contentView.snp.bottom).offset(25)
       make.leading.trailing.bottom.equalToSuperview()
-    }
-
-    return view
-  }
-
-  fileprivate func setupGlobalView() -> UIView {
-    webView = WKWebView()
-
-    backButton = UIButton(type: .system)
-    backButton.setImage(UIImage(named: "back-arrow"), for: .normal)
-    backButton.contentMode = .scaleAspectFit
-    backButton.tintColor = .silver
-
-    forwardButton = UIButton(type: .system)
-    forwardButton.setImage(UIImage(named: "forward-arrow"), for: .normal)
-    forwardButton.contentMode = .scaleAspectFit
-    forwardButton.tintColor = .silver
-
-    let navigationButtons = UIStackView(
-      arrangedSubviews: [backButton, forwardButton],
-      axis: .horizontal, spacing: 100
-    )
-
-    let coverNavigationButtonsView = UIView()
-    coverNavigationButtonsView.backgroundColor = .alabaster
-    coverNavigationButtonsView.addSubview(navigationButtons)
-
-    navigationButtons.snp.makeConstraints { (make) in
-      make.height.equalTo(45)
-      make.centerX.equalToSuperview()
-    }
-
-    globalActivityIndicator = CommonUI.appActivityIndicator()
-
-    let view = UIView()
-    view.addSubview(webView)
-    view.addSubview(coverNavigationButtonsView)
-    view.addSubview(globalActivityIndicator)
-
-    webView.snp.makeConstraints { $0.edges.equalToSuperview() }
-
-    coverNavigationButtonsView.snp.makeConstraints { (make) in
-      make.height.equalTo(45)
-      make.leading.trailing.bottom.equalToSuperview()
-    }
-
-    globalActivityIndicator.snp.makeConstraints { (make) in
-      make.centerX.centerY.equalToSuperview()
     }
 
     return view
