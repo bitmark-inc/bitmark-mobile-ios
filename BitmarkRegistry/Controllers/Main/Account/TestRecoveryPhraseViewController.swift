@@ -85,6 +85,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   @objc func removeAccess(_ sender: UIButton) {
     do {
+      AccountService.deregisterAPNS()
       try KeychainStore.removeSeedCoreFromKeychain()
       BitmarkStorage._shared = nil
       Global.clearData()

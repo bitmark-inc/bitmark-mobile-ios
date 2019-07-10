@@ -127,4 +127,29 @@ class AccountService {
       ErrorReporting.report(error: error)
     }
   }
+  
+  // Remove APNS token from server
+  static func deregisterAPNS() {
+    guard let token = Global.apnsToken else {
+      Global.log.error("No APNS token")
+      return
+    }
+    
+    ErrorReporting.breadcrumbs(info: token, category: "APNS")
+    Global.log.info("Registering user notification with token: \(token)")
+    
+    do {
+      var request = try URLRequest(url: URL(string: "\(Global.ServerURL.mobile)/api/push_uuids/\(token)")!, method: .delete)
+      try request.attachAuth()
+      
+      Alamofire.request(request).response { (result) in
+        if let resp = result.response,
+          resp.statusCode >= 300 {
+          Global.log.error("Cannot deregister notification")
+        }
+      }
+    } catch let error {
+      ErrorReporting.report(error: error)
+    }
+  }
 }
