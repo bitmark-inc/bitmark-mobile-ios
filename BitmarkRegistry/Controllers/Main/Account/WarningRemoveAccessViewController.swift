@@ -55,7 +55,9 @@ extension WarningRemoveAccessViewController {
 
     let warningTextView = UITextView()
     warningTextView.font = UIFont(name: "Avenir", size: 17)
-    warningTextView.isUserInteractionEnabled = false
+    warningTextView.isUserInteractionEnabled = true
+    warningTextView.isEditable = false
+    warningTextView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 20)
     warningTextView.text =
       "Your recovery phrase is the only way to access your Bitmark account after signing out." +
       "If you have not already written down your recovery phrase, you must do so now or you will be permanently lose access to your account and lose ownership of all your digital properties.\n\n" +
@@ -83,8 +85,7 @@ extension WarningRemoveAccessViewController {
 
     mainView.snp.makeConstraints { (make) in
       make.top.equalTo(view.safeAreaLayoutGuide).offset(38)
-      make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-      make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
+      make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
 
     writeDownRecoveryPhraseButton.snp.makeConstraints { (make) in

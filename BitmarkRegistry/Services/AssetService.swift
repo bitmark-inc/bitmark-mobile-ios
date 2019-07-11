@@ -53,7 +53,7 @@ class AssetService {
   static func issueBitmarks(issuer: Account, assetId: String, quantity: Int) throws {
     var issueParams = try Bitmark.newIssuanceParams(assetID: assetId, quantity: quantity)
     try issueParams.sign(issuer)
-    try Bitmark.issue(issueParams)
+    _ = try Bitmark.issue(issueParams)
   }
 
   // Reference from BitmarkSDK

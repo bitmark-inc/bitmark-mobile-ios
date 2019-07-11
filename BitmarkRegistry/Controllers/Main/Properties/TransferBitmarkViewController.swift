@@ -133,8 +133,7 @@ extension TransferBitmarkViewController {
 
     // *** Setup subviews ***
     let transferTitle = CommonUI.inputFieldTitleLabel(text: "TRANSFER BITMARK")
-    scanQRButton = UIButton(type: .system)
-    scanQRButton.setImage(UIImage(named: "qr-code-scan-icon"), for: .normal)
+    scanQRButton = UIButton(type: .system, imageName: "qr-code-scan-icon")
     scanQRButton.snp.makeConstraints { (make) in
       make.width.height.equalTo(19)
     }

@@ -53,6 +53,12 @@ extension UIViewController {
     alertController.show { handler(alertController) }
   }
 
+  // MARK: Navigation
+  func gotoMainScreen() {
+    let homeTabbarViewController = CustomTabBarViewController()
+    self.navigationController?.setViewControllers([homeTabbarViewController], animated: true)
+  }
+
   // MARK: - Support Functions
   func askForPhotosPermission(handler: @escaping (PHAuthorizationStatus) -> Void ) {
     let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()

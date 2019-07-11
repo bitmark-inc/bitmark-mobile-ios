@@ -4,6 +4,7 @@ PODS:
     - KeychainAccess
     - SwiftCentrifuge
     - TweetNacl
+  - IQKeyboardManagerSwift (6.4.0)
   - KeychainAccess (3.2.0)
   - ObjcExceptionBridging (1.0.1):
     - ObjcExceptionBridging/ObjcExceptionBridging (= 1.0.1)
@@ -46,6 +47,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - BitmarkSDK (from `https://github.com/bitmark-inc/bitmark-sdk-swift.git`, branch `master`)
+  - IQKeyboardManagerSwift
   - KeychainAccess
   - PanModal
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `4.3.1`)
@@ -56,6 +58,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - IQKeyboardManagerSwift
     - KeychainAccess
     - ObjcExceptionBridging
     - PanModal
@@ -86,6 +89,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   BitmarkSDK: 94bf8ff769cb3252f107e0653b85f47fb22faa83
+  IQKeyboardManagerSwift: ed9b04ee0e3067ffba543283462d619f944b05e5
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
   ObjcExceptionBridging: c30e00eb3700467e695faeea30e26e18bd445001
   PanModal: 275f6d4d07565ddf4ed16d7be5d9cd275682d80d
@@ -98,6 +102,6 @@ SPEC CHECKSUMS:
   TweetNacl: ea279cd32bffee69c59c73631470d3419db675df
   XCGLogger: 0434f15e3909cdc450bb63faf638b8792ab782ab
 
-PODFILE CHECKSUM: 7b65963a329cb1939f80fde9569c0dfdf45e95d5
+PODFILE CHECKSUM: 4a5e50d4994647b50ab56ae860d5dd06c2eb95e1
 
 COCOAPODS: 1.5.3

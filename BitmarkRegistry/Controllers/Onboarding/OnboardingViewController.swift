@@ -21,6 +21,8 @@ class OnboardingViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    navigationItem.backBarButtonItem = UIBarButtonItem()
+
     setupViews()
     setupEvents()
   }
@@ -60,6 +62,9 @@ class OnboardingViewController: UIViewController {
 extension OnboardingViewController {
   fileprivate func setupEvents() {
     registerButton.addTarget(self, action: #selector(createNewAccount), for: .touchUpInside)
+    loginButton.addAction(for: .touchUpInside) {
+      self.navigationController?.pushViewController(LoginViewController())
+    }
   }
 
   fileprivate func setupViews() {
