@@ -12,6 +12,7 @@ def sharedPods
   pod 'PanModal'
   pod 'Alamofire'
   pod 'IQKeyboardManagerSwift'
+  pod 'ReachabilitySwift'
   
   # ReactiveX
   pod 'RxSwift', '~> 5'

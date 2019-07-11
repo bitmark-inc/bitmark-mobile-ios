@@ -70,4 +70,55 @@ extension UIViewController {
       handler(photoAuthorizationStatus)
     }
   }
+
+  func doWhenConnectedNetwork(completion: @escaping () -> Void) {
+    if NetworkManager.isReachable() {
+      completion()
+    } else {
+      let noInternetView = showNoInternetConnectionView()
+      NetworkManager.startNotifier {
+        completion()
+        noInternetView?.removeFromSuperview()
+      }
+    }
+  }
+
+  fileprivate func showNoInternetConnectionView() -> UIView? {
+    guard let currentWindow: UIWindow = UIApplication.shared.keyWindow else { return nil }
+
+    let connectionLabel = CommonUI.pageTitleLabel(text: "NO INTERNET CONNECTION")
+    connectionLabel.textColor = .white
+
+    let noInternetTitleView = UIView()
+    noInternetTitleView.backgroundColor = .mainRedColor
+
+    noInternetTitleView.addSubview(connectionLabel)
+    connectionLabel.snp.makeConstraints { (make) in
+      make.centerX.equalToSuperview()
+      make.bottom.equalToSuperview().offset(-10)
+    }
+
+    let disabledScreen = CommonUI.disabledScreen()
+
+    let noInternetView = UIView()
+    noInternetView.addSubview(noInternetTitleView)
+    noInternetView.addSubview(disabledScreen)
+
+    noInternetTitleView.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+      make.height.equalTo(88)
+    }
+
+    disabledScreen.snp.makeConstraints { (make) in
+      make.top.equalTo(noInternetTitleView.snp.bottom)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    currentWindow.addSubview(noInternetView)
+    noInternetView.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    return noInternetView
+  }
 }
