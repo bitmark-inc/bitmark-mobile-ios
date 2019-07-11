@@ -79,6 +79,8 @@
 		E283FC6F22D448160035210D /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283FC6D22D448160035210D /* UIButton+Extension.swift */; };
 		E28F1AFD22CA428000B0256F /* libsodium-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E28F1AEA22CA428000B0256F /* libsodium-ios.a */; };
 		E28F1AFE22CA428000B0256F /* Chacha20Poly1305.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F1AFC22CA428000B0256F /* Chacha20Poly1305.swift */; };
+		E297F30322DB34C000BB79F7 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E297F30222DB34C000BB79F7 /* RealmConfig.swift */; };
+		E297F30422DB34C000BB79F7 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E297F30222DB34C000BB79F7 /* RealmConfig.swift */; };
 		E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
 		E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
 		E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */; };
@@ -271,6 +273,7 @@
 		E28F1AFA22CA428000B0256F /* crypto_generichash_blake2b.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_generichash_blake2b.h; sourceTree = "<group>"; };
 		E28F1AFB22CA428000B0256F /* crypto_sign_edwards25519sha512batch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_sign_edwards25519sha512batch.h; sourceTree = "<group>"; };
 		E28F1AFC22CA428000B0256F /* Chacha20Poly1305.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chacha20Poly1305.swift; sourceTree = "<group>"; };
+		E297F30222DB34C000BB79F7 /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
 		E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferBitmarkViewController.swift; sourceTree = "<group>"; };
@@ -608,6 +611,7 @@
 				E28F1ABA22CA428000B0256F /* Encryption */,
 				E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */,
 				58DB99D522CB4457004A611E /* ErrorReporting.swift */,
+				E297F30222DB34C000BB79F7 /* RealmConfig.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -831,6 +835,8 @@
 				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
@@ -857,6 +863,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
@@ -893,6 +901,8 @@
 				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
@@ -919,6 +929,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
@@ -990,6 +1002,7 @@
 				E2BEC95122AF9871009F7DF5 /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E25DF1D922CB3F4700AC270E /* SyncStorageBase.swift in Sources */,
 				E29A73FC22AA49990052C716 /* AppDelegate.swift in Sources */,
+				E297F30422DB34C000BB79F7 /* RealmConfig.swift in Sources */,
 				E2ADFD1D22BC72BF00FC46D8 /* QRScannerViewController.swift in Sources */,
 				E29A73FD22AA49990052C716 /* Credential.swift in Sources */,
 				E2BEC95422AF9878009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
@@ -1070,6 +1083,7 @@
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
 				E2ADFD1C22BC72BF00FC46D8 /* QRScannerViewController.swift in Sources */,
 				E205108122B1041200475871 /* MetadataForm.swift in Sources */,
+				E297F30322DB34C000BB79F7 /* RealmConfig.swift in Sources */,
 				E25DF1D822CB3F4700AC270E /* SyncStorageBase.swift in Sources */,
 				E2CF94D022CB323400B40C66 /* AccountKeyService.swift in Sources */,
 				E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */,
