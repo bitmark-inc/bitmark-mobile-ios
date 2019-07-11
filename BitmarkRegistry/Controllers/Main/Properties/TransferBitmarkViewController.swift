@@ -61,40 +61,42 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   }
 
   @objc func tapToTransfer(button: UIButton) {
-    view.endEditing(true)
-    guard let recipientAccountNumber = recipientAccountNumberTextfield.text else { return }
-    guard recipientAccountNumber.isValid() else {
-      errorForInvalidAccountNumber.isHidden = false; return
-    }
+    doWhenConnectedNetwork {
+      view.endEditing(true)
+      guard let recipientAccountNumber = recipientAccountNumberTextfield.text else { return }
+      guard recipientAccountNumber.isValid() else {
+        errorForInvalidAccountNumber.isHidden = false; return
+      }
 
-    showIndicatorAlert(message: Constant.Message.transferringTransaction) { (selfAlert) in
-      do {
-        _ = try BitmarkService.directTransfer(
-          account: Global.currentAccount!,
-          bitmarkId: self.bitmarkId,
-          to: recipientAccountNumber
-        )
+      showIndicatorAlert(message: Constant.Message.transferringTransaction) { (selfAlert) in
+        do {
+          _ = try BitmarkService.directTransfer(
+            account: Global.currentAccount!,
+            bitmarkId: self.bitmarkId,
+            to: recipientAccountNumber
+          )
 
-        // upload transferred file into file courier server
-        self.assetFileService.transferFile(to: recipientAccountNumber)
+          // upload transferred file into file courier server
+          self.assetFileService.transferFile(to: recipientAccountNumber)
 
-        selfAlert.dismiss(animated: true, completion: {
-          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-            self.showErrorAlert(message: Constant.Error.cannotNavigate)
-            ErrorReporting.report(error: Constant.Error.cannotNavigate)
-            return
-          }
-          propertiesVC.syncUpdatedRecords()
+          selfAlert.dismiss(animated: true, completion: {
+            guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+              self.showErrorAlert(message: Constant.Error.cannotNavigate)
+              ErrorReporting.report(error: Constant.Error.cannotNavigate)
+              return
+            }
+            propertiesVC.syncUpdatedRecords()
 
-          self.showSuccessAlert(message: Constant.Success.transfer, handler: {
-            self.navigationController?.popToRootViewController(animated: true)
+            self.showSuccessAlert(message: Constant.Success.transfer, handler: {
+              self.navigationController?.popToRootViewController(animated: true)
+            })
           })
-        })
-      } catch {
-        selfAlert.dismiss(animated: true, completion: {
-          self.showErrorAlert(message: error.localizedDescription)
-          ErrorReporting.report(error: error)
-        })
+        } catch {
+          selfAlert.dismiss(animated: true, completion: {
+            self.showErrorAlert(message: error.localizedDescription)
+            ErrorReporting.report(error: error)
+          })
+        }
       }
     }
   }

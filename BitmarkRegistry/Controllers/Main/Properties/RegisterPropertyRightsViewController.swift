@@ -126,49 +126,51 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   @objc func tapToIssue(_ button: UIButton) {
-    view.endEditing(true)
+    doWhenConnectedNetwork {
+      view.endEditing(true)
 
-    let assetName = propertyNameTextField.text!
-    let metadata = extractMetadataFromForms()
-    let quantity = Int(numberOfBitmarksTextField.text!)!
+      let assetName = propertyNameTextField.text!
+      let metadata = extractMetadataFromForms()
+      let quantity = Int(numberOfBitmarksTextField.text!)!
 
-    showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
-      do {
-        let assetId: String
-        // *** Register Asset if asset has not existed; then issue ***
-        if let asset = self.asset {
-          assetId = asset.id
-          try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
-        } else {
-          guard let fingerprint = self.assetData else { return }
-          let assetInfo = (
-            registrant: Global.currentAccount!,
-            assetName: assetName,
-            fingerprint: fingerprint,
-            metadata: metadata
-          )
-          assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
-        }
-
-        self.moveFileToAppStorage(of: assetId)
-
-        selfAlert.dismiss(animated: true, completion: {
-          self.showSuccessAlert(message: Constant.Success.issue, handler: {
-            self.navigationController?.popToRootViewController(animated: true)
-          })
-
-          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-            self.showErrorAlert(message: Constant.Error.cannotNavigate)
-            ErrorReporting.report(error: Constant.Error.cannotNavigate)
-            return
+      showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
+        do {
+          let assetId: String
+          // *** Register Asset if asset has not existed; then issue ***
+          if let asset = self.asset {
+            assetId = asset.id
+            try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
+          } else {
+            guard let fingerprint = self.assetData else { return }
+            let assetInfo = (
+              registrant: Global.currentAccount!,
+              assetName: assetName,
+              fingerprint: fingerprint,
+              metadata: metadata
+            )
+            assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
           }
-          propertiesVC.syncUpdatedRecords()
-        })
-      } catch {
-        selfAlert.dismiss(animated: true, completion: {
-          self.showErrorAlert(message: error.localizedDescription)
-          ErrorReporting.report(error: error)
-        })
+
+          self.moveFileToAppStorage(of: assetId)
+
+          selfAlert.dismiss(animated: true, completion: {
+            self.showSuccessAlert(message: Constant.Success.issue, handler: {
+              self.navigationController?.popToRootViewController(animated: true)
+            })
+
+            guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+              self.showErrorAlert(message: Constant.Error.cannotNavigate)
+              ErrorReporting.report(error: Constant.Error.cannotNavigate)
+              return
+            }
+            propertiesVC.syncUpdatedRecords()
+          })
+        } catch {
+          selfAlert.dismiss(animated: true, completion: {
+            self.showErrorAlert(message: error.localizedDescription)
+            ErrorReporting.report(error: error)
+          })
+        }
       }
     }
   }

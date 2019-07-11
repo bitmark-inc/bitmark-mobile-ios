@@ -21,23 +21,5 @@ struct NetworkManager {
   static func isReachable() -> Bool {
     return NetworkManager.shared.reachability.connection != .none
   }
-
-  static func startNotifier(completion: @escaping () -> Void) {
-    NetworkManager.shared.reachability.whenReachable = { reachability in
-      completion()
-      stopNotifier()
-    }
-
-    do {
-      try NetworkManager.shared.reachability.startNotifier()
-    } catch {
-      ErrorReporting.report(error: error)
-      return
-    }
-  }
-
-  static func stopNotifier() -> Void {
-    NetworkManager.shared.reachability.stopNotifier()
-  }
 }
 
