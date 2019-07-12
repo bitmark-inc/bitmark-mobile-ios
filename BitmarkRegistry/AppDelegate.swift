@@ -31,13 +31,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let navigationController = UINavigationController(rootViewController: initialVC)
     navigationController.isNavigationBarHidden = true
     window?.rootViewController = navigationController
+    
+    // Register APNS
+    UIApplication.shared.registerForRemoteNotifications()
 
     evaluatePolicyWhenUserSetEnable()
     initSentry()
     Global.log.logAppDetails()
-    
-    // Register APNS
-    UIApplication.shared.registerForRemoteNotifications()
 
     return true
   }
