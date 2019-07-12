@@ -9,7 +9,6 @@
 import UIKit
 import BitmarkSDK
 import Alamofire
-import SwiftMessages
 
 class BitmarkDetailViewController: UIViewController {
 
@@ -120,7 +119,7 @@ class BitmarkDetailViewController: UIViewController {
 
   @objc func tapToDownload(_ sender: UIButton) {
     guard let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
-      SwiftMessages.show(view: CommonUI.noInternetShout())
+      Global.showNoInternetBanner()
       return
     }
 
@@ -153,7 +152,7 @@ class BitmarkDetailViewController: UIViewController {
   // delete bitmark means transfer bitmark to zero address
   fileprivate func deleteBitmark(_ sender: UIAlertAction) {
     guard  let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
-      SwiftMessages.show(view: CommonUI.noInternetShout())
+      Global.showNoInternetBanner()
       return
     }
 

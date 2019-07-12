@@ -10,6 +10,7 @@ import Foundation
 import BitmarkSDK
 import XCGLogger
 import RxSwift
+import NotificationBannerSwift
 
 class Global {
 
@@ -23,6 +24,9 @@ class Global {
   static var currentAssets = [Asset]()
   static var currentBlocks = [Block]()
   static var latestOffset: [String: Int64] = [:]
+  static var noInternetBanner: NotificationBanner = {
+    return NotificationBanner(title: "", subtitle: "NO INTERNET CONNECTION", style: .danger, colors: CustomBannerColors())
+  }()
 
   public static func clearData() {
     currentAccount = nil
@@ -108,6 +112,29 @@ extension Global {
 
   public static func findBlock(with blockId: Int64) -> Block? {
     return currentBlocks.last(where: { $0.number == blockId })
+  }
+}
+
+extension Global {
+  static func showNoInternetBanner() {
+    noInternetBanner.show()
+    noInternetBanner.applyStyling(subtitleFont: UIFont(name: "Avenir-Black", size: 16), subtitleTextAlign: .center)
+  }
+
+  static func hideNoInternetBanner() {
+    noInternetBanner.dismiss()
+  }
+
+  public class CustomBannerColors: BannerColorsProtocol {
+    public func color(for style: BannerStyle) -> UIColor {
+      switch style {
+      case .danger:   return UIColor.mainRedColor
+      case .info:     return UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.00)
+      case .none:     return UIColor.clear
+      case .success:  return UIColor(red:0.22, green:0.80, blue:0.46, alpha:1.00)
+      case .warning:  return UIColor(red:1.00, green:0.66, blue:0.16, alpha:1.00)
+      }
+    }
   }
 }
 

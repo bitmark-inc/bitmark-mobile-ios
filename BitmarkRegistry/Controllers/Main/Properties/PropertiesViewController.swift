@@ -8,6 +8,7 @@
 
 import UIKit
 import BitmarkSDK
+import Alamofire
 
 class PropertiesViewController: UIViewController {
 
@@ -30,6 +31,7 @@ class PropertiesViewController: UIViewController {
   var emptyViewInYoursTab: UIView!
   var yoursActivityIndicator: UIActivityIndicatorView!
   var bitmarks = [Bitmark]()
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -90,9 +92,12 @@ class PropertiesViewController: UIViewController {
 
   // MARK: - Handlers
   @objc func tapToAddProperty() {
-    navigationController?.pushViewController(
-      RegisterPropertyViewController()
-    )
+    guard let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
+      Global.showNoInternetBanner()
+      return
+    }
+
+    navigationController?.pushViewController(RegisterPropertyViewController())
   }
 
   @objc func segmentChanged(_ sender: UISegmentedControl) {

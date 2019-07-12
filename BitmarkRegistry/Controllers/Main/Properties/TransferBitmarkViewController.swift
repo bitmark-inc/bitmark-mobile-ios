@@ -10,7 +10,6 @@ import UIKit
 import BitmarkSDK
 import SnapKit
 import Alamofire
-import SwiftMessages
 
 class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
@@ -51,9 +50,9 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
       switch status {
       case .reachable:
         self.transferButton.isEnabled = self.validToTransfer()
-        SwiftMessages.hide()
+        Global.hideNoInternetBanner()
       default:
-        SwiftMessages.show(view: CommonUI.noInternetShout())
+        Global.showNoInternetBanner()
         self.transferButton.isEnabled = false
       }
     }

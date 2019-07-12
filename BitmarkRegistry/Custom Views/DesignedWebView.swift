@@ -9,7 +9,6 @@
 import UIKit
 import WebKit
 import Alamofire
-import SwiftMessages
 
 /**
  Create Designed WebView: supports webview in Bitmark app
@@ -47,13 +46,14 @@ class DesignedWebView: UIView {
   func loadWeb() {
     guard let networkReachabilityManager = networkReachabilityManager else { return }
     guard networkReachabilityManager.isReachable else {
-      SwiftMessages.show(view: CommonUI.noInternetShout())
+      Global.showNoInternetBanner()
       networkReachabilityManager.listener = { [weak self] status in
         switch status {
         case .reachable:
+          Global.hideNoInternetBanner()
           self?._loadWeb()
         default:
-          SwiftMessages.show(view: CommonUI.noInternetShout())
+          Global.showNoInternetBanner()
         }
       }
       networkReachabilityManager.startListening()

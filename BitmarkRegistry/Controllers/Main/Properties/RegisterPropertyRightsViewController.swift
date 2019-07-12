@@ -10,7 +10,6 @@ import UIKit
 import BitmarkSDK
 import SnapKit
 import Alamofire
-import SwiftMessages
 
 class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
 
@@ -70,9 +69,9 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       switch status {
       case .reachable:
         self.issueButton.isEnabled = self.validToIssue()
-        SwiftMessages.hide()
+        Global.hideNoInternetBanner()
       default:
-        SwiftMessages.show(view: CommonUI.noInternetShout())
+        Global.showNoInternetBanner()
         self.issueButton.isEnabled = false
       }
     }
