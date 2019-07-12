@@ -130,25 +130,32 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
 // MARK: - UIDocumentPickerDelegate
 extension RegisterPropertyViewController: UIDocumentPickerDelegate {
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
-    let didStartAccessing = url.startAccessingSecurityScopedResource()
-    defer {
-      if didStartAccessing {
-        url.stopAccessingSecurityScopedResource()
-      }
-    }
+    activityIndicator.startAnimating()
+    disabledScreen.isHidden = false
+    UIApplication.shared.beginIgnoringInteractionEvents()
 
-    let fileCoordinator = NSFileCoordinator()
-    var error: NSError?
-    fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { (newURL) in
-      do {
-        assetData = try Data(contentsOf: newURL)
-      } catch {
-        showErrorAlert(message: Constant.Error.accessFile)
-        return
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      let didStartAccessing = url.startAccessingSecurityScopedResource()
+      defer {
+        if didStartAccessing {
+          url.stopAccessingSecurityScopedResource()
+        }
       }
-      assetFileName = newURL.lastPathComponent
-      assetURL = newURL
-      performMoveToRegisterPropertyRights()
+
+      let fileCoordinator = NSFileCoordinator()
+      var error: NSError?
+      fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { (newURL) in
+        do {
+          self.assetData = try Data(contentsOf: newURL)
+        } catch {
+          self.showErrorAlert(message: Constant.Error.accessFile)
+          return
+        }
+        self.assetFileName = newURL.lastPathComponent
+        self.assetURL = newURL
+        self.performMoveToRegisterPropertyRights()
+      }
     }
   }
 }
