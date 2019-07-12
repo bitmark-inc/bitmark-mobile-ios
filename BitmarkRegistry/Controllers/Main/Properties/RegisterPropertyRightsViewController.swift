@@ -9,6 +9,8 @@
 import UIKit
 import BitmarkSDK
 import SnapKit
+import Alamofire
+import SwiftMessages
 
 class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
 
@@ -40,6 +42,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var errorForNumberOfBitmarksToIssue: UILabel!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -55,13 +58,29 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    super.viewWillAppear(animated)
 
     addNotificationObserver(name: UIWindow.keyboardWillShowNotification, selector: #selector(keyboardWillBeShow))
     addNotificationObserver(name: UIWindow.keyboardWillHideNotification, selector: #selector(keyboardWillBeHide))
+
+    // *** setup network reachability handlers ****
+    guard let networkReachabilityManager = networkReachabilityManager else { return }
+    networkReachabilityManager.listener = { [weak self] status in
+      guard let self = self else { return }
+      switch status {
+      case .reachable:
+        self.issueButton.isEnabled = self.validToIssue()
+        SwiftMessages.hide()
+      default:
+        SwiftMessages.show(view: CommonUI.noInternetShout())
+        self.issueButton.isEnabled = false
+      }
+    }
+    networkReachabilityManager.startListening()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
     removeNotificationsObserver()
   }
 
@@ -126,51 +145,49 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   @objc func tapToIssue(_ button: UIButton) {
-    doWhenConnectedNetwork {
-      view.endEditing(true)
+    view.endEditing(true)
 
-      let assetName = propertyNameTextField.text!
-      let metadata = extractMetadataFromForms()
-      let quantity = Int(numberOfBitmarksTextField.text!)!
+    let assetName = propertyNameTextField.text!
+    let metadata = extractMetadataFromForms()
+    let quantity = Int(numberOfBitmarksTextField.text!)!
 
-      showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
-        do {
-          let assetId: String
-          // *** Register Asset if asset has not existed; then issue ***
-          if let asset = self.asset {
-            assetId = asset.id
-            try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
-          } else {
-            guard let fingerprint = self.assetData else { return }
-            let assetInfo = (
-              registrant: Global.currentAccount!,
-              assetName: assetName,
-              fingerprint: fingerprint,
-              metadata: metadata
-            )
-            assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
-          }
-
-          self.moveFileToAppStorage(of: assetId)
-
-          selfAlert.dismiss(animated: true, completion: {
-            self.showSuccessAlert(message: Constant.Success.issue, handler: {
-              self.navigationController?.popToRootViewController(animated: true)
-            })
-
-            guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-              self.showErrorAlert(message: Constant.Error.cannotNavigate)
-              ErrorReporting.report(error: Constant.Error.cannotNavigate)
-              return
-            }
-            propertiesVC.syncUpdatedRecords()
-          })
-        } catch {
-          selfAlert.dismiss(animated: true, completion: {
-            self.showErrorAlert(message: error.localizedDescription)
-            ErrorReporting.report(error: error)
-          })
+    showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
+      do {
+        let assetId: String
+        // *** Register Asset if asset has not existed; then issue ***
+        if let asset = self.asset {
+          assetId = asset.id
+          try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
+        } else {
+          guard let fingerprint = self.assetData else { return }
+          let assetInfo = (
+            registrant: Global.currentAccount!,
+            assetName: assetName,
+            fingerprint: fingerprint,
+            metadata: metadata
+          )
+          assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
         }
+
+        self.moveFileToAppStorage(of: assetId)
+
+        selfAlert.dismiss(animated: true, completion: {
+          self.showSuccessAlert(message: Constant.Success.issue, handler: {
+            self.navigationController?.popToRootViewController(animated: true)
+          })
+
+          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+            self.showErrorAlert(message: Constant.Error.cannotNavigate)
+            ErrorReporting.report(error: Constant.Error.cannotNavigate)
+            return
+          }
+          propertiesVC.syncUpdatedRecords()
+        })
+      } catch {
+        selfAlert.dismiss(animated: true, completion: {
+          self.showErrorAlert(message: error.localizedDescription)
+          ErrorReporting.report(error: error)
+        })
       }
     }
   }
@@ -294,7 +311,8 @@ extension RegisterPropertyRightsViewController {
       return !propertyNameTextField.isEmpty && !numberOfBitmarksTextField.isEmpty &&
               errorForNumberOfBitmarksToIssue.text?.isEmpty ?? true &&
               errorForMetadata.text?.isEmpty ?? true &&
-              validMetadata()
+              validMetadata() &&
+              (networkReachabilityManager?.isReachable ?? false)
     } else {
       return !numberOfBitmarksTextField.isEmpty
     }

@@ -103,7 +103,7 @@ class PropertiesViewController: UIViewController {
     case 1:
       yoursView.isHidden = true
       globalView.isHidden = false
-      doWhenConnectedNetwork { globalView.loadWeb() }
+      globalView.loadWeb()
     default:
       break
     }

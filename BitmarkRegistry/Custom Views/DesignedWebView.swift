@@ -8,6 +8,8 @@
 
 import UIKit
 import WebKit
+import Alamofire
+import SwiftMessages
 
 /**
  Create Designed WebView: supports webview in Bitmark app
@@ -27,6 +29,7 @@ class DesignedWebView: UIView {
   var forwardButton: UIButton!
   var activityIndicator: UIActivityIndicatorView!
   var didLoadWebview: Bool = false
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   init(urlString: String) {
@@ -37,14 +40,33 @@ class DesignedWebView: UIView {
     setupEvents()
   }
 
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
   func loadWeb() {
+    guard let networkReachabilityManager = networkReachabilityManager else { return }
+    guard networkReachabilityManager.isReachable else {
+      SwiftMessages.show(view: CommonUI.noInternetShout())
+      networkReachabilityManager.listener = { [weak self] status in
+        switch status {
+        case .reachable:
+          self?._loadWeb()
+        default:
+          SwiftMessages.show(view: CommonUI.noInternetShout())
+        }
+      }
+      networkReachabilityManager.startListening()
+      return
+    }
+
+    _loadWeb()
+  }
+
+  fileprivate func _loadWeb() {
     guard !(webView.isLoading || didLoadWebview) else { return }
     activityIndicator.startAnimating()
     webView.load(urlRequest)
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 }
 

@@ -8,6 +8,8 @@
 
 import UIKit
 import BitmarkSDK
+import Alamofire
+import SwiftMessages
 
 class BitmarkDetailViewController: UIViewController {
 
@@ -39,6 +41,7 @@ class BitmarkDetailViewController: UIViewController {
   lazy var assetFileService = {
     return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
   }()
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -116,23 +119,26 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   @objc func tapToDownload(_ sender: UIButton) {
-    doWhenConnectedNetwork {
-      showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
-        self.assetFileService.getDownloadedFileURL { [weak self] (downloadedFileURL, error) in
-          guard let self = self else { return }
+    guard let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
+      SwiftMessages.show(view: CommonUI.noInternetShout())
+      return
+    }
 
-          selfAlert.dismiss(animated: true, completion: {
-            if let error = error {
-              self.showErrorAlert(message: Constant.Error.downloadAsset)
-              ErrorReporting.report(error: error)
-              return
-            }
+    showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
+      self.assetFileService.getDownloadedFileURL { [weak self] (downloadedFileURL, error) in
+        guard let self = self else { return }
 
-            guard let downloadedFileURL = downloadedFileURL else { return }
-            let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
-            self.present(shareVC, animated: true)
-          })
-        }
+        selfAlert.dismiss(animated: true, completion: {
+          if let error = error {
+            self.showErrorAlert(message: Constant.Error.downloadAsset)
+            ErrorReporting.report(error: error)
+            return
+          }
+
+          guard let downloadedFileURL = downloadedFileURL else { return }
+          let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
+          self.present(shareVC, animated: true)
+        })
       }
     }
   }
@@ -146,34 +152,37 @@ class BitmarkDetailViewController: UIViewController {
 
   // delete bitmark means transfer bitmark to zero address
   fileprivate func deleteBitmark(_ sender: UIAlertAction) {
-    doWhenConnectedNetwork {
-      let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
-      showIndicatorAlert(message: Constant.Message.deletingBitmark) { (selfAlert) in
-        do {
-          _ = try BitmarkService.directTransfer(
-            account: Global.currentAccount!,
-            bitmarkId: self.bitmark.id,
-            to: zeroAccountNumber
-          )
+    guard  let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
+      SwiftMessages.show(view: CommonUI.noInternetShout())
+      return
+    }
 
-          selfAlert.dismiss(animated: true, completion: {
-            guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-              self.showErrorAlert(message: Constant.Error.cannotNavigate)
-              ErrorReporting.report(error: Constant.Error.cannotNavigate)
-              return
-            }
-            propertiesVC.syncUpdatedRecords()
+    let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
+    showIndicatorAlert(message: Constant.Message.deletingBitmark) { (selfAlert) in
+      do {
+        _ = try BitmarkService.directTransfer(
+          account: Global.currentAccount!,
+          bitmarkId: self.bitmark.id,
+          to: zeroAccountNumber
+        )
 
-            self.showSuccessAlert(message: Constant.Success.delete, handler: {
-              self.navigationController?.popToRootViewController(animated: true)
-            })
+        selfAlert.dismiss(animated: true, completion: {
+          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+            self.showErrorAlert(message: Constant.Error.cannotNavigate)
+            ErrorReporting.report(error: Constant.Error.cannotNavigate)
+            return
+          }
+          propertiesVC.syncUpdatedRecords()
+
+          self.showSuccessAlert(message: Constant.Success.delete, handler: {
+            self.navigationController?.popToRootViewController(animated: true)
           })
-        } catch {
-          selfAlert.dismiss(animated: true, completion: {
-            self.showErrorAlert(message: error.localizedDescription)
-            ErrorReporting.report(error: error)
-          })
-        }
+        })
+      } catch {
+        selfAlert.dismiss(animated: true, completion: {
+          self.showErrorAlert(message: error.localizedDescription)
+          ErrorReporting.report(error: error)
+        })
       }
     }
   }

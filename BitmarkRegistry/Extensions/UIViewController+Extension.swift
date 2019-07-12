@@ -70,12 +70,4 @@ extension UIViewController {
       handler(photoAuthorizationStatus)
     }
   }
-
-  func doWhenConnectedNetwork(completion: () -> Void) {
-    if NetworkManager.isReachable() {
-      completion()
-    } else {
-      showAlert(title: "Network Error", message: Constant.Error.networkError)
-    }
-  }
 }

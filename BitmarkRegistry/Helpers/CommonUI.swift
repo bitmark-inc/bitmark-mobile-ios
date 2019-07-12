@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import SwiftMessages
 
 class CommonUI {
   static func blueButton(title: String) -> UIButton {
@@ -114,5 +115,14 @@ class CommonUI {
     view.backgroundColor = .black
     view.alpha = 0.7
     return view
+  }
+
+  static func noInternetShout() -> UIView {
+    let noInternetShoutView = MessageView.viewFromNib(layout: .cardView)
+    noInternetShoutView.configureTheme(.error)
+    noInternetShoutView.configureDropShadow()
+    noInternetShoutView.configureContent(title: "Error", body: "No Internet Connection!")
+    noInternetShoutView.button?.isHidden = true
+    return noInternetShoutView
   }
 }

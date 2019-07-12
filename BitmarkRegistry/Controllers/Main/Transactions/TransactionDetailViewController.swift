@@ -22,7 +22,7 @@ class TransactionDetailViewController: UIViewController {
     title = "REGISTRY"
 
     setupViews()
-    doWhenConnectedNetwork { mainView.loadWeb() }
+    mainView.loadWeb()
   }
 
   // MARK: Data Handlers

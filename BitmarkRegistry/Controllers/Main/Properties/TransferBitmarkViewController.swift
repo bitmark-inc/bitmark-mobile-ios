@@ -9,6 +9,8 @@
 import UIKit
 import BitmarkSDK
 import SnapKit
+import Alamofire
+import SwiftMessages
 
 class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
@@ -24,6 +26,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   lazy var assetFileService = {
     return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
   }()
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -36,18 +39,35 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    super.viewWillAppear(animated)
+
     addNotificationObserver(name: UIWindow.keyboardWillShowNotification, selector: #selector(keyboardWillBeShow))
     addNotificationObserver(name: UIWindow.keyboardWillHideNotification, selector: #selector(keyboardWillBeHide))
+
+    // *** setup network reachability handlers ****
+    guard let networkReachabilityManager = networkReachabilityManager else { return }
+    networkReachabilityManager.listener = { [weak self] status in
+      guard let self = self else { return }
+      switch status {
+      case .reachable:
+        self.transferButton.isEnabled = self.validToTransfer()
+        SwiftMessages.hide()
+      default:
+        SwiftMessages.show(view: CommonUI.noInternetShout())
+        self.transferButton.isEnabled = false
+      }
+    }
+    networkReachabilityManager.startListening()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
     removeNotificationsObserver()
   }
 
   // MARK: - Handlers
   @objc func changeRecipientTextField(textfield: UITextField) {
-    transferButton.isEnabled = !textfield.text!.isEmpty
+    transferButton.isEnabled = validToTransfer()
   }
 
   @objc func beginEditing(textfield: UITextField) {
@@ -61,42 +81,40 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   }
 
   @objc func tapToTransfer(button: UIButton) {
-    doWhenConnectedNetwork {
-      view.endEditing(true)
-      guard let recipientAccountNumber = recipientAccountNumberTextfield.text else { return }
-      guard recipientAccountNumber.isValid() else {
-        errorForInvalidAccountNumber.isHidden = false; return
-      }
+    view.endEditing(true)
+    guard let recipientAccountNumber = recipientAccountNumberTextfield.text else { return }
+    guard recipientAccountNumber.isValid() else {
+      errorForInvalidAccountNumber.isHidden = false; return
+    }
 
-      showIndicatorAlert(message: Constant.Message.transferringTransaction) { (selfAlert) in
-        do {
-          _ = try BitmarkService.directTransfer(
-            account: Global.currentAccount!,
-            bitmarkId: self.bitmarkId,
-            to: recipientAccountNumber
-          )
+    showIndicatorAlert(message: Constant.Message.transferringTransaction) { (selfAlert) in
+      do {
+        _ = try BitmarkService.directTransfer(
+          account: Global.currentAccount!,
+          bitmarkId: self.bitmarkId,
+          to: recipientAccountNumber
+        )
 
-          // upload transferred file into file courier server
-          self.assetFileService.transferFile(to: recipientAccountNumber)
+        // upload transferred file into file courier server
+        self.assetFileService.transferFile(to: recipientAccountNumber)
 
-          selfAlert.dismiss(animated: true, completion: {
-            guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-              self.showErrorAlert(message: Constant.Error.cannotNavigate)
-              ErrorReporting.report(error: Constant.Error.cannotNavigate)
-              return
-            }
-            propertiesVC.syncUpdatedRecords()
+        selfAlert.dismiss(animated: true, completion: {
+          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
+            self.showErrorAlert(message: Constant.Error.cannotNavigate)
+            ErrorReporting.report(error: Constant.Error.cannotNavigate)
+            return
+          }
+          propertiesVC.syncUpdatedRecords()
 
-            self.showSuccessAlert(message: Constant.Success.transfer, handler: {
-              self.navigationController?.popToRootViewController(animated: true)
-            })
+          self.showSuccessAlert(message: Constant.Success.transfer, handler: {
+            self.navigationController?.popToRootViewController(animated: true)
           })
-        } catch {
-          selfAlert.dismiss(animated: true, completion: {
-            self.showErrorAlert(message: error.localizedDescription)
-            ErrorReporting.report(error: error)
-          })
-        }
+        })
+      } catch {
+        selfAlert.dismiss(animated: true, completion: {
+          self.showErrorAlert(message: error.localizedDescription)
+          ErrorReporting.report(error: error)
+        })
       }
     }
   }
@@ -107,6 +125,11 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     return view.endEditing(true)
+  }
+
+  func validToTransfer() -> Bool {
+    return !recipientAccountNumberTextfield.isEmpty &&
+           (networkReachabilityManager?.isReachable ?? false)
   }
 }
 
