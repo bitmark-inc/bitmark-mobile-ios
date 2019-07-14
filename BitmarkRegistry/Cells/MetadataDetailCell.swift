@@ -25,9 +25,9 @@ class MetadataDetailCell: UITableViewCell {
   }
 
   // MARK: - Handlers
-  func setData(_ metadata: (label: String, description: String)) {
-    labelLabel.text = metadata.label + ":"
-    descriptionLabel.text = metadata.description
+  func setData(_ metadataR: MetadataR) {
+    labelLabel.text = metadataR.key + ":"
+    descriptionLabel.text = metadataR.value
     labelLabel.lineHeightMultiple(1.2)
     descriptionLabel.lineHeightMultiple(1.2)
   }

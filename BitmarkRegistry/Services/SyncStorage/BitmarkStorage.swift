@@ -26,24 +26,22 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
 
   override func syncData() throws {
     let backgroundOwnerRealm = try ownerRealm()
-    let latestOffsetR = backgroundOwnerRealm.object(ofType: LatestOffsetR.self, forPrimaryKey: itemClassName)
+    let latestOffsetR = backgroundOwnerRealm.object(ofType: LatestOffsetR.self, forPrimaryKey: "Bitmark")
     var latestOffset: Int64 = latestOffsetR?.offset ?? 0
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
       guard !bitmarks.isEmpty else { return }
 
-      bitmarks.forEach { (bitmark) in
+      try bitmarks.forEach { (bitmark) in
         var assetR: AssetR?
         if let asset = assets.first(where: { $0.id == bitmark.asset_id }) {
           assetR = AssetR(asset: asset)
         }
 
         let bitmarkR = BitmarkR(bitmark: bitmark, assetR: assetR)
-        try! backgroundOwnerRealm.write {
+        try backgroundOwnerRealm.write {
           backgroundOwnerRealm.add(bitmarkR, update: .modified)
-          let latestOffsetR = LatestOffsetR(value: ["Bitmark", bitmarks.last!.offset])
-          backgroundOwnerRealm.add(latestOffsetR, update: .modified)
         }
       }
       latestOffset = bitmarks.last!.offset
@@ -51,7 +49,7 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
     } while true
 
     try backgroundOwnerRealm.write {
-      backgroundOwnerRealm.add(LatestOffsetR(value: [itemClassName, latestOffset]), update: .modified)
+      backgroundOwnerRealm.add(LatestOffsetR(value: ["Bitmark", latestOffset]), update: .modified)
     }
   }
 }

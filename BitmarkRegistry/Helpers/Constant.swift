@@ -31,6 +31,7 @@ public struct Constant {
     public static let networkError = "Failed to connect to Bitmark. Please check your device's network connection."
     // Common UI error
     public static let cannotNavigate = "Cannot go to expected screen. Please try again with new app update."
+    public static let loadData = "Error happended while loading data."
 
     public struct Metadata {
       public static let duplication = "Duplicated labels! "

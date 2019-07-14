@@ -9,21 +9,19 @@
 import UIKit
 import BitmarkSDK
 import Alamofire
+import RealmSwift
 
 class BitmarkDetailViewController: UIViewController {
 
   // MARK: - Properties
-  var bitmark: Bitmark!
-  lazy var asset: Asset = {
-    return Global.findAsset(with: bitmark.asset_id)!
-  }()
+  var bitmarkR: BitmarkR!
+  var assetR: AssetR!
   // *** Basic Properties ***
   var assetNameLabel: UILabel!
   var issueDateLabel: UILabel!
   var issuerLabel: UILabel!
   // *** Metadata Properties ***
   var metadataTableView: SelfSizedTableView!
-  var metadataObjects = [(label: String, description: String)]()
   // *** Transaction Properties ***
   var transactionTableView: UITableView!
   var transactionIndicator: UIActivityIndicatorView!
@@ -38,7 +36,7 @@ class BitmarkDetailViewController: UIViewController {
   var deleteButton: UIButton!
   var activityIndicator: UIActivityIndicatorView!
   lazy var assetFileService = {
-    return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
+    return AssetFileService(owner: Global.currentAccount!, assetId: assetR.id)
   }()
   var networkReachabilityManager = NetworkReachabilityManager()
 
@@ -46,7 +44,7 @@ class BitmarkDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = asset.name.uppercased()
+    title = assetR.name.uppercased()
     navigationItem.backBarButtonItem = UIBarButtonItem()
     menuBarButton = UIBarButtonItem(image: UIImage(named: "More Actions-close"), style: .plain, target: self, action: #selector(tapToToggleActionMenu))
     navigationItem.rightBarButtonItem = menuBarButton
@@ -58,15 +56,14 @@ class BitmarkDetailViewController: UIViewController {
 
   // MARK: - Data Handlers
   private func loadData() {
-    assetNameLabel.text = asset.name
+    assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
-    issueDateLabel.text = bitmark.created_at?.string(withFormat: Constant.systemFullFormatDate)
-    issuerLabel.text = bitmark.issuer.middleShorten()
+    issueDateLabel.text = bitmarkR.createdAt?.string(withFormat: Constant.systemFullFormatDate)
+    issuerLabel.text = bitmarkR.issuer.middleShorten()
 
-    loadMetadataObjects(asset.metadata)
     metadataTableView.reloadData { [weak self] in
       guard let self = self else { return }
-      if self.metadataObjects.isEmpty {
+      if self.assetR.metadata.isEmpty {
         self.metadataTableView.removeFromSuperview()
       } else {
         self.metadataTableView.invalidateIntrinsicContentSize()
@@ -93,13 +90,6 @@ class BitmarkDetailViewController: UIViewController {
     }
   }
 
-  fileprivate func loadMetadataObjects(_ metadataList: [String: String]) {
-    metadataObjects.removeAll()
-    for (key, value) in metadataList {
-      metadataObjects.append((label: key, description: value))
-    }
-  }
-
   // MARK: - Handlers
   @objc func tapToToggleActionMenu(_ sender: UIBarButtonItem) {
     actionMenuView.isHidden = !actionMenuView.isHidden
@@ -113,7 +103,7 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   @objc func tapToCopyId(_ sender: UIButton) {
-    UIPasteboard.general.string = bitmark.id
+    UIPasteboard.general.string = bitmarkR.id
     copiedToClipboardNotifier.showIn(period: 1.2)
   }
 
@@ -161,7 +151,7 @@ class BitmarkDetailViewController: UIViewController {
       do {
         _ = try BitmarkService.directTransfer(
           account: Global.currentAccount!,
-          bitmarkId: self.bitmark.id,
+          bitmarkId: self.bitmarkR.id,
           to: zeroAccountNumber
         )
 
@@ -191,14 +181,14 @@ class BitmarkDetailViewController: UIViewController {
 extension BitmarkDetailViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableView == metadataTableView
-                      ? metadataObjects.count
+                      ? assetR.metadata.count
                       : transactions.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == metadataTableView {
       let cell = tableView.dequeueReusableCell(withClass: MetadataDetailCell.self)
-      let metadata = metadataObjects[indexPath.row]
+      let metadata = assetR.metadata[indexPath.row]
       cell.setData(metadata)
       return cell
     } else {
@@ -245,8 +235,8 @@ extension BitmarkDetailViewController {
   fileprivate func performMoveToTransferBitmark() {
     tapToToggleActionMenu(menuBarButton)
     let transferBitmarkVC = TransferBitmarkViewController()
-    transferBitmarkVC.asset = asset
-    transferBitmarkVC.bitmarkId = bitmark.id
+    transferBitmarkVC.assetR = assetR
+    transferBitmarkVC.bitmarkId = bitmarkR.id
     navigationController?.pushViewController(transferBitmarkVC)
   }
 
@@ -347,7 +337,7 @@ extension BitmarkDetailViewController {
     }
 
     // enable status for menu buttons base on the bitmark's status
-    if BitmarkStatus(rawValue: bitmark.status) != .settled {
+    if BitmarkStatus(rawValue: bitmarkR.status) != .settled {
       downloadButton.isEnabled = false
       transferButton.isEnabled = false
       deleteButton.isEnabled = false

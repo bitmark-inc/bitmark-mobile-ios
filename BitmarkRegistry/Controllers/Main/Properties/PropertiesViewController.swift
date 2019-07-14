@@ -145,17 +145,22 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withClass: YourPropertyCell.self)
-    let bitmark = bitmarks[indexPath.row]
-    let asset = Global.findAsset(with: bitmark.asset_id)
-    cell.loadWith(asset, bitmark)
+    let bitmarkR = bitmarkRs[indexPath.row]
+    cell.loadWith(bitmarkR)
     return cell
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let bitmark = bitmarks[indexPath.row]
+    let bitmarkR = bitmarkRs[indexPath.row]
+    guard let assetR = bitmarkR.assetR else {
+      ErrorReporting.report(message: "Missing assetId for bitmark with id " + bitmarkR.id)
+      showErrorAlert(message: Constant.Error.loadData)
+      return
+    }
     let bitmarkDetailsVC = BitmarkDetailViewController()
     bitmarkDetailsVC.hidesBottomBarWhenPushed = true
-    bitmarkDetailsVC.bitmark = bitmark
+    bitmarkDetailsVC.bitmarkR = bitmarkR
+    bitmarkDetailsVC.assetR = assetR
     navigationController?.pushViewController(bitmarkDetailsVC)
   }
 }
