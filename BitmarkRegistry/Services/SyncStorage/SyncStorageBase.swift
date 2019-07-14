@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 import BitmarkSDK
 
 class SyncStorageBase<Item> {
@@ -14,6 +15,11 @@ class SyncStorageBase<Item> {
   // MARK: - Properties
   let owner: Account
   let pathExtension = "json"
+
+  func ownerRealm() throws -> Realm {
+    let userConfiguration = RealmConfig.user(owner.getAccountNumber()).configuration
+    return try Realm(configuration: userConfiguration)
+  }
 
   lazy var serialSyncQueue: DispatchQueue = {
     return DispatchQueue(label: "com.bitmark.registry.sync\(Item.self)Queue")
@@ -50,68 +56,42 @@ class SyncStorageBase<Item> {
       * load existing data into UI
       * execute sync in background and update bitmark rows if any change
    */
-  func firstLoad(handler: @escaping ([Item]?, Error?) -> Void) throws {
-    Global.latestOffset[itemClassName] = try getStoredPathName()
-    if Global.latestOffset[itemClassName] == nil {
-      asyncUpdateInSerialQueue(notifyNew: false) { (executeSyncResult) in
+  func firstLoad(handler: @escaping (Error?) -> Void) throws {
+    let latestOffsetR = try ownerRealm().object(ofType: LatestOffsetR.self, forPrimaryKey: itemClassName)
+    if latestOffsetR == nil {
+      asyncUpdateInSerialQueue() { (executeSyncResult) in
         do {
           try executeSyncResult()
-          let data = try self.getData()
-          DispatchQueue.main.async { handler(data, nil) }
-        } catch let e {
-          DispatchQueue.main.async { handler(nil, e) }
+          DispatchQueue.main.async { handler(nil) }
+        } catch {
+          DispatchQueue.main.async { handler(error) }
         }
       }
     } else {
-      let data = try getData()
-      handler(data, nil)
-      asyncUpdateInSerialQueue(notifyNew: true, completion: nil)
+      handler(nil)
+      asyncUpdateInSerialQueue(completion: nil)
     }
   }
 
-  func syncData(at latestOffset: Int64, notifyNew: Bool) throws -> Int64? {
+  func syncData() throws {
     fatalError("syncData has not been implemented")
   }
 
-  func getData() throws -> [Item] {
-    fatalError("getData has not been implemented")
-  }
-
   typealias throwsFunction = () throws -> Void
-  func asyncUpdateInSerialQueue(notifyNew: Bool, doRepeat: Bool = true, completion: ((_ inner: throwsFunction) -> Void)?) {
+  func asyncUpdateInSerialQueue(completion: ((_ inner: throwsFunction) -> Void)?) {
     serialSyncQueue.async { [weak self] in
       do {
-        try self?.sync(notifyNew: notifyNew, doRepeat: doRepeat)
+        DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }
+        defer {
+          DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
+        }
+        try self?.syncData()
         completion?({})
       } catch {
         ErrorReporting.report(error: error)
         completion?({ throw error })
       }
     }
-  }
-
-  /**
-   Sync and merge all bitmarks into a file; set the latest offset as the filename
-   - Parameters:
-   - notifyNew: when true, notify receiveNewBitmarks to update in UI
-   - doRepeat: when false, make one call listBitmarks API one only
-   when we're sure that there are no remain bitmarks in next API,
-   such as: in eventSubscription
-   */
-  func sync(notifyNew: Bool, doRepeat: Bool = true) throws {
-    DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }
-    defer {
-      DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = false }
-    }
-
-    Global.latestOffset[itemClassName] = try getStoredPathName()
-    var latestOffset = Global.latestOffset[itemClassName] ?? 0
-
-    repeat {
-      guard let newOffset = try syncData(at: latestOffset, notifyNew: notifyNew) else { break }
-      latestOffset = newOffset
-      Global.latestOffset[itemClassName] = latestOffset
-    } while doRepeat
   }
 
   // MARK: - Support Functions

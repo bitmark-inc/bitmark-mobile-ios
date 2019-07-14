@@ -27,14 +27,14 @@ class YourPropertyCell: UITableViewCell {
   }
 
   // MARK: - Handlers
-  func loadWith(_ asset: Asset?, _ bitmark: Bitmark) {
-    assetNameLabel.text = asset?.name
-    if let confirmedAt = bitmark.confirmed_at {
+  func loadWith(_ bitmarkR: BitmarkR) {
+    assetNameLabel.text = bitmarkR.assetR?.name
+    if let confirmedAt = bitmarkR.confirmedAt {
       dateLabel.text = confirmedAt.string(withFormat: Constant.systemFullFormatDate)
     } else {
-      dateLabel.text = statusInWord(status: bitmark.status)
+      dateLabel.text = statusInWord(status: bitmarkR.status)
     }
-    issuerLabel.text = bitmark.issuer.middleShorten()
+    issuerLabel.text = bitmarkR.issuer.middleShorten()
   }
 }
 

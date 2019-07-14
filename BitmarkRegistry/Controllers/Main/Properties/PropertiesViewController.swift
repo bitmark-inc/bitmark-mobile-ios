@@ -9,6 +9,7 @@
 import UIKit
 import BitmarkSDK
 import Alamofire
+import RealmSwift
 
 class PropertiesViewController: UIViewController {
 
@@ -30,7 +31,8 @@ class PropertiesViewController: UIViewController {
   var createFirstProperty: UIButton!
   var emptyViewInYoursTab: UIView!
   var yoursActivityIndicator: UIActivityIndicatorView!
-  var bitmarks = [Bitmark]()
+  var bitmarkRs: Results<BitmarkR>!
+  fileprivate var realmToken: NotificationToken?
   var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
@@ -52,27 +54,28 @@ class PropertiesViewController: UIViewController {
   private func loadData() {
     yoursActivityIndicator.startAnimating()
     do {
-      try BitmarkStorage.shared().firstLoad { [weak self] (bitmarks, error) in
+      try BitmarkStorage.shared().firstLoad { [weak self] (error) in
         guard let self = self else { return }
         self.yoursActivityIndicator.stopAnimating()
 
         if let error = error {
           self.showErrorAlert(message: Constant.Error.syncBitmark)
           ErrorReporting.report(error: error)
+          return
         }
 
-        guard let bitmarks = bitmarks else { return }
-        self.bitmarks = bitmarks
-
-        if self.bitmarks.isEmpty {
-          self.emptyViewInYoursTab.isHidden = false
-        } else {
-          self.emptyViewInYoursTab.isHidden = true
-          self.yoursTableView.reloadData()
+        do {
+          self.bitmarkRs = try BitmarkStorage.shared().getData()
+        } catch {
+          self.showErrorAlert(message: Constant.Error.loadBitmark)
+          ErrorReporting.report(error: error)
+          return
         }
+
+        self.setupRealmObserverForLoadingBitmarks()
       }
     } catch {
-      showErrorAlert(message: "Error happened while loading data.")
+      showErrorAlert(message: Constant.Error.loadBitmark)
       ErrorReporting.report(error: error)
     }
   }
@@ -88,6 +91,25 @@ class PropertiesViewController: UIViewController {
     } catch {
       ErrorReporting.report(error: error)
     }
+  }
+
+  fileprivate func setupRealmObserverForLoadingBitmarks() {
+    self.realmToken = self.bitmarkRs.observe({ [weak self] (changes) in
+      guard let self = self else { return }
+      switch changes {
+      case .initial:
+        if self.bitmarkRs.count <= 0 {
+          self.emptyViewInYoursTab.isHidden = false
+        } else {
+          self.emptyViewInYoursTab.isHidden = true
+          self.yoursTableView.reloadData()
+        }
+      case .update(_, let deletions, let insertions, let updates):
+        self.yoursTableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates)
+      case .error(let error):
+        ErrorReporting.report(error: error)
+      }
+    })
   }
 
   // MARK: - Handlers
@@ -118,7 +140,7 @@ class PropertiesViewController: UIViewController {
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return bitmarks.count
+    return bitmarkRs?.count ?? 0
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -138,34 +160,13 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   }
 }
 
-// MARK: BitmarkEventDelegate
-extension PropertiesViewController: EventDelegate {
-  typealias Record = Bitmark
-
+// MARK: Support Functions
+extension PropertiesViewController {
   @objc func syncUpdatedRecords() {
-    BitmarkStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
+    BitmarkStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }
-    }
-  }
-
-  func receiveNewRecords(_ newRecords: [Bitmark]) {
-    for newBitmark in newRecords {
-      yoursTableView.beginUpdates()
-      // Remove obsolete bitmark which is displaying in table
-      if let index = bitmarks.firstIndexWithId(newBitmark.id) {
-        bitmarks.remove(at: index)
-        yoursTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
-      }
-      // Add new bitmark; ignore if bitmark is obsolete
-      if newBitmark.owner == Global.currentAccount?.getAccountNumber() {
-        bitmarks.prepend(newBitmark)
-        yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-      }
-
-      emptyViewInYoursTab.isHidden = !bitmarks.isEmpty
-      yoursTableView.endUpdates()
     }
   }
 }
@@ -174,7 +175,6 @@ extension PropertiesViewController: EventDelegate {
 extension PropertiesViewController {
   fileprivate func setupEvents() {
     // *** Yours Segment ***
-    BitmarkStorage.shared().delegate = self
     yoursTableView.register(cellWithClass: YourPropertyCell.self)
     yoursTableView.dataSource = self
     yoursTableView.delegate = self
