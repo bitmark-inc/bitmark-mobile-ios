@@ -26,8 +26,7 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
 
   override func syncData() throws {
     let backgroundOwnerRealm = try ownerRealm()
-    let latestOffsetR = backgroundOwnerRealm.object(ofType: LatestOffsetR.self, forPrimaryKey: "Bitmark")
-    var latestOffset: Int64 = latestOffsetR?.offset ?? 0
+    var latestOffset = getLatestOffsetR(in: backgroundOwnerRealm)?.offset ?? 0
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)

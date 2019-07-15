@@ -12,7 +12,7 @@ import BitmarkSDK
 class TransactionDetailViewController: UIViewController {
 
   // MARK: - Properties
-  var transaction: Transaction!
+  var transactionR: TransactionR!
   var mainView: DesignedWebView!
 
   // MARK: - Init
@@ -27,13 +27,13 @@ class TransactionDetailViewController: UIViewController {
 
   // MARK: Data Handlers
   fileprivate func extractURL() -> String {
-    if transaction.isTransferTx() {
-      return Global.ServerURL.registry + "/transaction/" + transaction.id
+    if transactionR.isTransferTx() {
+      return Global.ServerURL.registry + "/transaction/" + transactionR.id
     } else {
-      guard let asset = Global.findAsset(with: transaction.asset_id) else {
+      guard let assetR = transactionR.assetR, let blockR = transactionR.blockR else {
         return Global.ServerURL.registry
       }
-      return Global.ServerURL.registry + "/issuance/\(transaction.block_number)/" + transaction.asset_id + "/\(asset.registrant)"
+      return Global.ServerURL.registry + "/issuance/\(blockR.number)/" + assetR.id + "/\(assetR.registrant)"
     }
   }
 }

@@ -7,15 +7,15 @@
 //
 
 import Foundation
-import RealmSwift
 import BitmarkSDK
+import RealmSwift
 
 class SyncStorageBase<Item> {
 
   // MARK: - Properties
   let owner: Account
-  let pathExtension = "json"
 
+  // Get/create realm in documentURL for current account number
   func ownerRealm() throws -> Realm {
     let userConfiguration = RealmConfig.user(owner.getAccountNumber()).configuration
     return try Realm(configuration: userConfiguration)
@@ -27,20 +27,6 @@ class SyncStorageBase<Item> {
 
   lazy var itemClassName = {
     return String(describing: Item.self)
-  }()
-
-  fileprivate lazy var folderName = {
-    return itemClassName.lowercased() + "s" // bitmarks/transactions
-  }()
-
-  // Get/create directory in documentURL; which directory's name is current account number
-  lazy var directoryURL: URL = {
-    let directoryURL = URL(
-      fileURLWithPath: owner.getAccountNumber() + "/" + folderName,
-      relativeTo: FileManager.documentDirectoryURL
-    )
-    try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
-    return directoryURL
   }()
 
   // MARK: - Init
@@ -57,7 +43,7 @@ class SyncStorageBase<Item> {
       * execute sync in background and update bitmark rows if any change
    */
   func firstLoad(handler: @escaping (Error?) -> Void) throws {
-    let latestOffsetR = try ownerRealm().object(ofType: LatestOffsetR.self, forPrimaryKey: itemClassName)
+    let latestOffsetR = try getLatestOffsetR(in: ownerRealm())
     if latestOffsetR == nil {
       asyncUpdateInSerialQueue() { (executeSyncResult) in
         do {
@@ -95,24 +81,8 @@ class SyncStorageBase<Item> {
   }
 
   // MARK: - Support Functions
-  open func fileURL(pathName: Int64) -> URL {
-    return directoryURL.appendingPathComponent(String(pathName))
-                       .appendingPathExtension(pathExtension)
-  }
 
-  open func getStoredPathName() throws -> Int64? {
-    let directoryContents = try FileManager.default.contentsOfDirectory(at: directoryURL, includingPropertiesForKeys: nil)
-    let offsets = directoryContents.compactMap { (fileURL) -> Int64? in
-      let fileURL = fileURL.deletingPathExtension()
-      return Int64(fileURL.lastPathComponent) ?? nil
-    }
-    return offsets.first
-  }
-
-  open func getLatestURL() throws -> URL? {
-    if let latestPathName = Global.latestOffset[itemClassName] {
-      return fileURL(pathName: latestPathName)
-    }
-    return nil
+  open func getLatestOffsetR(in realm: Realm) -> LatestOffsetR? {
+    return realm.object(ofType: LatestOffsetR.self, forPrimaryKey: itemClassName)
   }
 }

@@ -31,25 +31,23 @@ class TransactionListCell: UITableViewCell {
   }
 
   // MARK: - Data Handlers
-  func loadWith(_ transaction: Transaction) {
-    if transaction.isTransferTx() {
+  func loadWith(_ txR: TransactionR) {
+    if txR.isTransferTx() {
       txTypeLabel.text = "P2P TRANSFER"
       txTitle.text = "SEND"
-      accountFromLabel.text = transaction.previous_owner?.middleShorten()
+      accountFromLabel.text = txR.previousOwner?.middleShorten()
       accountToTitleLabel.text = "TO"
-      accountToLabel.text = transaction.owner.middleShorten()
+      accountToLabel.text = txR.owner.middleShorten()
     } else {
       txTypeLabel.text = "PROPERTY ISSUANCE"
       txTitle.text = "ISSUANCE"
-      accountFromLabel.text = transaction.owner.middleShorten()
+      accountFromLabel.text = txR.owner.middleShorten()
     }
 
-    if let asset = Global.findAsset(with: transaction.asset_id) {
-      propertyNameLabel.text = asset.name
-    }
+    propertyNameLabel.text = txR.assetR?.name
 
-    txTimestampLabel.text = transaction.confirmedAt()?.string(withFormat: Constant.systemFullFormatDate) ?? "PENDING..."
-    setupTitleStyle(with: transaction.status)
+    txTimestampLabel.text = txR.confirmedAt?.string(withFormat: Constant.systemFullFormatDate) ?? "PENDING..."
+    setupTitleStyle(with: txR.status)
   }
 }
 

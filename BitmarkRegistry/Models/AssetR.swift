@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import RealmSwift
 import BitmarkSDK
+import RealmSwift
 
 class AssetR: Object {
   

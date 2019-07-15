@@ -8,6 +8,7 @@
 
 import Foundation
 import BitmarkSDK
+import RealmSwift
 
 class TransactionStorage: SyncStorageBase<Transaction> {
 
@@ -20,50 +21,40 @@ class TransactionStorage: SyncStorageBase<Transaction> {
   }
 
   // MARK: - Handlers
-  override func getData() throws -> [Transaction] {
-    if let txsURL = try getLatestURL() {
-      let transactionsWithAsset = try TransactionsWithRelative(from: txsURL)
-      Global.addAssets(transactionsWithAsset.assets)
-      Global.addBlocks(transactionsWithAsset.blocks)
-      return transactionsWithAsset.txs.reversed()
-    }
-    return [Transaction]()
+  func getData() throws -> Results<TransactionR> {
+    return try ownerRealm().objects(TransactionR.self).sorted(byKeyPath: "offset", ascending: false)
   }
 
-  override func syncData(at latestOffset: Int64, notifyNew: Bool) throws -> Int64? {
-    let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
-    guard !txs.isEmpty else { return nil }
+  override func syncData() throws {
+    let backgroundOwnerRealm = try ownerRealm()
+    var latestOffset = getLatestOffsetR(in: backgroundOwnerRealm)?.offset ?? 0
 
-    var txsWithRelative = TransactionsWithRelative(assets: assets, blocks: blocks, txs: txs)
+    repeat {
+      let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
+      guard !txs.isEmpty else { return }
 
-    if notifyNew {
-      Global.addAssets(txsWithRelative.assets)
-      Global.addBlocks(txsWithRelative.blocks)
-      DispatchQueue.main.async { [weak self] in
-        self?.delegate?.receiveNewRecords(txsWithRelative.txs)
+      try txs.forEach { (tx) in
+        var assetR: AssetR?
+        if let asset = assets.first(where: { $0.id == tx.asset_id }) {
+          assetR = AssetR(asset: asset)
+        }
+
+        var blockR: BlockR?
+        if let block = blocks.first(where: { $0.number == tx.block_number }) {
+          blockR = BlockR(block: block)
+        }
+
+        let txR = TransactionR(tx: tx, assetR: assetR, blockR: blockR)
+        try backgroundOwnerRealm.write {
+          backgroundOwnerRealm.add(txR, update: .modified)
+        }
       }
+      latestOffset = txs.last!.offset
+      if txs.count < 100 { break }
+    } while true
+
+    try backgroundOwnerRealm.write {
+      backgroundOwnerRealm.add(LatestOffsetR(value: ["Transaction", latestOffset]), update: .modified)
     }
-
-    let baseOffset = txs.last!.offset // the last offset is the latest offset cause response transactions is asc-offset
-    let txsURL = self.fileURL(pathName: baseOffset)
-
-    if latestOffset == 0 {
-      try txsWithRelative.store(in: txsURL)
-    } else {
-      try mergeNewTxs(txsURL, txsWithRelative)
-    }
-    return baseOffset
-  }
-
-  // Merge new bitmarks into the bitmarks file
-  fileprivate func mergeNewTxs(_ newTxsURL: URL, _ txsWithAsset: TransactionsWithRelative) throws {
-    guard let latestPathName = Global.latestOffset["Transaction"] else { return }
-    let latestTxsURL = fileURL(pathName: latestPathName)
-    var oldTxsWithAsset = try TransactionsWithRelative(from: latestTxsURL)
-    try oldTxsWithAsset.merge(
-      with: txsWithAsset,
-      from: latestTxsURL,
-      to: newTxsURL
-    )
   }
 }

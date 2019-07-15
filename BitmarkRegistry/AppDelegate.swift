@@ -71,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     evaluatePolicyWhenUserSetEnable()
     if Global.currentAccount != nil {
       BitmarkStorage.shared().asyncUpdateInSerialQueue(completion: nil)
-      TransactionStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, completion: nil)
+      TransactionStorage.shared().asyncUpdateInSerialQueue(completion: nil)
     }
   }
 

@@ -149,6 +149,10 @@
 		E2DFDA3422B1EB46008B1AD5 /* MetadataLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */; };
 		E2DFDA3622B21233008B1AD5 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DFDA3522B21233008B1AD5 /* LabelCell.swift */; };
 		E2DFDA3722B212FD008B1AD5 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DFDA3522B21233008B1AD5 /* LabelCell.swift */; };
+		E2E18C1722DC1E0D004078C3 /* TransactionR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1622DC1E0D004078C3 /* TransactionR.swift */; };
+		E2E18C1822DC1E0D004078C3 /* TransactionR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1622DC1E0D004078C3 /* TransactionR.swift */; };
+		E2E18C1A22DC1F4C004078C3 /* BlockR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1922DC1F4C004078C3 /* BlockR.swift */; };
+		E2E18C1B22DC1F4C004078C3 /* BlockR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1922DC1F4C004078C3 /* BlockR.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
 		E2E798C4229E189F00508B69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
@@ -312,6 +316,8 @@
 		E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountKeyService.swift; sourceTree = "<group>"; };
 		E2D4342622CC89EB006A8183 /* FileCourierService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCourierService.swift; sourceTree = "<group>"; };
 		E2DFDA3522B21233008B1AD5 /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
+		E2E18C1622DC1E0D004078C3 /* TransactionR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionR.swift; sourceTree = "<group>"; };
+		E2E18C1922DC1F4C004078C3 /* BlockR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockR.swift; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2E798B9229E189E00508B69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2E798C0229E189F00508B69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -550,6 +556,8 @@
 				E2F866AD22D9C0F2002D7059 /* AssetR.swift */,
 				E2F866B022D9CEB1002D7059 /* MetadataR.swift */,
 				E2F866B322D9E2BE002D7059 /* LatestOffsetR.swift */,
+				E2E18C1622DC1E0D004078C3 /* TransactionR.swift */,
+				E2E18C1922DC1F4C004078C3 /* BlockR.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1046,6 +1054,7 @@
 				E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */,
 				E283FC6F22D448160035210D /* UIButton+Extension.swift in Sources */,
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
+				E2E18C1B22DC1F4C004078C3 /* BlockR.swift in Sources */,
 				E2CEDC8422BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E24B527F22BBB8B400E160E3 /* TransactionService.swift in Sources */,
@@ -1056,6 +1065,7 @@
 				5837C98E22D599C900DA270B /* URLRequest+JWT.swift in Sources */,
 				E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */,
 				E25DF1D322CB3F3600AC270E /* TransactionsWithRelative.swift in Sources */,
+				E2E18C1822DC1E0D004078C3 /* TransactionR.swift in Sources */,
 				E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
 				E2D4342822CC89EB006A8183 /* FileCourierService.swift in Sources */,
@@ -1132,6 +1142,7 @@
 				E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */,
 				E283FC6E22D448160035210D /* UIButton+Extension.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
+				E2E18C1A22DC1F4C004078C3 /* BlockR.swift in Sources */,
 				E2CEDC8322BB951C00B5BBF9 /* BitmarksWithAsset.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
 				E24B527E22BBB8B400E160E3 /* TransactionService.swift in Sources */,
@@ -1142,6 +1153,7 @@
 				5837C98D22D599C200DA270B /* URLRequest+JWT.swift in Sources */,
 				E25DF1D222CB3F3600AC270E /* TransactionsWithRelative.swift in Sources */,
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
+				E2E18C1722DC1E0D004078C3 /* TransactionR.swift in Sources */,
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E2D4342722CC89EB006A8183 /* FileCourierService.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
