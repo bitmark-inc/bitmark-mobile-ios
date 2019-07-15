@@ -107,8 +107,6 @@ extension TransactionsViewController: EventDelegate {
 // MARK: - Setup Views/Events
 extension TransactionsViewController {
   fileprivate func setupEvents() {
-    TransactionStorage.shared().delegate = self
-
     txsTableView.register(cellWithClass: TransactionListCell.self)
     txsTableView.dataSource = self
     txsTableView.delegate = self

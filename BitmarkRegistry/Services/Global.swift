@@ -21,9 +21,6 @@ class Global {
   }
   static var currentJwt: String?
   static var apnsToken: String? // Push notification token
-  static var currentAssets = [Asset]()
-  static var currentBlocks = [Block]()
-  static var latestOffset: [String: Int64] = [:]
   static var noInternetBanner: NotificationBanner = {
     return NotificationBanner(title: "", subtitle: "NO INTERNET CONNECTION", style: .danger, colors: CustomBannerColors())
   }()
@@ -31,8 +28,6 @@ class Global {
   public static func clearData() {
     currentAccount = nil
     currentJwt = nil
-    currentAssets.removeAll()
-    latestOffset = [:]
   }
 
   public static func syncNewDataInStorage() {
@@ -103,24 +98,6 @@ class Global {
 }
 
 // MARK: - Support Functions
-extension Global {
-  public static func addAssets(_ assets: [Asset]) {
-    currentAssets += assets
-  }
-
-  public static func findAsset(with assetId: String) -> Asset? {
-    return currentAssets.last(where: { $0.id == assetId })
-  }
-
-  public static func addBlocks(_ blocks: [Block]) {
-    currentBlocks += blocks
-  }
-
-  public static func findBlock(with blockId: Int64) -> Block? {
-    return currentBlocks.last(where: { $0.number == blockId })
-  }
-}
-
 extension Global {
   static func showNoInternetBanner() {
     noInternetBanner.show()

@@ -40,3 +40,9 @@ class BitmarkR: Object {
     self.confirmedAt = bitmark.confirmed_at
   }
 }
+
+extension Bitmark {
+  func isValid(with ownerNumber: String) -> Bool {
+    return owner == ownerNumber
+  }
+}

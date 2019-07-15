@@ -13,16 +13,22 @@ import RealmSwift
 class TransactionStorage: SyncStorageBase<Transaction> {
 
   // MARK: - Properties
-  weak var delegate: TransactionsViewController?
   static var _shared: TransactionStorage?
   static func shared() -> TransactionStorage {
     _shared = _shared ?? TransactionStorage(owner: Global.currentAccount!)
     return _shared!
   }
+  // Ignore if owner of transaction is zeroAccountNumber - delete bitmark
+  let filterRealmPredicate: NSPredicate = {
+    let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
+    return NSPredicate(format: "owner != %@", zeroAccountNumber)
+  }()
 
   // MARK: - Handlers
   func getData() throws -> Results<TransactionR> {
-    return try ownerRealm().objects(TransactionR.self).sorted(byKeyPath: "offset", ascending: false)
+    return try ownerRealm().objects(TransactionR.self)
+                           .filter(filterRealmPredicate)
+                           .sorted(byKeyPath: "offset", ascending: false)
   }
 
   override func syncData() throws {

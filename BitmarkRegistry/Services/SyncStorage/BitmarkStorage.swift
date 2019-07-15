@@ -33,6 +33,12 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
       guard !bitmarks.isEmpty else { return }
 
       try bitmarks.forEach { (bitmark) in
+        guard bitmark.isValid(with: owner.getAccountNumber()) else {
+          guard let invalidBitmark = backgroundOwnerRealm.object(ofType: BitmarkR.self, forPrimaryKey: bitmark.id) else { return }
+          try backgroundOwnerRealm.write { backgroundOwnerRealm.delete(invalidBitmark) }
+          return
+        }
+
         var assetR: AssetR?
         if let asset = assets.first(where: { $0.id == bitmark.asset_id }) {
           assetR = AssetR(asset: asset)
