@@ -27,6 +27,7 @@ public struct Constant {
     public static let accessFile = "There was a problem to access your selected file."
     public static let syncBitmark = "There was a problem to sync your lastest bitmarks."
     public static let loadBitmark = "Error happened while loading bitmarks."
+    public static let markReadForBitmark = "Error happened while marking this bitmark as read."
     public static let loadTransaction = "Error happened while loading transactions."
     public static let syncTransaction = "There was a problem to sync your lastest transactions."
     public static let networkError = "Failed to connect to Bitmark. Please check your device's network connection."

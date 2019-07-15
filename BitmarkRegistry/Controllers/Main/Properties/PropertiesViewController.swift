@@ -86,6 +86,7 @@ class PropertiesViewController: UIViewController {
     self.realmToken = self.bitmarkRs.observe({ [weak self] (changes) in
       guard let self = self else { return }
       self.yoursTableView.apply(changes: changes)
+      self.setupUnreadBadge()
       self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
     })
   }
@@ -125,6 +126,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
     let cell = tableView.dequeueReusableCell(withClass: YourPropertyCell.self)
     let bitmarkR = bitmarkRs[indexPath.row]
     cell.loadWith(bitmarkR)
+    cell.setReadStyle(read: bitmarkR.read)
     return cell
   }
 
@@ -140,6 +142,9 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
     bitmarkDetailsVC.bitmarkR = bitmarkR
     bitmarkDetailsVC.assetR = assetR
     navigationController?.pushViewController(bitmarkDetailsVC)
+
+    guard let cell = tableView.cellForRow(at: indexPath) as? YourPropertyCell else { return }
+    cell.setReadStyle(read: true)
   }
 }
 
@@ -264,5 +269,11 @@ extension PropertiesViewController {
     }
 
     return view
+  }
+
+  fileprivate func setupUnreadBadge() {
+    tabBarItem.badgeValue = BitmarkStorage.shared().hasUnread() ? "●" : nil
+    tabBarItem.badgeColor = .clear
+    tabBarItem.setBadgeTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], for: .normal)
   }
 }
