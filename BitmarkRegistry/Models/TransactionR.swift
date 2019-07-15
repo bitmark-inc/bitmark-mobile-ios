@@ -16,6 +16,7 @@ class TransactionR: Object {
   @objc dynamic var id: String = ""
   @objc dynamic var assetR: AssetR?
   @objc dynamic var blockR: BlockR?
+  @objc dynamic var bitmarkId: String = ""
   @objc dynamic var owner: String = ""
   @objc dynamic var previousOwner: String?
   @objc dynamic var status: String = ""
@@ -31,11 +32,10 @@ class TransactionR: Object {
   }
 
   // MARK: - Init
-  convenience init(tx: Transaction, assetR: AssetR?, blockR: BlockR?) {
+  convenience init(tx: Transaction) {
     self.init()
     self.id = tx.id
-    self.assetR = assetR
-    self.blockR = blockR
+    self.bitmarkId = tx.bitmark_id
     self.owner = tx.owner
     self.previousOwner = tx.previous_owner
     self.status = tx.status

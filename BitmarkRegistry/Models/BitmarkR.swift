@@ -15,13 +15,13 @@ class BitmarkR: Object {
   // MARK: - Properties
   @objc dynamic var id: String = ""
   @objc dynamic var assetR: AssetR?
+  @objc dynamic var headId: String = ""
   @objc dynamic var issuer: String = ""
   @objc dynamic var owner: String = ""
   @objc dynamic var status: String = ""
   @objc dynamic var offset: Int64 = 0
   @objc dynamic var createdAt: Date? = nil
   @objc dynamic var confirmedAt: Date? = nil
-  let transactions = List<TransactionR>()
 
   override static func primaryKey() -> String? {
     return "id"
@@ -32,12 +32,19 @@ class BitmarkR: Object {
     self.init()
     self.id = bitmark.id
     self.assetR = assetR
+    self.headId = bitmark.head_id
     self.issuer = bitmark.issuer
     self.owner = bitmark.owner
     self.status = bitmark.status
     self.offset = bitmark.offset
     self.createdAt = bitmark.created_at
     self.confirmedAt = bitmark.confirmed_at
+  }
+
+  func txRs(in realm: Realm) -> Results<TransactionR> {
+    return realm.objects(TransactionR.self)
+                .filter("bitmarkId == %@", id)
+                .sorted(byKeyPath: "offset", ascending: false)
   }
 }
 

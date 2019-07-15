@@ -57,4 +57,28 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
       backgroundOwnerRealm.add(LatestOffsetR(value: ["Bitmark", latestOffset]), update: .modified)
     }
   }
+
+  func loadTxRs(for bitmarkR: BitmarkR, completion: @escaping (Results<TransactionR>?, Error?) -> Void) {
+    do {
+      let realm = try ownerRealm()
+      if realm.object(ofType: TransactionR.self, forPrimaryKey: bitmarkR.headId) == nil ||
+        realm.object(ofType: TransactionR.self, forPrimaryKey: bitmarkR.id) == nil {
+        DispatchQueue.main.async {
+          do {
+            let realm = try self.ownerRealm()
+            try TransactionStorage.shared().syncData(for: bitmarkR)
+            let txRs = bitmarkR.txRs(in: realm)
+            completion(txRs, nil)
+          } catch {
+            completion(nil, error)
+          }
+        }
+      } else {
+        let txRs = bitmarkR.txRs(in: realm)
+        completion(txRs, nil)
+      }
+    } catch {
+      completion(nil, error)
+    }
+  }
 }

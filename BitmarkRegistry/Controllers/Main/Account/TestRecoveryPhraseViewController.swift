@@ -87,7 +87,6 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     do {
       AccountService.deregisterAPNS()
       try KeychainStore.removeSeedCoreFromKeychain()
-      BitmarkStorage._shared = nil
       Global.clearData()
     } catch {
       showErrorAlert(message: Constant.Error.removeAccess)

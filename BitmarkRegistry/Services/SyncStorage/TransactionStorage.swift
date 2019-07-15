@@ -19,16 +19,36 @@ class TransactionStorage: SyncStorageBase<Transaction> {
     return _shared!
   }
   // Ignore if owner of transaction is zeroAccountNumber - delete bitmark
-  let filterRealmPredicate: NSPredicate = {
+  let ignoreDeleteTxPredicate: NSPredicate = {
     let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
     return NSPredicate(format: "owner != %@", zeroAccountNumber)
+  }()
+
+  lazy var ignoreUnownedTxPredicate: NSPredicate = {
+    let accountNumber = owner.getAccountNumber()
+    return NSPredicate(format: "(owner == %@ || previousOwner == %@)", accountNumber, accountNumber)
   }()
 
   // MARK: - Handlers
   func getData() throws -> Results<TransactionR> {
     return try ownerRealm().objects(TransactionR.self)
-                           .filter(filterRealmPredicate)
+                           .filter(ignoreDeleteTxPredicate)
+                           .filter(ignoreUnownedTxPredicate)
                            .sorted(byKeyPath: "offset", ascending: false)
+  }
+
+  func syncData(for bitmarkR: BitmarkR) throws {
+    let realm = try ownerRealm()
+    var latestOffset: Int64 = 0
+
+    repeat {
+      let (txs, blocks) = try TransactionService.listAllTransactions(of: bitmarkR.id, at: latestOffset, direction: .later)
+      guard !txs.isEmpty else { return }
+
+      try storeData(in: realm, txs: txs, relations: (assets: nil, blocks: blocks))
+      latestOffset = txs.last!.offset
+      if txs.count < 100 { break }
+    } while true
   }
 
   override func syncData() throws {
@@ -39,28 +59,34 @@ class TransactionStorage: SyncStorageBase<Transaction> {
       let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
       guard !txs.isEmpty else { return }
 
-      try txs.forEach { (tx) in
-        var assetR: AssetR?
-        if let asset = assets.first(where: { $0.id == tx.asset_id }) {
-          assetR = AssetR(asset: asset)
-        }
-
-        var blockR: BlockR?
-        if let block = blocks.first(where: { $0.number == tx.block_number }) {
-          blockR = BlockR(block: block)
-        }
-
-        let txR = TransactionR(tx: tx, assetR: assetR, blockR: blockR)
-        try backgroundOwnerRealm.write {
-          backgroundOwnerRealm.add(txR, update: .modified)
-        }
-      }
+      try storeData(in: backgroundOwnerRealm, txs: txs, relations: (assets: assets, blocks: blocks))
       latestOffset = txs.last!.offset
       if txs.count < 100 { break }
     } while true
 
     try backgroundOwnerRealm.write {
       backgroundOwnerRealm.add(LatestOffsetR(value: ["Transaction", latestOffset]), update: .modified)
+    }
+  }
+
+  fileprivate func storeData(in realm: Realm, txs: [Transaction], relations: (assets: [Asset]?, blocks: [Block])) throws {
+    try txs.forEach { (tx) in
+      let txR = TransactionR(tx: tx)
+      try realm.write {
+        if let assets = relations.assets, let asset = assets.first(where: { $0.id == tx.asset_id }) {
+          let assetR = AssetR(asset: asset)
+          realm.add(assetR, update: .modified)
+          txR.assetR = assetR
+        }
+
+        if let block = relations.blocks.first(where: { $0.number == tx.block_number }) {
+          let blockR = BlockR(block: block)
+          realm.add(blockR, update: .modified)
+          txR.blockR = blockR
+        }
+
+        realm.add(txR, update: .modified)
+      }
     }
   }
 }

@@ -25,7 +25,7 @@ class BitmarkDetailViewController: UIViewController {
   // *** Transaction Properties ***
   var transactionTableView: UITableView!
   var transactionIndicator: UIActivityIndicatorView!
-  var transactions = [Transaction]()
+  var transactionRs: Results<TransactionR>!
   // *** Action Menu ***
   var actionMenuView: UIView!
   var menuBarButton: UIBarButtonItem!
@@ -75,16 +75,17 @@ class BitmarkDetailViewController: UIViewController {
 
   fileprivate func loadTransactions() {
     transactionIndicator.startAnimating()
-    TransactionService.listAllTransactions(of: bitmark.id) { [weak self] (transactions, _, error) in
+    BitmarkStorage.shared().loadTxRs(for: bitmarkR) { [weak self] (resultsTxRs, error) in
       guard let self = self else { return }
       DispatchQueue.main.async {
         self.transactionIndicator.stopAnimating()
-        guard error == nil else {
-          self.showErrorAlert(message: error!.localizedDescription)
+        if let error = error {
+          self.showErrorAlert(message: error.localizedDescription)
+          ErrorReporting.report(error: error)
           return
         }
 
-        self.transactions = transactions!
+        self.transactionRs = resultsTxRs
         self.transactionTableView.reloadData()
       }
     }
@@ -177,7 +178,7 @@ extension BitmarkDetailViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableView == metadataTableView
                       ? assetR.metadata.count
-                      : transactions.count
+                      : (transactionRs?.count ?? 0)
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -188,9 +189,8 @@ extension BitmarkDetailViewController: UITableViewDataSource {
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(withClass: TransactionCell.self)
-      let transaction = transactions[indexPath.row]
-      let timestamp = transaction.confirmedAt()
-      cell.setData(timestamp: timestamp, ownerNumber: transaction.owner)
+      let txR = transactionRs[indexPath.row]
+      cell.setData(timestamp: txR.confirmedAt, ownerNumber: txR.owner)
       return cell
     }
   }

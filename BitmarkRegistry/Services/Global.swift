@@ -28,6 +28,8 @@ class Global {
   public static func clearData() {
     currentAccount = nil
     currentJwt = nil
+    BitmarkStorage._shared = nil
+    TransactionStorage._shared = nil
   }
 
   public static func syncNewDataInStorage() {
