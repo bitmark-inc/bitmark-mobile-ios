@@ -7,10 +7,25 @@
 //
 
 import Foundation
+import BitmarkSDK
 
 // Common Event Delegate for PropertiesViewController & TransactionsViewController
 protocol EventDelegate: class {
-  associatedtype Record
-  func receiveNewRecords(_ newRecords: [Record])
+  func setupBitmarkEventSubscription()
   func syncUpdatedRecords()
+}
+
+extension EventDelegate {
+  func setupBitmarkEventSubscription() {
+    do {
+      let eventSubscription = EventSubscription.shared
+      try eventSubscription.connect(Global.currentAccount!)
+
+      try eventSubscription.listenBitmarkChanged { [weak self] (_) in
+        self?.syncUpdatedRecords()
+      }
+    } catch {
+      ErrorReporting.report(error: error)
+    }
+  }
 }

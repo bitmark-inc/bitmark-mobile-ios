@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 extension IndexPath {
   static func fromRow(_ row: Int) -> IndexPath {
@@ -15,6 +16,17 @@ extension IndexPath {
 }
 
 extension UITableView {
+  func apply<T>(changes: RealmCollectionChange<Results<T>>) {
+    switch changes {
+    case .initial:
+      reloadData()
+    case .update(_, let deletions, let insertions, let updates):
+      applyChanges(deletions: deletions, insertions: insertions, updates: updates)
+    case .error(let error):
+      ErrorReporting.report(error: error)
+    }
+  }
+
   func applyChanges(section: Int = 0, deletions: [Int], insertions: [Int], updates: [Int]) {
     beginUpdates()
     deleteRows(at: deletions.map(IndexPath.fromRow), with: .automatic)

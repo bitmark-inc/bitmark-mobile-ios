@@ -35,6 +35,12 @@ class Global {
     latestOffset = [:]
   }
 
+  public static func syncNewDataInStorage() {
+    guard Global.currentAccount != nil else { return }
+    BitmarkStorage.shared().asyncUpdateInSerialQueue(completion: nil)
+    TransactionStorage.shared().asyncUpdateInSerialQueue(completion: nil)
+  }
+
   // Global logger
   static let log: XCGLogger = {
     // Create a logger object with no destinations

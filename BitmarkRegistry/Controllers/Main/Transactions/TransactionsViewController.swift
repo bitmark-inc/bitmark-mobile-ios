@@ -31,6 +31,7 @@ class TransactionsViewController: UIViewController {
     setupEvents()
 
     loadData()
+    setupBitmarkEventSubscription()
   }
 
   // MARK: - Data Handlers
@@ -66,19 +67,8 @@ class TransactionsViewController: UIViewController {
   fileprivate func setupRealmObserverForLoadingTransactions() {
     self.realmToken = self.transactionRs.observe({ [weak self] (changes) in
       guard let self = self else { return }
-      switch changes {
-      case .initial:
-        if self.transactionRs.count <= 0 {
-          self.emptyView.isHidden = false
-        } else {
-          self.emptyView.isHidden = true
-          self.txsTableView.reloadData()
-        }
-      case .update(_, let deletions, let insertions, let updates):
-        self.txsTableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates)
-      case .error(let error):
-        ErrorReporting.report(error: error)
-      }
+      self.txsTableView.apply(changes: changes)
+      self.emptyView.isHidden = self.transactionRs.count > 0
     })
   }
 }
@@ -103,8 +93,8 @@ extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate
   }
 }
 
-// MARK: Support Functions
-extension TransactionsViewController {
+// MARK: EventDelegate
+extension TransactionsViewController: EventDelegate {
   @objc func syncUpdatedRecords() {
     TransactionStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
       DispatchQueue.main.async {
@@ -150,6 +140,7 @@ extension TransactionsViewController {
 
     emptyView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     activityIndicator.snp.makeConstraints { (make) in

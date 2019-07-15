@@ -98,12 +98,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
         self.assetFileService.transferFile(to: recipientAccountNumber)
 
         selfAlert.dismiss(animated: true, completion: {
-          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-            self.showErrorAlert(message: Constant.Error.cannotNavigate)
-            ErrorReporting.report(error: Constant.Error.cannotNavigate)
-            return
-          }
-          propertiesVC.syncUpdatedRecords()
+          Global.syncNewDataInStorage()
 
           self.showSuccessAlert(message: Constant.Success.transfer, handler: {
             self.navigationController?.popToRootViewController(animated: true)

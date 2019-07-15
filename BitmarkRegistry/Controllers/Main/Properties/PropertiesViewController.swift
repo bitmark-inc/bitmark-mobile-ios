@@ -80,35 +80,13 @@ class PropertiesViewController: UIViewController {
     }
   }
 
-  func setupBitmarkEventSubscription() {
-    do {
-      let eventSubscription = EventSubscription.shared
-      try eventSubscription.connect(Global.currentAccount!)
 
-      try eventSubscription.listenBitmarkChanged { [weak self] (_) in
-        self?.syncUpdatedRecords()
-      }
-    } catch {
-      ErrorReporting.report(error: error)
-    }
-  }
 
   fileprivate func setupRealmObserverForLoadingBitmarks() {
     self.realmToken = self.bitmarkRs.observe({ [weak self] (changes) in
       guard let self = self else { return }
-      switch changes {
-      case .initial:
-        if self.bitmarkRs.count <= 0 {
-          self.emptyViewInYoursTab.isHidden = false
-        } else {
-          self.emptyViewInYoursTab.isHidden = true
-          self.yoursTableView.reloadData()
-        }
-      case .update(_, let deletions, let insertions, let updates):
-        self.yoursTableView.applyChanges(deletions: deletions, insertions: insertions, updates: updates)
-      case .error(let error):
-        ErrorReporting.report(error: error)
-      }
+      self.yoursTableView.apply(changes: changes)
+      self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
     })
   }
 
@@ -165,8 +143,8 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   }
 }
 
-// MARK: Support Functions
-extension PropertiesViewController {
+// MARK: EventDelegate
+extension PropertiesViewController: EventDelegate {
   @objc func syncUpdatedRecords() {
     BitmarkStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
       DispatchQueue.main.async {
@@ -276,9 +254,8 @@ extension PropertiesViewController {
     view.addSubview(createFirstProperty)
 
     contentView.snp.makeConstraints { (make) in
-      make.top.equalToSuperview().offset(25)
-      make.leading.equalToSuperview().offset(20)
-      make.trailing.equalToSuperview().offset(-20)
+      make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 0, right: 20))
     }
 
     createFirstProperty.snp.makeConstraints { (make) in
