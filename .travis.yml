@@ -3,39 +3,21 @@ language: swift
 env:
   global:
     - WORKSPACE=BitmarkRegistry.xcworkspace
-    - SCHEME=BitmarkRegistry
   matrix:
-    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry"          RUN_TESTS="NO"  RUN_DANGER="YES"
-    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry Dev"      RUN_TESTS="NO"  RUN_DANGER="YES"
+    - LINT_ONLY="YES"
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry" 
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry Dev"
 cache:
   cocoapods: true
-  directories:
-    - ~/.danger-swift
 addons:
   homebrew:
-    update: true
-    taps:
-      - danger/tap
     packages:
-      - carthage
-      - danger-swift
       - swiftlint
 
-before_install:
-  - pod install --repo-update
-
 script:
-  - swiftlint lint --config .swiftlint-ci.yml
-  - set -o pipefail
-
-  # Build Application and Run Tests if specified
-  - if [ $RUN_TESTS == "YES" ]; then
-      xcodebuild test -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO -enableCodeCoverage YES | xcpretty;
+  - if [ $LINT_ONLY == "YES" ]; then
+      swiftlint lint --config .swiftlint-ci.yml
     else
+      pod install --repo-update
       xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO | xcpretty;
-    fi
-
-  # Run Danger if specified
-  - if [ $RUN_DANGER == "YES" ]; then
-      DEBUG='*' danger-swift ci;
     fi
