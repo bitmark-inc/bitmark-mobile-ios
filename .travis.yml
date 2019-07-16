@@ -14,12 +14,13 @@ addons:
     packages:
       - swiftlint
 
-before_install:
+install:
   - pod install --repo-update
+  - gem install xcpretty-travis-formatter
 
 script:
   - if [ $LINTONLY == "YES" ]; then
-      swiftlint lint --config .swiftlint-ci.yml
+      swiftlint lint --config .swiftlint-ci.yml;
     else
-      xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO | xcpretty;
+      xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO | xcpretty -f `xcpretty-travis-formatter`;
     fi
