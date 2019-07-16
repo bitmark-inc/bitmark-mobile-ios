@@ -13,6 +13,12 @@ def sharedPods
   pod 'Alamofire'
   pod 'IQKeyboardManagerSwift'
   
+  # ReactiveX
+  pod 'RxSwift', '~> 5'
+  pod 'RxCocoa', '~> 5'
+  pod 'RxAlamofire'
+  pod 'RxOptional'
+  
   # error reporting
   pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.3.1'
   

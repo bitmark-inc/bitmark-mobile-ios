@@ -9,6 +9,7 @@
 import Foundation
 import BitmarkSDK
 import XCGLogger
+import RxSwift
 
 class Global {
 
@@ -18,6 +19,7 @@ class Global {
     }
   }
   static var currentJwt: String?
+  static var apnsToken: String? // Push notification token
   static var currentAssets = [Asset]()
   static var currentBlocks = [Block]()
   static var latestOffset: [String: Int64] = [:]
@@ -118,4 +120,10 @@ enum BitmarkStatus: String {
 enum TransactionStatus: String {
   case confirmed
   case pending
+}
+
+extension Global {
+  static func rxCurrentAccount() -> Observable<Account> {
+    return Observable<Account?>.of(self.currentAccount).errorOnNil()
+  }
 }

@@ -9,12 +9,17 @@
 import UIKit
 import IQKeyboardManagerSwift
 import Sentry
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var retryAuthenticationAlert: UIAlertController?
+  
+  // Reactive
+  private let disposeBag = DisposeBag()
+  private let registerAPNSSubject = PublishSubject<String>()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // init BitmarkSDK environment & api_token
@@ -35,6 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let navigationController = UINavigationController(rootViewController: initialVC)
     navigationController.isNavigationBarHidden = true
     window?.rootViewController = navigationController
+    
+    // Register APNS
+    UIApplication.shared.registerForRemoteNotifications()
 
     evaluatePolicyWhenUserSetEnable()
     initSentry()
@@ -74,6 +82,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
+  
+  func application(_ application: UIApplication,
+                   didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    var token = ""
+    for i in 0..<deviceToken.count {
+      token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+    }
+    
+    registerAPNSSubject.onNext(token)
+    registerAPNSSubject.onCompleted()
+  }
+  
+  func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    registerAPNSSubject.onError(error)
+    registerAPNSSubject.onCompleted()
+  }
 
 }
 
@@ -85,8 +109,24 @@ private extension AppDelegate {
    */
   func evaluatePolicyWhenUserSetEnable() {
     guard let currentAccount = Global.currentAccount else { return }
+    
+    let requestJWTAndAPNSHandler: () -> Void = { [weak self] in
+      guard let self = self else { return }
+      Observable.zip(AccountService.requestJWT(account: currentAccount),
+                     self.registerAPNSSubject.asObservable())
+        .flatMap { (_, token) -> Observable<Void> in
+        return AccountService.registerAPNS(token: token)
+      }.subscribeOn(SerialDispatchQueueScheduler(qos: .background))
+        .subscribe(onError: { (error) in
+          ErrorReporting.report(error: error)
+          Global.log.error(error)
+        }, onCompleted: {
+          Global.log.info("Finish registering jwt and apns.")
+        }).disposed(by: self.disposeBag)
+    }
+    
     guard UserSetting.shared.getTouchFaceIdSetting() else {
-      AccountService.requestJWT(account: currentAccount)
+      requestJWTAndAPNSHandler()
       return
     }
     retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
@@ -99,7 +139,7 @@ private extension AppDelegate {
           self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
           self.retryAuthenticationAlert!.show()
         } else {
-          AccountService.requestJWT(account: currentAccount)
+          requestJWTAndAPNSHandler()
         }
       }
     }

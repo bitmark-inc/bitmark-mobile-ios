@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		171019F658C2E946E9937FC0 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
 		2BE5095F442A2BCB182D166B /* Pods_BitmarkRegistry_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A5FB43309FD36695FB8495 /* Pods_BitmarkRegistry_Dev.framework */; };
+		5837C98D22D599C200DA270B /* URLRequest+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5837C98C22D599C200DA270B /* URLRequest+JWT.swift */; };
+		5837C98E22D599C900DA270B /* URLRequest+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5837C98C22D599C200DA270B /* URLRequest+JWT.swift */; };
 		587FE40F22CC5A5000028F9A /* ErrorReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DB99D522CB4457004A611E /* ErrorReporting.swift */; };
 		58DB99D622CB4457004A611E /* ErrorReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DB99D522CB4457004A611E /* ErrorReporting.swift */; };
 		D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
@@ -165,6 +167,7 @@
 /* Begin PBXFileReference section */
 		415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry Dev.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev.release.xcconfig"; sourceTree = "<group>"; };
 		57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BitmarkRegistry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5837C98C22D599C200DA270B /* URLRequest+JWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+JWT.swift"; sourceTree = "<group>"; };
 		58DB99D522CB4457004A611E /* ErrorReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporting.swift; sourceTree = "<group>"; };
 		651E9C762774E042F0FA1915 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
 		6F49B2891D8855D7048183F0 /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
@@ -589,6 +592,7 @@
 				E27CD23D229E407C00503D6A /* UILabel+Extension.swift */,
 				E24D9C4F22AE149D0095E11D /* UIView+Extension.swift */,
 				E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */,
+				5837C98C22D599C200DA270B /* URLRequest+JWT.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -820,6 +824,11 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAlamofire/RxAlamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
@@ -839,6 +848,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAlamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
@@ -868,6 +882,11 @@
 				"${BUILT_PRODUCTS_DIR}/KeychainAccess/KeychainAccess.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAlamofire/RxAlamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
@@ -887,6 +906,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainAccess.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAlamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
@@ -984,6 +1008,7 @@
 				E25DF1DD22CB3F4700AC270E /* TransactionStorage.swift in Sources */,
 				E22CBF1B22D092C60024E5C3 /* TransactionDetailViewController.swift in Sources */,
 				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
+				5837C98E22D599C900DA270B /* URLRequest+JWT.swift in Sources */,
 				E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */,
 				E25DF1D322CB3F3600AC270E /* TransactionsWithRelative.swift in Sources */,
 				E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
@@ -1063,6 +1088,7 @@
 				E205107922B0A09900475871 /* SubmitButton.swift in Sources */,
 				E25DF1CF22CB3F1E00AC270E /* Array+Transaction+Extension.swift in Sources */,
 				E25DF1C922CB3EA100AC270E /* TransactionsViewController.swift in Sources */,
+				5837C98D22D599C200DA270B /* URLRequest+JWT.swift in Sources */,
 				E25DF1D222CB3F3600AC270E /* TransactionsWithRelative.swift in Sources */,
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
@@ -1105,8 +1131,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K378H9Z4P2;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = Z5CE7A3A7N;
 				INFOPLIST_FILE = "$(SRCROOT)/Dev-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1117,9 +1143,9 @@
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
 				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Development";
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1132,9 +1158,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = K378H9Z4P2;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = Z5CE7A3A7N;
 				INFOPLIST_FILE = "$(SRCROOT)/Dev-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1145,9 +1171,9 @@
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
 				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.thuyentruong.BitmarkRegistry;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Distribution";
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
