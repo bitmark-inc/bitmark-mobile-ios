@@ -14,10 +14,12 @@ addons:
     packages:
       - swiftlint
 
+before_install:
+  - pod install --repo-update
+
 script:
   - if [ $LINT_ONLY == "YES" ]; then
       swiftlint lint --config .swiftlint-ci.yml
     else
-      pod install --repo-update
       xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO | xcpretty;
     fi
