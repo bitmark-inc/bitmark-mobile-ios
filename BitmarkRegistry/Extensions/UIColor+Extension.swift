@@ -18,4 +18,5 @@ extension UIColor {
   static let wildSand = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1) // #F5F5F5
   static let silver = UIColor(red: 193/255, green: 193/255, blue: 193/255, alpha: 1) // #C1C1C1
   static let rockBlue = UIColor(red: 164/255, green: 181/255, blue: 205/255, alpha: 1) // #A4B5CD
+  static let backgroundNavBar = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
 }
