@@ -52,7 +52,7 @@ class AccountService {
     return createJWTRequestURL(for: account).flatMap { (request) -> Observable<Void> in
       return RxAlamofire.requestJSON(request)
         .debug()
-        .flatMap { (response, data) -> Observable<String?> in
+        .flatMap { (_, data) -> Observable<String?> in
           return Observable<String?>.of((data as? [String: String])?["jwt_token"])
       }
       .errorOnNil()
@@ -65,14 +65,14 @@ class AccountService {
       do {
         let timestamp = Common.timestamp()
         let signature = try account.sign(message: timestamp.data(using: .utf8)!)
-        
+
         let data: [String: Any] = [
           "requester": account.getAccountNumber(),
           "timestamp": timestamp,
           "signature": signature.hexEncodedString
         ]
         let jsonData = try JSONSerialization.data(withJSONObject: data)
-        
+
         let url = URL(string: Global.ServerURL.mobile + "/api/auth")!
         var authRequest = URLRequest(url: url)
         authRequest.httpMethod = "POST"
@@ -86,16 +86,16 @@ class AccountService {
         observer.onError(error)
       }
       observer.onCompleted()
-      
+
       return Disposables.create()
     }.errorOnNil()
   }
-  
+
   // Register push notification service with device token to server
   static func registerAPNS(token: String) -> Observable<Void> {
     ErrorReporting.breadcrumbs(info: token, category: "APNS")
     Global.log.info("Registering user notification with token: \(token)")
-    
+
     return Observable<URLRequest>.create { (observer) -> Disposable in
       do {
         var request = try URLRequest(url: URL(string: "\(Global.ServerURL.mobile)/api/push_uuids")!, method: .post)
@@ -103,12 +103,12 @@ class AccountService {
         request.httpBody = try JSONEncoder().encode(["intercom_user_id": "",
                                                      "token": token,
                                                      "platform": "ios",
-                                                     "client":"registry"])
+                                                     "client": "registry"])
         observer.onNext(request)
       } catch let error {
         observer.onError(error)
       }
-      
+
       observer.onCompleted()
       return Disposables.create()
     }.flatMap { (request) -> Observable<Void> in
@@ -117,21 +117,21 @@ class AccountService {
         .map { _ in return }
     }
   }
-  
+
   // Remove APNS token from server
   static func deregisterAPNS() {
     guard let token = Global.apnsToken else {
       Global.log.error("No APNS token")
       return
     }
-    
+
     ErrorReporting.breadcrumbs(info: token, category: "APNS")
     Global.log.info("Registering user notification with token: \(token)")
-    
+
     do {
       var request = try URLRequest(url: URL(string: "\(Global.ServerURL.mobile)/api/push_uuids/\(token)")!, method: .delete)
       try request.attachAuth()
-      
+
       Alamofire.request(request).response { (result) in
         if let resp = result.response,
           resp.statusCode >= 300 {

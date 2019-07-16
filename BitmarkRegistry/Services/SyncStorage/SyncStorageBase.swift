@@ -14,7 +14,7 @@ class SyncStorageBase<Item> {
   // MARK: - Properties
   let owner: Account
   let pathExtension = "json"
-  
+
   lazy var serialSyncQueue: DispatchQueue = {
     return DispatchQueue(label: "com.bitmark.registry.sync\(Item.self)Queue")
   }()

@@ -13,7 +13,7 @@ extension URLRequest {
     guard let jwt = Global.currentJwt else {
       throw("Not logged in yet")
     }
-    
+
     self.setValue("Bearer " + jwt, forHTTPHeaderField: "Authorization")
   }
 }

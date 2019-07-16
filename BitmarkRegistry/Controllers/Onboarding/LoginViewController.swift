@@ -46,7 +46,7 @@ class LoginViewController: BaseRecoveryPhraseViewController {
       let account = try AccountService.getAccount(phrases: getUserInputPhrases())
       Global.currentAccount = account // track and store currentAccount
       try KeychainStore.saveToKeychain(account.seed.core)
-    } catch is RecoverPhrase.RecoverPhraseError  {
+    } catch is RecoverPhrase.RecoverPhraseError {
       errorResultView.isHidden = false
       return
     } catch BitmarkSDK.SeedError.wrongNetwork {
@@ -142,7 +142,7 @@ extension LoginViewController {
   // Submit button is enabled/valid when all textfields is filled text by user
   func validToSubmit() -> Bool {
     guard let visibleCells = recoveryPhraseCollectionView.visibleCells as? [TestRecoveryPhraseLoginCell] else { return false }
-    return visibleCells.first(where: { $0.testPhraseTextField.isEmpty } ) == nil
+    return visibleCells.first(where: { $0.testPhraseTextField.isEmpty }) == nil
   }
 
   func getUserInputPhrases() -> [String] {
@@ -189,7 +189,7 @@ extension LoginViewController {
   fileprivate func filterAutoCorrectWords(_ typingText: String) {
     var filterWords = [String]()
     if !typingText.isEmpty {
-      filterWords = recoveryPhraseWords.filter( { $0.hasPrefix(typingText) })
+      filterWords = recoveryPhraseWords.filter({ $0.hasPrefix(typingText) })
       if filterWords.count > numberOfShowWord { filterWords = Array(filterWords[0..<numberOfShowWord]) }
     }
 

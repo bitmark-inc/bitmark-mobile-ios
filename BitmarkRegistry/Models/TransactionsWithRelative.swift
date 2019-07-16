@@ -35,7 +35,7 @@ struct TransactionsWithRelative: Codable {
     try jsonData.write(to: txsURL, options: .atomic)
   }
 
-  mutating func merge(with other: TransactionsWithRelative , from txsURL: URL, to newTxsURL: URL) throws {
+  mutating func merge(with other: TransactionsWithRelative, from txsURL: URL, to newTxsURL: URL) throws {
     self.assets += other.assets
     self.assets.removeDuplicates()
     self.blocks += other.blocks
