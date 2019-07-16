@@ -79,14 +79,10 @@ extension DesignedWebView {
   fileprivate func setupViews() {
     webView = WKWebView()
 
-    backButton = UIButton(type: .system)
-    backButton.setImage(UIImage(named: "back-arrow"), for: .normal)
-    backButton.contentMode = .scaleAspectFit
+    backButton = UIButton(type: .system, imageName: "back-arrow")
     backButton.tintColor = .silver
 
-    forwardButton = UIButton(type: .system)
-    forwardButton.setImage(UIImage(named: "forward-arrow"), for: .normal)
-    forwardButton.contentMode = .scaleAspectFit
+    forwardButton = UIButton(type: .system, imageName: "forward-arrow")
     forwardButton.tintColor = .silver
 
     let navigationButtons = UIStackView(

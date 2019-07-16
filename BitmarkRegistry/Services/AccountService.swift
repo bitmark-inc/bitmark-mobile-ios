@@ -39,6 +39,10 @@ class AccountService {
     return account
   }
 
+  static func getAccount(phrases: [String]) throws -> Account {
+    return try Account(recoverPhrase: phrases, language: .english)
+  }
+
   // request jwt from mobile_server;
   // for now, just report error to developers; without bothering user
   static func requestJWT(account: Account, completionHandler: ((Bool) -> Void)? = nil) {

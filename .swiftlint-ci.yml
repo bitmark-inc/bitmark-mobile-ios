@@ -1,3 +1,11 @@
+disabled_rules:
+  - trailing_whitespace
+  - identifier_name
+  - type_name
+  - vertical_whitespace
+  - opening_brace
+  - closing_brace
+  - comma
 opt_in_rules:
   - empty_count
 excluded: # paths to ignore during linting. Takes precedence over `included`.

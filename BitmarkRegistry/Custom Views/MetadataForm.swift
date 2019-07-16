@@ -209,8 +209,7 @@ class MetadataForm: UIView, UITextFieldDelegate {
   }
 
   fileprivate func setupDeleteView() {
-    deleteButton = UIButton()
-    deleteButton.setImage(UIImage(named: "delete_label"), for: .normal)
+    deleteButton = UIButton(type: .system, imageName: "delete_label")
     deleteButton.contentMode = .scaleAspectFit
 
     deleteView = UIView()
