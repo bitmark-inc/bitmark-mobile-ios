@@ -81,6 +81,7 @@ class PropertiesViewController: UIViewController {
       self.yoursTableView.apply(changes: changes)
       self.setupUnreadBadge()
       self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
+      self.segmentControl.setBadge(self.bitmarkRs.count, forSegmentAt: 0)
     })
   }
 
