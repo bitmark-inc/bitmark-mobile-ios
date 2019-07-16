@@ -37,7 +37,6 @@ class RegisterPropertyViewController: UIViewController {
     super.viewWillDisappear(animated)
     activityIndicator.stopAnimating()
     disabledScreen.isHidden = true
-    UIApplication.shared.endIgnoringInteractionEvents()
   }
 
   // MARK: - Handlers
@@ -91,7 +90,6 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
     activityIndicator.startAnimating()
     disabledScreen.isHidden = false
-    UIApplication.shared.beginIgnoringInteractionEvents()
 
     picker.dismiss(animated: true) { [weak self] in
       guard let self = self else { return }
@@ -132,7 +130,6 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
     activityIndicator.startAnimating()
     disabledScreen.isHidden = false
-    UIApplication.shared.beginIgnoringInteractionEvents()
 
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
@@ -189,18 +186,9 @@ extension RegisterPropertyViewController {
       " Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.")
     descriptionLabel.lineHeightMultiple(1.2)
 
-    disabledScreen = UIView()
-    disabledScreen.backgroundColor = .wildSand
-    disabledScreen.alpha = 0.7
-    disabledScreen.isHidden = true
-
-    activityIndicator = CommonUI.appActivityIndicator()
-
     // *** Setup UI in view ***
     view.addSubview(registerSelectionView)
     view.addSubview(descriptionLabel)
-    view.addSubview(disabledScreen)
-    view.addSubview(activityIndicator)
 
     registerSelectionView.snp.makeConstraints { (make) in
       make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
@@ -213,13 +201,7 @@ extension RegisterPropertyViewController {
       make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
     }
 
-    disabledScreen.snp.makeConstraints { (make) in
-      make.edges.equalToSuperview()
-    }
-
-    activityIndicator.snp.makeConstraints { (make) in
-      make.centerX.centerY.equalToSuperview()
-    }
+    setupDisabledScreen()
   }
 
   private func registerButton(by text: String) -> UIButton {
@@ -248,5 +230,23 @@ extension RegisterPropertyViewController {
     browserButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: browserButton.frame.width - 20, bottom: 0, right: 0)
 
     return browserButton
+  }
+
+  fileprivate func setupDisabledScreen() {
+    disabledScreen = CommonUI.disabledScreen()
+    activityIndicator = CommonUI.appActivityIndicator()
+
+    guard let currentWindow: UIWindow = UIApplication.shared.keyWindow else { return }
+    currentWindow.addSubview(disabledScreen)
+    currentWindow.addSubview(activityIndicator)
+    disabledScreen.isHidden = true
+
+    disabledScreen.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
   }
 }

@@ -108,4 +108,11 @@ class CommonUI {
     indicator.color = .gray
     return indicator
   }
+
+  static func disabledScreen() -> UIView {
+    let view = UIView()
+    view.backgroundColor = .black
+    view.alpha = 0.7
+    return view
+  }
 }
