@@ -9,6 +9,7 @@
 import Foundation
 import BitmarkSDK
 import XCGLogger
+import RxSwift
 
 class Global {
 
@@ -119,4 +120,10 @@ enum BitmarkStatus: String {
 enum TransactionStatus: String {
   case confirmed
   case pending
+}
+
+extension Global {
+  static func rxCurrentAccount() -> Observable<Account> {
+    return Observable<Account?>.of(self.currentAccount).errorOnNil()
+  }
 }

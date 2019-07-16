@@ -9,12 +9,17 @@
 import UIKit
 import IQKeyboardManagerSwift
 import Sentry
+import RxSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var retryAuthenticationAlert: UIAlertController?
+  
+  // Reactive
+  private let disposeBag = DisposeBag()
+  private let registerAPNSSubject = PublishSubject<String>()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // init BitmarkSDK environment & api_token
@@ -85,12 +90,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
     }
     
-    // Assign the token for later registering
-    Global.apnsToken = token
+    registerAPNSSubject.onNext(token)
+    registerAPNSSubject.onCompleted()
   }
   
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    Global.log.error(error)
+    registerAPNSSubject.onError(error)
+    registerAPNSSubject.onCompleted()
   }
 
 }
@@ -103,13 +109,24 @@ private extension AppDelegate {
    */
   func evaluatePolicyWhenUserSetEnable() {
     guard let currentAccount = Global.currentAccount else { return }
-    let requestJWTHandler: (Bool) -> Void = { (success) in
-      if success {
-        AccountService.registerAPNS()
-      }
+    
+    let requestJWTAndAPNSHandler: () -> Void = { [weak self] in
+      guard let self = self else { return }
+      Observable.zip(AccountService.requestJWT(account: currentAccount),
+                     self.registerAPNSSubject.asObservable())
+        .flatMap { (_, token) -> Observable<Void> in
+        return AccountService.registerAPNS(token: token)
+      }.subscribeOn(SerialDispatchQueueScheduler(qos: .background))
+        .subscribe(onError: { (error) in
+          ErrorReporting.report(error: error)
+          Global.log.error(error)
+        }, onCompleted: {
+          Global.log.info("Finish registering jwt and apns.")
+        }).disposed(by: self.disposeBag)
     }
+    
     guard UserSetting.shared.getTouchFaceIdSetting() else {
-      AccountService.requestJWT(account: currentAccount, completionHandler: requestJWTHandler)
+      requestJWTAndAPNSHandler()
       return
     }
     retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
@@ -122,7 +139,7 @@ private extension AppDelegate {
           self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
           self.retryAuthenticationAlert!.show()
         } else {
-          AccountService.requestJWT(account: currentAccount, completionHandler: requestJWTHandler)
+          requestJWTAndAPNSHandler()
         }
       }
     }
