@@ -4,9 +4,9 @@ env:
   global:
     - WORKSPACE=BitmarkRegistry.xcworkspace
   matrix:
-    - LINT_ONLY="YES"
-    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry" 
-    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry Dev"
+    - LINTONLY="YES"
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry"      LINTONLY="NO"
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry Dev"  LINTONLY="NO"
 cache:
   cocoapods: true
 addons:
@@ -18,7 +18,7 @@ before_install:
   - pod install --repo-update
 
 script:
-  - if [ $LINT_ONLY == "YES" ]; then
+  - if [ $LINTONLY == "YES" ]; then
       swiftlint lint --config .swiftlint-ci.yml
     else
       xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO | xcpretty;
