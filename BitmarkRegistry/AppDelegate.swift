@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     var token = ""
     for i in 0..<deviceToken.count {
-      token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+      token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
     }
     
     registerAPNSSubject.onNext(token)
