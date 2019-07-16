@@ -4,10 +4,11 @@ env:
   global:
     - WORKSPACE=BitmarkRegistry.xcworkspace
   matrix:
-    - LINTONLY="YES"
     - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry"      LINTONLY="NO"
     - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry Dev"  LINTONLY="NO"
+    - LINTONLY="YES"
 cache:
+  bundler: true
   cocoapods: true
 addons:
   homebrew:
@@ -16,11 +17,11 @@ addons:
 
 install:
   - pod install --repo-update
-  - gem install xcpretty-travis-formatter
+  - gem install xcpretty-travis-profiler-formatter
 
 script:
   - if [ $LINTONLY == "YES" ]; then
       swiftlint lint --config .swiftlint-ci.yml;
     else
-      xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO | xcpretty -f `xcpretty-travis-formatter`;
+      xcodebuild build -workspace "$WORKSPACE" -scheme "$SCHEME" -destination "$DESTINATION" ONLY_ACTIVE_ARCH=NO | xcpretty -f `xcpretty-travis-profiler-formatter`;
     fi
