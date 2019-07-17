@@ -9,6 +9,7 @@
 import UIKit
 import BitmarkSDK
 import SnapKit
+import Alamofire
 
 class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
@@ -24,6 +25,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   lazy var assetFileService = {
     return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
   }()
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -36,18 +38,35 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    super.viewWillAppear(animated)
+
     addNotificationObserver(name: UIWindow.keyboardWillShowNotification, selector: #selector(keyboardWillBeShow))
     addNotificationObserver(name: UIWindow.keyboardWillHideNotification, selector: #selector(keyboardWillBeHide))
+
+    // *** setup network reachability handlers ****
+    guard let networkReachabilityManager = networkReachabilityManager else { return }
+    networkReachabilityManager.listener = { [weak self] status in
+      guard let self = self else { return }
+      switch status {
+      case .reachable:
+        self.transferButton.isEnabled = self.validToTransfer()
+        Global.hideNoInternetBanner()
+      default:
+        Global.showNoInternetBanner()
+        self.transferButton.isEnabled = false
+      }
+    }
+    networkReachabilityManager.startListening()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
     removeNotificationsObserver()
   }
 
   // MARK: - Handlers
   @objc func changeRecipientTextField(textfield: UITextField) {
-    transferButton.isEnabled = !textfield.text!.isEmpty
+    transferButton.isEnabled = validToTransfer()
   }
 
   @objc func beginEditing(textfield: UITextField) {
@@ -105,6 +124,11 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     return view.endEditing(true)
+  }
+
+  func validToTransfer() -> Bool {
+    return !recipientAccountNumberTextfield.isEmpty &&
+           (networkReachabilityManager?.isReachable ?? false)
   }
 }
 

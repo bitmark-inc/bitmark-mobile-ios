@@ -9,6 +9,7 @@
 import UIKit
 import BitmarkSDK
 import SnapKit
+import Alamofire
 
 class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
 
@@ -40,6 +41,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var errorForNumberOfBitmarksToIssue: UILabel!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -55,13 +57,29 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   override func viewWillAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    super.viewWillAppear(animated)
 
     addNotificationObserver(name: UIWindow.keyboardWillShowNotification, selector: #selector(keyboardWillBeShow))
     addNotificationObserver(name: UIWindow.keyboardWillHideNotification, selector: #selector(keyboardWillBeHide))
+
+    // *** setup network reachability handlers ****
+    guard let networkReachabilityManager = networkReachabilityManager else { return }
+    networkReachabilityManager.listener = { [weak self] status in
+      guard let self = self else { return }
+      switch status {
+      case .reachable:
+        self.issueButton.isEnabled = self.validToIssue()
+        Global.hideNoInternetBanner()
+      default:
+        Global.showNoInternetBanner()
+        self.issueButton.isEnabled = false
+      }
+    }
+    networkReachabilityManager.startListening()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
     removeNotificationsObserver()
   }
 
@@ -292,7 +310,8 @@ extension RegisterPropertyRightsViewController {
       return !propertyNameTextField.isEmpty && !numberOfBitmarksTextField.isEmpty &&
               errorForNumberOfBitmarksToIssue.text?.isEmpty ?? true &&
               errorForMetadata.text?.isEmpty ?? true &&
-              validMetadata()
+              validMetadata() &&
+              (networkReachabilityManager?.isReachable ?? false)
     } else {
       return !numberOfBitmarksTextField.isEmpty
     }

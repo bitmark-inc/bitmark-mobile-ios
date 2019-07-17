@@ -8,6 +8,7 @@
 
 import UIKit
 import BitmarkSDK
+import Alamofire
 
 class BitmarkDetailViewController: UIViewController {
 
@@ -39,6 +40,7 @@ class BitmarkDetailViewController: UIViewController {
   lazy var assetFileService = {
     return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
   }()
+  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -116,6 +118,11 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   @objc func tapToDownload(_ sender: UIButton) {
+    guard let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
+      Global.showNoInternetBanner()
+      return
+    }
+
     showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
       self.assetFileService.getDownloadedFileURL { [weak self] (downloadedFileURL, error) in
         guard let self = self else { return }
@@ -144,6 +151,11 @@ class BitmarkDetailViewController: UIViewController {
 
   // delete bitmark means transfer bitmark to zero address
   fileprivate func deleteBitmark(_ sender: UIAlertAction) {
+    guard  let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
+      Global.showNoInternetBanner()
+      return
+    }
+
     let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
     showIndicatorAlert(message: Constant.Message.deletingBitmark) { (selfAlert) in
       do {
