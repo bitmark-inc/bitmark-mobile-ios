@@ -35,18 +35,18 @@ class TransactionListCell: UITableViewCell {
     if txR.isTransferTx() {
       txTypeLabel.text = "P2P TRANSFER"
       txTitle.text = "SEND"
-      accountFromLabel.text = txR.previousOwner?.middleShorten()
+      accountFromLabel.text = CustomUserDisplay.accountNumber(txR.previousOwner)
       accountToTitleLabel.text = "TO"
-      accountToLabel.text = txR.owner.middleShorten()
+      accountToLabel.text = CustomUserDisplay.accountNumber(txR.owner)
     } else {
       txTypeLabel.text = "PROPERTY ISSUANCE"
       txTitle.text = "ISSUANCE"
-      accountFromLabel.text = txR.owner.middleShorten()
+      accountFromLabel.text = CustomUserDisplay.accountNumber(txR.owner)
     }
 
     propertyNameLabel.text = txR.assetR?.name
 
-    txTimestampLabel.text = txR.confirmedAt?.string(withFormat: Constant.systemFullFormatDate) ?? "PENDING..."
+    txTimestampLabel.text = CustomUserDisplay.datetime(txR.confirmedAt) ?? "PENDING..."
     setupTitleStyle(with: txR.status)
   }
 }

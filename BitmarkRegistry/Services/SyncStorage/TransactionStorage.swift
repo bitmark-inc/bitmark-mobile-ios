@@ -53,7 +53,7 @@ class TransactionStorage: SyncStorageBase<Transaction> {
 
   override func syncData() throws {
     let backgroundOwnerRealm = try ownerRealm()
-    var latestOffset = getLatestOffsetR(in: backgroundOwnerRealm)?.offset ?? 0
+    var latestOffset = getLatestOffset() ?? 0
 
     repeat {
       let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
@@ -64,27 +64,26 @@ class TransactionStorage: SyncStorageBase<Transaction> {
       if txs.count < 100 { break }
     } while true
 
-    try backgroundOwnerRealm.write {
-      backgroundOwnerRealm.add(LatestOffsetR(value: ["Transaction", latestOffset]), update: .modified)
-    }
+    storeLatestOffset(value: latestOffset)
   }
 
   fileprivate func storeData(in realm: Realm, txs: [Transaction], relations: (assets: [Asset]?, blocks: [Block])) throws {
     try txs.forEach { (tx) in
       let txR = TransactionR(tx: tx)
       try realm.write {
-        if let assets = relations.assets, let asset = assets.first(where: { $0.id == tx.asset_id }) {
-          let assetR = AssetR(asset: asset)
-          realm.add(assetR, update: .modified)
-          txR.assetR = assetR
+
+        var assetR = realm.object(ofType: AssetR.self, forPrimaryKey: tx.asset_id)
+        if assetR == nil, let assets = relations.assets, let asset = assets.first(where: { $0.id == tx.asset_id }) {
+          assetR = AssetR(asset: asset)
         }
 
-        if let block = relations.blocks.first(where: { $0.number == tx.block_number }) {
-          let blockR = BlockR(block: block)
-          realm.add(blockR, update: .modified)
-          txR.blockR = blockR
+        var blockR = realm.object(ofType: BlockR.self, forPrimaryKey: tx.block_number)
+        if blockR == nil, let block = relations.blocks.first(where: { $0.number == tx.block_number }) {
+          blockR = BlockR(block: block)
         }
 
+        txR.assetR = assetR
+        txR.blockR = blockR
         realm.add(txR, update: .modified)
       }
     }

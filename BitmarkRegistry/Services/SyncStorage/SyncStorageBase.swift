@@ -17,7 +17,7 @@ class SyncStorageBase<Item> {
 
   // Get/create realm in documentURL for current account number
   func ownerRealm() throws -> Realm {
-    let userConfiguration = RealmConfig.user(owner.getAccountNumber()).configuration
+    let userConfiguration = try RealmConfig.user(owner.getAccountNumber()).configuration()
     return try Realm(configuration: userConfiguration)
   }
 
@@ -28,6 +28,8 @@ class SyncStorageBase<Item> {
   lazy var itemClassName = {
     return String(describing: Item.self)
   }()
+
+  func latestOffsetKey() -> String { return owner.getAccountNumber() + "_" + itemClassName }
 
   // MARK: - Init
   init(owner: Account) {
@@ -43,8 +45,7 @@ class SyncStorageBase<Item> {
       * execute sync in background and update bitmark rows if any change
    */
   func firstLoad(handler: @escaping (Error?) -> Void) throws {
-    let latestOffsetR = try getLatestOffsetR(in: ownerRealm())
-    if latestOffsetR == nil {
+    if getLatestOffset() == nil {
       asyncUpdateInSerialQueue() { (executeSyncResult) in
         do {
           try executeSyncResult()
@@ -81,8 +82,11 @@ class SyncStorageBase<Item> {
   }
 
   // MARK: - Support Functions
+  open func getLatestOffset() -> Int64? {
+    return UserDefaults.standard.value(forKey: latestOffsetKey()) as? Int64
+  }
 
-  open func getLatestOffsetR(in realm: Realm) -> LatestOffsetR? {
-    return realm.object(ofType: LatestOffsetR.self, forPrimaryKey: itemClassName)
+  open func storeLatestOffset(value: Int64) {
+    UserDefaults.standard.set(value, forKey: latestOffsetKey())
   }
 }

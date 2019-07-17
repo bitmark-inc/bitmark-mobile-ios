@@ -20,6 +20,7 @@ class AssetR: Object {
   @objc dynamic var status: String = ""
   @objc dynamic var offset: Int64 = 0
   @objc dynamic var createdAt: Date? = nil
+  @objc dynamic var assetFilePath: String?
   let metadata = List<MetadataR>()
 
   override static func primaryKey() -> String? {

@@ -26,7 +26,7 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
 
   override func syncData() throws {
     let backgroundOwnerRealm = try ownerRealm()
-    var latestOffset = getLatestOffsetR(in: backgroundOwnerRealm)?.offset ?? 0
+    var latestOffset = getLatestOffset() ?? 0
 
     repeat {
       let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
@@ -39,8 +39,8 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
           return
         }
 
-        var assetR: AssetR?
-        if let asset = assets.first(where: { $0.id == bitmark.asset_id }) {
+        var assetR = backgroundOwnerRealm.object(ofType: AssetR.self, forPrimaryKey: bitmark.asset_id)
+        if assetR == nil, let asset = assets.first(where: { $0.id == bitmark.asset_id }) {
           assetR = AssetR(asset: asset)
         }
 
@@ -53,9 +53,7 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
       if bitmarks.count < 100 { break }
     } while true
 
-    try backgroundOwnerRealm.write {
-      backgroundOwnerRealm.add(LatestOffsetR(value: ["Bitmark", latestOffset]), update: .modified)
-    }
+    storeLatestOffset(value: latestOffset)
   }
 
   func loadTxRs(for bitmarkR: BitmarkR, completion: @escaping (Results<TransactionR>?, Error?) -> Void) {

@@ -14,8 +14,4 @@ class MetadataR: Object {
   @objc dynamic var id: String = "" // to avoid duplication - id (assetId_key)
   @objc dynamic var key: String = ""
   @objc dynamic var value: String = ""
-
-  override static func primaryKey() -> String? {
-    return "id"
-  }
 }

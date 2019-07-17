@@ -48,6 +48,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     initSentry()
     Global.log.logAppDetails()
 
+    // setup realm db
+    do {
+      try RealmConfig.setupDBForCurrentAccount()
+    } catch {
+      ErrorReporting.report(error: error)
+      window?.rootViewController = SuspendedViewController()
+    }
+
     return true
   }
 

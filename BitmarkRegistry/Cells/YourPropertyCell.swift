@@ -30,11 +30,11 @@ class YourPropertyCell: UITableViewCell {
   func loadWith(_ bitmarkR: BitmarkR) {
     assetNameLabel.text = bitmarkR.assetR?.name
     if let confirmedAt = bitmarkR.confirmedAt {
-      dateLabel.text = confirmedAt.string(withFormat: Constant.systemFullFormatDate)
+      dateLabel.text = CustomUserDisplay.datetime(confirmedAt)
     } else {
       dateLabel.text = statusInWord(status: bitmarkR.status)
     }
-    issuerLabel.text = bitmarkR.issuer.middleShorten()
+    issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
   }
 }
 

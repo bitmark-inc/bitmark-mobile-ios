@@ -58,8 +58,8 @@ class BitmarkDetailViewController: UIViewController {
   private func loadData() {
     assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
-    issueDateLabel.text = bitmarkR.createdAt?.string(withFormat: Constant.systemFullFormatDate)
-    issuerLabel.text = bitmarkR.issuer.middleShorten()
+    issueDateLabel.text = CustomUserDisplay.datetime(bitmarkR.createdAt)
+    issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
 
     metadataTableView.reloadData { [weak self] in
       guard let self = self else { return }

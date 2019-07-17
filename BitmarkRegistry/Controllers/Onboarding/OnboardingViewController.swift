@@ -43,6 +43,15 @@ class OnboardingViewController: UIViewController {
             do {
               Global.currentAccount = account // track and store currentAccount
               try KeychainStore.saveToKeychain(account.seed.core)
+
+              // setup realm db
+              do {
+                try RealmConfig.setupDBForCurrentAccount()
+              } catch {
+                ErrorReporting.report(error: error)
+                self.navigationController?.viewControllers = [SuspendedViewController()]
+              }
+
               let touchAuthenticationViewController = TouchAuthenticationViewController()
               self.navigationController?.pushViewController(touchAuthenticationViewController) // redirect to Onboarding Screens
             } catch {

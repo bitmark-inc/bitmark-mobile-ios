@@ -26,6 +26,8 @@
 		E216890922C1F09A00E943B9 /* UserSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216890722C1F09A00E943B9 /* UserSetting.swift */; };
 		E21B10FE22DB08CE008D2C92 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21B10FD22DB08CE008D2C92 /* UITableView+Extension.swift */; };
 		E21B10FF22DB08CE008D2C92 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21B10FD22DB08CE008D2C92 /* UITableView+Extension.swift */; };
+		E21B492022E15BC000FA41E7 /* SuspendedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21B491F22E15BC000FA41E7 /* SuspendedViewController.swift */; };
+		E21B492122E15BC000FA41E7 /* SuspendedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21B491F22E15BC000FA41E7 /* SuspendedViewController.swift */; };
 		E22CBF1722D075D80024E5C3 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22CBF1622D075D70024E5C3 /* TransactionDetailViewController.swift */; };
 		E22CBF1922D078390024E5C3 /* DesignedWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22CBF1822D078390024E5C3 /* DesignedWebView.swift */; };
 		E22CBF1A22D08C410024E5C3 /* DesignedWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22CBF1822D078390024E5C3 /* DesignedWebView.swift */; };
@@ -73,6 +75,8 @@
 		E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */; };
 		E283FC6E22D448160035210D /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283FC6D22D448160035210D /* UIButton+Extension.swift */; };
 		E283FC6F22D448160035210D /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E283FC6D22D448160035210D /* UIButton+Extension.swift */; };
+		E28D437422DEE54300749320 /* CustomUserDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D437322DEE54300749320 /* CustomUserDisplay.swift */; };
+		E28D437522DEE54300749320 /* CustomUserDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D437322DEE54300749320 /* CustomUserDisplay.swift */; };
 		E28F1AFD22CA428000B0256F /* libsodium-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E28F1AEA22CA428000B0256F /* libsodium-ios.a */; };
 		E28F1AFE22CA428000B0256F /* Chacha20Poly1305.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F1AFC22CA428000B0256F /* Chacha20Poly1305.swift */; };
 		E297F30322DB34C000BB79F7 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E297F30222DB34C000BB79F7 /* RealmConfig.swift */; };
@@ -168,8 +172,6 @@
 		E2F866AF22D9C0F2002D7059 /* AssetR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F866AD22D9C0F2002D7059 /* AssetR.swift */; };
 		E2F866B122D9CEB1002D7059 /* MetadataR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F866B022D9CEB1002D7059 /* MetadataR.swift */; };
 		E2F866B222D9CEB1002D7059 /* MetadataR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F866B022D9CEB1002D7059 /* MetadataR.swift */; };
-		E2F866B422D9E2BE002D7059 /* LatestOffsetR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F866B322D9E2BE002D7059 /* LatestOffsetR.swift */; };
-		E2F866B522D9E2BE002D7059 /* LatestOffsetR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F866B322D9E2BE002D7059 /* LatestOffsetR.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,6 +190,7 @@
 		E205108022B1041200475871 /* MetadataForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataForm.swift; sourceTree = "<group>"; };
 		E216890722C1F09A00E943B9 /* UserSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSetting.swift; sourceTree = "<group>"; };
 		E21B10FD22DB08CE008D2C92 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		E21B491F22E15BC000FA41E7 /* SuspendedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspendedViewController.swift; sourceTree = "<group>"; };
 		E22CBF1622D075D70024E5C3 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
 		E22CBF1822D078390024E5C3 /* DesignedWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignedWebView.swift; sourceTree = "<group>"; };
 		E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkDetailViewController.swift; sourceTree = "<group>"; };
@@ -212,6 +215,7 @@
 		E27CD23D229E407C00503D6A /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
 		E283FC6D22D448160035210D /* UIButton+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		E28D437322DEE54300749320 /* CustomUserDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomUserDisplay.swift; sourceTree = "<group>"; };
 		E28F1ABC22CA428000B0256F /* crypto_stream_salsa2012.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_stream_salsa2012.h; sourceTree = "<group>"; };
 		E28F1ABD22CA428000B0256F /* sodium_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sodium_lib.h; sourceTree = "<group>"; };
 		E28F1ABE22CA428000B0256F /* crypto_auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_auth.h; sourceTree = "<group>"; };
@@ -325,7 +329,6 @@
 		E2F866AA22D9BDBC002D7059 /* BitmarkR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitmarkR.swift; sourceTree = "<group>"; };
 		E2F866AD22D9C0F2002D7059 /* AssetR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetR.swift; sourceTree = "<group>"; };
 		E2F866B022D9CEB1002D7059 /* MetadataR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataR.swift; sourceTree = "<group>"; };
-		E2F866B322D9E2BE002D7059 /* LatestOffsetR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestOffsetR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -541,7 +544,6 @@
 				E2F866AA22D9BDBC002D7059 /* BitmarkR.swift */,
 				E2F866AD22D9C0F2002D7059 /* AssetR.swift */,
 				E2F866B022D9CEB1002D7059 /* MetadataR.swift */,
-				E2F866B322D9E2BE002D7059 /* LatestOffsetR.swift */,
 				E2E18C1622DC1E0D004078C3 /* TransactionR.swift */,
 				E2E18C1922DC1F4C004078C3 /* BlockR.swift */,
 			);
@@ -619,6 +621,7 @@
 				E24D9C4B22ADFED80095E11D /* CommonUI.swift */,
 				E2BEC96022AFC24F009F7DF5 /* Constant.swift */,
 				E2E798DC229E25E200508B69 /* Credential.swift */,
+				E28D437322DEE54300749320 /* CustomUserDisplay.swift */,
 				E2ADFD1E22BC742900FC46D8 /* QRCode.swift */,
 				E28F1ABA22CA428000B0256F /* Encryption */,
 				E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */,
@@ -685,6 +688,7 @@
 			isa = PBXGroup;
 			children = (
 				E24D9C4D22AE08EF0095E11D /* CustomTabBarViewController.swift */,
+				E21B491F22E15BC000FA41E7 /* SuspendedViewController.swift */,
 				E2CECFC122D3045B00468BFC /* EventDelegate.swift */,
 				E2BEC95922AFA6D6009F7DF5 /* Properties */,
 				E24D9C5A22AE57FA0095E11D /* Account */,
@@ -842,13 +846,13 @@
 				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxAlamofire/RxAlamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
@@ -870,13 +874,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAlamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
@@ -908,13 +912,13 @@
 				"${BUILT_PRODUCTS_DIR}/NotificationBannerSwift/NotificationBannerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjcExceptionBridging/ObjcExceptionBridging.framework",
 				"${BUILT_PRODUCTS_DIR}/PanModal/PanModal.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxAlamofire/RxAlamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
@@ -936,13 +940,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NotificationBannerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjcExceptionBridging.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PanModal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAlamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
@@ -986,6 +990,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E21B492122E15BC000FA41E7 /* SuspendedViewController.swift in Sources */,
 				E205107D22B0ABC300475871 /* DesignedTextField.swift in Sources */,
 				E2DFDA3722B212FD008B1AD5 /* LabelCell.swift in Sources */,
 				E25DF1C222CB3C8600AC270E /* SessionData.swift in Sources */,
@@ -1009,7 +1014,6 @@
 				E2CF94CE22CB31FE00B40C66 /* TouchAuthenticationViewController.swift in Sources */,
 				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
 				E24D9C5122AE49380095E11D /* CustomTabBarViewController.swift in Sources */,
-				E2F866B522D9E2BE002D7059 /* LatestOffsetR.swift in Sources */,
 				E29A73FB22AA49990052C716 /* OnboardingViewController.swift in Sources */,
 				E2BEC95122AF9871009F7DF5 /* WarningRecoveryPhraseViewController.swift in Sources */,
 				E25DF1D922CB3F4700AC270E /* SyncStorageBase.swift in Sources */,
@@ -1050,6 +1054,7 @@
 				E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
 				E2D4342822CC89EB006A8183 /* FileCourierService.swift in Sources */,
+				E28D437522DEE54300749320 /* CustomUserDisplay.swift in Sources */,
 				E2CEDC7E22BB94D800B5BBF9 /* String+Extension.swift in Sources */,
 				E25DF1C422CB3C8600AC270E /* AssetEncryption.swift in Sources */,
 				E2BEC95222AF9873009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
@@ -1070,6 +1075,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E21B492022E15BC000FA41E7 /* SuspendedViewController.swift in Sources */,
 				E205107C22B0AA6300475871 /* DesignedTextField.swift in Sources */,
 				E2DFDA3622B21233008B1AD5 /* LabelCell.swift in Sources */,
 				E24B527B22BBB7C600E160E3 /* SelfSizedTableView.swift in Sources */,
@@ -1094,7 +1100,6 @@
 				E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E25DF1DC22CB3F4700AC270E /* TransactionStorage.swift in Sources */,
 				E2CF94CD22CB31E500B40C66 /* TouchAuthenticationViewController.swift in Sources */,
-				E2F866B422D9E2BE002D7059 /* LatestOffsetR.swift in Sources */,
 				E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
 				E2ADFD1C22BC72BF00FC46D8 /* QRScannerViewController.swift in Sources */,
@@ -1134,6 +1139,7 @@
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E2D4342722CC89EB006A8183 /* FileCourierService.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,
+				E28D437422DEE54300749320 /* CustomUserDisplay.swift in Sources */,
 				E2CEDC7D22BB94D800B5BBF9 /* String+Extension.swift in Sources */,
 				E22CBF1922D078390024E5C3 /* DesignedWebView.swift in Sources */,
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
