@@ -15,7 +15,6 @@ class TransactionDetailViewController: UIViewController {
   var transaction: Transaction!
   var mainView: DesignedWebView!
 
-
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()

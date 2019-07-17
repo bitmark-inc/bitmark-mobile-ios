@@ -16,3 +16,4 @@ xcuserdata/
 # CocoaPods
 Pods/
 Secrets/
+Podfile.lock

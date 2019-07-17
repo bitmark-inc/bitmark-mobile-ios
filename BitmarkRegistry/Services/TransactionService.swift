@@ -18,7 +18,7 @@ class TransactionService {
     let transactionQuery = Transaction.newTransactionQueryParams()
                                       .referencedBitmark(bitmarkID: bitmarkId)
                                       .pending(true)
-    Transaction.list(params: transactionQuery) { (txs, assets, blocks, error) in
+    Transaction.list(params: transactionQuery) { (txs, _, blocks, error) in
       handler(txs, blocks, error)
     }
   }
@@ -34,6 +34,6 @@ class TransactionService {
                                  .pending(true)
 
     let (txs, assets, blocks) = try Transaction.list(params: txQuery)
-    return (txs , assets ?? [Asset](), blocks ?? [Block]())
+    return (txs, assets ?? [Asset](), blocks ?? [Block]())
   }
 }

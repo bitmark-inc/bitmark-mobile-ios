@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var retryAuthenticationAlert: UIAlertController?
-  
+
   // Reactive
   private let disposeBag = DisposeBag()
   private let registerAPNSSubject = PublishSubject<String>()
@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let navigationController = UINavigationController(rootViewController: initialVC)
     navigationController.isNavigationBarHidden = true
     window?.rootViewController = navigationController
-    
+
     // Register APNS
     UIApplication.shared.registerForRemoteNotifications()
 
@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillEnterForeground(_ application: UIApplication) {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     evaluatePolicyWhenUserSetEnable()
-    if Global.currentAccount != nil { 
+    if Global.currentAccount != nil {
       BitmarkStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, completion: nil)
       TransactionStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, completion: nil)
     }
@@ -82,18 +82,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
   }
-  
+
   func application(_ application: UIApplication,
                    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     var token = ""
     for i in 0..<deviceToken.count {
-      token = token + String(format: "%02.2hhx", arguments: [deviceToken[i]])
+      token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
     }
-    
+
     registerAPNSSubject.onNext(token)
     registerAPNSSubject.onCompleted()
   }
-  
+
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
     registerAPNSSubject.onError(error)
     registerAPNSSubject.onCompleted()
@@ -109,7 +109,7 @@ private extension AppDelegate {
    */
   func evaluatePolicyWhenUserSetEnable() {
     guard let currentAccount = Global.currentAccount else { return }
-    
+
     let requestJWTAndAPNSHandler: () -> Void = { [weak self] in
       guard let self = self else { return }
       Observable.zip(AccountService.requestJWT(account: currentAccount),
@@ -124,7 +124,7 @@ private extension AppDelegate {
           Global.log.info("Finish registering jwt and apns.")
         }).disposed(by: self.disposeBag)
     }
-    
+
     guard UserSetting.shared.getTouchFaceIdSetting() else {
       requestJWTAndAPNSHandler()
       return

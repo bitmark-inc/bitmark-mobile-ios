@@ -76,7 +76,7 @@ class BitmarkDetailViewController: UIViewController {
 
   fileprivate func loadTransactions() {
     transactionIndicator.startAnimating()
-    TransactionService.listAllTransactions(of: bitmark.id) { [weak self] (transactions, blocks, error) in
+    TransactionService.listAllTransactions(of: bitmark.id) { [weak self] (transactions, _, error) in
       guard let self = self else { return }
       DispatchQueue.main.async {
         self.transactionIndicator.stopAnimating()
