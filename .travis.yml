@@ -15,6 +15,10 @@ addons:
     packages:
       - swiftlint
 
+before_install:
+  - gem install cocoapods-acknowledgements
+  - gem install cocoapods
+
 install:
   - pod install --repo-update
   - gem install xcpretty-travis-formatter
