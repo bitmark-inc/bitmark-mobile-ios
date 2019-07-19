@@ -10,8 +10,7 @@ import Foundation
 import RealmSwift
 
 class MetadataR: Object {
-
-  @objc dynamic var id: String = "" // to avoid duplication - id (assetId_key)
+  // MARK: - Properties
   @objc dynamic var key: String = ""
   @objc dynamic var value: String = ""
 }

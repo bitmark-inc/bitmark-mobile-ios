@@ -38,8 +38,7 @@ class AssetR: Object {
     self.offset = asset.offset
     self.createdAt = asset.created_at
     asset.metadata.forEach { (key, value) in
-      let metadataId = asset.id + "_" + key
-      metadata.append(MetadataR(value: [metadataId, key, value]))
+      metadata.append(MetadataR(value: [key, value]))
     }
   }
 }
