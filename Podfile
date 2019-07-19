@@ -13,6 +13,7 @@ def sharedPods
   pod 'Alamofire'
   pod 'IQKeyboardManagerSwift'
   pod 'NotificationBannerSwift'
+  pod 'RealmSwift'
 
   # ReactiveX
   pod 'RxSwift', '~> 5'

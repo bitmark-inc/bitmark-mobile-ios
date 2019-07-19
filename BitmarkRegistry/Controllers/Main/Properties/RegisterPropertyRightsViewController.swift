@@ -171,16 +171,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         self.moveFileToAppStorage(of: assetId)
 
         selfAlert.dismiss(animated: true, completion: {
+          Global.syncNewDataInStorage()
+
           self.showSuccessAlert(message: Constant.Success.issue, handler: {
             self.navigationController?.popToRootViewController(animated: true)
           })
-
-          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-            self.showErrorAlert(message: Constant.Error.cannotNavigate)
-            ErrorReporting.report(error: Constant.Error.cannotNavigate)
-            return
-          }
-          propertiesVC.syncUpdatedRecords()
         })
       } catch {
         selfAlert.dismiss(animated: true, completion: {

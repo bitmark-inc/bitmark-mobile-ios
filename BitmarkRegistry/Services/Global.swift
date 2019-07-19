@@ -21,9 +21,6 @@ class Global {
   }
   static var currentJwt: String?
   static var apnsToken: String? // Push notification token
-  static var currentAssets = [Asset]()
-  static var currentBlocks = [Block]()
-  static var latestOffset: [String: Int64] = [:]
   static var noInternetBanner: NotificationBanner = {
     return NotificationBanner(title: "", subtitle: "NO INTERNET CONNECTION", style: .danger, colors: CustomBannerColors())
   }()
@@ -31,8 +28,14 @@ class Global {
   public static func clearData() {
     currentAccount = nil
     currentJwt = nil
-    currentAssets.removeAll()
-    latestOffset = [:]
+    BitmarkStorage._shared = nil
+    TransactionStorage._shared = nil
+  }
+
+  public static func syncNewDataInStorage() {
+    guard Global.currentAccount != nil else { return }
+    BitmarkStorage.shared().asyncUpdateInSerialQueue(completion: nil)
+    TransactionStorage.shared().asyncUpdateInSerialQueue(completion: nil)
   }
 
   // Global logger
@@ -98,24 +101,6 @@ class Global {
 
 // MARK: - Support Functions
 extension Global {
-  public static func addAssets(_ assets: [Asset]) {
-    currentAssets += assets
-  }
-
-  public static func findAsset(with assetId: String) -> Asset? {
-    return currentAssets.last(where: { $0.id == assetId })
-  }
-
-  public static func addBlocks(_ blocks: [Block]) {
-    currentBlocks += blocks
-  }
-
-  public static func findBlock(with blockId: Int64) -> Block? {
-    return currentBlocks.last(where: { $0.number == blockId })
-  }
-}
-
-extension Global {
   static func showNoInternetBanner() {
     noInternetBanner.show()
     noInternetBanner.applyStyling(subtitleFont: UIFont(name: "Avenir-Black", size: 16), subtitleTextAlign: .center)
@@ -130,7 +115,7 @@ extension Global {
       switch style {
       case .danger:   return UIColor.mainRedColor
       case .info:     return UIColor(red:0.23, green:0.60, blue:0.85, alpha:1.00)
-      case .none:     return UIColor.clear
+      case .customView:     return UIColor.clear
       case .success:  return UIColor(red:0.22, green:0.80, blue:0.46, alpha:1.00)
       case .warning:  return UIColor(red:1.00, green:0.66, blue:0.16, alpha:1.00)
       }

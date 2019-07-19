@@ -9,25 +9,23 @@
 import UIKit
 import BitmarkSDK
 import Alamofire
+import RealmSwift
 
 class BitmarkDetailViewController: UIViewController {
 
   // MARK: - Properties
-  var bitmark: Bitmark!
-  lazy var asset: Asset = {
-    return Global.findAsset(with: bitmark.asset_id)!
-  }()
+  var bitmarkR: BitmarkR!
+  var assetR: AssetR!
   // *** Basic Properties ***
   var assetNameLabel: UILabel!
   var issueDateLabel: UILabel!
   var issuerLabel: UILabel!
   // *** Metadata Properties ***
   var metadataTableView: SelfSizedTableView!
-  var metadataObjects = [(label: String, description: String)]()
   // *** Transaction Properties ***
   var transactionTableView: UITableView!
   var transactionIndicator: UIActivityIndicatorView!
-  var transactions = [Transaction]()
+  var transactionRs: Results<TransactionR>!
   // *** Action Menu ***
   var actionMenuView: UIView!
   var menuBarButton: UIBarButtonItem!
@@ -38,7 +36,7 @@ class BitmarkDetailViewController: UIViewController {
   var deleteButton: UIButton!
   var activityIndicator: UIActivityIndicatorView!
   lazy var assetFileService = {
-    return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
+    return AssetFileService(owner: Global.currentAccount!, assetId: assetR.id)
   }()
   var networkReachabilityManager = NetworkReachabilityManager()
 
@@ -46,7 +44,7 @@ class BitmarkDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = asset.name.uppercased()
+    title = assetR.name.uppercased()
     navigationItem.backBarButtonItem = UIBarButtonItem()
     menuBarButton = UIBarButtonItem(image: UIImage(named: "More Actions-close"), style: .plain, target: self, action: #selector(tapToToggleActionMenu))
     navigationItem.rightBarButtonItem = menuBarButton
@@ -58,15 +56,14 @@ class BitmarkDetailViewController: UIViewController {
 
   // MARK: - Data Handlers
   private func loadData() {
-    assetNameLabel.text = asset.name
+    assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
-    issueDateLabel.text = bitmark.created_at?.string(withFormat: Constant.systemFullFormatDate)
-    issuerLabel.text = bitmark.issuer.middleShorten()
+    issueDateLabel.text = CustomUserDisplay.datetime(bitmarkR.createdAt)
+    issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
 
-    loadMetadataObjects(asset.metadata)
     metadataTableView.reloadData { [weak self] in
       guard let self = self else { return }
-      if self.metadataObjects.isEmpty {
+      if self.assetR.metadata.isEmpty {
         self.metadataTableView.removeFromSuperview()
       } else {
         self.metadataTableView.invalidateIntrinsicContentSize()
@@ -78,25 +75,19 @@ class BitmarkDetailViewController: UIViewController {
 
   fileprivate func loadTransactions() {
     transactionIndicator.startAnimating()
-    TransactionService.listAllTransactions(of: bitmark.id) { [weak self] (transactions, _, error) in
+    BitmarkStorage.shared().loadTxRs(for: bitmarkR) { [weak self] (resultsTxRs, error) in
       guard let self = self else { return }
       DispatchQueue.main.async {
         self.transactionIndicator.stopAnimating()
-        guard error == nil else {
-          self.showErrorAlert(message: error!.localizedDescription)
+        if let error = error {
+          self.showErrorAlert(message: error.localizedDescription)
+          ErrorReporting.report(error: error)
           return
         }
 
-        self.transactions = transactions!
+        self.transactionRs = resultsTxRs
         self.transactionTableView.reloadData()
       }
-    }
-  }
-
-  fileprivate func loadMetadataObjects(_ metadataList: [String: String]) {
-    metadataObjects.removeAll()
-    for (key, value) in metadataList {
-      metadataObjects.append((label: key, description: value))
     }
   }
 
@@ -113,7 +104,7 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   @objc func tapToCopyId(_ sender: UIButton) {
-    UIPasteboard.general.string = bitmark.id
+    UIPasteboard.general.string = bitmarkR.id
     copiedToClipboardNotifier.showIn(period: 1.2)
   }
 
@@ -161,17 +152,12 @@ class BitmarkDetailViewController: UIViewController {
       do {
         _ = try BitmarkService.directTransfer(
           account: Global.currentAccount!,
-          bitmarkId: self.bitmark.id,
+          bitmarkId: self.bitmarkR.id,
           to: zeroAccountNumber
         )
 
         selfAlert.dismiss(animated: true, completion: {
-          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-            self.showErrorAlert(message: Constant.Error.cannotNavigate)
-            ErrorReporting.report(error: Constant.Error.cannotNavigate)
-            return
-          }
-          propertiesVC.syncUpdatedRecords()
+          Global.syncNewDataInStorage()
 
           self.showSuccessAlert(message: Constant.Success.delete, handler: {
             self.navigationController?.popToRootViewController(animated: true)
@@ -191,21 +177,20 @@ class BitmarkDetailViewController: UIViewController {
 extension BitmarkDetailViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return tableView == metadataTableView
-                      ? metadataObjects.count
-                      : transactions.count
+                      ? assetR.metadata.count
+                      : (transactionRs?.count ?? 0)
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == metadataTableView {
       let cell = tableView.dequeueReusableCell(withClass: MetadataDetailCell.self)
-      let metadata = metadataObjects[indexPath.row]
+      let metadata = assetR.metadata[indexPath.row]
       cell.setData(metadata)
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(withClass: TransactionCell.self)
-      let transaction = transactions[indexPath.row]
-      let timestamp = transaction.confirmedAt()
-      cell.setData(timestamp: timestamp, ownerNumber: transaction.owner)
+      let txR = transactionRs[indexPath.row]
+      cell.setData(timestamp: txR.confirmedAt, ownerNumber: txR.owner)
       return cell
     }
   }
@@ -245,8 +230,8 @@ extension BitmarkDetailViewController {
   fileprivate func performMoveToTransferBitmark() {
     tapToToggleActionMenu(menuBarButton)
     let transferBitmarkVC = TransferBitmarkViewController()
-    transferBitmarkVC.asset = asset
-    transferBitmarkVC.bitmarkId = bitmark.id
+    transferBitmarkVC.assetR = assetR
+    transferBitmarkVC.bitmarkId = bitmarkR.id
     navigationController?.pushViewController(transferBitmarkVC)
   }
 
@@ -347,7 +332,7 @@ extension BitmarkDetailViewController {
     }
 
     // enable status for menu buttons base on the bitmark's status
-    if BitmarkStatus(rawValue: bitmark.status) != .settled {
+    if BitmarkStatus(rawValue: bitmarkR.status) != .settled {
       downloadButton.isEnabled = false
       transferButton.isEnabled = false
       deleteButton.isEnabled = false

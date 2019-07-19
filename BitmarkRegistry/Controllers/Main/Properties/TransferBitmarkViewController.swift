@@ -14,7 +14,7 @@ import Alamofire
 class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
   // MARK: - Properties
-  var asset: Asset!
+  var assetR: AssetR!
   var bitmarkId: String!
 
   var recipientAccountNumberTextfield: DesignedTextField!
@@ -23,7 +23,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   var transferButtonBottomConstraint: Constraint!
   var scanQRButton: UIButton!
   lazy var assetFileService = {
-    return AssetFileService(owner: Global.currentAccount!, assetId: asset.id)
+    return AssetFileService(owner: Global.currentAccount!, assetId: assetR.id)
   }()
   var networkReachabilityManager = NetworkReachabilityManager()
 
@@ -31,7 +31,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = asset.name
+    title = assetR.name
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
@@ -98,12 +98,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
         self.assetFileService.transferFile(to: recipientAccountNumber)
 
         selfAlert.dismiss(animated: true, completion: {
-          guard let propertiesVC = self.navigationController?.viewControllers.first as? PropertiesViewController else {
-            self.showErrorAlert(message: Constant.Error.cannotNavigate)
-            ErrorReporting.report(error: Constant.Error.cannotNavigate)
-            return
-          }
-          propertiesVC.syncUpdatedRecords()
+          Global.syncNewDataInStorage()
 
           self.showSuccessAlert(message: Constant.Success.transfer, handler: {
             self.navigationController?.popToRootViewController(animated: true)

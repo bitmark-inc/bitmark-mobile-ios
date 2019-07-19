@@ -68,7 +68,7 @@ class AssetFileService {
 
       guard let receiverPublicKey = receiverPublicKey else { return }
       do {
-        let assetFileURL = try self.getAssetFile()
+        guard let assetFileURL = try self.getAssetFile() else { return }
         let assetFilename = assetFileURL.lastPathComponent
         let encryptedFileURL = self.encryptedFolderURL.appendingPathComponent(assetFilename)
 
@@ -160,8 +160,8 @@ class AssetFileService {
   }
 
   // MARK: Support Functions
-  func getAssetFile() throws -> URL {
+  func getAssetFile() throws -> URL? {
     let directoryContents = try FileManager.default.contentsOfDirectory(at: downloadedFolderURL, includingPropertiesForKeys: nil)
-    return directoryContents[0]
+    return directoryContents.count > 0 ? directoryContents[0] : nil
   }
 }

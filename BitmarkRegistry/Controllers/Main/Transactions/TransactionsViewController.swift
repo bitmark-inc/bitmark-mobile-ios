@@ -8,6 +8,7 @@
 
 import UIKit
 import BitmarkSDK
+import RealmSwift
 
 class TransactionsViewController: UIViewController {
 
@@ -17,7 +18,8 @@ class TransactionsViewController: UIViewController {
   var txsTableView: UITableView!
   var refreshControl: UIRefreshControl!
 
-  var transactions = [Transaction]()
+  var transactionRs: Results<TransactionR>!
+  fileprivate var realmToken: NotificationToken?
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -29,81 +31,72 @@ class TransactionsViewController: UIViewController {
     setupEvents()
 
     loadData()
+    setupBitmarkEventSubscription()
   }
 
   // MARK: - Data Handlers
   private func loadData() {
     activityIndicator.startAnimating()
     do {
-      try TransactionStorage.shared().firstLoad { [weak self] (transactions, error) in
+      try TransactionStorage.shared().firstLoad { [weak self] (error) in
         guard let self = self else { return }
         self.activityIndicator.stopAnimating()
 
         if let error = error {
           self.showErrorAlert(message: Constant.Error.syncTransaction)
           ErrorReporting.report(error: error)
+          return
         }
 
-        guard let transactions = transactions else { return }
-        self.transactions = transactions
-
-        if self.transactions.isEmpty {
-          self.emptyView.isHidden = false
-        } else {
-          self.emptyView.isHidden = true
-          self.txsTableView.reloadData()
+        do {
+          self.transactionRs = try TransactionStorage.shared().getData()
+        } catch {
+          self.showErrorAlert(message: Constant.Error.loadTransaction)
+          ErrorReporting.report(error: error)
+          return
         }
+
+        self.setupRealmObserverForLoadingTransactions()
       }
     } catch let e {
-      showErrorAlert(message: "Error happened while loading data.")
+      showErrorAlert(message: Constant.Error.loadTransaction)
       ErrorReporting.report(error: e)
     }
+  }
+
+  fileprivate func setupRealmObserverForLoadingTransactions() {
+    self.realmToken = self.transactionRs.observe({ [weak self] (changes) in
+      guard let self = self else { return }
+      self.txsTableView.apply(changes: changes)
+      self.emptyView.isHidden = self.transactionRs.count > 0
+    })
   }
 }
 
 extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return transactions.count
+    return transactionRs?.count ?? 0
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withClass: TransactionListCell.self, for: indexPath)
-    let transaction = transactions[indexPath.row]
-    cell.loadWith(transaction)
+    let transactionR = transactionRs[indexPath.row]
+    cell.loadWith(transactionR)
     return cell
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let transaction = transactions[indexPath.row]
+    let transactionR = transactionRs[indexPath.row]
     let txDetailVC = TransactionDetailViewController()
-    txDetailVC.transaction = transaction
+    txDetailVC.transactionR = transactionR
     navigationController?.pushViewController(txDetailVC)
   }
 }
 
+// MARK: EventDelegate
 extension TransactionsViewController: EventDelegate {
-  typealias Record = Transaction
-
-  func receiveNewRecords(_ newRecords: [Transaction]) {
-    for newTx in newRecords {
-      txsTableView.beginUpdates()
-      // Remove obsolete bitmark which is displaying in table
-      if let index = transactions.firstIndexWithId(newTx.id) {
-        transactions.remove(at: index)
-        txsTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
-      }
-
-      // Add new transaction
-      transactions.prepend(newTx)
-      txsTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-
-      emptyView.isHidden = !transactions.isEmpty
-      txsTableView.endUpdates()
-    }
-  }
-
   @objc func syncUpdatedRecords() {
-    TransactionStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
+    TransactionStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }
@@ -114,8 +107,6 @@ extension TransactionsViewController: EventDelegate {
 // MARK: - Setup Views/Events
 extension TransactionsViewController {
   fileprivate func setupEvents() {
-    TransactionStorage.shared().delegate = self
-
     txsTableView.register(cellWithClass: TransactionListCell.self)
     txsTableView.dataSource = self
     txsTableView.delegate = self
@@ -147,6 +138,7 @@ extension TransactionsViewController {
 
     emptyView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     activityIndicator.snp.makeConstraints { (make) in

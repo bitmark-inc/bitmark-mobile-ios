@@ -8,62 +8,84 @@
 
 import Foundation
 import BitmarkSDK
+import RealmSwift
 
 class TransactionStorage: SyncStorageBase<Transaction> {
 
   // MARK: - Properties
-  weak var delegate: TransactionsViewController?
   static var _shared: TransactionStorage?
   static func shared() -> TransactionStorage {
     _shared = _shared ?? TransactionStorage(owner: Global.currentAccount!)
     return _shared!
   }
+  // Ignore if owner of transaction is zeroAccountNumber - delete bitmark
+  let ignoreDeleteTxPredicate: NSPredicate = {
+    let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
+    return NSPredicate(format: "owner != %@", zeroAccountNumber)
+  }()
+
+  lazy var ignoreUnownedTxPredicate: NSPredicate = {
+    let accountNumber = owner.getAccountNumber()
+    return NSPredicate(format: "(owner == %@ || previousOwner == %@)", accountNumber, accountNumber)
+  }()
 
   // MARK: - Handlers
-  override func getData() throws -> [Transaction] {
-    if let txsURL = try getLatestURL() {
-      let transactionsWithAsset = try TransactionsWithRelative(from: txsURL)
-      Global.addAssets(transactionsWithAsset.assets)
-      Global.addBlocks(transactionsWithAsset.blocks)
-      return transactionsWithAsset.txs.reversed()
-    }
-    return [Transaction]()
+  func getData() throws -> Results<TransactionR> {
+    return try ownerRealm().objects(TransactionR.self)
+                           .filter(ignoreDeleteTxPredicate)
+                           .filter(ignoreUnownedTxPredicate)
+                           .sorted(byKeyPath: "offset", ascending: false)
   }
 
-  override func syncData(at latestOffset: Int64, notifyNew: Bool) throws -> Int64? {
-    let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
-    guard !txs.isEmpty else { return nil }
+  func syncData(for bitmarkR: BitmarkR) throws {
+    let realm = try ownerRealm()
+    var latestOffset: Int64 = 0
 
-    var txsWithRelative = TransactionsWithRelative(assets: assets, blocks: blocks, txs: txs)
+    repeat {
+      let (txs, blocks) = try TransactionService.listAllTransactions(of: bitmarkR.id, at: latestOffset, direction: .later)
+      guard !txs.isEmpty else { return }
 
-    if notifyNew {
-      Global.addAssets(txsWithRelative.assets)
-      Global.addBlocks(txsWithRelative.blocks)
-      DispatchQueue.main.async { [weak self] in
-        self?.delegate?.receiveNewRecords(txsWithRelative.txs)
+      try storeData(in: realm, txs: txs, relations: (assets: nil, blocks: blocks))
+      latestOffset = txs.last!.offset
+      if txs.count < 100 { break }
+    } while true
+  }
+
+  override func syncData() throws {
+    let backgroundOwnerRealm = try ownerRealm()
+    var latestOffset = getLatestOffset() ?? 0
+
+    repeat {
+      let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
+      guard !txs.isEmpty else { return }
+
+      try storeData(in: backgroundOwnerRealm, txs: txs, relations: (assets: assets, blocks: blocks))
+      latestOffset = txs.last!.offset
+      if txs.count < 100 { break }
+    } while true
+
+    storeLatestOffset(value: latestOffset)
+  }
+
+  fileprivate func storeData(in realm: Realm, txs: [Transaction], relations: (assets: [Asset]?, blocks: [Block])) throws {
+    try txs.forEach { (tx) in
+      let txR = TransactionR(tx: tx)
+      try realm.write {
+
+        var assetR = realm.object(ofType: AssetR.self, forPrimaryKey: tx.asset_id)
+        if assetR == nil, let assets = relations.assets, let asset = assets.first(where: { $0.id == tx.asset_id }) {
+          assetR = AssetR(asset: asset)
+        }
+
+        var blockR = realm.object(ofType: BlockR.self, forPrimaryKey: tx.block_number)
+        if blockR == nil, let block = relations.blocks.first(where: { $0.number == tx.block_number }) {
+          blockR = BlockR(block: block)
+        }
+
+        txR.assetR = assetR
+        txR.blockR = blockR
+        realm.add(txR, update: .modified)
       }
     }
-
-    let baseOffset = txs.last!.offset // the last offset is the latest offset cause response transactions is asc-offset
-    let txsURL = self.fileURL(pathName: baseOffset)
-
-    if latestOffset == 0 {
-      try txsWithRelative.store(in: txsURL)
-    } else {
-      try mergeNewTxs(txsURL, txsWithRelative)
-    }
-    return baseOffset
-  }
-
-  // Merge new bitmarks into the bitmarks file
-  fileprivate func mergeNewTxs(_ newTxsURL: URL, _ txsWithAsset: TransactionsWithRelative) throws {
-    guard let latestPathName = Global.latestOffset["Transaction"] else { return }
-    let latestTxsURL = fileURL(pathName: latestPathName)
-    var oldTxsWithAsset = try TransactionsWithRelative(from: latestTxsURL)
-    try oldTxsWithAsset.merge(
-      with: txsWithAsset,
-      from: latestTxsURL,
-      to: newTxsURL
-    )
   }
 }

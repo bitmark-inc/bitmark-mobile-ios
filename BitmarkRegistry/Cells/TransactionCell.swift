@@ -26,8 +26,8 @@ class TransactionCell: UITableViewCell {
 
   // MARK: - Handlers
   func setData(timestamp: Date?, ownerNumber: String) {
-    timestampLabel.text = timestamp?.string(withFormat: Constant.systemFullFormatDate) ?? "PENDING..."
-    ownerNumberLabel.text = ownerNumber.middleShorten()
+    timestampLabel.text = CustomUserDisplay.datetime(timestamp) ?? "PENDING..."
+    ownerNumberLabel.text = CustomUserDisplay.accountNumber(ownerNumber)
   }
 
   // MARK: - Setup Views

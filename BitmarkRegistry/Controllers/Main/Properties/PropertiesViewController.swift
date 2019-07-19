@@ -9,6 +9,7 @@
 import UIKit
 import BitmarkSDK
 import Alamofire
+import RealmSwift
 
 class PropertiesViewController: UIViewController {
 
@@ -30,7 +31,8 @@ class PropertiesViewController: UIViewController {
   var createFirstProperty: UIButton!
   var emptyViewInYoursTab: UIView!
   var yoursActivityIndicator: UIActivityIndicatorView!
-  var bitmarks = [Bitmark]()
+  var bitmarkRs: Results<BitmarkR>!
+  fileprivate var realmToken: NotificationToken?
   var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
@@ -52,42 +54,40 @@ class PropertiesViewController: UIViewController {
   private func loadData() {
     yoursActivityIndicator.startAnimating()
     do {
-      try BitmarkStorage.shared().firstLoad { [weak self] (bitmarks, error) in
+      try BitmarkStorage.shared().firstLoad { [weak self] (error) in
         guard let self = self else { return }
         self.yoursActivityIndicator.stopAnimating()
 
         if let error = error {
           self.showErrorAlert(message: Constant.Error.syncBitmark)
           ErrorReporting.report(error: error)
+          return
         }
 
-        guard let bitmarks = bitmarks else { return }
-        self.bitmarks = bitmarks
-
-        if self.bitmarks.isEmpty {
-          self.emptyViewInYoursTab.isHidden = false
-        } else {
-          self.emptyViewInYoursTab.isHidden = true
-          self.yoursTableView.reloadData()
+        do {
+          self.bitmarkRs = try BitmarkStorage.shared().getData()
+        } catch {
+          self.showErrorAlert(message: Constant.Error.loadBitmark)
+          ErrorReporting.report(error: error)
+          return
         }
+
+        self.setupRealmObserverForLoadingBitmarks()
       }
     } catch {
-      showErrorAlert(message: "Error happened while loading data.")
+      showErrorAlert(message: Constant.Error.loadBitmark)
       ErrorReporting.report(error: error)
     }
   }
 
-  func setupBitmarkEventSubscription() {
-    do {
-      let eventSubscription = EventSubscription.shared
-      try eventSubscription.connect(Global.currentAccount!)
 
-      try eventSubscription.listenBitmarkChanged { [weak self] (_) in
-        self?.syncUpdatedRecords()
-      }
-    } catch {
-      ErrorReporting.report(error: error)
-    }
+
+  fileprivate func setupRealmObserverForLoadingBitmarks() {
+    self.realmToken = self.bitmarkRs.observe({ [weak self] (changes) in
+      guard let self = self else { return }
+      self.yoursTableView.apply(changes: changes)
+      self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
+    })
   }
 
   // MARK: - Handlers
@@ -118,54 +118,38 @@ class PropertiesViewController: UIViewController {
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return bitmarks.count
+    return bitmarkRs?.count ?? 0
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withClass: YourPropertyCell.self)
-    let bitmark = bitmarks[indexPath.row]
-    let asset = Global.findAsset(with: bitmark.asset_id)
-    cell.loadWith(asset, bitmark)
+    let bitmarkR = bitmarkRs[indexPath.row]
+    cell.loadWith(bitmarkR)
     return cell
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let bitmark = bitmarks[indexPath.row]
+    let bitmarkR = bitmarkRs[indexPath.row]
+    guard let assetR = bitmarkR.assetR else {
+      ErrorReporting.report(message: "Missing assetId for bitmark with id " + bitmarkR.id)
+      showErrorAlert(message: Constant.Error.loadData)
+      return
+    }
     let bitmarkDetailsVC = BitmarkDetailViewController()
     bitmarkDetailsVC.hidesBottomBarWhenPushed = true
-    bitmarkDetailsVC.bitmark = bitmark
+    bitmarkDetailsVC.bitmarkR = bitmarkR
+    bitmarkDetailsVC.assetR = assetR
     navigationController?.pushViewController(bitmarkDetailsVC)
   }
 }
 
-// MARK: BitmarkEventDelegate
+// MARK: EventDelegate
 extension PropertiesViewController: EventDelegate {
-  typealias Record = Bitmark
-
   @objc func syncUpdatedRecords() {
-    BitmarkStorage.shared().asyncUpdateInSerialQueue(notifyNew: true, doRepeat: false) { [weak self] (_) in
+    BitmarkStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }
-    }
-  }
-
-  func receiveNewRecords(_ newRecords: [Bitmark]) {
-    for newBitmark in newRecords {
-      yoursTableView.beginUpdates()
-      // Remove obsolete bitmark which is displaying in table
-      if let index = bitmarks.firstIndexWithId(newBitmark.id) {
-        bitmarks.remove(at: index)
-        yoursTableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
-      }
-      // Add new bitmark; ignore if bitmark is obsolete
-      if newBitmark.owner == Global.currentAccount?.getAccountNumber() {
-        bitmarks.prepend(newBitmark)
-        yoursTableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-      }
-
-      emptyViewInYoursTab.isHidden = !bitmarks.isEmpty
-      yoursTableView.endUpdates()
     }
   }
 }
@@ -174,7 +158,6 @@ extension PropertiesViewController: EventDelegate {
 extension PropertiesViewController {
   fileprivate func setupEvents() {
     // *** Yours Segment ***
-    BitmarkStorage.shared().delegate = self
     yoursTableView.register(cellWithClass: YourPropertyCell.self)
     yoursTableView.dataSource = self
     yoursTableView.delegate = self
@@ -271,9 +254,8 @@ extension PropertiesViewController {
     view.addSubview(createFirstProperty)
 
     contentView.snp.makeConstraints { (make) in
-      make.top.equalToSuperview().offset(25)
-      make.leading.equalToSuperview().offset(20)
-      make.trailing.equalToSuperview().offset(-20)
+      make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 0, right: 20))
     }
 
     createFirstProperty.snp.makeConstraints { (make) in

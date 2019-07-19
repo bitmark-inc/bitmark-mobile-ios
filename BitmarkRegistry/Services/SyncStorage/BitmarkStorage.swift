@@ -8,11 +8,11 @@
 
 import Foundation
 import BitmarkSDK
+import RealmSwift
 
 class BitmarkStorage: SyncStorageBase<Bitmark> {
 
   // MARK: - Properties
-  weak var delegate: PropertiesViewController?
   static var _shared: BitmarkStorage?
   static func shared() -> BitmarkStorage {
     _shared = _shared ?? BitmarkStorage(owner: Global.currentAccount!)
@@ -20,49 +20,63 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
   }
 
   // MARK: - Handlers
-  override func getData() throws -> [Bitmark] {
-    if let bitmarksURL = try getLatestURL() {
-      let bitmarksWithAsset = try BitmarksWithAsset(from: bitmarksURL)
-      Global.addAssets(bitmarksWithAsset.assets)
-      return bitmarksWithAsset.bitmarks.reversed()
-    }
-    return [Bitmark]()
+  func getData() throws -> Results<BitmarkR> {
+    return try ownerRealm().objects(BitmarkR.self).sorted(byKeyPath: "offset", ascending: false)
   }
 
-  override func syncData(at latestOffset: Int64, notifyNew: Bool) throws -> Int64? {
-    let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
-    guard !bitmarks.isEmpty else { return nil }
+  override func syncData() throws {
+    let backgroundOwnerRealm = try ownerRealm()
+    var latestOffset = getLatestOffset() ?? 0
 
-    var bitmarksWithAsset = BitmarksWithAsset(assets: assets, bitmarks: bitmarks)
+    repeat {
+      let (bitmarks, assets) = try BitmarkService.listAllBitmarksWithAsset(owner: owner, at: latestOffset, direction: .later)
+      guard !bitmarks.isEmpty else { return }
 
-    if notifyNew {
-      Global.addAssets(bitmarksWithAsset.assets)
-      DispatchQueue.main.async { [weak self] in
-        self?.delegate?.receiveNewRecords(bitmarks)
+      try bitmarks.forEach { (bitmark) in
+        guard bitmark.isValid(with: owner.getAccountNumber()) else {
+          guard let invalidBitmark = backgroundOwnerRealm.object(ofType: BitmarkR.self, forPrimaryKey: bitmark.id) else { return }
+          try backgroundOwnerRealm.write { backgroundOwnerRealm.delete(invalidBitmark) }
+          return
+        }
+
+        var assetR = backgroundOwnerRealm.object(ofType: AssetR.self, forPrimaryKey: bitmark.asset_id)
+        if assetR == nil, let asset = assets.first(where: { $0.id == bitmark.asset_id }) {
+          assetR = AssetR(asset: asset)
+        }
+
+        let bitmarkR = BitmarkR(bitmark: bitmark, assetR: assetR)
+        try backgroundOwnerRealm.write {
+          backgroundOwnerRealm.add(bitmarkR, update: .modified)
+        }
       }
-    }
+      latestOffset = bitmarks.last!.offset
+      if bitmarks.count < 100 { break }
+    } while true
 
-    let baseOffset = bitmarks.last!.offset // the last offset is the latest offset cause response bitmarks is asc-offset
-    let bitmarksURL = fileURL(pathName: baseOffset)
-
-    if latestOffset == 0 {
-      try bitmarksWithAsset.store(in: bitmarksURL, ownerNumber: owner.getAccountNumber())
-    } else {
-      try mergeNewBitmarks(bitmarksURL, bitmarksWithAsset)
-    }
-    return baseOffset
+    storeLatestOffset(value: latestOffset)
   }
 
-  // Merge new bitmarks into the bitmarks file
-  fileprivate func mergeNewBitmarks(_ newBitmarksURL: URL, _ bitmarksWithAsset: BitmarksWithAsset) throws {
-    guard let latestPathName = Global.latestOffset["Bitmark"] else { return }
-    let latestBitmarksURL = fileURL(pathName: latestPathName)
-    var oldBitmarksWithAsset = try BitmarksWithAsset(from: latestBitmarksURL)
-    try oldBitmarksWithAsset.merge(
-      with: bitmarksWithAsset,
-      ownerNumber: owner.getAccountNumber(),
-      from: latestBitmarksURL,
-      to: newBitmarksURL
-    )
+  func loadTxRs(for bitmarkR: BitmarkR, completion: @escaping (Results<TransactionR>?, Error?) -> Void) {
+    do {
+      let realm = try ownerRealm()
+      if realm.object(ofType: TransactionR.self, forPrimaryKey: bitmarkR.headId) == nil ||
+        realm.object(ofType: TransactionR.self, forPrimaryKey: bitmarkR.id) == nil {
+        DispatchQueue.main.async {
+          do {
+            let realm = try self.ownerRealm()
+            try TransactionStorage.shared().syncData(for: bitmarkR)
+            let txRs = bitmarkR.txRs(in: realm)
+            completion(txRs, nil)
+          } catch {
+            completion(nil, error)
+          }
+        }
+      } else {
+        let txRs = bitmarkR.txRs(in: realm)
+        completion(txRs, nil)
+      }
+    } catch {
+      completion(nil, error)
+    }
   }
 }

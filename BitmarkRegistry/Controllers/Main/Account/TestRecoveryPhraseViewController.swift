@@ -87,7 +87,6 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     do {
       AccountService.deregisterAPNS()
       try KeychainStore.removeSeedCoreFromKeychain()
-      BitmarkStorage._shared = nil
       Global.clearData()
     } catch {
       showErrorAlert(message: Constant.Error.removeAccess)
@@ -385,7 +384,8 @@ extension TestRecoveryPhraseViewController {
   }
 
   func setupDefaultSelectHiddenRecoveryPhraseBox() {
-    selectedHiddenPhraseBoxIndexPath = IndexPath(row: orderedHiddenPhraseIndexes.first!, section: 0)
+    guard let firstorderedHiddenPhraseIndex = orderedHiddenPhraseIndexes.first else { return }
+    selectedHiddenPhraseBoxIndexPath = IndexPath(row: firstorderedHiddenPhraseIndex, section: 0)
     recoveryPhraseCollectionView.selectItem(at: selectedHiddenPhraseBoxIndexPath, animated: false, scrollPosition: [])
   }
 

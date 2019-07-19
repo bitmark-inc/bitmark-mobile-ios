@@ -26,10 +26,13 @@ public struct Constant {
     public static let removeAccess = "There was a problem from removing the access."
     public static let accessFile = "There was a problem to access your selected file."
     public static let syncBitmark = "There was a problem to sync your lastest bitmarks."
+    public static let loadBitmark = "Error happened while loading bitmarks."
+    public static let loadTransaction = "Error happened while loading transactions."
     public static let syncTransaction = "There was a problem to sync your lastest transactions."
     public static let networkError = "Failed to connect to Bitmark. Please check your device's network connection."
     // Common UI error
     public static let cannotNavigate = "Cannot go to expected screen. Please try again with new app update."
+    public static let loadData = "Error happended while loading data."
 
     public struct Metadata {
       public static let duplication = "Duplicated labels! "
