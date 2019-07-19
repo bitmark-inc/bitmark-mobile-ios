@@ -40,6 +40,13 @@ class YourPropertyCell: UITableViewCell {
 
 // MARK: - Setup Views
 extension YourPropertyCell {
+  func setReadStyle(read: Bool) {
+    let viewColor: UIColor = read ? .black : .mainBlueColor
+    dateLabel.textColor = viewColor
+    assetNameLabel.textColor = viewColor
+    issuerLabel.textColor = viewColor
+  }
+
   fileprivate func statusInWord(status: String) -> String {
     switch BitmarkStatus(rawValue: status)! {
     case .issuing:

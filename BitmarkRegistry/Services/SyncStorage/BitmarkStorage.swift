@@ -24,6 +24,17 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
     return try ownerRealm().objects(BitmarkR.self).sorted(byKeyPath: "offset", ascending: false)
   }
 
+  // Read Handlers
+  func markRead(for bitmarkR: BitmarkR) throws {
+    try ownerRealm().write {
+      bitmarkR.read = true
+    }
+  }
+
+  func hasUnread() -> Bool {
+    return (try? ownerRealm().objects(BitmarkR.self).filter("read == false").count > 0) ?? false
+  }
+
   override func syncData() throws {
     let backgroundOwnerRealm = try ownerRealm()
     var latestOffset = getLatestOffset() ?? 0

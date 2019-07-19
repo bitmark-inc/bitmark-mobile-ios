@@ -52,9 +52,18 @@ class BitmarkDetailViewController: UIViewController {
     setupEvents()
 
     loadData()
+    markRead()
   }
 
   // MARK: - Data Handlers
+  fileprivate func markRead() {
+    do {
+      try BitmarkStorage.shared().markRead(for: bitmarkR)
+    } catch {
+      showErrorAlert(message: Constant.Error.markReadForBitmark)
+    }
+  }
+
   private func loadData() {
     assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
