@@ -28,7 +28,7 @@ class TransactionCell: UITableViewCell {
   // MARK: - Handlers
   func setData(timestamp: Date?, ownerNumber: String) {
     isConfirmed = timestamp != nil
-    timestampLabel.text = CustomUserDisplay.datetime(timestamp) ?? "Waiting to be confirmed..."
+    timestampLabel.text = CustomUserDisplay.datetime(timestamp) ?? "Waiting to be confirmed"
     ownerNumberLabel.text = CustomUserDisplay.accountNumber(ownerNumber)
 
     setStyle()
@@ -43,9 +43,10 @@ class TransactionCell: UITableViewCell {
 
   // MARK: - Setup Views
   fileprivate func setupViews() {
+    selectionStyle = .none
+
     // *** Setup subviews ***
     timestampLabel = CommonUI.infoLabel()
-    timestampLabel.textColor = .mainBlueColor
 
     ownerNumberLabel = CommonUI.infoLabel()
     ownerNumberLabel.textColor = .mainBlueColor

@@ -36,6 +36,7 @@ class BitmarkDetailViewController: UIViewController {
   var transferButton: UIButton!
   var deleteButton: UIButton!
   var activityIndicator: UIActivityIndicatorView!
+  var tapRecognizer: UITapGestureRecognizer!
   lazy var assetFileService = {
     return AssetFileService(owner: Global.currentAccount!, assetId: assetR.id)
   }()
@@ -109,12 +110,14 @@ class BitmarkDetailViewController: UIViewController {
   @objc func tapToToggleActionMenu(_ sender: UIBarButtonItem) {
     actionMenuView.isHidden = !actionMenuView.isHidden
     sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
+    tapRecognizer.cancelsTouchesInView = !actionMenuView.isHidden
   }
 
   @objc func closeActionMenu(_ sender: UIGestureRecognizer) {
     guard !actionMenuView.isHidden else { return }
     actionMenuView.isHidden = true
     menuBarButton.image = UIImage(named: "More Actions-close")
+    tapRecognizer.cancelsTouchesInView = false
   }
 
   @objc func tapToCopyId(_ sender: UIButton) {
@@ -220,6 +223,15 @@ extension BitmarkDetailViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return provenanceTableViewHeader(tableView)
   }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let cell = tableView.cellForRow(at: indexPath) as? TransactionCell,
+          cell.isConfirmed else { return }
+    let txR = transactionRs[indexPath.row]
+    let accountDetailVC = AccountDetailViewController()
+    accountDetailVC.accountNumber = txR.owner
+    navigationController?.pushViewController(accountDetailVC)
+  }
 }
 
 // MARK: - Setup Views/ Events
@@ -275,13 +287,13 @@ extension BitmarkDetailViewController {
     actionMenuView.addShadow(ofColor: .gray)
     actionMenuView.isHidden = true
 
-    let recognizer = UITapGestureRecognizer(target: self, action: #selector(closeActionMenu))
-    recognizer.cancelsTouchesInView = true
+    tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeActionMenu))
+    tapRecognizer.cancelsTouchesInView = false
 
     activityIndicator = CommonUI.appActivityIndicator()
 
     view.addSubview(stackView)
-    view.addGestureRecognizer(recognizer)
+    view.addGestureRecognizer(tapRecognizer)
     view.addSubview(actionMenuView)
     view.addSubview(activityIndicator)
 
