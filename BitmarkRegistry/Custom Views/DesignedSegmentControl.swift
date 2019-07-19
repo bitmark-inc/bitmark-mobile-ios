@@ -9,6 +9,10 @@
 
 import UIKit
 
+/**
+ DesignedSegmentControl: create our own Segment Control to have ability to implement UI/functionality as design
+ - supports in Properties tab.
+ */
 class DesignedSegmentControl: UIControl {
 
   // MARK: - Properties
@@ -18,6 +22,7 @@ class DesignedSegmentControl: UIControl {
   var selectorBar: UIView!
   var selectedSegmentIndex = 0
   var segmentTitles: [String]!
+  let badgeLimit = 99
 
   // MARK: - Init
   init(titles: [String], width: CGFloat, height: CGFloat) {
@@ -56,7 +61,8 @@ class DesignedSegmentControl: UIControl {
   }
 
   func setBadge(_ badge: Int, forSegmentAt index: Int) {
-    segmentBadgeLabels[index].text = "(\(badge))"
+    let badgeText = badge > badgeLimit ? "\(badgeLimit)+" : String(badge)
+    segmentBadgeLabels[index].text = "(\(badgeText))"
   }
 
   // MARK: - Setup Views/Events
