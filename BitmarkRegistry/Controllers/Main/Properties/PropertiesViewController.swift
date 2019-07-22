@@ -14,16 +14,9 @@ import RealmSwift
 class PropertiesViewController: UIViewController {
 
   // MARK: - Properties
+  var segmentControl: DesignedSegmentControl!
   var yoursView: UIView!
   var globalView: DesignedWebView!
-
-  lazy var segmentControl: UISegmentedControl = {
-    let segmentControl = UISegmentedControl()
-    segmentControl.segmentTitles = ["YOURS", "GLOBAL"]
-    segmentControl.selectedSegmentIndex = 0
-    segmentControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
-    return segmentControl
-  }()
 
   //*** Yours Segment ***
   var refreshControl: UIRefreshControl!
@@ -88,6 +81,7 @@ class PropertiesViewController: UIViewController {
       self.yoursTableView.apply(changes: changes)
       self.setupUnreadBadge()
       self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
+      self.segmentControl.setBadge(self.bitmarkRs.count, forSegmentAt: 0)
     })
   }
 
@@ -101,7 +95,7 @@ class PropertiesViewController: UIViewController {
     navigationController?.pushViewController(RegisterPropertyViewController())
   }
 
-  @objc func segmentChanged(_ sender: UISegmentedControl) {
+  @objc func segmentChanged(_ sender: DesignedSegmentControl) {
     switch sender.selectedSegmentIndex {
     case 0:
       yoursView.isHidden = false
@@ -168,13 +162,16 @@ extension PropertiesViewController {
     yoursTableView.delegate = self
 
     createFirstProperty.addTarget(self, action: #selector(tapToAddProperty), for: .touchUpInside)
+    segmentControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
     segmentControl.sendActions(for: .valueChanged)
   }
 
   fileprivate func setupViews() {
     view.backgroundColor = .white
+    navigationController?.navigationBar.shadowImage = UIImage()
 
     // *** Setup subviews ***
+    segmentControl = DesignedSegmentControl(titles: ["YOURS", "GLOBAL"], width: view.frame.width, height: 38)
     yoursView = setupYoursView()
     globalView = DesignedWebView(urlString: Global.ServerURL.registry.embedInApp())
 
@@ -185,7 +182,7 @@ extension PropertiesViewController {
 
     segmentControl.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-      make.height.equalTo(35)
+      make.height.equalTo(38)
     }
 
     yoursView.snp.makeConstraints { (make) in

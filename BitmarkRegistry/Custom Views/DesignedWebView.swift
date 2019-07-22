@@ -145,9 +145,12 @@ extension DesignedWebView {
 
     addSubview(webNavButtonsView)
 
-    webView.snp.makeConstraints { $0.edges.equalToSuperview() }
+    webView.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
 
     webNavButtonsView.snp.makeConstraints { (make) in
+      make.top.equalTo(webView.snp.bottom).offset(10)
       make.height.equalTo(45)
       make.leading.trailing.bottom.equalToSuperview()
     }

@@ -151,6 +151,8 @@
 		E2DFDA3422B1EB46008B1AD5 /* MetadataLabelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */; };
 		E2DFDA3622B21233008B1AD5 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DFDA3522B21233008B1AD5 /* LabelCell.swift */; };
 		E2DFDA3722B212FD008B1AD5 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DFDA3522B21233008B1AD5 /* LabelCell.swift */; };
+		E2E067ED22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */; };
+		E2E067EE22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */; };
 		E2E18C1722DC1E0D004078C3 /* TransactionR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1622DC1E0D004078C3 /* TransactionR.swift */; };
 		E2E18C1822DC1E0D004078C3 /* TransactionR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1622DC1E0D004078C3 /* TransactionR.swift */; };
 		E2E18C1A22DC1F4C004078C3 /* BlockR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1922DC1F4C004078C3 /* BlockR.swift */; };
@@ -317,6 +319,7 @@
 		E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountKeyService.swift; sourceTree = "<group>"; };
 		E2D4342622CC89EB006A8183 /* FileCourierService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCourierService.swift; sourceTree = "<group>"; };
 		E2DFDA3522B21233008B1AD5 /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
+		E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignedSegmentControl.swift; sourceTree = "<group>"; };
 		E2E18C1622DC1E0D004078C3 /* TransactionR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionR.swift; sourceTree = "<group>"; };
 		E2E18C1922DC1F4C004078C3 /* BlockR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockR.swift; sourceTree = "<group>"; };
 		E2E798B6229E189E00508B69 /* BitmarkRegistry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BitmarkRegistry.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -433,6 +436,7 @@
 				E205107822B0A09900475871 /* SubmitButton.swift */,
 				E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */,
 				E22CBF1822D078390024E5C3 /* DesignedWebView.swift */,
+				E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -966,6 +970,7 @@
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
 				E2E18C1B22DC1F4C004078C3 /* BlockR.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
+				E2E067EE22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */,
 				E24B527F22BBB8B400E160E3 /* TransactionService.swift in Sources */,
 				E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
 				E25DF1DD22CB3F4700AC270E /* TransactionStorage.swift in Sources */,
@@ -1054,6 +1059,7 @@
 				E283FC6E22D448160035210D /* UIButton+Extension.swift in Sources */,
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2E18C1A22DC1F4C004078C3 /* BlockR.swift in Sources */,
+				E2E067ED22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
 				E24B527E22BBB8B400E160E3 /* TransactionService.swift in Sources */,
 				E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
