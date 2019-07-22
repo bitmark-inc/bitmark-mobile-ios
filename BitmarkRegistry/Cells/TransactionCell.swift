@@ -13,6 +13,7 @@ class TransactionCell: UITableViewCell {
   // MARK: - Properties
   var timestampLabel: UILabel!
   var ownerNumberLabel: UILabel!
+  var isConfirmed: Bool = false
 
   // MARK: - Init
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -26,8 +27,18 @@ class TransactionCell: UITableViewCell {
 
   // MARK: - Handlers
   func setData(timestamp: Date?, ownerNumber: String) {
-    timestampLabel.text = CustomUserDisplay.datetime(timestamp) ?? "PENDING..."
+    isConfirmed = timestamp != nil
+    timestampLabel.text = CustomUserDisplay.datetime(timestamp) ?? "Waiting to be confirmed..."
     ownerNumberLabel.text = CustomUserDisplay.accountNumber(ownerNumber)
+
+    setStyle()
+  }
+
+  fileprivate func setStyle() {
+    if !isConfirmed {
+      timestampLabel.textColor = .dustyGray
+      ownerNumberLabel.textColor = .dustyGray
+    }
   }
 
   // MARK: - Setup Views

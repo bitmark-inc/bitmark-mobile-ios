@@ -19,7 +19,8 @@ class BitmarkDetailViewController: UIViewController {
   // *** Basic Properties ***
   var assetNameLabel: UILabel!
   var issueDateLabel: UILabel!
-  var issuerLabel: UILabel!
+  var pendingIssueDateLabel: UILabel!
+  var prefixIssueDateLabel: UILabel!
   // *** Metadata Properties ***
   var metadataTableView: SelfSizedTableView!
   // *** Transaction Properties ***
@@ -67,8 +68,12 @@ class BitmarkDetailViewController: UIViewController {
   private func loadData() {
     assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
-    issueDateLabel.text = CustomUserDisplay.datetime(bitmarkR.createdAt)
-    issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
+    if let createdAt = bitmarkR.createdAt {
+      prefixIssueDateLabel.isHidden = false
+      issueDateLabel.text = CustomUserDisplay.datetime(createdAt)
+    } else {
+      pendingIssueDateLabel.isHidden = false
+    }
 
     metadataTableView.reloadData { [weak self] in
       guard let self = self else { return }
@@ -355,27 +360,21 @@ extension BitmarkDetailViewController {
     assetNameLabel.font = UIFont(name: "Avenir-Black", size: 18)
     assetNameLabel.numberOfLines = 0
 
-    let prefixIssueDateLabel = CommonUI.infoLabel(text: "ISSUED ON")
+    prefixIssueDateLabel = CommonUI.infoLabel(text: "ISSUED ON")
+    prefixIssueDateLabel.isHidden = true
     prefixIssueDateLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
+    pendingIssueDateLabel = CommonUI.infoLabel(text: "PENDING...")
+    pendingIssueDateLabel.textColor = .dustyGray
+    pendingIssueDateLabel.isHidden = true
 
     issueDateLabel = CommonUI.infoLabel()
 
-    let issueDateStackView = UIStackView(arrangedSubviews: [prefixIssueDateLabel, issueDateLabel], axis: .horizontal, spacing: 5)
-
-    let prefixIssuerLabel = CommonUI.infoLabel(text: "BY")
-    prefixIssuerLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-
-    issuerLabel = CommonUI.infoLabel()
-
-    let issuerStackView = UIStackView(
-      arrangedSubviews: [prefixIssuerLabel, issuerLabel],
-      axis: .horizontal, spacing: 5
-    )
+    let issueDateStackView = UIStackView(arrangedSubviews: [pendingIssueDateLabel, prefixIssueDateLabel, issueDateLabel], axis: .horizontal, spacing: 5)
 
     let assetInfoView = UIView()
     assetInfoView.addSubview(assetNameLabel)
     assetInfoView.addSubview(issueDateStackView)
-    assetInfoView.addSubview(issuerStackView)
 
     assetNameLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
@@ -383,11 +382,6 @@ extension BitmarkDetailViewController {
 
     issueDateStackView.snp.makeConstraints { (make) in
       make.top.equalTo(assetNameLabel.snp.bottom).offset(10)
-      make.leading.trailing.equalToSuperview()
-    }
-
-    issuerStackView.snp.makeConstraints { (make) in
-      make.top.equalTo(issueDateStackView.snp.bottom).offset(5)
       make.leading.trailing.bottom.equalToSuperview()
     }
 
