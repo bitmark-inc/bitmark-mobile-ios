@@ -41,6 +41,7 @@ class MetadataDetailCell: UITableViewCell {
     descriptionLabel = UILabel()
     descriptionLabel.numberOfLines = 0
     descriptionLabel.font = UIFont(name: "Avenir", size: 14)
+    descriptionLabel.textColor = .dustyGray
 
     let stackView = UIStackView(
       arrangedSubviews: [labelLabel, descriptionLabel],

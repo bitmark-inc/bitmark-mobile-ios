@@ -22,7 +22,7 @@ class AccountViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "ACCOUNT"
+    navigationItem.title = "ACCOUNT"
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()

@@ -33,7 +33,7 @@ class CustomTabBarViewController: UITabBarController {
   // MARK: - Setup TabBarItems
   fileprivate func setupPropertiesTabBarItem() -> UITabBarItem {
     return UITabBarItem(
-      title: "Account",
+      title: "Properties",
       image: UIImage(named: "Properties - inactive"),
       selectedImage: UIImage(named: "Properties - selected")
    )

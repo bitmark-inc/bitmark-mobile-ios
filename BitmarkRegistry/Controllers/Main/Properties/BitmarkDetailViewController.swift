@@ -19,7 +19,8 @@ class BitmarkDetailViewController: UIViewController {
   // *** Basic Properties ***
   var assetNameLabel: UILabel!
   var issueDateLabel: UILabel!
-  var issuerLabel: UILabel!
+  var pendingIssueDateLabel: UILabel!
+  var prefixIssueDateLabel: UILabel!
   // *** Metadata Properties ***
   var metadataTableView: SelfSizedTableView!
   // *** Transaction Properties ***
@@ -35,6 +36,7 @@ class BitmarkDetailViewController: UIViewController {
   var transferButton: UIButton!
   var deleteButton: UIButton!
   var activityIndicator: UIActivityIndicatorView!
+  var tapRecognizer: UITapGestureRecognizer!
   lazy var assetFileService = {
     return AssetFileService(owner: Global.currentAccount!, assetId: assetR.id)
   }()
@@ -67,8 +69,12 @@ class BitmarkDetailViewController: UIViewController {
   private func loadData() {
     assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
-    issueDateLabel.text = CustomUserDisplay.datetime(bitmarkR.createdAt)
-    issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
+    if let createdAt = bitmarkR.createdAt {
+      prefixIssueDateLabel.isHidden = false
+      issueDateLabel.text = CustomUserDisplay.datetime(createdAt)
+    } else {
+      pendingIssueDateLabel.isHidden = false
+    }
 
     metadataTableView.reloadData { [weak self] in
       guard let self = self else { return }
@@ -104,12 +110,14 @@ class BitmarkDetailViewController: UIViewController {
   @objc func tapToToggleActionMenu(_ sender: UIBarButtonItem) {
     actionMenuView.isHidden = !actionMenuView.isHidden
     sender.image = UIImage(named: actionMenuView.isHidden ? "More Actions-close" : "More Actions-open")
+    tapRecognizer.cancelsTouchesInView = !actionMenuView.isHidden
   }
 
   @objc func closeActionMenu(_ sender: UIGestureRecognizer) {
     guard !actionMenuView.isHidden else { return }
     actionMenuView.isHidden = true
     menuBarButton.image = UIImage(named: "More Actions-close")
+    tapRecognizer.cancelsTouchesInView = false
   }
 
   @objc func tapToCopyId(_ sender: UIButton) {
@@ -215,6 +223,15 @@ extension BitmarkDetailViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     return provenanceTableViewHeader(tableView)
   }
+
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let cell = tableView.cellForRow(at: indexPath) as? TransactionCell,
+          cell.isConfirmed else { return }
+    let txR = transactionRs[indexPath.row]
+    let accountDetailVC = AccountDetailViewController()
+    accountDetailVC.accountNumber = txR.owner
+    navigationController?.pushViewController(accountDetailVC)
+  }
 }
 
 // MARK: - Setup Views/ Events
@@ -270,13 +287,13 @@ extension BitmarkDetailViewController {
     actionMenuView.addShadow(ofColor: .gray)
     actionMenuView.isHidden = true
 
-    let recognizer = UITapGestureRecognizer(target: self, action: #selector(closeActionMenu))
-    recognizer.cancelsTouchesInView = true
+    tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeActionMenu))
+    tapRecognizer.cancelsTouchesInView = false
 
     activityIndicator = CommonUI.appActivityIndicator()
 
     view.addSubview(stackView)
-    view.addGestureRecognizer(recognizer)
+    view.addGestureRecognizer(tapRecognizer)
     view.addSubview(actionMenuView)
     view.addSubview(activityIndicator)
 
@@ -355,27 +372,21 @@ extension BitmarkDetailViewController {
     assetNameLabel.font = UIFont(name: "Avenir-Black", size: 18)
     assetNameLabel.numberOfLines = 0
 
-    let prefixIssueDateLabel = CommonUI.infoLabel(text: "ISSUED ON")
+    prefixIssueDateLabel = CommonUI.infoLabel(text: "ISSUED ON")
+    prefixIssueDateLabel.isHidden = true
     prefixIssueDateLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+
+    pendingIssueDateLabel = CommonUI.infoLabel(text: "PENDING...")
+    pendingIssueDateLabel.textColor = .dustyGray
+    pendingIssueDateLabel.isHidden = true
 
     issueDateLabel = CommonUI.infoLabel()
 
-    let issueDateStackView = UIStackView(arrangedSubviews: [prefixIssueDateLabel, issueDateLabel], axis: .horizontal, spacing: 5)
-
-    let prefixIssuerLabel = CommonUI.infoLabel(text: "BY")
-    prefixIssuerLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-
-    issuerLabel = CommonUI.infoLabel()
-
-    let issuerStackView = UIStackView(
-      arrangedSubviews: [prefixIssuerLabel, issuerLabel],
-      axis: .horizontal, spacing: 5
-    )
+    let issueDateStackView = UIStackView(arrangedSubviews: [pendingIssueDateLabel, prefixIssueDateLabel, issueDateLabel], axis: .horizontal, spacing: 5)
 
     let assetInfoView = UIView()
     assetInfoView.addSubview(assetNameLabel)
     assetInfoView.addSubview(issueDateStackView)
-    assetInfoView.addSubview(issuerStackView)
 
     assetNameLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
@@ -383,11 +394,6 @@ extension BitmarkDetailViewController {
 
     issueDateStackView.snp.makeConstraints { (make) in
       make.top.equalTo(assetNameLabel.snp.bottom).offset(10)
-      make.leading.trailing.equalToSuperview()
-    }
-
-    issuerStackView.snp.makeConstraints { (make) in
-      make.top.equalTo(issueDateStackView.snp.bottom).offset(5)
       make.leading.trailing.bottom.equalToSuperview()
     }
 

@@ -32,7 +32,7 @@ class PropertiesViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "PROPERTIES"
+    navigationItem.title = "PROPERTIES"
     let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(tapToAddProperty))
     navigationItem.rightBarButtonItem = addBarButton
     navigationItem.backBarButtonItem = UIBarButtonItem()
