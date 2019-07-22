@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import SnapKit
 
 /**
  DesignedSegmentControl: create our own Segment Control to have ability to implement UI/functionality as design
@@ -16,13 +17,13 @@ import UIKit
 class DesignedSegmentControl: UIControl {
 
   // MARK: - Properties
-  var segments = [UIView]()
   var segmentButtons = [UIButton]()
   var segmentBadgeLabels = [UILabel]()
   var selectorBar: UIView!
   var selectedSegmentIndex = 0
   var segmentTitles: [String]!
   let badgeLimit = 99
+  var badgeCenterXOffsetConstraints = [Constraint]()
 
   // MARK: - Init
   init(titles: [String], width: CGFloat, height: CGFloat) {
@@ -63,11 +64,13 @@ class DesignedSegmentControl: UIControl {
   func setBadge(_ badge: Int, forSegmentAt index: Int) {
     let badgeText = badge > badgeLimit ? "\(badgeLimit)+" : String(badge)
     segmentBadgeLabels[index].text = "(\(badgeText))"
+    badgeCenterXOffsetConstraints[index].update(offset: 33 + (Double(badgeText.count - 1) * 2.5))
   }
 
   // MARK: - Setup Views/Events
   fileprivate func setupViews() {
     // *** Setup subviews ***
+    var segments = [UIView]()
     for segmentTitle in segmentTitles {
       let button = setupSegmentButton(title: segmentTitle)
       button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -82,7 +85,7 @@ class DesignedSegmentControl: UIControl {
       button.snp.makeConstraints { $0.edges.equalToSuperview() }
 
       badgeLabel.snp.makeConstraints { (make) in
-        make.centerX.equalToSuperview().offset(32)
+        badgeCenterXOffsetConstraints.append(make.centerX.equalToSuperview().constraint)
         make.centerY.equalToSuperview().offset(1.5)
       }
 

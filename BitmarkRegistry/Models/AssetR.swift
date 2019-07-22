@@ -37,8 +37,44 @@ class AssetR: Object {
     self.status = asset.status
     self.offset = asset.offset
     self.createdAt = asset.created_at
+
+    if let currentAccount = Global.currentAccount {
+      self.assetFilePath = try? AssetFileService(owner: currentAccount, assetId: asset.id).getAssetFile()?.lastPathComponent
+    }
+
     asset.metadata.forEach { (key, value) in
       metadata.append(MetadataR(value: [key, value]))
     }
+  }
+
+  // MARK: - Data Handlers
+  func updateAssetFilePath(_ assetFilePath: String, completion: @escaping () -> Void) {
+    guard let currentAccount = Global.currentAccount else { return }
+    do {
+      let userConfiguration = try RealmConfig.user(currentAccount.getAccountNumber()).configuration()
+      let userRealm = try Realm(configuration: userConfiguration)
+
+      try userRealm.write {
+        self.assetFilePath = assetFilePath.lastPathComponent
+      }
+
+      completion()
+    } catch {
+      ErrorReporting.report(error: error)
+    }
+  }
+
+  func getAssetType() -> AssetType {
+    if metadata.count > 0,
+      let sourceMetadata = metadata.first(where: { $0.key.caseInsensitiveCompare("source") == .orderedSame }),
+      let assetType = AssetType.get(withSource: sourceMetadata.value) {
+        return assetType
+    }
+
+    if let assetFilePath = assetFilePath {
+      return AssetType.get(withFilePath: assetFilePath)
+    }
+
+    return .unknown
   }
 }

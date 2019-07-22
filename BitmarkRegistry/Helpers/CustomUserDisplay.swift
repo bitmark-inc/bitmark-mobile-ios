@@ -22,4 +22,9 @@ struct CustomUserDisplay {
     guard let dateAt = dateAt else { return nil }
     return dateAt.string(withFormat: Constant.systemFullFormatDate).uppercased()
   }
+
+  static func date(_ dateAt: Date?) -> String? {
+    guard let dateAt = dateAt else { return nil }
+    return dateAt.string(withFormat: "yyyy MMM dd").uppercased()
+  }
 }

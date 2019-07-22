@@ -20,7 +20,7 @@
 		<string>dw9MQXcC5rJZb3QE1nz86PiQAheMP1dx9M3dr52tT8NNs14m33</string>
 	</dict>
 	<key>AppGroupId</key>
-	<string>group.com.bitmark.sharedstorage</string>
+	<string>group.com.bitmark.localstorage</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

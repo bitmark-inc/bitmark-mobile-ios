@@ -15,6 +15,7 @@ class YourPropertyCell: UITableViewCell {
   let dateLabel = UILabel()
   let assetNameLabel = UILabel()
   let issuerLabel = UILabel()
+  let thumbnailImageView = UIImageView()
 
   // MARK: - Init
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -35,6 +36,10 @@ class YourPropertyCell: UITableViewCell {
       dateLabel.text = statusInWord(status: bitmarkR.status)
     }
     issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
+
+    if let assetR = bitmarkR.assetR {
+      thumbnailImageView.image = assetR.getAssetType().thumbnailImage()
+    }
   }
 }
 
@@ -72,11 +77,21 @@ extension YourPropertyCell {
       arrangedSubviews: [dateLabel, assetNameLabel, issuerLabel],
       axis: .vertical, spacing: 10)
 
+    thumbnailImageView.contentMode = .scaleAspectFit
+
     // *** Setup UI in view ***
     addSubview(stackView)
+    addSubview(thumbnailImageView)
     stackView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
           .inset(UIEdgeInsets(top: 18, left: 27, bottom: 18, right: 27))
+    }
+
+    thumbnailImageView.snp.makeConstraints { (make) in
+      make.leading.greaterThanOrEqualToSuperview()
+      make.trailing.equalToSuperview().offset(-20)
+      make.centerY.equalToSuperview()
+      make.width.height.equalTo(60)
     }
   }
 }

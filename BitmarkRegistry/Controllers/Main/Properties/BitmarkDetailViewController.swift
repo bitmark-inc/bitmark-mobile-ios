@@ -17,6 +17,7 @@ class BitmarkDetailViewController: UIViewController {
   var bitmarkR: BitmarkR!
   var assetR: AssetR!
   // *** Basic Properties ***
+  var thumbnailImageView: UIImageView!
   var assetNameLabel: UILabel!
   var issueDateLabel: UILabel!
   var pendingIssueDateLabel: UILabel!
@@ -67,11 +68,12 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   private func loadData() {
+    thumbnailImageView.image = assetR.getAssetType().thumbnailImage()
     assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
     if let createdAt = bitmarkR.createdAt {
       prefixIssueDateLabel.isHidden = false
-      issueDateLabel.text = CustomUserDisplay.datetime(createdAt)
+      issueDateLabel.text = CustomUserDisplay.date(createdAt)
     } else {
       pendingIssueDateLabel.isHidden = false
     }
@@ -145,6 +147,9 @@ class BitmarkDetailViewController: UIViewController {
           guard let downloadedFileURL = downloadedFileURL else { return }
           let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
           self.present(shareVC, animated: true)
+          self.assetR.updateAssetFilePath(downloadedFileURL.path, completion: { [weak self] in
+            self?.thumbnailImageView.image = self?.assetR.getAssetType().thumbnailImage()
+          })
         })
       }
     }
@@ -368,6 +373,9 @@ extension BitmarkDetailViewController {
   }
 
   fileprivate func setupAssetInfoView() -> UIView {
+    thumbnailImageView = UIImageView()
+    thumbnailImageView.contentMode = .scaleAspectFit
+
     assetNameLabel = UILabel()
     assetNameLabel.font = UIFont(name: "Avenir-Black", size: 18)
     assetNameLabel.numberOfLines = 0
@@ -385,11 +393,19 @@ extension BitmarkDetailViewController {
     let issueDateStackView = UIStackView(arrangedSubviews: [pendingIssueDateLabel, prefixIssueDateLabel, issueDateLabel], axis: .horizontal, spacing: 5)
 
     let assetInfoView = UIView()
+    assetInfoView.addSubview(thumbnailImageView)
     assetInfoView.addSubview(assetNameLabel)
     assetInfoView.addSubview(issueDateStackView)
 
+    thumbnailImageView.snp.makeConstraints { (make) in
+      make.top.leading.equalToSuperview()
+      make.width.equalTo(80)
+      make.height.equalTo(63)
+    }
+
     assetNameLabel.snp.makeConstraints { (make) in
-      make.top.leading.trailing.equalToSuperview()
+      make.top.equalTo(thumbnailImageView.snp.bottom).offset(35)
+      make.leading.trailing.equalToSuperview()
     }
 
     issueDateStackView.snp.makeConstraints { (make) in
