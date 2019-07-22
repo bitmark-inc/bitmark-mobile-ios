@@ -25,7 +25,7 @@ class TransactionsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "TRANSACTIONS"
+    navigationItem.title = "TRANSACTIONS"
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
