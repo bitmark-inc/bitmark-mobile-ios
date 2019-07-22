@@ -1114,7 +1114,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 77DBC69DFE134DB0791E0BDF /* Pods-BitmarkRegistry Dev.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
 				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
@@ -1142,7 +1142,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
 				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
