@@ -55,15 +55,15 @@ extension AccountViewController {
     qrShowButton.addTarget(self, action: #selector(showReceiverQR), for: .touchUpInside)
 
     writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.pushViewController(
-        WarningRecoveryPhraseViewController()
-      )
+      self.navigationController?.pushViewController(WarningRecoveryPhraseViewController())
     })
 
     logoutButton.addAction(for: .touchUpInside) {
-      self.navigationController?.pushViewController(
-        WarningRemoveAccessViewController()
-      )
+      self.navigationController?.pushViewController(WarningRemoveAccessViewController())
+    }
+
+    detailsButton.addAction(for: .touchUpInside) {
+      self.navigationController?.pushViewController(AppDetailViewController())
     }
   }
 

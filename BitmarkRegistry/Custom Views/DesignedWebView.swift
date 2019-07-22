@@ -22,6 +22,7 @@ class DesignedWebView: UIView {
 
   // MARK: Properties
   let urlRequest: URLRequest!
+  let hasNavigation: Bool!
 
   var webView: WKWebView!
   var backButton: UIButton!
@@ -31,8 +32,9 @@ class DesignedWebView: UIView {
   var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
-  init(urlString: String) {
+  init(urlString: String, hasNavigation: Bool = true) {
     self.urlRequest = URLRequest(urlString: urlString)
+    self.hasNavigation = hasNavigation
     super.init(frame: CGRect.zero)
 
     setupViews()
@@ -94,18 +96,38 @@ extension DesignedWebView: WKNavigationDelegate {
 extension DesignedWebView {
   fileprivate func setupEvents() {
     webView.navigationDelegate = self
-    backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
-    forwardButton.addTarget(self, action: #selector(navigateForward), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {
     webView = WKWebView()
+    activityIndicator = CommonUI.appActivityIndicator()
 
+    addSubview(webView)
+    addSubview(activityIndicator)
+
+    if hasNavigation {
+      webView.snp.makeConstraints { (make) in
+        make.top.leading.trailing.equalToSuperview()
+      }
+
+      setupWebNavButtonsView()
+    } else {
+      webView.snp.makeConstraints { $0.edges.equalToSuperview() }
+    }
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
+  }
+
+  fileprivate func setupWebNavButtonsView() {
     backButton = UIButton(type: .system, imageName: "back-arrow")
     backButton.tintColor = .silver
+    backButton.addTarget(self, action: #selector(navigateBack), for: .touchUpInside)
 
     forwardButton = UIButton(type: .system, imageName: "forward-arrow")
     forwardButton.tintColor = .silver
+    forwardButton.addTarget(self, action: #selector(navigateForward), for: .touchUpInside)
 
     let navigationButtons = UIStackView(
       arrangedSubviews: [backButton, forwardButton],
@@ -121,21 +143,13 @@ extension DesignedWebView {
       make.centerX.equalToSuperview()
     }
 
-    activityIndicator = CommonUI.appActivityIndicator()
-
-    addSubview(webView)
     addSubview(webNavButtonsView)
-    addSubview(activityIndicator)
 
     webView.snp.makeConstraints { $0.edges.equalToSuperview() }
 
     webNavButtonsView.snp.makeConstraints { (make) in
       make.height.equalTo(45)
       make.leading.trailing.bottom.equalToSuperview()
-    }
-
-    activityIndicator.snp.makeConstraints { (make) in
-      make.centerX.centerY.equalToSuperview()
     }
   }
 }
