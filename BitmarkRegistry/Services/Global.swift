@@ -92,6 +92,7 @@ class Global {
   }
 
   public struct ServerURL {
+    public static let bitmark = "https://bitmark.com"
     public static let mobile = Credential.valueForKey(keyName: Constant.InfoKey.mobileServerURL)
     public static let keyAccountAsset = Credential.valueForKey(keyName: Constant.InfoKey.keyAccountAssetServerURL)
     public static let fileCourier = Credential.valueForKey(keyName: Constant.InfoKey.fileCourierServerURL)

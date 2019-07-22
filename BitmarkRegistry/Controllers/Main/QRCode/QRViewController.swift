@@ -55,6 +55,7 @@ class QRViewController: UIViewController, PanModalPresentable {
 
   // MARK: - Handlers
   @objc func tapToShare(_ sender: UIButton) {
+    guard let accountNumber = accountNumber, let qrCode = qrCode else { return }
     let activityVC = UIActivityViewController(activityItems: [accountNumber, qrCode], applicationActivities: [])
     present(activityVC, animated: true)
   }
