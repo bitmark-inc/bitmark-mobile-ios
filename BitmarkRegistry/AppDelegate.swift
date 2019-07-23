@@ -100,7 +100,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    registerAPNSSubject.onError(error)
+    #if !targetEnvironment(simulator)
+      registerAPNSSubject.onError(error)
+    #endif
     registerAPNSSubject.onCompleted()
   }
 
