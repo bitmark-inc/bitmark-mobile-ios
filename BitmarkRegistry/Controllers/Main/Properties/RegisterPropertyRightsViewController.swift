@@ -548,7 +548,7 @@ extension RegisterPropertyRightsViewController {
   }
 
   fileprivate func setupMetadataEditModeButton() {
-    metadataEditModeButton = UIButton(type: .system)
+    metadataEditModeButton = UIButton()
     metadataEditModeButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
     metadataEditModeButton.setTitle("EDIT", for: .normal)
     metadataEditModeButton.setTitle("DONE", for: .selected)
