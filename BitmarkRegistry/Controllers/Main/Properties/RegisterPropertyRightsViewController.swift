@@ -14,7 +14,7 @@ import Alamofire
 class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
 
   // MARK: - Properties
-  var asset: Asset?
+  var assetR: AssetR?
   var assetData: Data!
   var assetFingerprint: String!
   var assetFileName: String?
@@ -88,14 +88,14 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     assetFingerprintLabel.text = assetFingerprint
     assetFilenameLabel.text = assetFileName
 
-    if let asset = asset {
-      propertyNameTextField.text = asset.name
+    if let assetR = assetR {
+      propertyNameTextField.text = assetR.name
 
-      asset.metadata.forEach { (label, description) in
+      assetR.metadata.forEach { (metadataR) in
         metadataAddButton.sendActions(for: .touchUpInside)
         guard let metadataForm = metadataForms.last else { return }
-        metadataForm.labelTextField.text = label
-        metadataForm.descriptionTextField.text = description
+        metadataForm.labelTextField.text = metadataR.key
+        metadataForm.descriptionTextField.text = metadataR.value
         metadataForm.labelTextField.isEnabled = false
         metadataForm.descriptionTextField.isEnabled = false
       }
@@ -154,8 +154,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       do {
         let assetId: String
         // *** Register Asset if asset has not existed; then issue ***
-        if let asset = self.asset {
-          assetId = asset.id
+        if let assetR = self.assetR {
+          assetId = assetR.id
           try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
         } else {
           guard let fingerprint = self.assetData else { return }
@@ -301,7 +301,7 @@ extension RegisterPropertyRightsViewController {
   }
 
   func validToIssue() -> Bool {
-    if asset == nil {
+    if assetR == nil {
       return !propertyNameTextField.isEmpty && !numberOfBitmarksTextField.isEmpty &&
               errorForNumberOfBitmarksToIssue.text?.isEmpty ?? true &&
               errorForMetadata.text?.isEmpty ?? true &&

@@ -116,7 +116,7 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
 
     let registerPropertyRightsVC = RegisterPropertyRightsViewController()
     registerPropertyRightsVC.hidesBottomBarWhenPushed = true
-    registerPropertyRightsVC.asset = assetIfExisted
+    registerPropertyRightsVC.assetR = assetIfExisted
     registerPropertyRightsVC.assetData = assetData
     registerPropertyRightsVC.assetFingerprint = assetFingerprint
     registerPropertyRightsVC.assetFileName = assetFileName

@@ -15,11 +15,21 @@ class AssetService {
     return FileUtil.computeFingerprint(data: data)
   }
 
-  static func getAsset(from fingerprint: String) -> Asset? {
+  static func getAsset(from fingerprint: String) -> AssetR? {
     guard let assetId = computeAssetId(fingerprint: fingerprint) else { return nil }
 
     do {
-      return try Asset.get(assetID: assetId)
+      let userRealm = try RealmConfig.currentRealm()
+      if let assetR = userRealm?.object(ofType: AssetR.self, forPrimaryKey: assetId) {
+        return assetR
+      }
+    } catch {
+      ErrorReporting.report(error: error)
+    }
+
+    do {
+      let asset = try Asset.get(assetID: assetId)
+      return AssetR(asset: asset)
     } catch {
       return nil
     }
