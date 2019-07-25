@@ -24,15 +24,20 @@ class AccountService {
   }
 
   static func existsCurrentAccount() -> Bool {
-    return getCurrentAccount() != nil
+    if UserSetting.shared.isUserLoggedIn() {
+      return getCurrentAccount() != nil
+    } else {
+      return false
+    }
   }
 
   static func getCurrentAccount() -> Account? {
     var account: Account?
     let seedCore = KeychainStore.getSeedDataFromKeychain()
-    if let seedCore = seedCore {
+    if let accountVersion = UserSetting.shared.getAccountVersion(),
+       let seedCore = seedCore {
       do {
-        let seed = try Seed.fromCore(seedCore, version: .v2)
+        let seed = try Seed.fromCore(seedCore, version: accountVersion)
         account = try Account(seed: seed)
       } catch {
         ErrorReporting.report(error: error)

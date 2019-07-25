@@ -84,33 +84,35 @@ extension RecoveryPhraseViewController {
     let descriptionLabel = CommonUI.descriptionLabel(text: "Please write down your recovery phrase in the exact sequence below:")
     descriptionLabel.lineHeightMultiple(1.2)
 
-    let mainView = UIView()
-    mainView.addSubview(descriptionLabel)
-    mainView.addSubview(recoveryPhraseCollectionView)
+    let mainScrollView = UIScrollView()
+    mainScrollView.addSubview(descriptionLabel)
+    mainScrollView.addSubview(recoveryPhraseCollectionView)
 
     descriptionLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
       make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
-      make.leading.trailing.equalToSuperview()
+      make.width.equalToSuperview().offset(-40)
+      make.leading.trailing.bottom.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 25, right: 20))
     }
 
     let buttonsGroupStackView = setupbuttonsGroup()
 
     // *** Setup UI in view ***
-    view.addSubview(mainView)
+    view.addSubview(mainScrollView)
     view.addSubview(buttonsGroupStackView)
 
-    mainView.snp.makeConstraints { (make) in
-      make.top.equalTo(view.safeAreaLayoutGuide).offset(25)
-      make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-      make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
+    mainScrollView.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+          .inset(UIEdgeInsets(top: 25, left: 0, bottom: 25, right: 0))
     }
 
     buttonsGroupStackView.snp.makeConstraints { (make) in
-      make.top.equalTo(mainView.snp.bottom)
+      make.top.equalTo(mainScrollView.snp.bottom)
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
     }
   }
