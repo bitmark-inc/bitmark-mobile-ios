@@ -17,6 +17,12 @@ enum RealmConfig {
     _ = try RealmConfig.user(accountNumber).configuration()
   }
 
+  static func currentRealm() throws -> Realm? {
+    guard let accountNumber = Global.currentAccount?.getAccountNumber() else { return nil }
+    let userConfiguration = try RealmConfig.user(accountNumber).configuration()
+    return try Realm(configuration: userConfiguration)
+  }
+
   case user(String)
 
   func configuration() throws -> Realm.Configuration {
