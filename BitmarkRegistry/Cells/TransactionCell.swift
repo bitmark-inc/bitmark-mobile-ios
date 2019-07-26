@@ -28,7 +28,7 @@ class TransactionCell: UITableViewCell {
   // MARK: - Handlers
   func setData(timestamp: Date?, ownerNumber: String) {
     isConfirmed = timestamp != nil
-    timestampLabel.text = CustomUserDisplay.datetime(timestamp) ?? "Waiting to be confirmed"
+    timestampLabel.text = CustomUserDisplay.datetime(timestamp) ?? "Pending"
     ownerNumberLabel.text = CustomUserDisplay.accountNumber(ownerNumber)
 
     setStyle()
