@@ -9,7 +9,7 @@
 import UIKit
 import MobileCoreServices
 
-enum AssetType {
+enum AssetType: String {
   case medical
   case health
   case image
@@ -37,7 +37,21 @@ enum AssetType {
     }
   }
 
-  static func get(withSource source: String) -> AssetType? {
+  static func get(from assetR: AssetR) -> AssetType {
+    if assetR.metadata.count > 0,
+       let sourceMetadata = assetR.metadata.first(where: { $0.key.caseInsensitiveCompare("source") == .orderedSame }),
+       let assetType = AssetType.get(fromSource: sourceMetadata.value) {
+      return assetType
+    }
+
+    if let assetFilePath = assetR.assetFilePath {
+      return AssetType.get(fromFilePath: assetFilePath)
+    }
+
+    return .unknown
+  }
+
+  static func get(fromSource source: String) -> AssetType? {
     switch source {
     case "Health Records", "Medical Records":
       return .medical
@@ -48,7 +62,7 @@ enum AssetType {
     }
   }
 
-  static func get(withFilePath filepath: String) -> AssetType {
+  fileprivate static func get(fromFilePath filepath: String) -> AssetType {
     let pathExtension: CFString = filepath.pathExtension as CFString
     guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, nil)?.takeRetainedValue() else { return .unknown }
 

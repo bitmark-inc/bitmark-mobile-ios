@@ -21,6 +21,7 @@ class AssetR: Object {
   @objc dynamic var offset: Int64 = 0
   @objc dynamic var createdAt: Date? = nil
   @objc dynamic var assetFilePath: String?
+  @objc dynamic var assetType: String?
   let metadata = List<MetadataR>()
 
   override static func primaryKey() -> String? {
@@ -40,15 +41,18 @@ class AssetR: Object {
 
     if let currentAccount = Global.currentAccount {
       self.assetFilePath = try? AssetFileService(owner: currentAccount, assetId: asset.id).getAssetFile()?.lastPathComponent
+      self.assetType = AssetType.get(from: self).rawValue
     }
 
     asset.metadata.forEach { (key, value) in
       metadata.append(MetadataR(value: [key, value]))
     }
   }
+}
 
-  // MARK: - Data Handlers
-  func updateAssetFilePath(_ assetFilePath: String, completion: @escaping () -> Void) {
+// MARK: - Data Handlers
+extension AssetR {
+  func updateAssetFilePath(_ assetFilePath: String) {
     guard let currentAccount = Global.currentAccount else { return }
     do {
       let userConfiguration = try RealmConfig.user(currentAccount.getAccountNumber()).configuration()
@@ -56,25 +60,10 @@ class AssetR: Object {
 
       try userRealm.write {
         self.assetFilePath = assetFilePath.lastPathComponent
+        self.assetType = AssetType.get(from: self).rawValue
       }
-
-      completion()
     } catch {
       ErrorReporting.report(error: error)
     }
-  }
-
-  func getAssetType() -> AssetType {
-    if metadata.count > 0,
-      let sourceMetadata = metadata.first(where: { $0.key.caseInsensitiveCompare("source") == .orderedSame }),
-      let assetType = AssetType.get(withSource: sourceMetadata.value) {
-        return assetType
-    }
-
-    if let assetFilePath = assetFilePath {
-      return AssetType.get(withFilePath: assetFilePath)
-    }
-
-    return .unknown
   }
 }

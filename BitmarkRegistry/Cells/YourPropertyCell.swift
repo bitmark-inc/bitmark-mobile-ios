@@ -37,8 +37,8 @@ class YourPropertyCell: UITableViewCell {
     }
     issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
 
-    if let assetR = bitmarkR.assetR {
-      thumbnailImageView.image = assetR.getAssetType().thumbnailImage()
+    if let assetR = bitmarkR.assetR, let assetType = assetR.assetType {
+      thumbnailImageView.image = AssetType(rawValue: assetType)?.thumbnailImage()
     }
   }
 }
