@@ -42,6 +42,7 @@ class OnboardingViewController: UIViewController {
           if let account = account {
             do {
               Global.currentAccount = account // track and store currentAccount
+              UserSetting.shared.setAccountVersion(.v2)
               try KeychainStore.saveToKeychain(account.seed.core)
 
               // setup realm db

@@ -9,15 +9,23 @@
 import UIKit
 import SnapKit
 import BitmarkSDK
+import IQKeyboardManagerSwift
 
 class LoginViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Properties
-  private lazy var numericOrders: [Int] = { (0..<numberOfPhrases).map { extractNumericOrder($0) } }()
+  fileprivate var _numericOrders: [Int]?
+  private var numericOrders: [Int] {
+    if _numericOrders == nil {
+      _numericOrders = (0..<numberOfPhrases).map { extractNumericOrder($0) }
+    }
+    return _numericOrders!
+  }
   override public var customFlowDirection: UICollectionView.ScrollDirection? { return .vertical }
   var submitButton: SubmitButton!
   var submitButtonBottomConstraint: Constraint!
   var currentCell: TestRecoveryPhraseLoginCell?
+  var changePhraseOptionsButton: UIButton!
   // *** error result view ***
   let errorResultView = UIView()
   var retryButton: UIButton!
@@ -28,6 +36,8 @@ class LoginViewController: BaseRecoveryPhraseViewController {
   var nextButton: UIButton!
   let recoveryPhraseWords = RecoverPhrase.bip39ENWords
   let numberOfShowWord = 3
+  let changeTo24phrases = "Are you using 24 words of recovery phrase?\nTap here to switch the form."
+  let changeTo12phrases = "Are you using 12 words of recovery phrase?\nTap here to switch the form."
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -41,21 +51,40 @@ class LoginViewController: BaseRecoveryPhraseViewController {
   }
 
   // MARK: - Handlers
+  @objc func changePhraseOptions(_ sender: UIButton) {
+    if numberOfPhrases == 12 {
+      changePhraseOptionsButton.setTitle(changeTo12phrases, for: .normal)
+      numberOfPhrases = 24
+    } else {
+      changePhraseOptionsButton.setTitle(changeTo24phrases, for: .normal)
+      numberOfPhrases = 12
+    }
+    _numericOrders = nil
+    clearForm()
+    recoveryPhraseCollectionView.reloadData()
+  }
+
   @objc func tapToSubmit(_ sender: UIButton) {
     do {
-      let account = try AccountService.getAccount(phrases: getUserInputPhrases())
+      let userInputPhrases = getUserInputPhrases()
+      guard let seedVersion = SeedVersion(numberOfPhrases: userInputPhrases.count) else {
+        throw("incorrect number of phrases")
+      }
+
+      UserSetting.shared.setAccountVersion(seedVersion)
+      let account = try AccountService.getAccount(phrases: userInputPhrases)
       Global.currentAccount = account // track and store currentAccount
       try KeychainStore.saveToKeychain(account.seed.core)
     } catch is RecoverPhrase.RecoverPhraseError {
-      errorResultView.isHidden = false
+      displayErrorView(isHidden: false)
       return
     } catch BitmarkSDK.SeedError.wrongNetwork {
-      errorResultView.isHidden = false
+      displayErrorView(isHidden: false)
       return
     } catch {
       showErrorAlert(message: Constant.Error.keychainStore)
       ErrorReporting.report(error: error)
-      errorResultView.isHidden = false
+      displayErrorView(isHidden: false)
       return
     }
 
@@ -65,8 +94,8 @@ class LoginViewController: BaseRecoveryPhraseViewController {
 
   // clear text in all textfields and hide errorResultView
   @objc func tapToRetry(_ sender: UIButton) {
-    recoveryPhraseCollectionView.visibleCells.forEach { ($0 as? TestRecoveryPhraseLoginCell)?.clear() }
-    errorResultView.isHidden = true
+    clearForm()
+    displayErrorView(isHidden: true)
   }
 }
 
@@ -90,6 +119,7 @@ extension LoginViewController: TestRecoverPhraseLoginDelegate {
   func beginEditingTextfield(_ textfield: UITextField) {
     filterAutoCorrectWords(textfield.text!)
     adjustReturnKeyType(for: textfield)
+    displayErrorView(isHidden: true)
   }
 
   func editingTextfield(_ textfield: UITextField) {
@@ -161,15 +191,10 @@ extension LoginViewController {
 
   /**
    Extract numeric number - prefix's cell.
-   when columns is 1, simply [1...12]
-   when columns is 2, customize to numeric number show as horizontal collection view; (but in fact the collection view is vertical collection view)
+   customize to numeric number show as horizontal collection view; (but in fact the collection view is vertical collection view)
    */
   fileprivate func extractNumericOrder(_ rowIndex: Int) -> Int {
-    if columns == 1 {
-      return rowIndex + 1
-    } else {
-      return (rowIndex % 2 == 0) ? (rowIndex / 2 + 1) : (rowIndex + 1)/2 + (numberOfPhrases / 2)
-    }
+    return (rowIndex % 2 == 0) ? (rowIndex / 2 + 1) : (rowIndex + 1)/2 + (numberOfPhrases / 2)
   }
 
   fileprivate func autoCorrectWordButton(_ word: String) -> UIButton {
@@ -198,6 +223,15 @@ extension LoginViewController {
       autoCorrectStackView.addArrangedSubview(autoCorrectWordButton(word))
     }
   }
+
+  fileprivate func clearForm() {
+    recoveryPhraseCollectionView.visibleCells.forEach { ($0 as? TestRecoveryPhraseLoginCell)?.clear() }
+  }
+
+  fileprivate func displayErrorView(isHidden: Bool) {
+    errorResultView.isHidden = isHidden
+    changePhraseOptionsButton.isHidden = !isHidden
+  }
 }
 
 // MARK: - Setup Views/Events
@@ -207,6 +241,7 @@ extension LoginViewController {
     recoveryPhraseCollectionView.dataSource = self
     recoveryPhraseCollectionView.delegate = self
 
+    changePhraseOptionsButton.addTarget(self, action: #selector(changePhraseOptions), for: .touchUpInside)
     submitButton.addTarget(self, action: #selector(tapToSubmit), for: .touchUpInside)
     retryButton.addTarget(self, action: #selector(tapToRetry), for: .touchUpInside)
 
@@ -221,28 +256,51 @@ extension LoginViewController {
     let descriptionLabel = CommonUI.descriptionLabel(text: "Please type all 12 words of your recovery phrase in the exact sequence below:")
     descriptionLabel.lineHeightMultiple(1.2)
 
-    let mainView = UIView()
-    mainView.addSubview(descriptionLabel)
-    mainView.addSubview(recoveryPhraseCollectionView)
+    let mainScrollView = UIScrollView()
+    mainScrollView.addSubview(descriptionLabel)
+    mainScrollView.addSubview(recoveryPhraseCollectionView)
+    recoveryPhraseCollectionView.isScrollEnabled = false
 
     descriptionLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
       make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
-      make.leading.trailing.equalToSuperview()
+      make.width.equalToSuperview().offset(-40)
+      make.leading.trailing.bottom.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 25, right: 20))
     }
+
+    // Setup Error Result View
+    setupErrorResultView()
+    errorResultView.isHidden = true
 
     submitButton = SubmitButton(title: "SUBMIT")
 
-    // *** Setup UI in view ***
-    view.addSubview(mainView)
-    view.addSubview(submitButton)
+    changePhraseOptionsButton = UIButton(type: .system)
+    changePhraseOptionsButton.setTitle(changeTo24phrases, for: .normal)
+    changePhraseOptionsButton.titleLabel?.lineBreakMode = .byWordWrapping
+    changePhraseOptionsButton.titleLabel?.lineHeightMultiple(1.2)
+    changePhraseOptionsButton.titleLabel?.textAlignment = .center
 
-    mainView.snp.makeConstraints { (make) in
-      make.edges.equalTo(view.safeAreaLayoutGuide)
-          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
+    // *** Setup UI in view ***
+    view.addSubview(mainScrollView)
+    view.addSubview(changePhraseOptionsButton)
+    view.addSubview(submitButton)
+    view.addSubview(errorResultView)
+
+    mainScrollView.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+          .inset(UIEdgeInsets(top: 25, left: 0, bottom: 25, right: 0))
+    }
+
+    changePhraseOptionsButton.snp.makeConstraints { (make) in
+      make.top.equalTo(mainScrollView.snp.bottom)
+      make.height.equalTo(100)
+      make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+      make.bottom.equalTo(submitButton.snp.top)
     }
 
     submitButton.snp.makeConstraints { (make) in
@@ -250,14 +308,9 @@ extension LoginViewController {
       submitButtonBottomConstraint = make.bottom.equalTo(view.safeAreaLayoutGuide).constraint
     }
 
-    // Setup Error Result View
-    setupErrorResultView()
-    errorResultView.isHidden = true
-    view.addSubview(errorResultView)
-
     errorResultView.snp.makeConstraints { (make) in
+      make.top.equalTo(mainScrollView.snp.bottom)
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-      make.height.equalTo(120)
     }
 
     customInputAccessoryView = setupCustomInputAccessoryView()
@@ -280,7 +333,8 @@ extension LoginViewController {
     textView.addSubview(message)
 
     errorTitle.snp.makeConstraints { (make) in
-      make.top.leading.trailing.equalToSuperview()
+      make.top.equalToSuperview()
+      make.leading.trailing.equalToSuperview()
     }
 
     message.snp.makeConstraints { (make) in
@@ -294,9 +348,8 @@ extension LoginViewController {
     errorResultView.addSubview(retryButton)
 
     textView.snp.makeConstraints { (make) in
-      make.top.equalToSuperview()
-      make.leading.equalToSuperview().offset(20)
-      make.trailing.equalToSuperview().offset(-20)
+      make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 20, right: 0))
     }
 
     retryButton.snp.makeConstraints { (make) in

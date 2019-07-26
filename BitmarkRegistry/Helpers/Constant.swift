@@ -60,7 +60,7 @@ public struct Constant {
 
   // MARK: - Success Message
   public struct Success {
-    public static let issue = "Your property rights have been registerred."
+    public static let issue = "Your property rights have been registered."
     public static let transfer = "Your bitmark has been transferring."
     public static let delete = "Your bitmark has been deleted."
   }

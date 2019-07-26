@@ -159,17 +159,17 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
 
 // MARK: - Setup Views/Events
 extension RegisterPropertyViewController {
-  private func setupEvents() {
+  fileprivate func setupEvents() {
     registerByPhotoButton.addTarget(self, action: #selector(tapPhotosToRegiter), for: .touchUpInside)
     registerByFileButton.addTarget(self, action: #selector(tapFilesToRegister), for: .touchUpInside)
   }
 
-  private func setupViews() {
+  fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    registerByPhotoButton = registerButton(by: "PHOTOS")
-    registerByFileButton = registerButton(by: "FILES")
+    registerByPhotoButton = registerButton(by: "PHOTOS", imageName: "image-picker")
+    registerByFileButton = registerButton(by: "FILES", imageName: "file-picker")
 
     let registerSelectionView = UIStackView(
       arrangedSubviews: [registerByPhotoButton, registerByFileButton],
@@ -182,8 +182,10 @@ extension RegisterPropertyViewController {
       $0.snp.makeConstraints { $0.width.equalToSuperview() }
     })
 
-    descriptionLabel = CommonUI.descriptionLabel(text: "Property rights are registered on Bitmark through the creation of an asset record followed by an issue record." +
-      " Once an asset has been issued, transferring it simply requires taking advantage of the blockchain's standard attributes.")
+    descriptionLabel = CommonUI.descriptionLabel(text: """
+      To register your media and assets, first create an asset record.
+      You can then issue that asset and transfer it. All of this is recorded on the blockchain.
+      """)
     descriptionLabel.lineHeightMultiple(1.2)
 
     // *** Setup UI in view ***
@@ -204,15 +206,39 @@ extension RegisterPropertyViewController {
     setupDisabledScreen()
   }
 
-  private func registerButton(by text: String) -> UIButton {
-    let button = UIButton()
+  fileprivate func registerButton(by text: String, imageName: String) -> UIButton {
+    let button = UIButton(type: .system)
     button.backgroundColor = .aliceBlue
     button.setTitle(text, for: .normal)
     button.setTitleColor(.mainBlueColor, for: .normal)
     button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 16)
     button.contentHorizontalAlignment = .left
-    button.titleEdgeInsets.left = 20.0
+    button.titleEdgeInsets.left = 80
     button.snp.makeConstraints { $0.height.equalTo(45) }
+
+    let imageView = UIImageView(image: UIImage(named: imageName))
+    let prefixView = UIView()
+    prefixView.addSubview(imageView)
+    imageView.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
+
+    let nextArrowImageView = UIImageView(image: UIImage(named: "next-arrow"))
+    nextArrowImageView.contentMode = .scaleAspectFit
+
+    button.addSubview(prefixView)
+    button.addSubview(nextArrowImageView)
+
+    prefixView.snp.makeConstraints { (make) in
+      make.centerY.leading.equalToSuperview()
+      make.width.equalTo(70)
+    }
+
+    nextArrowImageView.snp.makeConstraints { (make) in
+      make.centerY.equalToSuperview()
+      make.trailing.equalToSuperview().offset(-20)
+    }
+
     return button
   }
 

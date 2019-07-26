@@ -73,8 +73,6 @@ class PropertiesViewController: UIViewController {
     }
   }
 
-
-
   fileprivate func setupRealmObserverForLoadingBitmarks() {
     self.realmToken = self.bitmarkRs.observe({ [weak self] (changes) in
       guard let self = self else { return }
@@ -233,7 +231,12 @@ extension PropertiesViewController {
     let welcomeLabel = CommonUI.pageTitleLabel(text: "WELCOME TO BITMARK!")
     welcomeLabel.textColor = .mainBlueColor
 
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Register, track, and trade property rights for your digital assets.")
+    let descriptionLabel = CommonUI.descriptionLabel(text: """
+      Bitmark is the property system for establishing value and legal control over the world’s data. \
+      Our mission is to define digital property, defend it, and make it economically divisible.
+
+      Register, track, and trade property rights for your digital assets.
+      """)
 
     let contentView = UIView()
     contentView.addSubview(welcomeLabel)

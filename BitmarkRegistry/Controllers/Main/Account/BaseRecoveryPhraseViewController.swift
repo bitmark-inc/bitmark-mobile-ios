@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class BaseRecoveryPhraseViewController: UIViewController {
 
@@ -14,13 +15,10 @@ class BaseRecoveryPhraseViewController: UIViewController {
   private let sectionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 0.0, right: 0.0)
   private let collectionViewPadding: CGFloat = 40.0
   private let heightPerRecoveryPhraseItem: CGFloat = 25.0
-  public let screenHeightLimitationForRecoveryPhase: CGFloat = 680
-  public lazy var columns: Int = {
-    // adjust number of columns: 2 columns for iphone 4'; other should be 1 column
-    return view.frame.height >= screenHeightLimitationForRecoveryPhase ? 1 : 2
-  }()
+  var heightCollectionViewConstraint: Constraint?
+  private let columns = 2
   public var customFlowDirection: UICollectionView.ScrollDirection? { return nil }
-  public let numberOfPhrases = 12
+  public var numberOfPhrases = 12
 
   lazy var recoveryPhraseCollectionView: UICollectionView = {
     let flowlayout = UICollectionViewFlowLayout()
@@ -34,6 +32,7 @@ class BaseRecoveryPhraseViewController: UIViewController {
   func loadRecoveryPhrases(_ phrases: inout [String]) {
     do {
       phrases = try Global.currentAccount!.getRecoverPhrase(language: .english)
+      numberOfPhrases = phrases.count
     } catch {
       showErrorAlert(message: "Error happened while loading recovery phrase.")
       ErrorReporting.report(error: error)
@@ -44,9 +43,14 @@ class BaseRecoveryPhraseViewController: UIViewController {
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 
-    recoveryPhraseCollectionView.snp.makeConstraints { (make) in
-      make.height.equalTo(CGFloat(numberOfPhrases) / CGFloat(columns) * (heightPerRecoveryPhraseItem + sectionInsets.top))
+    if heightCollectionViewConstraint == nil {
+      recoveryPhraseCollectionView.snp.makeConstraints { (make) in
+        heightCollectionViewConstraint = make.height.equalTo(0).constraint
+      }
     }
+
+    let collectionHeight = CGFloat(numberOfPhrases) / CGFloat(columns) * (heightPerRecoveryPhraseItem + sectionInsets.top)
+    heightCollectionViewConstraint?.update(offset: collectionHeight)
   }
 }
 

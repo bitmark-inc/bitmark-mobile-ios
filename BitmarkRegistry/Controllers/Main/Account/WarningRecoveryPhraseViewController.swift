@@ -58,10 +58,11 @@ extension WarningRecoveryPhraseViewController {
     warningTextView.isUserInteractionEnabled = true
     warningTextView.isEditable = false
     warningTextView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 15, right: 20)
-    warningTextView.text =
-      "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\n" +
-      "We will show you a list of words to write down on a piece of paper and keep safe.\n\n" +
-      "Make sure you are in a private location before writing down your recovery phrase."
+    warningTextView.text = """
+      Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n
+      We will show you a list of words to write down on a piece of paper and keep safe.\n
+      Make sure you are in a private location before writing down your recovery phrase.
+      """
 
     let mainView = UIView()
     mainView.addSubview(pageTitle)

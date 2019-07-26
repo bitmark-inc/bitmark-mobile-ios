@@ -14,6 +14,7 @@ class KeychainStore {
   // MARK: - Properties
   private static let service = "com.bitmark.registry"
   private static let bitmarkSeedCoreKey = "bitmark_core"
+  private static let bitmarkSeedCoreWithoutAuthenticartion = "bitmark_core_no_authentication" // migrating for old-version app
   private static let bitmarkEncryptedDBKey = "bitmark_encrypted_db_key"
   private static let keychain: Keychain = {
     return Keychain(service: service)
@@ -30,7 +31,7 @@ class KeychainStore {
   }
 
   static func getSeedDataFromKeychain() -> Data? {
-    return getDataFromKeychain(key: bitmarkSeedCoreKey)
+    return (getDataFromKeychain(key: bitmarkSeedCoreKey) ?? getDataFromKeychain(key: bitmarkSeedCoreWithoutAuthenticartion))
   }
 
   // *** Encrypted db key ***

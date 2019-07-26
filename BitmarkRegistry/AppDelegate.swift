@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     IQKeyboardManager.shared.enable = true
     IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+    IQKeyboardManager.shared.enableAutoToolbar = false
 
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.makeKeyAndVisible()

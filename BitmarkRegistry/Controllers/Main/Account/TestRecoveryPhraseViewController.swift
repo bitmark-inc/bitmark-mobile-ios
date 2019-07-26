@@ -25,7 +25,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   // *** Properties for Phrase Option Function ***
   private let heightPerPhraseOptionItem: CGFloat = 25.0
   private let phraseOptionPadding: CGFloat = 15.0
-  private var userPhraseChoice = [String?](repeating: nil, count: 12)
+  private var userPhraseChoice: [String?]!
 
   lazy var phraseOptionCollectionView: UICollectionView = {
     let flowlayout = UICollectionViewFlowLayout()
@@ -76,7 +76,6 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     phraseOptionCollectionView.isHidden = false
     setupDefaultSelectHiddenRecoveryPhraseBox()
     setStyleForRecoveryPhraseCell(isError: false)
-    recoveryPhraseCollectionView.isUserInteractionEnabled = true
   }
 
   @objc func doneHandler(_ sender: UIButton) {
@@ -109,6 +108,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   private func loadData() {
     loadRecoveryPhrases(&recoveryPhrases)
     hiddenPhraseIndexes = randomHiddenIndexes()
+    userPhraseChoice = [String?](repeating: nil, count: numberOfPhrases)
   }
 
   // MARK: - Override - UICollectionViewDelegateFlowLayout
@@ -127,7 +127,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 extension TestRecoveryPhraseViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return collectionView == recoveryPhraseCollectionView
-                          ? recoveryPhrases.count
+                          ? numberOfPhrases
                           : numberOfHiddenPhrases
   }
 
@@ -175,6 +175,7 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
   }
 
   // When user reselect test hidden recovery phrase box: revert the selection of phrase option
+  // remove result display if it's showing
   func reselectHiddenPhraseBoxCell(_ cell: TestRecoveryPhraseCell) {
     let indexPath = recoveryPhraseCollectionView.indexPath(for: cell)!
     orderedHiddenPhraseIndexes.append(indexPath.row)
@@ -183,6 +184,11 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
     userPhraseChoice[indexPath.row] = nil
     cell.matchingTestPhraseCell?.isHidden = false
     cell.showHiddenBox()
+
+    errorResultView.isHidden = true
+    successResultView.isHidden = true
+    phraseOptionCollectionView.isHidden = false
+    setStyleForRecoveryPhraseCell(isError: false)
   }
 
   /*
@@ -205,7 +211,6 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
       selectedHiddenPhraseBoxIndexPath = nextSelectedHiddenIndexPath
     } else { // 5
       phraseOptionCollectionView.isHidden = true
-      recoveryPhraseCollectionView.isUserInteractionEnabled = false
       if isResultCorrect() {
         successResultView.isHidden = false
       } else {
@@ -225,32 +230,36 @@ extension TestRecoveryPhraseViewController {
     let descriptionLabel = CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:")
     descriptionLabel.lineHeightMultiple(1.2)
 
-    let mainView = UIView()
-    mainView.addSubview(descriptionLabel)
-    mainView.addSubview(recoveryPhraseCollectionView)
-    mainView.addSubview(phraseOptionCollectionView)
+    let mainScrollView = UIScrollView()
+    mainScrollView.addSubview(descriptionLabel)
+    mainScrollView.addSubview(recoveryPhraseCollectionView)
 
     descriptionLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
       make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
-      make.leading.trailing.equalToSuperview()
-    }
-
-    phraseOptionCollectionView.snp.makeConstraints { (make) in
-      make.top.equalTo(recoveryPhraseCollectionView.snp.bottom).offset(25)
+      make.width.equalToSuperview().offset(-40)
       make.leading.trailing.bottom.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 25, right: 20))
     }
 
     // *** Setup UI in view ***
-    view.addSubview(mainView)
+    view.addSubview(mainScrollView)
+    view.addSubview(phraseOptionCollectionView)
 
-    mainView.snp.makeConstraints { (make) in
-      make.top.equalTo(view.safeAreaLayoutGuide).offset(25)
-      make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-      make.trailing.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+    mainScrollView.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        .inset(UIEdgeInsets(top: 25, left: 0, bottom: 25, right: 0))
+    }
+
+    phraseOptionCollectionView.snp.makeConstraints { (make) in
+      make.top.equalTo(mainScrollView.snp.bottom).offset(25)
+      make.height.equalTo(150)
+      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     setupSuccessResultView()
@@ -258,8 +267,9 @@ extension TestRecoveryPhraseViewController {
     view.addSubview(successResultView)
     view.addSubview(errorResultView)
     successResultView.snp.makeConstraints { (make) in
+      make.top.equalTo(mainScrollView.snp.bottom).offset(25)
+      make.height.equalTo(150)
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-      make.height.equalTo(120)
     }
 
     errorResultView.snp.makeConstraints { (make) in
@@ -290,7 +300,7 @@ extension TestRecoveryPhraseViewController {
     }
 
     message.snp.makeConstraints { (make) in
-      make.top.equalTo(successTitle.snp.bottom)
+      make.top.equalTo(successTitle.snp.bottom).offset(10)
       make.leading.trailing.equalToSuperview()
     }
 
@@ -312,9 +322,8 @@ extension TestRecoveryPhraseViewController {
     successResultView.addSubview(successButton)
 
     textView.snp.makeConstraints { (make) in
-      make.top.equalToSuperview()
-      make.leading.equalToSuperview().offset(20)
-      make.trailing.equalToSuperview().offset(-20)
+      make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     successButton.snp.makeConstraints { (make) in
@@ -344,7 +353,7 @@ extension TestRecoveryPhraseViewController {
     }
 
     message.snp.makeConstraints { (make) in
-      make.top.equalTo(errorTitle.snp.bottom)
+      make.top.equalTo(errorTitle.snp.bottom).offset(10)
       make.leading.trailing.equalToSuperview()
     }
 
@@ -355,9 +364,8 @@ extension TestRecoveryPhraseViewController {
     errorResultView.addSubview(retryButton)
 
     textView.snp.makeConstraints { (make) in
-      make.top.equalToSuperview()
-      make.leading.equalToSuperview().offset(20)
-      make.trailing.equalToSuperview().offset(-20)
+      make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 
     retryButton.snp.makeConstraints { (make) in
@@ -370,7 +378,7 @@ extension TestRecoveryPhraseViewController {
 extension TestRecoveryPhraseViewController {
   func randomHiddenIndexes() -> [Int] {
     var randomIndexes = [Int]()
-    var availableNums = Array(0..<recoveryPhrases.count)
+    var availableNums = Array(0..<numberOfPhrases)
     for _ in 0..<numberOfHiddenPhrases {
       let randomIndex = availableNums.randomElement()!
       randomIndexes.append(randomIndex)
