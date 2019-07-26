@@ -20,4 +20,24 @@ extension SeedVersion {
       return nil
     }
   }
+
+  init?(versionString: String) {
+    switch versionString {
+    case "v1":
+      self = .v1
+    case "v2":
+      self = .v2
+    default:
+      return nil
+    }
+  }
+
+  func stringFromVersion() -> String {
+    switch self {
+    case .v1:
+      return "v1"
+    case .v2:
+      return "v2"
+    }
+  }
 }

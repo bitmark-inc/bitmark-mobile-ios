@@ -182,8 +182,10 @@ extension RegisterPropertyViewController {
       $0.snp.makeConstraints { $0.width.equalToSuperview() }
     })
 
-    descriptionLabel = CommonUI.descriptionLabel(text: "To register your media and assets, first create an asset record.\n" +
-      "You can then issue that asset and transfer it. All of this is recorded on the blockchain.")
+    descriptionLabel = CommonUI.descriptionLabel(text: """
+      To register your media and assets, first create an asset record.
+      You can then issue that asset and transfer it. All of this is recorded on the blockchain.
+      """)
     descriptionLabel.lineHeightMultiple(1.2)
 
     // *** Setup UI in view ***

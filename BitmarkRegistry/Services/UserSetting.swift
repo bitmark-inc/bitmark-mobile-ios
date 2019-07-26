@@ -29,11 +29,11 @@ class UserSetting {
 
   // *** Account Version ***
   func setAccountVersion(_ version: SeedVersion) {
-    UserDefaults.standard.set(version.rawValue, forKey: accountVersionKey)
+    UserDefaults.standard.set(version.stringFromVersion(), forKey: accountVersionKey)
   }
 
   func getAccountVersion() -> SeedVersion? {
-    let rawSeedVersion = UserDefaults.standard.integer(forKey: accountVersionKey)
-    return SeedVersion(rawValue: rawSeedVersion)
+    guard let versionString = UserDefaults.standard.string(forKey: accountVersionKey) else { return nil }
+    return SeedVersion(versionString: versionString)
   }
 }
