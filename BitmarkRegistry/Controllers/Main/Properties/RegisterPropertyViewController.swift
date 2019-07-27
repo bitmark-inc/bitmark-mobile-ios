@@ -173,8 +173,8 @@ extension RegisterPropertyViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    registerByPhotoButton = registerButton(by: "PHOTOS", imageName: "image-picker")
-    registerByFileButton = registerButton(by: "FILES", imageName: "file-picker")
+    registerByPhotoButton = registerButton(by: "PHOTO OR VIDEO", imageName: "image-picker")
+    registerByFileButton = registerButton(by: "FILE", imageName: "file-picker")
 
     let registerSelectionView = UIStackView(
       arrangedSubviews: [registerByPhotoButton, registerByFileButton],
@@ -248,14 +248,14 @@ extension RegisterPropertyViewController {
   }
 
   fileprivate func setupBrowserActionButton() -> UIButton {
-    let browserTextLabel = UILabel(text: "Browser")
+    let browserTextLabel = UILabel(text: "Browse")
     browserTextLabel.font = UIFont(name: "Arial", size: 16)
     let browserImage = UIImage(named: "browser-icon")
 
     let browserButton = UIButton()
     browserButton.frame = CGRect(x: 0, y: 16, width: view.frame.width - 35, height: 25)
     browserButton.contentHorizontalAlignment = .leading
-    browserButton.setTitle("Browser", for: .normal)
+    browserButton.setTitle("Browse", for: .normal)
     browserButton.setTitleColor(.black, for: .normal)
     browserButton.setImage(browserImage, for: .normal)
     browserButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: browserButton.frame.width - 20, bottom: 0, right: 0)

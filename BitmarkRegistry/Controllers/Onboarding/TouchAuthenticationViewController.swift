@@ -65,10 +65,10 @@ extension TouchAuthenticationViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let titlePageLabel = CommonUI.pageTitleLabel(text: "TOUCH/FACE ID & PASSCODE")
+    let titlePageLabel = CommonUI.pageTitleLabel(text: "TOUCH/FACE ID")
     titlePageLabel.textColor = .mainBlueColor
 
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Turn on Touch/Face ID or a passcode to sign transactions from this device.")
+    let descriptionLabel = CommonUI.descriptionLabel(text: "Use Touch/Face ID to sign and encrypt your data.")
 
     let touchFaceIdImageView = UIImageView()
     touchFaceIdImageView.image = UIImage(named: "touch-face-id")
@@ -82,7 +82,7 @@ extension TouchAuthenticationViewController {
       distribution: .fill
     )
 
-    enableButton = CommonUI.blueButton(title: "ENABLE")
+    enableButton = CommonUI.blueButton(title: "ENABLE TOUCH/FACE ID")
     skipButton = CommonUI.lightButton(title: "SKIP")
     let buttonsGroupStackView = UIStackView(
       arrangedSubviews: [enableButton, skipButton],

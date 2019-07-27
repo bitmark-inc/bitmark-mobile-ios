@@ -80,7 +80,7 @@ class CommonUI {
     return label
   }
 
-  static func descriptionLabel(text: String) -> UILabel {
+  static func descriptionLabel(text: String = "") -> UILabel {
     let label = UILabel(text: text)
     label.font = UIFont(name: "Avenir", size: 17)
     label.numberOfLines = 0
