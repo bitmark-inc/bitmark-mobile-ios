@@ -11,7 +11,7 @@ import BitmarkSDK
 import Alamofire
 import MobileCoreServices
 
-class FileCourierServer {
+class FileCourierService {
 
   static func updateFileToCourierServer(
     assetId: String, encryptedFileURL: URL,
@@ -129,7 +129,8 @@ class FileCourierServer {
 
       do {
         guard let headers = httpResponse.allHeaderFields as? [String: String] else {
-          ErrorReporting.report(message: "Header in download file API is incorrectly formatted.")
+          let error = Global.appError(errorCode: 500, message: "Header in download file API is incorrectly formatted.")
+          completion(nil, error)
           return
         }
 
@@ -148,7 +149,7 @@ class FileCourierServer {
 
           completion(responseData, nil)
         } else {
-          let error = Global.appError(errorCode: 500, message: "Header in download file response is incorrectly formatted.")
+          let error = Global.appError(errorCode: 500, message: "Header in download file response is incorrectly structured.")
           completion(nil, error)
         }
 
@@ -156,6 +157,63 @@ class FileCourierServer {
         completion(nil, error)
       }
     }.resume()
+  }
+
+  static func checkFileExistence(assetId: String, completion: @escaping (SessionData?, Error?) -> Void) {
+    guard let jwt = Global.currentJwt,
+          let currentAccountNumber = Global.currentAccount?.getAccountNumber() else { return }
+
+    let checkFileExistenceURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + currentAccountNumber)!
+
+    var checkFileExistenceRequest = URLRequest(url: checkFileExistenceURL)
+    checkFileExistenceRequest.httpMethod = "HEAD"
+    checkFileExistenceRequest.allHTTPHeaderFields = [
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + jwt
+    ]
+
+    URLSession.shared.dataTask(with: checkFileExistenceRequest) { (_, response, error) in
+      if let error = error {
+        completion(nil, error); return
+      }
+
+      guard let httpResponse = response as? HTTPURLResponse,
+            let responseHeaders = httpResponse.allHeaderFields as? [String : String] else {
+        let error = Global.appError(errorCode: 500, message: "Can not parse response in check File existence file")
+        ErrorReporting.report(error: error)
+        completion(nil, error)
+        return
+      }
+
+      guard httpResponse.statusCode == 200 else { completion(nil, nil); return }
+
+      guard let encryptedKey = responseHeaders["Enc-Data-Key"],
+            let algorithm = responseHeaders["Data-Key-Alg"] else {
+        let error = Global.appError(errorCode: 500, message: "Header in check file existence response is incorrectly structured.")
+        ErrorReporting.report(error: error)
+        completion(nil, error)
+        return
+      }
+
+      let sessionData = SessionData(encryptedKey: encryptedKey.hexDecodedData, algorithm: algorithm)
+      completion(sessionData, nil)
+    }.resume()
+  }
+
+  static func updateAccessFile(assetId: String, sender: Account, receiverAccountNumber: String, receiverSessionData: SessionData) {
+    guard let jwt = Global.currentJwt else { return }
+    let updateAccessURL = URL(string: Global.ServerURL.fileCourier + "/v2/access/" + assetId + "/" + sender.getAccountNumber())!
+    let access = "\(receiverAccountNumber):\(receiverSessionData.encryptedKey.hexEncodedString)"
+    let params = ["access": access]
+    let headers = ["Authorization": "Bearer " + jwt]
+
+    Alamofire.request(updateAccessURL, method: .put, parameters: params, encoding: URLEncoding.default, headers: headers)
+      .responseString { (response) in
+      if !response.result.isSuccess {
+        ErrorReporting.report(message: "Can not updateAcessURL assetId: \(assetId)")
+      }
+    }
   }
 
   static fileprivate func isValidDownloadableInfo(_ info: String) -> Bool {

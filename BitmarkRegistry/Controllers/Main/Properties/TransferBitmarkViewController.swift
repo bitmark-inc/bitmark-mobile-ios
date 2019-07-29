@@ -162,6 +162,7 @@ extension TransferBitmarkViewController {
     let transferView = UIStackView(arrangedSubviews: [transferTitle, scanQRButton])
 
     recipientAccountNumberTextfield = DesignedTextField(placeholder: "RECIPIENT BITMARK ACCOUNT NUMBER")
+    recipientAccountNumberTextfield.autocorrectionType = .no
     recipientAccountNumberTextfield.clearButtonMode = .always
     recipientAccountNumberTextfield.returnKeyType = .done
 

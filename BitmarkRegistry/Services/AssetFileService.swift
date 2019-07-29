@@ -57,34 +57,57 @@ class AssetFileService {
     try FileManager.default.copyItem(at: fileURL, to: destinationURL)
   }
 
+  /**
+   if current user has already uploaded the file into fileCourier: => update access of the file (case 1)
+   otherwise, upload new file into fileCourier (case 2)
+   */
   func transferFile(to receiverAccountNumber: String) {
-    AccountKeyService.getEncryptionPublicKey(accountNumber: receiverAccountNumber) { [weak self] (receiverPublicKey, error) in
-      guard let self = self else { return }
-
+    AccountKeyService.getEncryptionPublicKey(accountNumber: receiverAccountNumber) { (receiverPublicKey, error) in
       if let error = error {
         ErrorReporting.report(error: error)
         return
       }
 
       guard let receiverPublicKey = receiverPublicKey else { return }
-      do {
-        guard let assetFileURL = try self.getAssetFile() else { return }
-        let assetFilename = assetFileURL.lastPathComponent
-        let encryptedFileURL = self.encryptedFolderURL.appendingPathComponent(assetFilename)
+      FileCourierService.checkFileExistence(assetId: self.assetId, completion: { [weak self] (currentSessionData, error) in
+        guard let self = self else { return }
+        do {
+          if let currentSessionData = currentSessionData { // case 1
+            let assetEncryption = try AssetEncryption(
+              from: currentSessionData,
+              receiverAccount: self.owner, senderEncryptionPublicKey: self.owner.publicKey
+            )
+            let receiverSessionData = try SessionData.createSessionData(
+              sender: self.owner,
+              sessionKey: assetEncryption.key, algorithm: currentSessionData.algorithm,
+              receiverPublicKey: receiverPublicKey
+            )
 
-        let (senderSessionData, receiverSessionData) = try BitmarkFileUtil.encryptFile(
-          fileURL: assetFileURL, destinationURL: encryptedFileURL,
-          sender: self.owner, receiverPublicKey: receiverPublicKey
-        )
+            FileCourierService.updateAccessFile(
+              assetId: self.assetId,
+              sender: self.owner,
+              receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
+            )
+          } else { // case 2
+            guard let assetFileURL = try self.getAssetFile() else { return } // ignore if current user hasn't downloaded the file into local yet.
+            let assetFilename = assetFileURL.lastPathComponent
+            let encryptedFileURL = self.encryptedFolderURL.appendingPathComponent(assetFilename)
 
-        FileCourierServer.updateFileToCourierServer(
-          assetId: self.assetId, encryptedFileURL: encryptedFileURL,
-          sender: self.owner, senderSessionData: senderSessionData,
-          receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
-        )
-      } catch {
-        ErrorReporting.report(error: error)
-      }
+            let (senderSessionData, receiverSessionData) = try BitmarkFileUtil.encryptFile(
+              fileURL: assetFileURL, destinationURL: encryptedFileURL,
+              sender: self.owner, receiverPublicKey: receiverPublicKey
+            )
+
+            FileCourierService.updateFileToCourierServer(
+              assetId: self.assetId, encryptedFileURL: encryptedFileURL,
+              sender: self.owner, senderSessionData: senderSessionData,
+              receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
+            )
+          }
+        } catch {
+          ErrorReporting.report(error: error)
+        }
+      })
     }
   }
 
@@ -114,7 +137,7 @@ class AssetFileService {
   }
 
   func getSenderAccountNumber(completion: @escaping (String?, Error?) -> Void) {
-    FileCourierServer.getDownloadableAssets(receiver: owner) { [weak self] (downloadableFileIds, error) in
+    FileCourierService.getDownloadableAssets(receiver: owner) { [weak self] (downloadableFileIds, error) in
       guard let self = self else { return }
       guard error == nil else { completion(nil, error); return }
 
@@ -133,7 +156,7 @@ class AssetFileService {
     AccountKeyService.getEncryptionPublicKey(accountNumber: senderAccountNumber) { [weak self] (senderPublicKey, error) in
       guard let self = self else { return }
       guard let senderPublicKey = senderPublicKey else { return }
-      FileCourierServer.downloadFileFromCourierServer(
+      FileCourierService.downloadFileFromCourierServer(
         assetId: self.assetId, receiver: self.owner,
         senderAccountNumber: senderAccountNumber, senderPublicKey: senderPublicKey, completion: { (responseData, error) in
 

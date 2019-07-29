@@ -14,10 +14,9 @@ struct SessionData {
   let encryptedKey: Data
   let algorithm: String
 
-  static func createSessionData(sender: Account, sessionKey: Data, receiverPublicKey: Data) throws -> SessionData {
+  static func createSessionData(sender: Account, sessionKey: Data, algorithm: String = Chacha20Poly1305Algorithm, receiverPublicKey: Data) throws -> SessionData {
     let encryptedSessionKey = try sender.encryptionKey.encrypt(message: sessionKey, receiverPublicKey: receiverPublicKey)
 
-    return SessionData(encryptedKey: encryptedSessionKey,
-                       algorithm: Chacha20Poly1305Algorithm)
+    return SessionData(encryptedKey: encryptedSessionKey, algorithm: algorithm)
   }
 }
