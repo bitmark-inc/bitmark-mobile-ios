@@ -115,6 +115,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
       // Disable assetForm when asset has been existed
       propertyNameTextField.isEnabled = false
+      assetTypeTextField.rightViewMode = .never
       metadataAddButton.removeFromSuperview()
       metadataEditModeButton.removeFromSuperview()
     }
@@ -604,10 +605,10 @@ extension RegisterPropertyRightsViewController {
     let downArrowImageView = UIImageView(image: UIImage(named: "arrow-down-tf"))
     downArrowImageView.frame = CGRect(x: 0, y: 0, width: downArrowImageView.size.width + 20.0, height: downArrowImageView.size.height)
     downArrowImageView.contentMode = .center
-    assetTypeTextField.rightView = downArrowImageView
-    assetTypeTextField.rightViewMode = .always
     assetTypeTextField.setStyle(state: .default)
     assetTypeTextField.isEnabled = false
+    assetTypeTextField.rightView = downArrowImageView
+    assetTypeTextField.rightViewMode = .always
 
     let assetTypeBox = UIView()
     assetTypeBox.addSubview(assetTypeTextField)

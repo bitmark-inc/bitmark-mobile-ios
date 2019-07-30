@@ -9,10 +9,6 @@
 import UIKit
 import SnapKit
 
-enum FieldState {
-  case `default`, success, error, focus
-}
-
 protocol MetadataFormDelegate: class {
   func deleteMetadataForm(hasUUID uuid: String)
 }

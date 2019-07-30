@@ -75,7 +75,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     errorResultView.isHidden = true
     phraseOptionCollectionView.isHidden = false
     setupDefaultSelectHiddenRecoveryPhraseBox()
-    setStyleForRecoveryPhraseCell()
+    setStyleForRecoveryPhraseCell(state: .default)
   }
 
   @objc func doneHandler(_ sender: UIButton) {
@@ -188,7 +188,7 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
     errorResultView.isHidden = true
     successResultView.isHidden = true
     phraseOptionCollectionView.isHidden = false
-    setStyleForRecoveryPhraseCell()
+    setStyleForRecoveryPhraseCell(state: .default)
   }
 
   /*
@@ -213,10 +213,10 @@ extension TestRecoveryPhraseViewController: SelectPhraseOptionDelegate, Reselect
       phraseOptionCollectionView.isHidden = true
       if isResultCorrect() {
         successResultView.isHidden = false
-        setStyleForRecoveryPhraseCell(isSuccessResult: true)
+        setStyleForRecoveryPhraseCell(state: .success)
       } else {
         errorResultView.isHidden = false
-        setStyleForRecoveryPhraseCell(isSuccessResult: false)
+        setStyleForRecoveryPhraseCell(state: .error)
       }
     }
   }
@@ -416,13 +416,15 @@ extension TestRecoveryPhraseViewController {
    when result is error: set all cells into error styles
    when retry (isError is false): back to default style (reload style)
    */
-  func setStyleForRecoveryPhraseCell(isSuccessResult: Bool? = nil) {
+  func setStyleForRecoveryPhraseCell(state: FieldState) {
     for index in (0..<numberOfPhrases) {
       let indexPath = IndexPath(row: index, section: 0)
       guard let cell = recoveryPhraseCollectionView.cellForItem(at: indexPath) as? TestRecoveryPhraseCell else { return }
-      if let isSuccessResult = isSuccessResult {
-        cell.setStyle(isSuccess: isSuccessResult)
-      } else {
+
+      switch state {
+      case .success, .error:
+        cell.setStyle(state: state)
+      default:
         let isHiddenPhrase = hiddenPhraseIndexes.firstIndex(of: index) != nil
         cell.reloadStyle(isHiddenPhrase)
       }

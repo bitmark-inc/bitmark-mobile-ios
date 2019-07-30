@@ -39,8 +39,8 @@ class TestRecoveryPhraseCell: RecoveryPhraseCell {
     self.matchingTestPhraseCell = matchingTestPhraseCell
   }
 
-  func setStyle(isSuccess: Bool) {
-    phraseLabel.textColor = isSuccess ? .mainBlueColor : .mainRedColor 
+  func setStyle(state: FieldState) {
+    phraseLabel.textColor = state == .success ? .mainBlueColor : .mainRedColor
   }
 
   func reloadStyle(_ isPhraseHidden: Bool) {

@@ -135,6 +135,10 @@ enum TransactionStatus: String {
   case pending
 }
 
+enum FieldState {
+  case `default`, success, error, focus
+}
+
 extension Global {
   static func rxCurrentAccount() -> Observable<Account> {
     return Observable<Account?>.of(self.currentAccount).errorOnNil()
