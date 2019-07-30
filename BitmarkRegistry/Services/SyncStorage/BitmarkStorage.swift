@@ -67,10 +67,10 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
     storeLatestOffset(value: latestOffset)
   }
 
-  func loadTxRs(for bitmarkR: BitmarkR, completion: @escaping (Results<TransactionR>?, Error?) -> Void) {
+  func loadTxRs(for bitmarkR: BitmarkR, forceSync: Bool = false, completion: @escaping (Results<TransactionR>?, Error?) -> Void) {
     do {
       let realm = try ownerRealm()
-      if realm.object(ofType: TransactionR.self, forPrimaryKey: bitmarkR.headId) == nil ||
+      if forceSync || realm.object(ofType: TransactionR.self, forPrimaryKey: bitmarkR.headId) == nil ||
         realm.object(ofType: TransactionR.self, forPrimaryKey: bitmarkR.id) == nil {
         DispatchQueue.main.async {
           do {

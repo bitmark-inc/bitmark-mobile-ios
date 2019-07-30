@@ -35,8 +35,7 @@ class RegisterPropertyViewController: UIViewController {
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    activityIndicator.stopAnimating()
-    disabledScreen.isHidden = true
+    enableScreen()
   }
 
   // MARK: - Handlers
@@ -147,6 +146,7 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
           self.assetData = try Data(contentsOf: newURL)
         } catch {
           self.showErrorAlert(message: Constant.Error.accessFile)
+          self.enableScreen()
           return
         }
         self.assetFileName = newURL.lastPathComponent
@@ -154,6 +154,11 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
         self.performMoveToRegisterPropertyRights()
       }
     }
+  }
+
+  fileprivate func enableScreen() {
+    activityIndicator.stopAnimating()
+    disabledScreen.isHidden = true
   }
 }
 

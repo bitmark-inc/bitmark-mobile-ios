@@ -32,6 +32,8 @@
 		E22CBF1922D078390024E5C3 /* DesignedWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22CBF1822D078390024E5C3 /* DesignedWebView.swift */; };
 		E22CBF1A22D08C410024E5C3 /* DesignedWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22CBF1822D078390024E5C3 /* DesignedWebView.swift */; };
 		E22CBF1B22D092C60024E5C3 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22CBF1622D075D70024E5C3 /* TransactionDetailViewController.swift */; };
+		E23B33FB22EAEFB200BC2B2A /* AssetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B33FA22EAEFB100BC2B2A /* AssetType.swift */; };
+		E23B33FC22EAEFB200BC2B2A /* AssetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23B33FA22EAEFB100BC2B2A /* AssetType.swift */; };
 		E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */; };
 		E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */; };
 		E24B527B22BBB7C600E160E3 /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */; };
@@ -156,11 +158,11 @@
 		E2DFDA3622B21233008B1AD5 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DFDA3522B21233008B1AD5 /* LabelCell.swift */; };
 		E2DFDA3722B212FD008B1AD5 /* LabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DFDA3522B21233008B1AD5 /* LabelCell.swift */; };
 		E2E067ED22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */; };
-		E2E067EE22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */; };
 		E2E18C1722DC1E0D004078C3 /* TransactionR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1622DC1E0D004078C3 /* TransactionR.swift */; };
 		E2E18C1822DC1E0D004078C3 /* TransactionR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1622DC1E0D004078C3 /* TransactionR.swift */; };
 		E2E18C1A22DC1F4C004078C3 /* BlockR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1922DC1F4C004078C3 /* BlockR.swift */; };
 		E2E18C1B22DC1F4C004078C3 /* BlockR.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E18C1922DC1F4C004078C3 /* BlockR.swift */; };
+		E2E56F2F22E59488001EB6D3 /* DesignedSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */; };
 		E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798B9229E189E00508B69 /* AppDelegate.swift */; };
 		E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
 		E2E798C4229E189F00508B69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
@@ -205,6 +207,7 @@
 		E21B491F22E15BC000FA41E7 /* SuspendedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuspendedViewController.swift; sourceTree = "<group>"; };
 		E22CBF1622D075D70024E5C3 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
 		E22CBF1822D078390024E5C3 /* DesignedWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignedWebView.swift; sourceTree = "<group>"; };
+		E23B33FA22EAEFB100BC2B2A /* AssetType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetType.swift; sourceTree = "<group>"; };
 		E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkDetailViewController.swift; sourceTree = "<group>"; };
 		E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		E24B527D22BBB8B400E160E3 /* TransactionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
@@ -538,6 +541,14 @@
 			path = QRCode;
 			sourceTree = "<group>";
 		};
+		E2BBF95B22EAA6ED008CD123 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				E23B33FA22EAEFB100BC2B2A /* AssetType.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		E2BEC95922AFA6D6009F7DF5 /* Properties */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,6 +582,7 @@
 		E2CEDC8122BB94F600B5BBF9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E2BBF95B22EAA6ED008CD123 /* Enums */,
 				E2F866AA22D9BDBC002D7059 /* BitmarkR.swift */,
 				E2F866AD22D9C0F2002D7059 /* AssetR.swift */,
 				E2F866B022D9CEB1002D7059 /* MetadataR.swift */,
@@ -978,7 +990,6 @@
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
 				E2E18C1B22DC1F4C004078C3 /* BlockR.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
-				E2E067EE22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */,
 				E24B527F22BBB8B400E160E3 /* TransactionService.swift in Sources */,
 				E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
 				E25DF1DD22CB3F4700AC270E /* TransactionStorage.swift in Sources */,
@@ -988,6 +999,7 @@
 				E2BEC95322AF9876009F7DF5 /* RecoveryPhraseViewController.swift in Sources */,
 				E2E18C1822DC1E0D004078C3 /* TransactionR.swift in Sources */,
 				E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
+				E23B33FC22EAEFB200BC2B2A /* AssetType.swift in Sources */,
 				E279F84922D8382D00164E28 /* AppDetailContentViewController.swift in Sources */,
 				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
 				E2D4342822CC89EB006A8183 /* FileCourierService.swift in Sources */,
@@ -1005,6 +1017,7 @@
 				E26C196422E96B9E000B4524 /* SeedVersion+Extension.swift in Sources */,
 				E2DFDA3422B1EB46008B1AD5 /* MetadataLabelViewController.swift in Sources */,
 				E27B6D4322D734E800351182 /* AppDetailViewController.swift in Sources */,
+				E2E56F2F22E59488001EB6D3 /* DesignedSegmentControl.swift in Sources */,
 				E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */,
 				E2F866AC22D9BDBC002D7059 /* BitmarkR.swift in Sources */,
 				E2DFDA3322B1EB43008B1AD5 /* MetadataForm.swift in Sources */,
@@ -1078,6 +1091,7 @@
 				5837C98D22D599C200DA270B /* URLRequest+JWT.swift in Sources */,
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
 				E2E18C1722DC1E0D004078C3 /* TransactionR.swift in Sources */,
+				E23B33FB22EAEFB200BC2B2A /* AssetType.swift in Sources */,
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E279F84822D8382D00164E28 /* AppDetailContentViewController.swift in Sources */,
 				E2D4342722CC89EB006A8183 /* FileCourierService.swift in Sources */,

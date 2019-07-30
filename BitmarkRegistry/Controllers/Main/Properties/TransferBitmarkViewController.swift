@@ -82,7 +82,9 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   @objc func tapToTransfer(button: UIButton) {
     view.endEditing(true)
     guard let recipientAccountNumber = recipientAccountNumberTextfield.text else { return }
-    guard recipientAccountNumber.isValid() else {
+    do {
+      try recipientAccountNumber.validate()
+    } catch {
       errorForInvalidAccountNumber.isHidden = false; return
     }
 

@@ -43,6 +43,10 @@ class PropertiesViewController: UIViewController {
     setupBitmarkEventSubscription()
   }
 
+  deinit {
+    realmToken?.invalidate()
+  }
+
   // MARK: - Data Handlers
   private func loadData() {
     yoursActivityIndicator.startAnimating()

@@ -17,6 +17,7 @@ class BitmarkDetailViewController: UIViewController {
   var bitmarkR: BitmarkR!
   var assetR: AssetR!
   // *** Basic Properties ***
+  var thumbnailImageView: UIImageView!
   var assetNameLabel: UILabel!
   var issueDateLabel: UILabel!
   var pendingIssueDateLabel: UILabel!
@@ -41,6 +42,9 @@ class BitmarkDetailViewController: UIViewController {
     return AssetFileService(owner: Global.currentAccount!, assetId: assetR.id)
   }()
   var networkReachabilityManager = NetworkReachabilityManager()
+  var assetNotificationToken: NotificationToken?
+  var bitmarkNotificationToken: NotificationToken?
+  var txNotificationToken: NotificationToken?
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -57,6 +61,12 @@ class BitmarkDetailViewController: UIViewController {
     markRead()
   }
 
+  deinit {
+    assetNotificationToken?.invalidate()
+    bitmarkNotificationToken?.invalidate()
+    txNotificationToken?.invalidate()
+  }
+
   // MARK: - Data Handlers
   fileprivate func markRead() {
     do {
@@ -67,14 +77,11 @@ class BitmarkDetailViewController: UIViewController {
   }
 
   private func loadData() {
+    if let assetType = assetR.assetType {
+      thumbnailImageView.image = AssetType(rawValue: assetType)?.thumbnailImage()
+    }
     assetNameLabel.text = assetR.name
     assetNameLabel.lineHeightMultiple(1.2)
-    if let createdAt = bitmarkR.createdAt {
-      prefixIssueDateLabel.isHidden = false
-      issueDateLabel.text = CustomUserDisplay.datetime(createdAt)
-    } else {
-      pendingIssueDateLabel.isHidden = false
-    }
 
     metadataTableView.reloadData { [weak self] in
       guard let self = self else { return }
@@ -84,6 +91,10 @@ class BitmarkDetailViewController: UIViewController {
         self.metadataTableView.invalidateIntrinsicContentSize()
       }
     }
+
+    setupStyleBitmark()
+    enableActionButtons()
+    setupRealmObserverForLoadingBitmarkInfo()
 
     loadTransactions()
   }
@@ -101,7 +112,52 @@ class BitmarkDetailViewController: UIViewController {
         }
 
         self.transactionRs = resultsTxRs
-        self.transactionTableView.reloadData()
+        self.setupRealmObserverForLoadingTxs()
+      }
+    }
+  }
+
+  fileprivate func setupRealmObserverForLoadingTxs() {
+    self.txNotificationToken = self.transactionRs.observe({ [unowned self] (changes) in
+      self.transactionTableView.apply(changes: changes)
+    })
+  }
+
+  fileprivate func setupRealmObserverForLoadingBitmarkInfo() {
+    if bitmarkR.createdAt == nil || bitmarkR.confirmedAt == nil {
+      bitmarkNotificationToken = bitmarkR.observe({ [unowned self] (changes) in
+        switch changes {
+        case .change(let properties):
+          for property in properties {
+            if property.name == "createdAt" {
+              self.setupStyleBitmark()
+            }
+
+            if property.name == "confirmedAt" {
+              BitmarkStorage.shared().loadTxRs(for: self.bitmarkR, forceSync: true, completion: {_,_ in })
+              self.enableActionButtons()
+            }
+          }
+        case .error(let error):
+          ErrorReporting.report(error: error)
+        case .deleted:
+          ErrorReporting.report(message: "the bitmark object is deleted.")
+        }
+      })
+    }
+
+    assetNotificationToken = assetR.observe { [unowned self] (changes) in
+      switch changes {
+      case .change(let properties):
+        for property in properties {
+          if property.name == "assetType", let assetType = property.newValue as? String {
+            self.thumbnailImageView.image = AssetType(rawValue: assetType)?.thumbnailImage()
+          }
+        }
+      case .error(let error):
+        ErrorReporting.report(error: error)
+      case .deleted:
+        ErrorReporting.report(message: "the asset object is deleted.")
       }
     }
   }
@@ -145,6 +201,7 @@ class BitmarkDetailViewController: UIViewController {
           guard let downloadedFileURL = downloadedFileURL else { return }
           let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
           self.present(shareVC, animated: true)
+          self.assetR.updateAssetFilePath(downloadedFileURL.path)
         })
       }
     }
@@ -203,6 +260,7 @@ extension BitmarkDetailViewController: UITableViewDataSource {
       let cell = tableView.dequeueReusableCell(withClass: MetadataDetailCell.self)
       let metadata = assetR.metadata[indexPath.row]
       cell.setData(metadata)
+      cell.isBitmarkConfirmed = bitmarkR.createdAt != nil
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(withClass: TransactionCell.self)
@@ -234,6 +292,32 @@ extension BitmarkDetailViewController: UITableViewDelegate {
   }
 }
 
+// MARK: - Support Functions
+extension BitmarkDetailViewController {
+  fileprivate func setupStyleBitmark() {
+    let isPending = bitmarkR.createdAt == nil
+    let styledColor: UIColor = isPending ? .dustyGray : .black
+
+    assetNameLabel.textColor = styledColor
+
+    pendingIssueDateLabel.isHidden = !isPending
+    prefixIssueDateLabel.isHidden = isPending
+    issueDateLabel.text = isPending ? "" : CustomUserDisplay.date(bitmarkR.createdAt)
+
+    if let metadataCells = self.metadataTableView.visibleCells as? [MetadataDetailCell] {
+      metadataCells.forEach({ $0.isBitmarkConfirmed = !isPending })
+    }
+  }
+
+  // enable status for menu buttons base on the bitmark's status
+  fileprivate func enableActionButtons() {
+    let isBitmarkSettled = BitmarkStatus(rawValue: bitmarkR.status) == .settled
+    downloadButton.isEnabled = isBitmarkSettled
+    transferButton.isEnabled = isBitmarkSettled
+    deleteButton.isEnabled = isBitmarkSettled
+  }
+}
+
 // MARK: - Setup Views/ Events
 extension BitmarkDetailViewController {
   fileprivate func setupEvents() {
@@ -248,8 +332,8 @@ extension BitmarkDetailViewController {
     downloadButton.addTarget(self, action: #selector(tapToDownload), for: .touchUpInside)
     deleteButton.addTarget(self, action: #selector(tapToDelete), for: .touchUpInside)
 
-    transferButton.addAction(for: .touchUpInside) {
-      self.performMoveToTransferBitmark()
+    transferButton.addAction(for: .touchUpInside) { [weak self] in
+      self?.performMoveToTransferBitmark()
     }
   }
 
@@ -357,39 +441,41 @@ extension BitmarkDetailViewController {
         .inset(UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20))
     }
 
-    // enable status for menu buttons base on the bitmark's status
-    if BitmarkStatus(rawValue: bitmarkR.status) != .settled {
-      downloadButton.isEnabled = false
-      transferButton.isEnabled = false
-      deleteButton.isEnabled = false
-    }
-
     return view
   }
 
   fileprivate func setupAssetInfoView() -> UIView {
+    thumbnailImageView = UIImageView()
+    thumbnailImageView.contentMode = .scaleAspectFit
+
     assetNameLabel = UILabel()
     assetNameLabel.font = UIFont(name: "Avenir-Black", size: 18)
     assetNameLabel.numberOfLines = 0
 
     prefixIssueDateLabel = CommonUI.infoLabel(text: "ISSUED ON")
-    prefixIssueDateLabel.isHidden = true
     prefixIssueDateLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
-    pendingIssueDateLabel = CommonUI.infoLabel(text: "PENDING...")
+    pendingIssueDateLabel = CommonUI.infoLabel(text: "Pending")
     pendingIssueDateLabel.textColor = .dustyGray
-    pendingIssueDateLabel.isHidden = true
 
     issueDateLabel = CommonUI.infoLabel()
 
     let issueDateStackView = UIStackView(arrangedSubviews: [pendingIssueDateLabel, prefixIssueDateLabel, issueDateLabel], axis: .horizontal, spacing: 5)
 
     let assetInfoView = UIView()
+    assetInfoView.addSubview(thumbnailImageView)
     assetInfoView.addSubview(assetNameLabel)
     assetInfoView.addSubview(issueDateStackView)
 
+    thumbnailImageView.snp.makeConstraints { (make) in
+      make.top.leading.equalToSuperview()
+      make.width.equalTo(80)
+      make.height.equalTo(63)
+    }
+
     assetNameLabel.snp.makeConstraints { (make) in
-      make.top.leading.trailing.equalToSuperview()
+      make.top.equalTo(thumbnailImageView.snp.bottom).offset(35)
+      make.leading.trailing.equalToSuperview()
     }
 
     issueDateStackView.snp.makeConstraints { (make) in

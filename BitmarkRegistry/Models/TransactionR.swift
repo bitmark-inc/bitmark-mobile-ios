@@ -26,11 +26,6 @@ class TransactionR: Object {
     return "id"
   }
 
-  var confirmedAt: Date? {
-    guard status == TransactionStatus.confirmed.rawValue, let blockR = blockR else { return nil }
-    return blockR.createdAt
-  }
-
   // MARK: - Init
   convenience init(tx: Transaction) {
     self.init()
@@ -41,8 +36,15 @@ class TransactionR: Object {
     self.status = tx.status
     self.offset = tx.offset
   }
+}
 
-  // MARK: - Handlers
+// MARK: - Data Handlers
+extension TransactionR {
+  var confirmedAt: Date? {
+    guard status == TransactionStatus.confirmed.rawValue, let blockR = blockR else { return nil }
+    return blockR.createdAt
+  }
+
   func isTransferTx() -> Bool {
     return previousOwner != nil
   }
