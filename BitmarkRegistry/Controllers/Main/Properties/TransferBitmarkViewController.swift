@@ -102,9 +102,9 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()
 
-          self.showSuccessAlert(message: Constant.Success.transfer, handler: {
-            self.navigationController?.popToRootViewController(animated: true)
-          })
+          self.showQuickMessageAlert(message: Constant.Success.transfer) { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+          }
         })
       } catch {
         selfAlert.dismiss(animated: true, completion: {

@@ -22,6 +22,34 @@ extension UIViewController {
     alertController.show()
   }
 
+  func showQuickMessageAlert(message: String, handler: @escaping () -> Void) {
+    let alertController = UIAlertController(title: nil, message: "", preferredStyle: .alert)
+
+    let successImageView = UIImageView(image: UIImage(named: "alert-success-icon"))
+    let messageLabel = CommonUI.alertMessageLabel(text: message)
+
+    alertController.view.addSubview(successImageView)
+    alertController.view.addSubview(messageLabel)
+
+    successImageView.snp.makeConstraints { (make) in
+      make.centerX.equalToSuperview()
+      make.top.equalToSuperview().offset(45)
+    }
+
+    messageLabel.snp.makeConstraints { (make) in
+      make.top.equalTo(successImageView.snp.bottom).offset(25)
+      make.bottom.equalToSuperview().offset(-20)
+      make.centerX.equalToSuperview()
+      make.width.equalTo(212)
+    }
+
+    alertController.show()
+
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+      alertController.dismiss(animated: true, completion: handler)
+    }
+  }
+
   func showConfirmationAlert(message: String, handler: @escaping () -> Void) {
     let alertController = UIAlertController(title: "", message: message, defaultActionButtonTitle: "No")
     alertController.addAction(title: "Yes", style: .default, isEnabled: true, handler: {_ in handler() })
