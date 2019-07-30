@@ -194,6 +194,8 @@
 		415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry Dev.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev.release.xcconfig"; sourceTree = "<group>"; };
 		57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BitmarkRegistry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5837C98C22D599C200DA270B /* URLRequest+JWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+JWT.swift"; sourceTree = "<group>"; };
+		589EFAB422EFFD8200DDC227 /* BitmarkRegistry Dev.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "BitmarkRegistry Dev.entitlements"; sourceTree = "<group>"; };
+		589EFAB522EFFDAB00DDC227 /* BitmarkRegistry.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BitmarkRegistry.entitlements; sourceTree = "<group>"; };
 		58DB99D522CB4457004A611E /* ErrorReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporting.swift; sourceTree = "<group>"; };
 		651E9C762774E042F0FA1915 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
 		6F49B2891D8855D7048183F0 /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
@@ -630,6 +632,8 @@
 				E2E798CB229E1CA700508B69 /* Supporting Files */,
 				E2E798D1229E1CFB00508B69 /* Secrets */,
 				E2E798C5229E189F00508B69 /* Info.plist */,
+				589EFAB522EFFDAB00DDC227 /* BitmarkRegistry.entitlements */,
+				589EFAB422EFFD8200DDC227 /* BitmarkRegistry Dev.entitlements */,
 				E29A740F22AA49990052C716 /* Dev-Info.plist */,
 			);
 			path = BitmarkRegistry;
@@ -1141,7 +1145,7 @@
 			baseConfigurationReference = 77DBC69DFE134DB0791E0BDF /* Pods-BitmarkRegistry Dev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
-				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry/BitmarkRegistry Dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = Z5CE7A3A7N;
@@ -1154,10 +1158,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEVELOPMENT";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Development";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark App Test Development";
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1169,7 +1173,7 @@
 			baseConfigurationReference = 415E7FF169A545CDDC72796A /* Pods-BitmarkRegistry Dev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
-				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry Dev.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "BitmarkRegistry/BitmarkRegistry Dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = Z5CE7A3A7N;
@@ -1182,10 +1186,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "\"-D\" \"DEVELOPMENT\"";
-				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEVELOPMENT";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark App Test Inhouse";
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1243,7 +1247,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1298,7 +1302,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1325,7 +1329,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "\"-D\" \"PRODUCTION\"";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Development";
@@ -1353,7 +1357,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "\"-D\" \"PRODUCTION\"";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Distribution";
