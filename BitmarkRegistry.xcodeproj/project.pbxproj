@@ -1158,7 +1158,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEVELOPMENT";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Bitmark App Test Development";
@@ -1186,7 +1186,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D DEVELOPMENT";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Bitmark App Test Inhouse";
@@ -1329,7 +1329,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Development";
@@ -1357,7 +1357,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BitmarkRegistry/Helpers/Encryption/libsodium",
 				);
-				OTHER_SWIFT_FLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Distribution";
