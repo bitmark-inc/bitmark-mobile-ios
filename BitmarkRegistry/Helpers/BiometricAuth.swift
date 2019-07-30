@@ -22,7 +22,7 @@ class BiometricAuth {
       return
     }
 
-    context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication, localizedReason: "Your fingerprint signature is required") { (isSuccess, evaluateError) in
+    context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication, localizedReason: "Your fingerprint signature is required.") { (isSuccess, evaluateError) in
       if isSuccess {
         handler(nil)
       } else {

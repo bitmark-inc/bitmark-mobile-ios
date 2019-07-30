@@ -88,6 +88,7 @@ extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let transactionR = transactionRs[indexPath.row]
     let txDetailVC = TransactionDetailViewController()
+    txDetailVC.hidesBottomBarWhenPushed = true
     txDetailVC.transactionR = transactionR
     navigationController?.pushViewController(txDetailVC)
   }
@@ -149,7 +150,7 @@ extension TransactionsViewController {
     view.addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
-          .inset(UIEdgeInsets(top: 25, left: 0, bottom: 25, right: 0))
+          .inset(UIEdgeInsets(top: 10, left: 0, bottom: 25, right: 0))
     }
   }
 

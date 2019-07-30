@@ -17,6 +17,7 @@ protocol QRCodeScannerDelegate: class {
 class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
   // MARK: - Properties
+  var videoPreviewLayer: AVCaptureVideoPreviewLayer!
   var captureSession: AVCaptureSession!
   weak var delegate: QRCodeScannerDelegate!
 
@@ -24,6 +25,8 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     super.viewDidLoad()
 
     title = "SCAN QRCODE"
+
+    setupViews()
 
     performRealtimeCapture()
   }
@@ -53,10 +56,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     captureMetadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
 
     // initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
-    let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-    videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-    videoPreviewLayer.frame = view.layer.bounds
-    view.layer.addSublayer(videoPreviewLayer)
+    videoPreviewLayer.session = captureSession
 
     // start video capture.
     captureSession.startRunning()
@@ -70,6 +70,40 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
       captureSession.stopRunning()
       delegate.process(qrCode: qrCode)
       navigationController?.popViewController(animated: true)
+    }
+  }
+}
+
+// MARK: - Setup Views
+extension QRScannerViewController {
+  fileprivate func setupViews() {
+    view.backgroundColor = .white
+
+    let descriptionLabelView = CommonUI.descriptionLabel()
+    let descriptionText = NSMutableAttributedString(string: "You can transfer rights to another Bitmark account by scanning the receiving account’s QR code. You can view your account QR code by tapping ")
+
+    let qrCodeAttachment = NSTextAttachment()
+    qrCodeAttachment.image = UIImage(named: "qr-code-icon")
+    qrCodeAttachment.bounds = CGRect(x: 0, y: 0, width: 19, height: 19)
+
+    // add the NSTextAttachment wrapper to our full string, then add some more text.
+    descriptionText.append(NSAttributedString(attachment: qrCodeAttachment))
+    descriptionText.append(NSAttributedString(string: " at the top of the Account screen."))
+
+    // draw the result in a label
+    descriptionLabelView.attributedText = descriptionText
+
+    // initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
+    videoPreviewLayer = AVCaptureVideoPreviewLayer()
+    videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+    videoPreviewLayer.frame = CGRect(x: 0, y: 250, width: view.frame.width, height: view.frame.width)
+
+    view.addSubview(descriptionLabelView)
+    view.layer.addSublayer(videoPreviewLayer)
+
+    descriptionLabelView.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 0, right: 25))
     }
   }
 }

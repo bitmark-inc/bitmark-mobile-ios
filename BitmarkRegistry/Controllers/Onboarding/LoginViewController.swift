@@ -25,6 +25,7 @@ class LoginViewController: BaseRecoveryPhraseViewController {
   var submitButton: SubmitButton!
   var submitButtonBottomConstraint: Constraint!
   var currentCell: TestRecoveryPhraseLoginCell?
+  var descriptionLabel: UILabel!
   var changePhraseOptionsButton: UIButton!
   // *** error result view ***
   let errorResultView = UIView()
@@ -36,6 +37,9 @@ class LoginViewController: BaseRecoveryPhraseViewController {
   var nextButton: UIButton!
   let recoveryPhraseWords = RecoverPhrase.bip39ENWords
   let numberOfShowWord = 3
+  var descriptionText: String {
+    return "Please type all \(numberOfPhrases) words of your recovery phrase in the exact sequence below:"
+  }
   let changeTo24phrases = "Are you using 24 words of recovery phrase?\nTap here to switch the form."
   let changeTo12phrases = "Are you using 12 words of recovery phrase?\nTap here to switch the form."
 
@@ -59,6 +63,7 @@ class LoginViewController: BaseRecoveryPhraseViewController {
       changePhraseOptionsButton.setTitle(changeTo24phrases, for: .normal)
       numberOfPhrases = 12
     }
+    descriptionLabel.text = descriptionText
     _numericOrders = nil
     clearForm()
     recoveryPhraseCollectionView.reloadData()
@@ -253,7 +258,7 @@ extension LoginViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Please type all 12 words of your recovery phrase in the exact sequence below:")
+    descriptionLabel = CommonUI.descriptionLabel(text: "Please type all 12 words of your recovery phrase in the exact sequence below:")
     descriptionLabel.lineHeightMultiple(1.2)
 
     let mainScrollView = UIScrollView()

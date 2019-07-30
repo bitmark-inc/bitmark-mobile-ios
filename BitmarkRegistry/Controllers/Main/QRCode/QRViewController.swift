@@ -75,7 +75,7 @@ extension QRViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let title = CommonUI.pageTitleLabel(text: "RECEIVE PROPERTY")
+    let title = CommonUI.pageTitleLabel(text: "BITMARK ACCOUNT")
 
     closeButton = UIButton(type: .system, imageName: "close-icon-blue")
     closeButton.snp.makeConstraints { (make) in

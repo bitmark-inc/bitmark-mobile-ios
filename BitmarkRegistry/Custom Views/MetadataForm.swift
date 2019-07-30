@@ -10,10 +10,7 @@ import UIKit
 import SnapKit
 
 protocol MetadataFormDelegate: class {
-  func gotoUpdateLabel(from form: MetadataForm)
   func deleteMetadataForm(hasUUID uuid: String)
-  func validateButtons(isValid: Bool)
-  func changeMetadataViewMode(isOnEdit: Bool)
 }
 
 /**
@@ -27,20 +24,19 @@ class MetadataForm: UIView, UITextFieldDelegate {
 
   // MARK: - Properties
   let uuid: String
-  var labelTextField: DesignedTextField!
-  var labelTextFieldDeputy: UIButton!
-  var descriptionTextField: DesignedTextField!
-  var deleteView: UIView!
-  let deleteViewWidth: CGFloat = 30
+  var labelTextField: BoxTextField!
+  var descriptionTextField: BoxTextField!
   var deleteButton: UIButton!
-  var metadataFormLeadingConstraint: Constraint!
   let estimatedFormFrame = CGRect(x: 0, y: 0, width: 350, height: 100)
+  var isDuplicated: Bool = false
 
   unowned var delegate: MetadataFormDelegate?
-  var isValid: Bool = false
+  var isValid: Bool {
+    return !labelTextField.isEmpty && !descriptionTextField.isEmpty
+  }
   var isOnDeleteMode: Bool = false {
     didSet {
-      self.isOnDeleteMode ? showDeleteView() : hideDeleteView()
+      deleteButton.isHidden = !self.isOnDeleteMode
     }
   }
 
@@ -69,155 +65,72 @@ class MetadataForm: UIView, UITextFieldDelegate {
     labelTextField.sendActions(for: .editingDidEnd)
   }
 
-  func showDeleteView() {
-    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-      self.metadataFormLeadingConstraint.update(offset: self.deleteViewWidth)
-      self.layoutIfNeeded()
-    }, completion: { (_) in
-      self.deleteView.isHidden = false
-    })
-  }
-
-  func hideDeleteView() {
-    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-      self.deleteView.isHidden = true
-      self.metadataFormLeadingConstraint.update(offset: 0.0)
-      self.layoutIfNeeded()
-    })
-  }
-
   func setDuplicatedStyle(isDuplicated: Bool) {
     guard !labelTextField.isEmpty else { return }
-    labelTextField.bottomLineColor = isDuplicated ? .mainRedColor : .mainBlueColor
+//    labelTextField.bottomLineColor = isDuplicated ? .mainRedColor : .mainBlueColor
   }
 
-  @objc func beginEditingTextfield(_ textfield: DesignedTextField) {
-    delegate?.changeMetadataViewMode(isOnEdit: false)
-  }
+  func setStyle(state: FieldState) {
+    let color: UIColor!
+    switch state {
+    case .default:
+      color = .silver
+      labelTextField.text = nil
+      descriptionTextField.text = nil
+    case .success:
+      color = .mainBlueColor
+    case .error:
+      color = .mainRedColor
+    case .focus:
+      color = .mainBlueColor
+    }
 
-  @objc func editingTextField(_ textfield: DesignedTextField) {
-    isValid = !labelTextField.isEmpty && !descriptionTextField.isEmpty
-    setStyle(for: textfield)
-    delegate?.validateButtons(isValid: isValid)
-  }
-
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    textField.resignFirstResponder()
-    return true
+    labelTextField.borderColor = color
+    descriptionTextField.borderColor = color
   }
 
   // MARK: - Setup Views/Events
   fileprivate func setupEvents() {
-    labelTextFieldDeputy.addAction(for: .touchUpInside) { [unowned self] in
-      guard self.labelTextField.isEnabled else { return }
-      self.endEditing(true)
-      self.delegate?.gotoUpdateLabel(from: self)
-    }
-
     deleteButton.addAction(for: .touchUpInside) { [unowned self] in
       self.delegate?.deleteMetadataForm(hasUUID: self.uuid)
     }
-
-    labelTextField.delegate = self
-    descriptionTextField.delegate = self
-
-    labelTextField.addTarget(self, action: #selector(beginEditingTextfield), for: .editingDidBegin)
-    labelTextField.addTarget(self, action: #selector(editingTextField), for: .editingChanged)
-    descriptionTextField.addTarget(self, action: #selector(beginEditingTextfield), for: .editingDidBegin)
-    descriptionTextField.addTarget(self, action: #selector(editingTextField), for: .editingChanged)
   }
 
-  fileprivate func setStyle(for textfield: DesignedTextField) {
-    if isBeginningState() {
-      labelTextField.bottomLineColor = .mainBlueColor
-      descriptionTextField.bottomLineColor = .mainBlueColor
-    } else {
-      if textfield.isEmpty {
-        textfield.onErrorStyle()
-      } else {
-        textfield.offErrorStyle()
-        // set error for other textfield when current textfield's text is present and other is empty
-        if let otherTextfield = textfield == labelTextField ? descriptionTextField : labelTextField, otherTextfield.isEmpty {
-          otherTextfield.onErrorStyle()
-        }
-      }
-    }
+  func siblingTextField(_ tf: BoxTextField) -> BoxTextField {
+    return tf == labelTextField ? descriptionTextField : labelTextField
   }
 
-  private func isBeginningState() -> Bool {
+  func isBeginningState() -> Bool {
     return labelTextField.isEmpty && descriptionTextField.isEmpty
   }
 
   fileprivate func setupViews() {
     // *** Setup subviews ***
-    let nextArrowImageView = UIImageView(image: UIImage(named: "Next-highlighted"))
-    nextArrowImageView.contentMode = .scaleAspectFit
+    labelTextField = BoxTextField(placeholder: "KEY")
+    labelTextField.returnKeyType = .done
+    labelTextField.parentView = self
 
-    let nextArrowView = UIView(frame: CGRect(x: 0, y: 0, width: nextArrowImageView.frame.width + 10, height: nextArrowImageView.frame.height))
-    nextArrowView.addSubview(nextArrowImageView)
-    nextArrowImageView.snp.makeConstraints { (make) in
-      make.top.leading.bottom.equalToSuperview()
-      make.trailing.equalToSuperview().offset(-10)
-    }
-
-    labelTextField = DesignedTextField(placeholder: "LABEL")
-    labelTextField.rightViewMode = .always
-    labelTextField.rightView = nextArrowView
-
-    labelTextFieldDeputy = UIButton()
-
-    let labelTextFieldCover = UIView()
-    labelTextFieldCover.addSubview(labelTextField)
-    labelTextFieldCover.addSubview(labelTextFieldDeputy)
-
-    labelTextField.snp.makeConstraints { (make) in
-      make.edges.equalToSuperview()
-    }
-
-    labelTextFieldDeputy.snp.makeConstraints { (make) in
-      make.top.leading.trailing.equalTo(labelTextField)
-      make.height.equalTo(15)
-    }
-
-    descriptionTextField = DesignedTextField(placeholder: "DESCRIPTION")
+    descriptionTextField = BoxTextField(placeholder: "VALUE")
     descriptionTextField.returnKeyType = .done
+    descriptionTextField.parentView = self
 
-    let fieldStackView = UIStackView(arrangedSubviews: [labelTextFieldCover, descriptionTextField], axis: .vertical, spacing: 25)
-    setupDeleteView()
-    let spacingView = UIView()
+    let fieldStackView = UIStackView(arrangedSubviews: [labelTextField, descriptionTextField], axis: .vertical, spacing: -1)
+
+    deleteButton = UIButton(imageName: "delete_label")
+    deleteButton.contentMode = .scaleAspectFit
+    deleteButton.isHidden = true
 
     // *** Set up view ***
-    addSubview(deleteView)
     addSubview(fieldStackView)
-    addSubview(spacingView)
+    addSubview(deleteButton)
 
-    deleteView.snp.makeConstraints { (make) in
-      make.top.leading.bottom.equalToSuperview()
-      make.width.equalTo(deleteViewWidth)
+    deleteButton.snp.makeConstraints { (make) in
+      make.leading.equalToSuperview().offset(-5)
+      make.top.equalToSuperview().offset(-10)
     }
 
     fieldStackView.snp.makeConstraints { (make) in
-      make.top.trailing.equalToSuperview()
-      metadataFormLeadingConstraint = make.leading.equalToSuperview().constraint
-    }
-
-    spacingView.snp.makeConstraints { (make) in
-      make.top.equalTo(fieldStackView.snp.bottom)
-      make.height.equalTo(25.0)
-      make.leading.trailing.bottom.equalToSuperview()
-    }
-  }
-
-  fileprivate func setupDeleteView() {
-    deleteButton = UIButton(imageName: "delete_label")
-    deleteButton.contentMode = .scaleAspectFit
-
-    deleteView = UIView()
-    deleteView.isHidden = true
-    deleteView.addSubview(deleteButton)
-    deleteButton.snp.makeConstraints { (make) in
-      make.leading.trailing.centerX.equalToSuperview()
-      make.top.equalToSuperview().offset(3)
+      make.edges.equalToSuperview()
     }
   }
 }

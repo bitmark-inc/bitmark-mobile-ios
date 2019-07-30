@@ -14,6 +14,7 @@ def sharedPods
   pod 'IQKeyboardManagerSwift'
   pod 'NotificationBannerSwift'
   pod 'RealmSwift'
+  pod 'BEMCheckBox'
 
   # ReactiveX
   pod 'RxSwift', '~> 5'

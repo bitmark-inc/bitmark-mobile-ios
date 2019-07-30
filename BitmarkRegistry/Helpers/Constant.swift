@@ -60,14 +60,14 @@ public struct Constant {
 
   // MARK: - Success Message
   public struct Success {
-    public static let issue = "Your property rights have been registered."
-    public static let transfer = "Your bitmark has been transferring."
-    public static let delete = "Your bitmark has been deleted."
+    public static let issue = "Your rights to this property have been registered."
+    public static let transfer = "Your rights to this property have been transferred."
+    public static let delete = "Your rights to this property have been permanently removed from your account."
   }
 
   public struct Message {
-    public static let sendingTransaction = "Sending your transaction to the Birmark network..."
-    public static let transferringTransaction = "Transferring your bitmark to another account..."
+    public static let sendingTransaction = "Registering your rights in the Bitmark Digital Property System..."
+    public static let transferringTransaction = "Transferring your rights..."
     public static let deletingBitmark = "Deleting your bitmark..."
     public static let preparingToExport = "Preparing to export..."
   }

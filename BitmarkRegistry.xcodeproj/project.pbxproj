@@ -151,6 +151,8 @@
 		E2CF94CE22CB31FE00B40C66 /* TouchAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */; };
 		E2CF94D022CB323400B40C66 /* AccountKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */; };
 		E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */; };
+		E2D29F3B22EBE292006CADA1 /* BoxTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D29F3A22EBE292006CADA1 /* BoxTextField.swift */; };
+		E2D29F3C22EBE292006CADA1 /* BoxTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D29F3A22EBE292006CADA1 /* BoxTextField.swift */; };
 		E2D4342722CC89EB006A8183 /* FileCourierService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4342622CC89EB006A8183 /* FileCourierService.swift */; };
 		E2D4342822CC89EB006A8183 /* FileCourierService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D4342622CC89EB006A8183 /* FileCourierService.swift */; };
 		E2DFDA3322B1EB43008B1AD5 /* MetadataForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E205108022B1041200475871 /* MetadataForm.swift */; };
@@ -326,6 +328,7 @@
 		E2CEDC7C22BB94D800B5BBF9 /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TouchAuthenticationViewController.swift; path = BitmarkRegistry/Controllers/Onboarding/TouchAuthenticationViewController.swift; sourceTree = SOURCE_ROOT; };
 		E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountKeyService.swift; sourceTree = "<group>"; };
+		E2D29F3A22EBE292006CADA1 /* BoxTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxTextField.swift; sourceTree = "<group>"; };
 		E2D4342622CC89EB006A8183 /* FileCourierService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCourierService.swift; sourceTree = "<group>"; };
 		E2DFDA3522B21233008B1AD5 /* LabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelCell.swift; sourceTree = "<group>"; };
 		E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignedSegmentControl.swift; sourceTree = "<group>"; };
@@ -441,6 +444,7 @@
 			isa = PBXGroup;
 			children = (
 				E205107B22B0AA6300475871 /* DesignedTextField.swift */,
+				E2D29F3A22EBE292006CADA1 /* BoxTextField.swift */,
 				E205108022B1041200475871 /* MetadataForm.swift */,
 				E205107822B0A09900475871 /* SubmitButton.swift */,
 				E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */,
@@ -1001,6 +1005,7 @@
 				E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E23B33FC22EAEFB200BC2B2A /* AssetType.swift in Sources */,
 				E279F84922D8382D00164E28 /* AppDetailContentViewController.swift in Sources */,
+				E2D29F3C22EBE292006CADA1 /* BoxTextField.swift in Sources */,
 				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
 				E2D4342822CC89EB006A8183 /* FileCourierService.swift in Sources */,
 				E28D437522DEE54300749320 /* CustomUserDisplay.swift in Sources */,
@@ -1093,6 +1098,7 @@
 				E2E18C1722DC1E0D004078C3 /* TransactionR.swift in Sources */,
 				E23B33FB22EAEFB200BC2B2A /* AssetType.swift in Sources */,
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
+				E2D29F3B22EBE292006CADA1 /* BoxTextField.swift in Sources */,
 				E279F84822D8382D00164E28 /* AppDetailContentViewController.swift in Sources */,
 				E2D4342722CC89EB006A8183 /* FileCourierService.swift in Sources */,
 				E2E798D9229E238900508B69 /* AccountViewController.swift in Sources */,

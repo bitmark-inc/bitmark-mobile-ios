@@ -13,6 +13,7 @@ class TransactionListCell: UITableViewCell {
 
   // MARK: - Properties
   var txTitle: UILabel!
+  var completedMarkTitle: UIImageView!
   var txTimestampLabel: UILabel!
   var propertyNameLabel: UILabel!
   var txTypeLabel: UILabel!
@@ -46,7 +47,16 @@ class TransactionListCell: UITableViewCell {
 
     propertyNameLabel.text = txR.assetR?.name
 
-    txTimestampLabel.text = CustomUserDisplay.datetime(txR.confirmedAt) ?? "PENDING..."
+    if let confirmedAt = txR.confirmedAt {
+      txTimestampLabel.text = CustomUserDisplay.datetime(confirmedAt)
+      txTitle.isHidden = true
+      completedMarkTitle.isHidden = false
+    } else {
+      txTimestampLabel.text = "PENDING..."
+      txTitle.isHidden = false
+      completedMarkTitle.isHidden = true
+    }
+
     setupTitleStyle(with: txR.status)
   }
 }
@@ -70,18 +80,25 @@ extension TransactionListCell {
 
     // *** Setup subviews ***
     let heading = setupHeading()
+    let propertyNameRow = setupPropertyNameRow()
     let infoView = setupInfoView()
 
     let mainView = UIView()
     mainView.addSubview(heading)
+    mainView.addSubview(propertyNameRow)
     mainView.addSubview(infoView)
 
     heading.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
     }
 
+    propertyNameRow.snp.makeConstraints { (make) in
+      make.top.equalTo(heading.snp.bottom).offset(10)
+      make.leading.trailing.equalToSuperview()
+    }
+
     infoView.snp.makeConstraints { (make) in
-      make.top.equalTo(heading.snp.bottom).offset(12)
+      make.top.equalTo(propertyNameRow.snp.bottom).offset(10)
       make.leading.trailing.bottom.equalToSuperview()
     }
 
@@ -95,16 +112,37 @@ extension TransactionListCell {
 
   fileprivate func setupHeading() -> UIStackView {
     txTitle = CommonUI.infoLabel()
+    completedMarkTitle = UIImageView(image: UIImage(named: "completed-mark"))
+    completedMarkTitle.contentMode = .left
     txTimestampLabel = CommonUI.infoLabel()
 
     let stackview = UIStackView(
-      arrangedSubviews: [txTitle, txTimestampLabel],
+      arrangedSubviews: [txTitle, completedMarkTitle, txTimestampLabel],
       axis: .horizontal,
       distribution: .fillProportionally
     )
 
     txTitle.snp.makeConstraints { (make) in
       make.width.equalTo(txTimestampLabel).multipliedBy(0.7)
+      make.width.equalTo(completedMarkTitle)
+    }
+
+    return stackview
+  }
+
+  fileprivate func setupPropertyNameRow() -> UIStackView {
+    let propertyNameTitle = CommonUI.infoLabel(text: "PROPERTY")
+    propertyNameLabel = UILabel()
+    propertyNameLabel.font = UIFont(name: "Avenir-Black", size: 14)
+
+    let stackview = UIStackView(
+      arrangedSubviews: [propertyNameTitle, propertyNameLabel],
+      axis: .horizontal,
+      distribution: .fillProportionally
+    )
+
+    propertyNameTitle.snp.makeConstraints { (make) in
+      make.width.equalTo(propertyNameLabel).multipliedBy(0.7)
     }
 
     return stackview
@@ -115,7 +153,6 @@ extension TransactionListCell {
     accountToTitleLabel = CommonUI.infoLabel()
     let titleStackView = UIStackView(
       arrangedSubviews: [
-        CommonUI.infoLabel(text: "PROPERTY"),
         CommonUI.infoLabel(text: "TYPE"),
         CommonUI.infoLabel(text: "FROM"),
         accountToTitleLabel
@@ -123,14 +160,12 @@ extension TransactionListCell {
       axis: .vertical, spacing: rowSpacing, alignment: .leading, distribution: .fill
     )
 
-    propertyNameLabel = UILabel()
-    propertyNameLabel.font = UIFont(name: "Avenir-Black", size: 14)
     txTypeLabel = CommonUI.infoLabel()
     accountFromLabel = CommonUI.infoLabel()
     accountToLabel = CommonUI.infoLabel()
 
     let valueStackView = UIStackView(
-      arrangedSubviews: [propertyNameLabel, txTypeLabel, accountFromLabel, accountToLabel],
+      arrangedSubviews: [txTypeLabel, accountFromLabel, accountToLabel],
       axis: .vertical, spacing: rowSpacing, alignment: .leading, distribution: .fill
     )
 

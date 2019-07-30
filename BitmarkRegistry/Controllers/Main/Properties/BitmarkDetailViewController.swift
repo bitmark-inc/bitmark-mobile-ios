@@ -233,9 +233,9 @@ class BitmarkDetailViewController: UIViewController {
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()
 
-          self.showSuccessAlert(message: Constant.Success.delete, handler: {
-            self.navigationController?.popToRootViewController(animated: true)
-          })
+          self.showQuickMessageAlert(message: Constant.Success.delete) { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+          }
         })
       } catch {
         selfAlert.dismiss(animated: true, completion: {
