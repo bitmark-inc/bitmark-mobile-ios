@@ -34,8 +34,10 @@ class AppDetailViewController: UIViewController {
 
   // MARK: - Data Handlers
   fileprivate func loadData() {
-    if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-      versionInfoLabel.text = appVersion
+    if let infoDiction = Bundle.main.infoDictionary,
+       let appVersion = infoDiction[Constant.InfoKey.kVersion] as? String,
+       let bundle = infoDiction[Constant.InfoKey.kBundle] as? String {
+      versionInfoLabel.text = "\(appVersion) (\(bundle))"
     }
   }
 
@@ -50,6 +52,11 @@ class AppDetailViewController: UIViewController {
     let appDetailContentVC = AppDetailContentViewController()
     appDetailContentVC.appDetailContent = .privacyPolicy
     navigationController?.pushViewController(appDetailContentVC)
+  }
+
+  @objc func gotoReleaseNotes() {
+    let releaseNotesContentVC = ReleaseNotesViewController()
+    navigationController?.pushViewController(releaseNotesContentVC)
   }
 
   @objc func gotoAppStoreReview() {
@@ -75,6 +82,7 @@ extension AppDetailViewController {
     termsOfServiceLink.addTarget(self, action: #selector(gotoTermsOfService), for: .touchUpInside)
     privacyPolicyLink.addTarget(self, action: #selector(gotoPrivacyPolicy), for: .touchUpInside)
 
+    whatNewLink.addTarget(self, action: #selector(gotoReleaseNotes), for: .touchUpInside)
     appStoreReviewLink.addTarget(self, action: #selector(gotoAppStoreReview), for: .touchUpInside)
     shareThisAppLink.addTarget(self, action: #selector(shareThisApp), for: .touchUpInside)
   }

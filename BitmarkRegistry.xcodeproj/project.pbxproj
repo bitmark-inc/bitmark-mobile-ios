@@ -104,6 +104,10 @@
 		E29A740222AA49990052C716 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C2229E189F00508B69 /* LaunchScreen.storyboard */; };
 		E29A740722AA49990052C716 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2E798C0229E189F00508B69 /* Assets.xcassets */; };
+		E29CE44A22F03C1400C50CF4 /* ReleaseNotes.md in Resources */ = {isa = PBXBuildFile; fileRef = E29CE44922F03C1400C50CF4 /* ReleaseNotes.md */; };
+		E29CE44B22F03C1400C50CF4 /* ReleaseNotes.md in Resources */ = {isa = PBXBuildFile; fileRef = E29CE44922F03C1400C50CF4 /* ReleaseNotes.md */; };
+		E29CE44D22F0408D00C50CF4 /* ReleaseNotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29CE44C22F0408D00C50CF4 /* ReleaseNotesViewController.swift */; };
+		E29CE44E22F0408D00C50CF4 /* ReleaseNotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29CE44C22F0408D00C50CF4 /* ReleaseNotesViewController.swift */; };
 		E2ADFD1522BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */; };
 		E2ADFD1622BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */; };
 		E2ADFD1A22BC72BF00FC46D8 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2ADFD1822BC72BF00FC46D8 /* QRViewController.swift */; };
@@ -308,6 +312,8 @@
 		E297F30222DB34C000BB79F7 /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
+		E29CE44922F03C1400C50CF4 /* ReleaseNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNotes.md; sourceTree = "<group>"; };
+		E29CE44C22F0408D00C50CF4 /* ReleaseNotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseNotesViewController.swift; sourceTree = "<group>"; };
 		E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferBitmarkViewController.swift; sourceTree = "<group>"; };
 		E2ADFD1822BC72BF00FC46D8 /* QRViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRViewController.swift; sourceTree = "<group>"; };
 		E2ADFD1922BC72BF00FC46D8 /* QRScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
@@ -438,6 +444,7 @@
 				E279F84A22D839FA00164E28 /* AppDetailContent.swift */,
 				E27B6D4122D734E800351182 /* AppDetailViewController.swift */,
 				E279F84722D8382D00164E28 /* AppDetailContentViewController.swift */,
+				E29CE44C22F0408D00C50CF4 /* ReleaseNotesViewController.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -643,6 +650,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E798C0229E189F00508B69 /* Assets.xcassets */,
+				E29CE44922F03C1400C50CF4 /* ReleaseNotes.md */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -843,6 +851,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */,
+				E29CE44B22F03C1400C50CF4 /* ReleaseNotes.md in Resources */,
 				E29A740722AA49990052C716 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -852,6 +861,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E2E798C4229E189F00508B69 /* LaunchScreen.storyboard in Resources */,
+				E29CE44A22F03C1400C50CF4 /* ReleaseNotes.md in Resources */,
 				E2E798C1229E189F00508B69 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -983,6 +993,7 @@
 				E2F866AF22D9C0F2002D7059 /* AssetR.swift in Sources */,
 				E2CECFC322D3045B00468BFC /* EventDelegate.swift in Sources */,
 				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
+				E29CE44E22F0408D00C50CF4 /* ReleaseNotesViewController.swift in Sources */,
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
 				E20472BC22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,
 				E2ADFD1622BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */,
@@ -1076,6 +1087,7 @@
 				E2F866B122D9CEB1002D7059 /* MetadataR.swift in Sources */,
 				E2F866AE22D9C0F2002D7059 /* AssetR.swift in Sources */,
 				E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
+				E29CE44D22F0408D00C50CF4 /* ReleaseNotesViewController.swift in Sources */,
 				E2CECFC222D3045B00468BFC /* EventDelegate.swift in Sources */,
 				E2BEC94F22AF699D009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,

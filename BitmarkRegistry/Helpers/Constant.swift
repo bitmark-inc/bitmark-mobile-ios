@@ -56,6 +56,8 @@ public struct Constant {
     public static let mobileServerURL = "MOBILE_SERVER_URL"
     public static let registryServerURL = "REGISTRY_SERVER_URL"
     public static let zeroAddress = "ZERO_ADDRESS"
+    public static let kVersion = "CFBundleShortVersionString"
+    public static let kBundle = "CFBundleVersion"
   }
 
   // MARK: - Success Message
