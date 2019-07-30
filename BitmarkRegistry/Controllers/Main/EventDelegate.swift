@@ -21,7 +21,15 @@ extension EventDelegate {
       let eventSubscription = EventSubscription.shared
       try eventSubscription.connect(Global.currentAccount!)
 
+      try eventSubscription.listenBitmarkPending { [weak self] (_) in
+        self?.syncUpdatedRecords()
+      }
+
       try eventSubscription.listenBitmarkChanged { [weak self] (_) in
+        self?.syncUpdatedRecords()
+      }
+
+      try eventSubscription.listenTxPending{ [weak self] (_) in
         self?.syncUpdatedRecords()
       }
     } catch {
