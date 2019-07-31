@@ -26,6 +26,9 @@ class MetadataForm: UIView, UITextFieldDelegate {
   let uuid: String
   var labelTextField: BoxTextField!
   var descriptionTextField: BoxTextField!
+  var deleteView: UIView!
+  let deleteViewWidth: CGFloat = 44
+  var metadataFormLeadingConstraint: Constraint!
   var deleteButton: UIButton!
   let estimatedFormFrame = CGRect(x: 0, y: 0, width: 350, height: 100)
   var isDuplicated: Bool = false
@@ -36,7 +39,7 @@ class MetadataForm: UIView, UITextFieldDelegate {
   }
   var isOnDeleteMode: Bool = false {
     didSet {
-      deleteButton.isHidden = !self.isOnDeleteMode
+      displayDeleteView(isHidden: !isOnDeleteMode)
     }
   }
 
@@ -104,6 +107,17 @@ class MetadataForm: UIView, UITextFieldDelegate {
     return labelTextField.isEmpty && descriptionTextField.isEmpty
   }
 
+  fileprivate func displayDeleteView(isHidden: Bool) {
+    let offset = isHidden ? 0.0 : deleteViewWidth
+    let alpha: CGFloat = isHidden ? 0.0 : 1.0
+    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+      self.metadataFormLeadingConstraint.update(offset: offset)
+      self.deleteView.alpha = alpha
+      self.layoutIfNeeded()
+    }, completion: { (_) in
+    })
+  }
+
   fileprivate func setupViews() {
     // *** Setup subviews ***
     labelTextField = BoxTextField(placeholder: "KEY")
@@ -115,22 +129,33 @@ class MetadataForm: UIView, UITextFieldDelegate {
     descriptionTextField.parentView = self
 
     let fieldStackView = UIStackView(arrangedSubviews: [labelTextField, descriptionTextField], axis: .vertical, spacing: -1)
-
-    deleteButton = UIButton(imageName: "delete_label")
-    deleteButton.contentMode = .scaleAspectFit
-    deleteButton.isHidden = true
+    setupDeleteView()
 
     // *** Set up view ***
     addSubview(fieldStackView)
-    addSubview(deleteButton)
+    addSubview(deleteView)
 
-    deleteButton.snp.makeConstraints { (make) in
-      make.leading.equalToSuperview().offset(-5)
-      make.top.equalToSuperview().offset(-10)
+    deleteView.snp.makeConstraints { (make) in
+      make.top.leading.bottom.equalToSuperview()
+      make.width.equalTo(deleteViewWidth)
     }
 
     fieldStackView.snp.makeConstraints { (make) in
-      make.edges.equalToSuperview()
+      make.top.trailing.bottom.equalToSuperview()
+      metadataFormLeadingConstraint = make.leading.equalToSuperview().constraint
+    }
+  }
+
+  fileprivate func setupDeleteView() {
+    deleteButton = UIButton(imageName: "delete-label")
+    deleteButton.contentMode = .scaleAspectFit
+
+    deleteView = UIView()
+    deleteView.alpha = 0
+    deleteView.addSubview(deleteButton)
+
+    deleteButton.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
     }
   }
 }

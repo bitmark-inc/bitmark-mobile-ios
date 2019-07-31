@@ -188,24 +188,26 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   @objc func metadataFieldEditingChanged(_ tf: BoxTextField) {
     guard let currentMetadataForm = tf.parentView as? MetadataForm else { return }
-    guard !currentMetadataForm.isDuplicated else { return } // if metadataForm is error cause duplication, keep as error
+    let isSiblingTfEmpty = currentMetadataForm.siblingTextField(tf).isEmpty
+    // *** Visible / Enable for Setting Buttons ***
     if !tf.isEmpty {
       metadataSettingButtons.isHidden = false
       metadataEditModeButton.isHidden = false
 
-      if !currentMetadataForm.siblingTextField(tf).isEmpty {
+      if !isSiblingTfEmpty {
         metadataAddButton.isHidden = false
         metadataAddButton.isEnabled = true
-        currentMetadataForm.setStyle(state: .success)
       }
     } else {
       metadataAddButton.isEnabled = false
+    }
 
-      if !currentMetadataForm.siblingTextField(tf).isEmpty {
-        currentMetadataForm.setStyle(state: .error)
-      } else {
-        currentMetadataForm.setStyle(state: .focus)
-      }
+    // *** Set style for metadataForm ***
+    guard !currentMetadataForm.isDuplicated else { return } // if metadataForm is error cause duplication, keep as error
+    if tf.isEmpty {
+      currentMetadataForm.setStyle(state: isSiblingTfEmpty ? .focus : .error)
+    } else if !isSiblingTfEmpty {
+      currentMetadataForm.setStyle(state: .success)
     }
   }
 
@@ -337,25 +339,22 @@ extension RegisterPropertyRightsViewController: MetadataFormDelegate {
    3. revalidate `Add Label` & `Issue` buttons
    */
   func deleteMetadataForm(hasUUID uuid: String) {
-    showConfirmationAlert(message: Constant.Confirmation.deleteLabel) { [weak self] in
-      guard let self = self, self.metadataForms.count >= 1 else { return }
-      guard let deleteMetadataForm = self.metadataForms.filter({ $0.uuid == uuid }).first else { return }
+    guard metadataForms.count >= 1, let deleteMetadataForm = metadataForms.filter({ $0.uuid == uuid }).first else { return }
 
-      if self.metadataForms.count == 1 {
-        deleteMetadataForm.setStyle(state: .default)
-        self.changeMetadataViewMode(isOnEdit: false)
-        self.metadataSettingButtons.isHidden =  true
-        self.metadataAddButton.isHidden = true
-        self.metadataEditModeButton.isHidden = true
-        deleteMetadataForm.labelTextField.becomeFirstResponder()
-      } else {
-        deleteMetadataForm.removeFromSuperview() // 1
-        self.metadataForms.removeAll(deleteMetadataForm)
-      }
-
-      self.validateLabelDuplication() // 2
-      self.validateButtons()  // 3
+    if metadataForms.count == 1 {
+      deleteMetadataForm.setStyle(state: .default)
+      changeMetadataViewMode(isOnEdit: false)
+      metadataSettingButtons.isHidden =  true
+      metadataAddButton.isHidden = true
+      metadataEditModeButton.isHidden = true
+      deleteMetadataForm.labelTextField.becomeFirstResponder()
+    } else {
+      deleteMetadataForm.removeFromSuperview() // 1
+      metadataForms.removeAll(deleteMetadataForm)
     }
+
+    validateLabelDuplication() // 2
+    validateButtons()  // 3
   }
 
   func validateButtons(isValid: Bool = true) {
