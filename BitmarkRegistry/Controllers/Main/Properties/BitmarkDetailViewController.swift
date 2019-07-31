@@ -257,13 +257,13 @@ extension BitmarkDetailViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == metadataTableView {
-      let cell = tableView.dequeueReusableCell(withClass: MetadataDetailCell.self)
+      let cell = tableView.dequeueReusableCell(withClass: MetadataDetailCell.self, for: indexPath)
       let metadata = assetR.metadata[indexPath.row]
       cell.setData(metadata)
       cell.isBitmarkConfirmed = bitmarkR.createdAt != nil
       return cell
     } else {
-      let cell = tableView.dequeueReusableCell(withClass: TransactionCell.self)
+      let cell = tableView.dequeueReusableCell(withClass: TransactionCell.self, for: indexPath)
       let txR = transactionRs[indexPath.row]
       cell.setData(timestamp: txR.confirmedAt, ownerNumber: txR.owner)
       return cell
@@ -346,7 +346,6 @@ extension BitmarkDetailViewController {
   }
 
   fileprivate func setupViews() {
-
     view.backgroundColor = .white
 
     // *** Setup subviews ***

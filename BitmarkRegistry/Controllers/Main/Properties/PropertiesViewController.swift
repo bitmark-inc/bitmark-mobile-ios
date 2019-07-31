@@ -119,7 +119,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withClass: YourPropertyCell.self)
+    let cell = tableView.dequeueReusableCell(withClass: YourPropertyCell.self, for: indexPath)
     let bitmarkR = bitmarkRs[indexPath.row]
     cell.loadWith(bitmarkR)
     cell.setReadStyle(read: bitmarkR.read)

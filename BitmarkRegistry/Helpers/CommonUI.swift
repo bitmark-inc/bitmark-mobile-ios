@@ -73,7 +73,7 @@ class CommonUI {
     return label
   }
 
-  static func pageTitleLabel(text: String) -> UILabel {
+  static func pageTitleLabel(text: String = "") -> UILabel {
     let label = UILabel(text: text.uppercased())
     label.font = UIFont(name: "Avenir-Black", size: 17)
     label.lineHeightMultiple(1.2)
