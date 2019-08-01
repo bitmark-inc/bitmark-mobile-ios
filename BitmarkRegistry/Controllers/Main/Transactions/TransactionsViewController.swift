@@ -139,7 +139,7 @@ extension TransactionsViewController {
 
     emptyView.snp.makeConstraints { (make) in
       make.edges.equalToSuperview()
-          .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+          .inset(UIEdgeInsets(top: 15, left: 20, bottom: 0, right: 20))
     }
 
     activityIndicator.snp.makeConstraints { (make) in
@@ -170,7 +170,7 @@ extension TransactionsViewController {
     }
 
     descriptionLabel.snp.makeConstraints { (make) in
-      make.top.equalTo(titleLabel.snp.bottom).offset(35)
+      make.top.equalTo(titleLabel.snp.bottom).offset(27)
       make.leading.trailing.equalToSuperview()
     }
 
