@@ -18,7 +18,8 @@ public struct Constant {
     public static let skipTouchFaceIdAuthentication = "Are you sure you don't want to protect your data with Touch & Face ID?"
     public static let authorizationRequired = (
       title: "Authorization Required",
-      message: "requires your digital signature to authorize this action. To prevent abuse, please only authorize actions from trusted websites."
+      requiredSignatureMessage: "requires your digital signature to authorize this action. To prevent abuse, please only authorize actions from trusted websites.",
+      requiredAccountMessage: "Please sign in or create your Bitmark account to proceed."
     )
   }
 

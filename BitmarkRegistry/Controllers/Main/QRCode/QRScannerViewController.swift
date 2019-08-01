@@ -11,7 +11,7 @@ import UIKit
 import AVFoundation
 
 protocol QRCodeScannerDelegate: class {
-  func process(qrCode: String, completion: @escaping (Bool) -> Void)
+  func process(qrCode: String?)
 }
 
 enum QRCodeScanType {
@@ -22,9 +22,11 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
 
   // MARK: - Properties
   var qrCodeScanType: QRCodeScanType!
+  var verificationLink: String?
   var videoPreviewLayer: AVCaptureVideoPreviewLayer!
   var captureSession: AVCaptureSession!
   weak var delegate: QRCodeScannerDelegate!
+  var chibitronicsService: ChibitronicsService!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -32,8 +34,12 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     title = "SCAN QR CODE"
 
     setupViews()
-
     performRealtimeCapture()
+
+    if let verificationLink = verificationLink {
+      captureSession.stopRunning()
+      processVerificationLink(verificationLink)
+    }
   }
 
   func performRealtimeCapture() {
@@ -73,14 +79,82 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     guard let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else { return }
     if metadataObj.type == AVMetadataObject.ObjectType.qr, let qrCode = metadataObj.stringValue {
       captureSession.stopRunning()
-      delegate.process(qrCode: qrCode) { [weak self] (isSuccess) in
-        if isSuccess {
-          self?.navigationController?.popViewController(animated: true)
-        } else {
-          self?.captureSession.startRunning()
-        }
+
+      switch qrCodeScanType! {
+      case .accountNumber:
+        delegate.process(qrCode: qrCode)
+        navigationController?.popViewController(animated: true)
+      case .chibitronicsCode:
+        processVerificationLink(qrCode)
       }
     }
+  }
+
+  @objc func backNavigation(_ sender: UIAlertAction) {
+    navigationController?.popViewController(animated: true)
+  }
+}
+
+// MARK: - processVerificationLink - Chibitronics
+extension QRScannerViewController {
+  fileprivate func processVerificationLink(_ code: String) {
+    let verificationLinkSource: VerificationLinkSource = verificationLink == nil ? .qrCode : .deepLink
+    Global.verificationLink = nil
+    chibitronicsService = ChibitronicsService(verificationLink: code, source: verificationLinkSource)
+
+    guard chibitronicsService.isValid(),
+          let (_, url) = chibitronicsService.extractData(), let urlHost = url.host else {
+      let unrecognizedQRCode = Constant.Error.unrecognizedQRCode
+      let alertController = UIAlertController(title: unrecognizedQRCode.title, message: unrecognizedQRCode.message, preferredStyle: .alert)
+      alertController.addAction(title: "OK", style: .default) { [weak self] (_) in
+        self?.captureSession.startRunning()
+      }
+      present(alertController, animated: true, completion: nil)
+      return
+    }
+
+    let authorizationRequired = Constant.Confirmation.authorizationRequired
+    let message = "\(urlHost) \(authorizationRequired.requiredSignatureMessage)"
+    let alertController = UIAlertController(title: authorizationRequired.title, message: message, preferredStyle: .alert)
+    alertController.addAction(title: "Cancel", style: .default, handler: backNavigation(_:))
+    alertController.addAction(title: "Authorize", style: .default, handler: authorize(_:))
+    present(alertController, animated: true, completion: nil)
+  }
+
+  @objc func authorize(_ sender: UIAlertAction) {
+    guard let urlHost = chibitronicsService.url.host else { return }
+    do {
+      try chibitronicsService.requestAuthorization(for: Global.currentAccount!) { [weak self] (error) in
+        guard let self = self else { return }
+        DispatchQueue.main.sync {
+
+          if let error = error {
+            ErrorReporting.report(error: error)
+            self.showErrorAlert(title: "Error", message: "There was an error while requesting to \(urlHost)")
+            return
+          }
+
+          self.showQuickMessageAlert(
+            title: "Authorized!",
+            message: "Your authorization has been sent to \(urlHost).",
+            handler: {
+              self.navigationController?.popViewController(animated: true)
+              self.delegate.process(qrCode: nil)
+          })
+        }
+      }
+    } catch {
+      ErrorReporting.report(error: error)
+      self.showErrorAlert(title: "Error", message: "There was an error while requesting to \(urlHost)")
+    }
+  }
+
+  fileprivate func showErrorAlert(title: String, message: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alertController.addAction(title: "OK", style: .default) { (_) in
+      self.captureSession.startRunning()
+    }
+    present(alertController, animated: true, completion: nil)
   }
 }
 

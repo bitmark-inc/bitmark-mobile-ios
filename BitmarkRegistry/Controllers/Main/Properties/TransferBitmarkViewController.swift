@@ -132,11 +132,10 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
 // MARK: - QRCodeScannerDelegate
 extension TransferBitmarkViewController: QRCodeScannerDelegate {
-  func process(qrCode: String, completion: @escaping (Bool) -> Void) {
+  func process(qrCode: String?) {
     recipientAccountNumberTextfield.text = qrCode
     recipientAccountNumberTextfield.sendActions(for: .editingDidBegin)
     recipientAccountNumberTextfield.sendActions(for: .editingChanged)
-    completion(true)
   }
 }
 

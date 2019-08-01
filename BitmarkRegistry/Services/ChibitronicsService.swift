@@ -9,25 +9,34 @@
 import Foundation
 import BitmarkSDK
 
+enum VerificationLinkSource {
+  case qrCode, deepLink
+}
+
 struct ChibitronicsService {
 
-  let qrCodeRegex = "(\\w+ ){5}\\w+\\|https?://.+"
-  let qrCode: String
+  let verificationLink: String
+  let source: VerificationLinkSource
+  lazy var separator: Character = { source == .qrCode ? "|" : "/" }()
+  lazy var regex: String = { "(\\w+ ){5}\\w+\\\(separator)https?://.+" }()
+
   var code: String!
   var url: URL!
 
-  init(qrCode: String) {
-    self.qrCode = qrCode
+  init(verificationLink: String, source: VerificationLinkSource) {
+    self.verificationLink = verificationLink
+    self.source = source
   }
 
-  func isValidQrCode() -> Bool {
-    return qrCode.range(of: qrCodeRegex, options: .regularExpression, range: nil, locale: nil) != nil
+  mutating func isValid() -> Bool {
+    return verificationLink.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
   }
 
   mutating func extractData() -> (code: String, url: URL)? {
-    let qrCodeParts = qrCode.split(separator: "|")
-    if let url = URL(string: String(qrCodeParts[1])) {
-      self.code = String(qrCodeParts[0])
+    let codeParts = verificationLink.split(separator: separator, maxSplits: 1)
+
+    if let url = URL(string: String(codeParts[1])) {
+      self.code = String(codeParts[0])
       self.url = url
       return (code: code, url: url)
     } else {

@@ -41,6 +41,11 @@ class PropertiesViewController: UIViewController {
     setupViews()
     setupEvents()
 
+    // *** when open app from deep link; link to QRScannerVC ***
+    if Global.verificationLink != nil {
+      tapToScanChibitronicsCode()
+    }
+
     loadData()
     setupBitmarkEventSubscription()
   }
@@ -119,49 +124,15 @@ extension PropertiesViewController: QRCodeScannerDelegate {
   @objc func tapToScanChibitronicsCode() {
     let qrScannerVC = QRScannerViewController()
     qrScannerVC.qrCodeScanType = .chibitronicsCode
+    qrScannerVC.verificationLink = Global.verificationLink
     qrScannerVC.delegate = self
     navigationController?.pushViewController(qrScannerVC)
   }
 
-  func process(qrCode: String, completion: @escaping (Bool) -> Void) {
-    var alertController: UIAlertController!
-    var chibitronics = ChibitronicsService(qrCode: qrCode)
-    guard chibitronics.isValidQrCode(), let (_, url) = chibitronics.extractData(), let urlHost = url.host else {
-      let unrecognizedQRCode = Constant.Error.unrecognizedQRCode
-      alertController = UIAlertController(title: unrecognizedQRCode.title, message: unrecognizedQRCode.message, preferredStyle: .alert)
-      alertController.addAction(title: "OK", style: .default) { (_) in completion(false) }
-      present(alertController, animated: true, completion: nil)
-      return
-    }
-
-    let authorizationRequired = Constant.Confirmation.authorizationRequired
-    let message = "\(urlHost) \(authorizationRequired.message)"
-    alertController = UIAlertController(title: authorizationRequired.title, message: message, preferredStyle: .alert)
-    alertController.addAction(title: "Cancel", style: .default) { (_) in completion(true) }
-    alertController.addAction(title: "Authorize", style: .default) { (_) in
-      do {
-        try chibitronics.requestAuthorization(for: Global.currentAccount!) { (error) in
-          if let error = error {
-            ErrorReporting.report(error: error)
-            self.showErrorAlert(message: "There was an error while requesting to \(urlHost)")
-            completion(true)
-            return
-          }
-
-          self.showQuickMessageAlert(
-            title: "Authorized!",
-            message: "Your authorization has been sent to \(urlHost).",
-            handler: {
-              completion(true)
-          })
-        }
-      } catch {
-        ErrorReporting.report(error: error)
-        self.showErrorAlert(message: "There was an error while requesting to \(urlHost)")
-        completion(true)
-      }
-    }
-    present(alertController, animated: true, completion: nil)
+  // Process qrCode/verificationLink from Chibitronics
+  func process(qrCode: String?) {
+    Global.verificationLink = nil
+    UIAlertController(title: "", message: "To complete the process,\n please return to the browser", defaultActionButtonTitle: "OK").show()
   }
 }
 
