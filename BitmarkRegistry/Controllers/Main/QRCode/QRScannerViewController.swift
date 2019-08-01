@@ -11,12 +11,17 @@ import UIKit
 import AVFoundation
 
 protocol QRCodeScannerDelegate: class {
-  func process(qrCode: String)
+  func process(qrCode: String, completion: @escaping (Bool) -> Void)
+}
+
+enum QRCodeScanType {
+  case accountNumber, chibitronicsCode
 }
 
 class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
   // MARK: - Properties
+  var qrCodeScanType: QRCodeScanType!
   var videoPreviewLayer: AVCaptureVideoPreviewLayer!
   var captureSession: AVCaptureSession!
   weak var delegate: QRCodeScannerDelegate!
@@ -24,7 +29,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "SCAN QRCODE"
+    title = "SCAN QR CODE"
 
     setupViews()
 
@@ -68,8 +73,13 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     guard let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else { return }
     if metadataObj.type == AVMetadataObject.ObjectType.qr, let qrCode = metadataObj.stringValue {
       captureSession.stopRunning()
-      delegate.process(qrCode: qrCode)
-      navigationController?.popViewController(animated: true)
+      delegate.process(qrCode: qrCode) { [weak self] (isSuccess) in
+        if isSuccess {
+          self?.navigationController?.popViewController(animated: true)
+        } else {
+          self?.captureSession.startRunning()
+        }
+      }
     }
   }
 }
@@ -80,18 +90,7 @@ extension QRScannerViewController {
     view.backgroundColor = .white
 
     let descriptionLabelView = CommonUI.descriptionLabel()
-    let descriptionText = NSMutableAttributedString(string: "You can transfer rights to another Bitmark account by scanning the receiving account’s QR code. You can view your account QR code by tapping ")
-
-    let qrCodeAttachment = NSTextAttachment()
-    qrCodeAttachment.image = UIImage(named: "qr-code-icon")
-    qrCodeAttachment.bounds = CGRect(x: 0, y: 0, width: 19, height: 19)
-
-    // add the NSTextAttachment wrapper to our full string, then add some more text.
-    descriptionText.append(NSAttributedString(attachment: qrCodeAttachment))
-    descriptionText.append(NSAttributedString(string: " at the top of the Account screen."))
-
-    // draw the result in a label
-    descriptionLabelView.attributedText = descriptionText
+    descriptionLabelView.attributedText = setupDescriptionText()
 
     // initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
     videoPreviewLayer = AVCaptureVideoPreviewLayer()
@@ -104,6 +103,25 @@ extension QRScannerViewController {
     descriptionLabelView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
           .inset(UIEdgeInsets(top: 25, left: 20, bottom: 0, right: 25))
+    }
+  }
+
+  fileprivate func setupDescriptionText() -> NSMutableAttributedString {
+    guard let qrCodeScanType = qrCodeScanType else { return NSMutableAttributedString(string: "") }
+    switch qrCodeScanType {
+    case .accountNumber:
+      let descriptionText = NSMutableAttributedString(string: "You can transfer rights to another Bitmark account by scanning the receiving account’s QR code. You can view your account QR code by tapping ")
+
+      let qrCodeAttachment = NSTextAttachment()
+      qrCodeAttachment.image = UIImage(named: "qr-code-icon")
+      qrCodeAttachment.bounds = CGRect(x: 0, y: 0, width: 19, height: 19)
+
+      // add the NSTextAttachment wrapper to our full string, then add some more text.
+      descriptionText.append(NSAttributedString(attachment: qrCodeAttachment))
+      descriptionText.append(NSAttributedString(string: " at the top of the Account screen."))
+      return descriptionText
+    case .chibitronicsCode:
+      return NSMutableAttributedString(string: "You can accept rights transfers from certain websites by scanning QR codes. Please only scan QR codes from websites that you already know and trust.")
     }
   }
 }

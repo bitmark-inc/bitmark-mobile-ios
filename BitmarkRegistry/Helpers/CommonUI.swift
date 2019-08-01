@@ -94,10 +94,17 @@ class CommonUI {
     return label
   }
 
+  static func alertTitleLabel(text: String) -> UILabel {
+    let label = UILabel(text: text)
+    label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+    label.textAlignment = .center
+    return label
+  }
+
   static func alertMessageLabel(text: String) -> UILabel {
     let label = UILabel(text: text)
     label.numberOfLines = 0
-    label.font = UIFont(name: "SF Pro Text", size: 16)
+    label.font = .systemFont(ofSize: 14, weight: .regular)
     label.textAlignment = .center
     return label
   }
