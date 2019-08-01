@@ -126,13 +126,20 @@ class AssetFileService {
 
       guard let senderAccountNumber = senderAccountNumber else { return }
       self.downloadFileFromCourierServer(senderAccountNumber: senderAccountNumber, completion: { (downloadedFileURL, error) in
-          if let error = error {
-            completion(nil, error); return
-          }
-
-          completion(downloadedFileURL, nil)
+        if let error = error {
+          completion(nil, error); return
         }
-      )
+
+        DispatchQueue.main.async { [weak self] in
+          guard let self = self else { return }
+          FileCourierService.deleteAccessFile(
+            assetId: self.assetId,
+            senderAccountNumber: senderAccountNumber, receiverAccountNumber: self.owner.getAccountNumber()
+          )
+        }
+
+        completion(downloadedFileURL, nil)
+      })
     }
   }
 

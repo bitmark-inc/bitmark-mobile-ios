@@ -208,11 +208,33 @@ class FileCourierService {
     let params = ["access": access]
     let headers = ["Authorization": "Bearer " + jwt]
 
+    let infoLog = "updateAccess in File for assetId: \(assetId); sender: \(sender.getAccountNumber()); receiver: \(receiverAccountNumber)"
+    ErrorReporting.breadcrumbs(info: infoLog, category: "FileCourier")
+    Global.log.info(infoLog)
+
     Alamofire.request(updateAccessURL, method: .put, parameters: params, encoding: URLEncoding.default, headers: headers)
-      .responseString { (response) in
-      if !response.result.isSuccess {
-        ErrorReporting.report(message: "Can not updateAcessURL assetId: \(assetId)")
-      }
+      .responseJSON { (response) in
+        if response.result.isFailure {
+          ErrorReporting.report(message: "Can not updateAccessFile")
+        }
+    }
+  }
+
+  static func deleteAccessFile(assetId: String, senderAccountNumber: String, receiverAccountNumber: String) {
+    guard let jwt = Global.currentJwt else { return }
+    let deleteAccessURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + senderAccountNumber)!
+    let params = ["receiver": receiverAccountNumber]
+    let headers = ["Authorization": "Bearer " + jwt]
+
+    let infoLog = "deleteAccess in File for assetId: \(assetId); sender: \(senderAccountNumber); receiver: \(receiverAccountNumber)"
+    ErrorReporting.breadcrumbs(info: infoLog, category: "FileCourier")
+    Global.log.info(infoLog)
+
+    Alamofire.request(deleteAccessURL, method: .delete, parameters: params, headers: headers)
+      .responseJSON { (response) in
+        if response.result.isFailure {
+          ErrorReporting.report(message: "Can not deleteAccessFile")
+        }
     }
   }
 
