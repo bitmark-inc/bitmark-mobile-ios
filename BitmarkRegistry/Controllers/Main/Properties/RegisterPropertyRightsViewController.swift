@@ -145,6 +145,12 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     firstMetadataForm.labelTextField.becomeFirstResponder()
   }
 
+  // *** Metadata Form ***
+  @objc func goToPropertyDescriptionInfo(_ sender: UIButton) {
+    let infoVC = PropertyDescriptionInfoViewController()
+    navigationController?.pushViewController(infoVC)
+  }
+
   /**
    When user tap **Add Label**:
    1. disable `Add Label` & `Issue` button to require user fill into the incoming metadata form
@@ -595,9 +601,12 @@ extension RegisterPropertyRightsViewController {
     // *** Setup subviews ***
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "PROPERTY DESCRIPTION")
 
-    let fieldInfoLink = UILabel(text: "What is property description? >>")
-    fieldInfoLink.font = UIFont(name: "Avenir", size: 13)
-    fieldInfoLink.textColor = .mainBlueColor
+    let fieldInfoLink = UIButton(type: .system)
+    fieldInfoLink.contentHorizontalAlignment = .leading
+    fieldInfoLink.setTitle("What is property description? >>", for: .normal)
+    fieldInfoLink.setTitleColor(.mainBlueColor, for: .normal)
+    fieldInfoLink.titleLabel?.font = UIFont(name: "Avenir", size: 13)
+    fieldInfoLink.addTarget(self, action: #selector(goToPropertyDescriptionInfo), for: .touchUpInside)
 
     let separateLine = UIView()
     separateLine.backgroundColor = .mainBlueColor
@@ -632,7 +641,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     separateLine.snp.makeConstraints { (make) in
-      make.top.equalTo(fieldInfoLink.snp.bottom).offset(-3)
+      make.top.equalTo(fieldInfoLink.snp.bottom).offset(-9)
       make.leading.equalToSuperview()
       make.width.equalTo(170)
       make.height.equalTo(0.5)
