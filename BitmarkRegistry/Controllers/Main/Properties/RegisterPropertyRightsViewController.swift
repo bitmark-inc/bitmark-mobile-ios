@@ -33,9 +33,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var metadataAddButton: UIButton!
   var metadataEditModeButton: UIButton!
   var errorForMetadata: UILabel!
-  var numberOfBitmarksTextField: DesignedTextField!
+  var numberOfBitmarksTextField: GMStepper!
   var confirmCheckBox: BEMCheckBox!
-  var errorForNumberOfBitmarksToIssue: UILabel!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
   var networkReachabilityManager = NetworkReachabilityManager()
@@ -202,6 +201,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       metadataAddButton.isEnabled = false
     }
 
+    validateLabelDuplication()
+
     // *** Set style for metadataForm ***
     guard !currentMetadataForm.isDuplicated else { return } // if metadataForm is error cause duplication, keep as error
     if tf.isEmpty {
@@ -215,8 +216,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     guard let currentMetadataForm = tf.parentView as? MetadataForm else { return }
     if currentMetadataForm.isBeginningState() {
       currentMetadataForm.setStyle(state: .default)
-    } else {
-      validateLabelDuplication()
     }
   }
 
@@ -228,21 +227,10 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     issueButton.isEnabled = validToIssue()
   }
 
-  @objc func typeNumberOfBitmarkToIssue(_ sender: UITextField) {
-    if let quantityText = sender.text, let quantity = Int(quantityText),
-      let errorNumberOfBitmark = errorNumberOfBitmarksToIssue(quantity) {
-      setNumberOfBitmarksBoxStyle(with: errorNumberOfBitmark)
-      issueButton.isEnabled = false
-    } else {
-      setNumberOfBitmarksBoxStyle()
-      issueButton.isEnabled = validToIssue()
-    }
-  }
-
   @objc func tapToIssue(_ button: UIButton) {
     view.endEditing(true)
 
-    let quantity = Int(numberOfBitmarksTextField.text!)!
+    let quantity = Int(numberOfBitmarksTextField.value)
 
     showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
       do {
@@ -315,7 +303,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         guard let currentIndex = metadataForms.firstIndex(of: currentMetadataForm) else { return true }
         let nextIndex = currentIndex + 1
         if nextIndex >= metadataForms.count {
-          return numberOfBitmarksTextField.becomeFirstResponder()
+          return numberOfBitmarksTextField.textfield.becomeFirstResponder()
         } else {
           return metadataForms[nextIndex].labelTextField.becomeFirstResponder()
         }
@@ -422,26 +410,14 @@ extension RegisterPropertyRightsViewController {
 
   func validToIssue() -> Bool {
     if assetR == nil {
-      return !propertyNameTextField.isEmpty && !numberOfBitmarksTextField.isEmpty &&
-              errorForNumberOfBitmarksToIssue.text?.isEmpty ?? true &&
+      return !propertyNameTextField.isEmpty &&
               errorForMetadata.text?.isEmpty ?? true &&
               validMetadata() &&
               confirmCheckBox.on &&
               (networkReachabilityManager?.isReachable ?? false)
     } else {
-      return !numberOfBitmarksTextField.isEmpty &&
-             confirmCheckBox.on &&
+      return confirmCheckBox.on &&
              (networkReachabilityManager?.isReachable ?? false)
-    }
-  }
-
-  func setNumberOfBitmarksBoxStyle(with errorMessage: String? = nil) {
-    if let errorMessage = errorMessage {
-      errorForNumberOfBitmarksToIssue.text = errorMessage
-      numberOfBitmarksTextField.onErrorStyle()
-    } else {
-      errorForNumberOfBitmarksToIssue.text = ""
-      numberOfBitmarksTextField.offErrorStyle()
     }
   }
 }
@@ -481,10 +457,6 @@ extension RegisterPropertyRightsViewController {
     metadataAddButton.addTarget(self, action: #selector(addMetadataForm), for: .touchUpInside)
     metadataEditModeButton.addTarget(self, action: #selector(setModeMetadataForm), for: .touchUpInside)
 
-    numberOfBitmarksTextField.delegate = self
-    numberOfBitmarksTextField.addTarget(self, action: #selector(typeNumberOfBitmarkToIssue), for: .editingChanged)
-    numberOfBitmarksTextField.addTarget(self, action: #selector(editingTextField), for: .editingChanged)
-
     confirmCheckBox.delegate = self
 
     issueButton.addTarget(self, action: #selector(tapToIssue), for: .touchUpInside)
@@ -520,7 +492,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     let inputFields = [
-      propertyNameTextField, assetTypeTextField, numberOfBitmarksTextField, metadataStackView
+      propertyNameTextField, assetTypeTextField, metadataStackView
     ]
     inputFields.forEach({ (inputField) in
       inputField?.snp.makeConstraints { $0.width.equalTo(mainView) }
@@ -679,22 +651,35 @@ extension RegisterPropertyRightsViewController {
     return view
   }
 
-  fileprivate func numberOfBitmarksView() -> UIStackView {
+  fileprivate func numberOfBitmarksView() -> UIView {
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "NUMBER OF BITMARKS TO ISSUE")
-    numberOfBitmarksTextField = DesignedTextField(placeholder: "1~100 BITMARKS")
-    numberOfBitmarksTextField.keyboardType = .numberPad
-    numberOfBitmarksTextField.returnKeyType = .done
+    numberOfBitmarksTextField = GMStepper()
+    numberOfBitmarksTextField.minimumValue = 1
+    numberOfBitmarksTextField.maximumValue = 100
 
     let flexBar = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
     let bar = UIToolbar()
     bar.sizeToFit()
     bar.items = [flexBar, doneButton]
-    numberOfBitmarksTextField.inputAccessoryView = bar
+    numberOfBitmarksTextField.textfield.inputAccessoryView = bar
 
-    errorForNumberOfBitmarksToIssue = CommonUI.errorFieldLabel()
+    let view = UIView()
+    view.addSubview(fieldLabel)
+    view.addSubview(numberOfBitmarksTextField)
 
-    return UIStackView(arrangedSubviews: [fieldLabel, numberOfBitmarksTextField, errorForNumberOfBitmarksToIssue], axis: .vertical, spacing: 15)
+    fieldLabel.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    numberOfBitmarksTextField.snp.makeConstraints { (make) in
+      make.top.equalTo(fieldLabel.snp.bottom).offset(8)
+      make.leading.bottom.equalToSuperview()
+      make.height.equalTo(30)
+      make.width.equalTo(171)
+    }
+
+    return view
   }
 
   fileprivate func ownershipClaimView() -> UIStackView {

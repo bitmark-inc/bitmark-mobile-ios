@@ -68,11 +68,6 @@ class MetadataForm: UIView, UITextFieldDelegate {
     labelTextField.sendActions(for: .editingDidEnd)
   }
 
-  func setDuplicatedStyle(isDuplicated: Bool) {
-    guard !labelTextField.isEmpty else { return }
-//    labelTextField.bottomLineColor = isDuplicated ? .mainRedColor : .mainBlueColor
-  }
-
   func setStyle(state: FieldState) {
     let color: UIColor!
     switch state {
@@ -121,6 +116,7 @@ class MetadataForm: UIView, UITextFieldDelegate {
   fileprivate func setupViews() {
     // *** Setup subviews ***
     labelTextField = BoxTextField(placeholder: "KEY")
+    labelTextField.autocapitalizationType = .allCharacters
     labelTextField.returnKeyType = .done
     labelTextField.parentView = self
 

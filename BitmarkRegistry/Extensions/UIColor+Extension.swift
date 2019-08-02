@@ -14,6 +14,7 @@ extension UIColor {
   static let mainRedColor = UIColor(red: 255/255, green: 0/255, blue: 60/255, alpha: 1) // #FF003C
   static let alabaster = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1) // #F8F8F8
   static let alto = UIColor(red: 212/255, green: 212/255, blue: 212/255, alpha: 1) // #D4D4D4
+  static let azureRadiance = UIColor(red: 0, green: 122/255, blue: 1, alpha: 1) // #007AFF
   static let dustyGray = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1) // #999999
   static let wildSand = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1) // #F5F5F5
   static let silver = UIColor(red: 193/255, green: 193/255, blue: 193/255, alpha: 1) // #C1C1C1
