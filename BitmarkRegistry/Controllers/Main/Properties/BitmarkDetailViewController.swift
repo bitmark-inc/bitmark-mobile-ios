@@ -352,6 +352,9 @@ extension BitmarkDetailViewController {
     let assetInfoView = setupAssetInfoView()
 
     metadataTableView = SelfSizedTableView()
+    metadataTableView.snp.makeConstraints { (make) in
+      make.height.lessThanOrEqualTo(120)
+    }
     metadataTableView.separatorStyle = .none
     metadataTableView.alwaysBounceVertical = false
     metadataTableView.allowsSelection = false
@@ -362,7 +365,7 @@ extension BitmarkDetailViewController {
     let stackView = UIStackView(
       arrangedSubviews: [assetInfoView, metadataTableView, provenanceView],
       axis: .vertical,
-      spacing: 30
+      spacing: 25
     )
 
     actionMenuView = setupActionMenuView()
@@ -490,6 +493,7 @@ extension BitmarkDetailViewController {
 
     transactionTableView = UITableView()
     transactionTableView.separatorStyle = .none
+    transactionTableView.alwaysBounceVertical = false
 
     transactionIndicator = CommonUI.appActivityIndicator()
 

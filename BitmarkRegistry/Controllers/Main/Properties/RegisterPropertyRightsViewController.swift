@@ -53,8 +53,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     if assetR == nil {
       setDefaultMetadataFormState()
       propertyNameTextField.becomeFirstResponder()
-    } else {
-      numberOfBitmarksTextField.becomeFirstResponder()
     }
 
     loadData()
@@ -115,6 +113,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       // Disable assetForm when asset has been existed
       propertyNameTextField.isEnabled = false
       assetTypeTextField.rightViewMode = .never
+      assetTypeTextField.isEnabled = false
+      assetTypeTextField.placeholder = ""
       metadataAddButton.removeFromSuperview()
       metadataEditModeButton.removeFromSuperview()
     }
@@ -136,7 +136,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   @objc func selectAssetType(_ sender: UIAlertAction) {
     guard let title = sender.title else { return }
     if title != "Cancel" {
-      assetTypeTextField.text = sender.title
+      assetTypeTextField.text = sender.title?.uppercased()
     } else if assetTypeTextField.isEmpty {
       assetTypeTextField.setStyle(state: .error)
     }
@@ -178,8 +178,15 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     metadataStackView.addArrangedSubview(newMetadataForm)
     metadataForms.append(newMetadataForm)
 
+    view.endEditing(true)
+
     if assetR == nil {
       newMetadataForm.labelTextField.becomeFirstResponder()
+
+      // adjust scroll to help user still able to click "Add new field" without needing scroll down
+      var scrollContentOffset = scrollView.contentOffset
+      scrollContentOffset.y += 85.0
+      scrollView.setContentOffset(scrollContentOffset, animated: true)
     }
   }
 
@@ -229,8 +236,14 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     changeMetadataViewMode(isOnEdit: !metadataEditModeButton.isSelected)
   }
 
-  @objc func editingTextField(_ textfield: UITextField) {
-    issueButton.isEnabled = validToIssue()
+  @objc func propertyNameFieldEditingChanged(_ textfield: DesignedTextField) {
+    if textfield.isEmpty {
+      issueButton.isEnabled = false
+      textfield.setStyle(state: .error)
+    } else {
+      issueButton.isEnabled = validToIssue()
+      textfield.setStyle(state: .focus)
+    }
   }
 
   @objc func tapToIssue(_ button: UIButton) {
@@ -458,7 +471,7 @@ extension RegisterPropertyRightsViewController {
 extension RegisterPropertyRightsViewController {
   fileprivate func setupEvents() {
     propertyNameTextField.delegate = self
-    propertyNameTextField.addTarget(self, action: #selector(editingTextField), for: .editingChanged)
+    propertyNameTextField.addTarget(self, action: #selector(propertyNameFieldEditingChanged), for: .editingChanged)
 
     metadataAddButton.addTarget(self, action: #selector(addMetadataForm), for: .touchUpInside)
     metadataEditModeButton.addTarget(self, action: #selector(setModeMetadataForm), for: .touchUpInside)
@@ -583,7 +596,7 @@ extension RegisterPropertyRightsViewController {
     downArrowImageView.frame = CGRect(x: 0, y: 0, width: downArrowImageView.size.width + 20.0, height: downArrowImageView.size.height)
     downArrowImageView.contentMode = .center
     assetTypeTextField.setStyle(state: .default)
-    assetTypeTextField.isEnabled = false
+    assetTypeTextField.isUserInteractionEnabled = false
     assetTypeTextField.rightView = downArrowImageView
     assetTypeTextField.rightViewMode = .always
 
@@ -636,7 +649,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     fieldInfoLink.snp.makeConstraints { (make) in
-      make.top.equalTo(fieldLabel.snp.bottom)
+      make.top.equalTo(fieldLabel.snp.bottom).offset(-6)
       make.leading.trailing.equalToSuperview()
     }
 
@@ -648,7 +661,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     metadataForms.snp.makeConstraints { (make) in
-      make.top.equalTo(separateLine.snp.bottom).offset(15)
+      make.top.equalTo(separateLine.snp.bottom).offset(18)
       make.leading.trailing.equalToSuperview()
     }
 
@@ -692,19 +705,21 @@ extension RegisterPropertyRightsViewController {
   }
 
   fileprivate func ownershipClaimView() -> UIStackView {
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "OWNERSHIP CLAIM")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "RIGHTS CLAIM")
     confirmCheckBox = BEMCheckBox(frame: CGRect(x: 0, y: 0, width: 19, height: 19))
     confirmCheckBox.boxType = .square
     confirmCheckBox.animationDuration = 0.2
+    confirmCheckBox.cornerRadius = 0
 
     let confirmCheckboxView = UIView()
     confirmCheckboxView.addSubview(confirmCheckBox)
+    confirmCheckBox.snp.makeConstraints({ $0.top.equalToSuperview().offset(5) })
 
     let description = CommonUI.descriptionLabel(text: "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.")
 
     let confirmView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
     confirmCheckboxView.snp.makeConstraints({ $0.width.equalTo(19) })
-    description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28)})
+    description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28) })
 
     return UIStackView(arrangedSubviews: [fieldLabel, confirmView], axis: .vertical, spacing: 10)
   }
