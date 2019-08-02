@@ -18,11 +18,11 @@ class AccountKeyService {
       let encryptionPublicKey = account.encryptionKey.publicKey
       let signature = try account.sign(message: encryptionPublicKey)
 
-      let data: [String: Any] = [
+      let data: [String: String] = [
         "encryption_pubkey": encryptionPublicKey.hexEncodedString,
         "signature": signature.hexEncodedString
       ]
-      let jsonData = try JSONSerialization.data(withJSONObject: data)
+      let jsonData = try JSONEncoder().encode(data)
 
       let url = URL(string: apiServerURL + "/v1/encryption_keys/" + account.getAccountNumber())!
       var request = URLRequest(url: url)
@@ -58,10 +58,7 @@ class AccountKeyService {
 
       guard let data = data else { return }
       do {
-        guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: String] else {
-          ErrorReporting.report(message: "response in downloadable assets API is incorrectly formatted.")
-          return
-        }
+        let jsonObject = try JSONDecoder().decode([String: String].self, from: data)
         let encryptionPubkey = jsonObject["encryption_pubkey"]?.hexDecodedData
         completion(encryptionPubkey, nil)
       } catch {

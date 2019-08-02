@@ -80,10 +80,7 @@ class FileCourierService {
 
       if let data = data {
         do {
-          guard let jsonObject = try JSONSerialization.jsonObject(with: data) as? [String: [String]] else {
-            ErrorReporting.report(message: "response in downloadable assets API is incorrectly formatted.")
-            return
-          }
+          let jsonObject = try JSONDecoder().decode([String : [String]].self, from: data)
           let downloadableFileInfos = jsonObject["file_ids"]
 
           // validate file_ids response

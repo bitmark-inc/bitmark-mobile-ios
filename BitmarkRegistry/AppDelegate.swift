@@ -108,9 +108,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    guard let _ = url.scheme, let host = url.host else { return true }
+    guard let _ = url.scheme, let host = url.host else { return false }
 
-    if host == "authorization" {
+    switch host {
+    case "authorization":
       let verificationLink = String(url.path.dropFirst())
       Global.verificationLink = verificationLink
 
@@ -121,7 +122,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.isNavigationBarHidden = true
         window?.rootViewController = navigationController
       }
-    }
+    default:
+      return false
+    } 
 
     return true
   }

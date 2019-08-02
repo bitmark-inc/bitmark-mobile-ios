@@ -15,7 +15,7 @@ protocol QRCodeScannerDelegate: class {
 }
 
 enum QRCodeScanType {
-  case accountNumber, chibitronicsCode
+  case accountNumber, ownershipCode
 }
 
 class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
@@ -26,7 +26,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
   var videoPreviewLayer: AVCaptureVideoPreviewLayer!
   var captureSession: AVCaptureSession!
   weak var delegate: QRCodeScannerDelegate!
-  var chibitronicsService: ChibitronicsService!
+  var ownershipService: OwnershipApprovanceService!
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -84,7 +84,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
       case .accountNumber:
         delegate.process(qrCode: qrCode)
         navigationController?.popViewController(animated: true)
-      case .chibitronicsCode:
+      case .ownershipCode:
         processVerificationLink(qrCode)
       }
     }
@@ -100,10 +100,10 @@ extension QRScannerViewController {
   fileprivate func processVerificationLink(_ code: String) {
     let verificationLinkSource: VerificationLinkSource = verificationLink == nil ? .qrCode : .deepLink
     Global.verificationLink = nil
-    chibitronicsService = ChibitronicsService(verificationLink: code, source: verificationLinkSource)
+    ownershipService = OwnershipApprovanceService(verificationLink: code, source: verificationLinkSource)
 
-    guard chibitronicsService.isValid(),
-          let (_, url) = chibitronicsService.extractData(), let urlHost = url.host else {
+    guard ownershipService.isValid(),
+          let (_, url) = ownershipService.extractData(), let urlHost = url.host else {
       let unrecognizedQRCode = Constant.Error.unrecognizedQRCode
       let alertController = UIAlertController(title: unrecognizedQRCode.title, message: unrecognizedQRCode.message, preferredStyle: .alert)
       alertController.addAction(title: "OK", style: .default) { [weak self] (_) in
@@ -122,9 +122,9 @@ extension QRScannerViewController {
   }
 
   @objc func authorize(_ sender: UIAlertAction) {
-    guard let urlHost = chibitronicsService.url.host else { return }
+    guard let urlHost = ownershipService.url.host else { return }
     do {
-      try chibitronicsService.requestAuthorization(for: Global.currentAccount!) { [weak self] (error) in
+      try ownershipService.requestAuthorization(for: Global.currentAccount!) { [weak self] (error) in
         guard let self = self else { return }
         DispatchQueue.main.sync {
 
@@ -134,13 +134,10 @@ extension QRScannerViewController {
             return
           }
 
-          self.showQuickMessageAlert(
-            title: "Authorized!",
-            message: "Your authorization has been sent to \(urlHost).",
-            handler: {
-              self.navigationController?.popViewController(animated: true)
-              self.delegate.process(qrCode: nil)
-          })
+          self.showQuickMessageAlert(title: "Authorized!", message: "Your authorization has been sent to \(urlHost).") { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+            self?.delegate.process(qrCode: nil)
+          }
         }
       }
     } catch {
@@ -194,7 +191,7 @@ extension QRScannerViewController {
       descriptionText.append(NSAttributedString(attachment: qrCodeAttachment))
       descriptionText.append(NSAttributedString(string: " at the top of the Account screen."))
       return descriptionText
-    case .chibitronicsCode:
+    case .ownershipCode:
       return NSMutableAttributedString(string: "You can accept rights transfers from certain websites by scanning QR codes. Please only scan QR codes from websites that you already know and trust.")
     }
   }

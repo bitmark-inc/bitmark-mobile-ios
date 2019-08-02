@@ -13,7 +13,7 @@ enum VerificationLinkSource {
   case qrCode, deepLink
 }
 
-struct ChibitronicsService {
+class OwnershipApprovanceService {
 
   let verificationLink: String
   let source: VerificationLinkSource
@@ -28,11 +28,11 @@ struct ChibitronicsService {
     self.source = source
   }
 
-  mutating func isValid() -> Bool {
+  func isValid() -> Bool {
     return verificationLink.range(of: regex, options: .regularExpression, range: nil, locale: nil) != nil
   }
 
-  mutating func extractData() -> (code: String, url: URL)? {
+  func extractData() -> (code: String, url: URL)? {
     let codeParts = verificationLink.split(separator: separator, maxSplits: 1)
 
     if let url = URL(string: String(codeParts[1])) {
@@ -58,7 +58,7 @@ struct ChibitronicsService {
       "code": code,
       "signature": signature.hexEncodedString
     ]
-    let jsonData = try JSONSerialization.data(withJSONObject: params)
+    let jsonData = try JSONEncoder().encode(params)
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"

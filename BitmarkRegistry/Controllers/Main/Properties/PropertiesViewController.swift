@@ -34,16 +34,16 @@ class PropertiesViewController: UIViewController {
 
     navigationItem.title = "PROPERTIES"
     let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(tapToAddProperty))
-    let chibiScanButton = UIBarButtonItem(image: UIImage(named: "qr-code-scan-icon"), style: .plain, target: self, action: #selector(tapToScanChibitronicsCode))
+    let ownershipScanButton = UIBarButtonItem(image: UIImage(named: "qr-code-scan-icon"), style: .plain, target: self, action: #selector(tapToScanOwnershipCode))
     navigationItem.rightBarButtonItem = addBarButton
-    navigationItem.leftBarButtonItem = chibiScanButton
+    navigationItem.leftBarButtonItem = ownershipScanButton
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
 
     // *** when open app from deep link; link to QRScannerVC ***
     if Global.verificationLink != nil {
-      tapToScanChibitronicsCode()
+      tapToScanOwnershipCode()
     }
 
     loadData()
@@ -121,9 +121,9 @@ class PropertiesViewController: UIViewController {
 
 // MARK: - QRCodeScannerDelegate
 extension PropertiesViewController: QRCodeScannerDelegate {
-  @objc func tapToScanChibitronicsCode() {
+  @objc func tapToScanOwnershipCode() {
     let qrScannerVC = QRScannerViewController()
-    qrScannerVC.qrCodeScanType = .chibitronicsCode
+    qrScannerVC.qrCodeScanType = .ownershipCode
     qrScannerVC.verificationLink = Global.verificationLink
     qrScannerVC.delegate = self
     navigationController?.pushViewController(qrScannerVC)

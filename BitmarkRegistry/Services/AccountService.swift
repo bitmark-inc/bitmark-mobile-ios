@@ -71,12 +71,12 @@ class AccountService {
         let timestamp = Common.timestamp()
         let signature = try account.sign(message: timestamp.data(using: .utf8)!)
 
-        let data: [String: Any] = [
+        let data: [String: String] = [
           "requester": account.getAccountNumber(),
           "timestamp": timestamp,
           "signature": signature.hexEncodedString
         ]
-        let jsonData = try JSONSerialization.data(withJSONObject: data)
+        let jsonData = try JSONEncoder().encode(data)
 
         let url = URL(string: Global.ServerURL.mobile + "/api/auth")!
         var authRequest = URLRequest(url: url)
