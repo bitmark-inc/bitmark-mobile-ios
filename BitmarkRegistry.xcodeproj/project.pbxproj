@@ -141,6 +141,10 @@
 		E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */; };
 		E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
 		E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
+		E2CE153922F3EC2100964B56 /* GMStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153822F3EC2100964B56 /* GMStepper.swift */; };
+		E2CE153A22F3EC2100964B56 /* GMStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153822F3EC2100964B56 /* GMStepper.swift */; };
+		E2CE153C22F4191600964B56 /* PropertyDescriptionInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */; };
+		E2CE153D22F4191600964B56 /* PropertyDescriptionInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */; };
 		E2CECFC222D3045B00468BFC /* EventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CECFC122D3045B00468BFC /* EventDelegate.swift */; };
 		E2CECFC322D3045B00468BFC /* EventDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CECFC122D3045B00468BFC /* EventDelegate.swift */; };
 		E2CEDC7322BB934900B5BBF9 /* YourPropertyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CEDC7222BB934900B5BBF9 /* YourPropertyCell.swift */; };
@@ -329,6 +333,8 @@
 		E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPropertyRightsViewController.swift; sourceTree = "<group>"; };
 		E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
+		E2CE153822F3EC2100964B56 /* GMStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMStepper.swift; sourceTree = "<group>"; };
+		E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyDescriptionInfoViewController.swift; sourceTree = "<group>"; };
 		E2CECFC122D3045B00468BFC /* EventDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDelegate.swift; sourceTree = "<group>"; };
 		E2CEDC7222BB934900B5BBF9 /* YourPropertyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YourPropertyCell.swift; sourceTree = "<group>"; };
 		E2CEDC7522BB93CB00B5BBF9 /* BitmarkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
@@ -459,6 +465,7 @@
 				E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */,
 				E22CBF1822D078390024E5C3 /* DesignedWebView.swift */,
 				E2E067EC22DD6AEB00298C80 /* DesignedSegmentControl.swift */,
+				E2CE153822F3EC2100964B56 /* GMStepper.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -568,6 +575,7 @@
 				E2BEC95A22AFA6F8009F7DF5 /* PropertiesViewController.swift */,
 				E2BEC95D22AFB1B0009F7DF5 /* RegisterPropertyViewController.swift */,
 				E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */,
+				E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */,
 				E205107E22B0FB6600475871 /* MetadataLabelViewController.swift */,
 				E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */,
 				E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */,
@@ -965,6 +973,7 @@
 				E216890922C1F09A00E943B9 /* UserSetting.swift in Sources */,
 				E2BEC95822AF9889009F7DF5 /* UIControl+AddTargetClosure+Extension.swift in Sources */,
 				E2ADFD2022BC742900FC46D8 /* QRCode.swift in Sources */,
+				E2CE153D22F4191600964B56 /* PropertyDescriptionInfoViewController.swift in Sources */,
 				E2BEC95C22AFA6FA009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
@@ -1019,6 +1028,7 @@
 				E2E18C1822DC1E0D004078C3 /* TransactionR.swift in Sources */,
 				E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E23B33FC22EAEFB200BC2B2A /* AssetType.swift in Sources */,
+				E2CE153A22F3EC2100964B56 /* GMStepper.swift in Sources */,
 				E279F84922D8382D00164E28 /* AppDetailContentViewController.swift in Sources */,
 				E2D29F3C22EBE292006CADA1 /* BoxTextField.swift in Sources */,
 				E2BEC95522AF987B009F7DF5 /* RecoveryPhraseCell.swift in Sources */,
@@ -1059,6 +1069,7 @@
 				E2ADFD1F22BC742900FC46D8 /* QRCode.swift in Sources */,
 				E24D795C22CA149500BC9912 /* AssetFileService.swift in Sources */,
 				E205107F22B0FB6600475871 /* MetadataLabelViewController.swift in Sources */,
+				E2CE153C22F4191600964B56 /* PropertyDescriptionInfoViewController.swift in Sources */,
 				E2BEC95B22AFA6F8009F7DF5 /* PropertiesViewController.swift in Sources */,
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
@@ -1113,6 +1124,7 @@
 				E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */,
 				E2E18C1722DC1E0D004078C3 /* TransactionR.swift in Sources */,
 				E23B33FB22EAEFB200BC2B2A /* AssetType.swift in Sources */,
+				E2CE153922F3EC2100964B56 /* GMStepper.swift in Sources */,
 				E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */,
 				E2D29F3B22EBE292006CADA1 /* BoxTextField.swift in Sources */,
 				E279F84822D8382D00164E28 /* AppDetailContentViewController.swift in Sources */,

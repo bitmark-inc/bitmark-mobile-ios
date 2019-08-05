@@ -65,14 +65,17 @@ class DesignedTextField: UITextField {
   }
 
   // MARK: - Handlers
-  func onErrorStyle() {
-    setTextColor = .mainRedColor
-    bottomLine.backgroundColor = .mainRedColor
-  }
-
-  func offErrorStyle() {
-    setTextColor = .black
-    bottomLine.backgroundColor = bottomLineColor
+  func setStyle(state: FieldState) {
+    switch state {
+    case .default:
+      bottomLine.backgroundColor = .silver
+    case .error:
+      setTextColor = .mainRedColor
+      bottomLine.backgroundColor = .mainRedColor
+    default:
+      setTextColor = .black
+      bottomLine.backgroundColor = bottomLineColor
+    }
   }
 
   // MARK: - Setup Views

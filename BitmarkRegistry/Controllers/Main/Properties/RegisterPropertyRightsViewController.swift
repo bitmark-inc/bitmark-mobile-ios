@@ -33,9 +33,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var metadataAddButton: UIButton!
   var metadataEditModeButton: UIButton!
   var errorForMetadata: UILabel!
-  var numberOfBitmarksTextField: DesignedTextField!
+  var numberOfBitmarksTextField: GMStepper!
   var confirmCheckBox: BEMCheckBox!
-  var errorForNumberOfBitmarksToIssue: UILabel!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
   var networkReachabilityManager = NetworkReachabilityManager()
@@ -54,8 +53,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     if assetR == nil {
       setDefaultMetadataFormState()
       propertyNameTextField.becomeFirstResponder()
-    } else {
-      numberOfBitmarksTextField.becomeFirstResponder()
     }
 
     loadData()
@@ -116,6 +113,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       // Disable assetForm when asset has been existed
       propertyNameTextField.isEnabled = false
       assetTypeTextField.rightViewMode = .never
+      assetTypeTextField.isEnabled = false
+      assetTypeTextField.placeholder = ""
       metadataAddButton.removeFromSuperview()
       metadataEditModeButton.removeFromSuperview()
     }
@@ -137,13 +136,19 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   @objc func selectAssetType(_ sender: UIAlertAction) {
     guard let title = sender.title else { return }
     if title != "Cancel" {
-      assetTypeTextField.text = sender.title
+      assetTypeTextField.text = sender.title?.uppercased()
     } else if assetTypeTextField.isEmpty {
       assetTypeTextField.setStyle(state: .error)
     }
 
     guard let firstMetadataForm = metadataForms.first else { return }
     firstMetadataForm.labelTextField.becomeFirstResponder()
+  }
+
+  // *** Metadata Form ***
+  @objc func goToPropertyDescriptionInfo(_ sender: UIButton) {
+    let infoVC = PropertyDescriptionInfoViewController()
+    navigationController?.pushViewController(infoVC)
   }
 
   /**
@@ -173,8 +178,15 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     metadataStackView.addArrangedSubview(newMetadataForm)
     metadataForms.append(newMetadataForm)
 
+    view.endEditing(true)
+
     if assetR == nil {
       newMetadataForm.labelTextField.becomeFirstResponder()
+
+      // adjust scroll to help user still able to click "Add new field" without needing scroll down
+      var scrollContentOffset = scrollView.contentOffset
+      scrollContentOffset.y += 85.0
+      scrollView.setContentOffset(scrollContentOffset, animated: true)
     }
   }
 
@@ -202,6 +214,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       metadataAddButton.isEnabled = false
     }
 
+    validateLabelDuplication()
+
     // *** Set style for metadataForm ***
     guard !currentMetadataForm.isDuplicated else { return } // if metadataForm is error cause duplication, keep as error
     if tf.isEmpty {
@@ -215,8 +229,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     guard let currentMetadataForm = tf.parentView as? MetadataForm else { return }
     if currentMetadataForm.isBeginningState() {
       currentMetadataForm.setStyle(state: .default)
-    } else {
-      validateLabelDuplication()
     }
   }
 
@@ -224,25 +236,20 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     changeMetadataViewMode(isOnEdit: !metadataEditModeButton.isSelected)
   }
 
-  @objc func editingTextField(_ textfield: UITextField) {
-    issueButton.isEnabled = validToIssue()
-  }
-
-  @objc func typeNumberOfBitmarkToIssue(_ sender: UITextField) {
-    if let quantityText = sender.text, let quantity = Int(quantityText),
-      let errorNumberOfBitmark = errorNumberOfBitmarksToIssue(quantity) {
-      setNumberOfBitmarksBoxStyle(with: errorNumberOfBitmark)
+  @objc func propertyNameFieldEditingChanged(_ textfield: DesignedTextField) {
+    if textfield.isEmpty {
       issueButton.isEnabled = false
+      textfield.setStyle(state: .error)
     } else {
-      setNumberOfBitmarksBoxStyle()
       issueButton.isEnabled = validToIssue()
+      textfield.setStyle(state: .focus)
     }
   }
 
   @objc func tapToIssue(_ button: UIButton) {
     view.endEditing(true)
 
-    let quantity = Int(numberOfBitmarksTextField.text!)!
+    let quantity = Int(numberOfBitmarksTextField.value)
 
     showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
       do {
@@ -315,7 +322,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         guard let currentIndex = metadataForms.firstIndex(of: currentMetadataForm) else { return true }
         let nextIndex = currentIndex + 1
         if nextIndex >= metadataForms.count {
-          return numberOfBitmarksTextField.becomeFirstResponder()
+          return numberOfBitmarksTextField.textfield.becomeFirstResponder()
         } else {
           return metadataForms[nextIndex].labelTextField.becomeFirstResponder()
         }
@@ -422,26 +429,14 @@ extension RegisterPropertyRightsViewController {
 
   func validToIssue() -> Bool {
     if assetR == nil {
-      return !propertyNameTextField.isEmpty && !numberOfBitmarksTextField.isEmpty &&
-              errorForNumberOfBitmarksToIssue.text?.isEmpty ?? true &&
+      return !propertyNameTextField.isEmpty &&
               errorForMetadata.text?.isEmpty ?? true &&
               validMetadata() &&
               confirmCheckBox.on &&
               (networkReachabilityManager?.isReachable ?? false)
     } else {
-      return !numberOfBitmarksTextField.isEmpty &&
-             confirmCheckBox.on &&
+      return confirmCheckBox.on &&
              (networkReachabilityManager?.isReachable ?? false)
-    }
-  }
-
-  func setNumberOfBitmarksBoxStyle(with errorMessage: String? = nil) {
-    if let errorMessage = errorMessage {
-      errorForNumberOfBitmarksToIssue.text = errorMessage
-      numberOfBitmarksTextField.onErrorStyle()
-    } else {
-      errorForNumberOfBitmarksToIssue.text = ""
-      numberOfBitmarksTextField.offErrorStyle()
     }
   }
 }
@@ -476,14 +471,10 @@ extension RegisterPropertyRightsViewController {
 extension RegisterPropertyRightsViewController {
   fileprivate func setupEvents() {
     propertyNameTextField.delegate = self
-    propertyNameTextField.addTarget(self, action: #selector(editingTextField), for: .editingChanged)
+    propertyNameTextField.addTarget(self, action: #selector(propertyNameFieldEditingChanged), for: .editingChanged)
 
     metadataAddButton.addTarget(self, action: #selector(addMetadataForm), for: .touchUpInside)
     metadataEditModeButton.addTarget(self, action: #selector(setModeMetadataForm), for: .touchUpInside)
-
-    numberOfBitmarksTextField.delegate = self
-    numberOfBitmarksTextField.addTarget(self, action: #selector(typeNumberOfBitmarkToIssue), for: .editingChanged)
-    numberOfBitmarksTextField.addTarget(self, action: #selector(editingTextField), for: .editingChanged)
 
     confirmCheckBox.delegate = self
 
@@ -520,7 +511,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     let inputFields = [
-      propertyNameTextField, assetTypeTextField, numberOfBitmarksTextField, metadataStackView
+      propertyNameTextField, assetTypeTextField, metadataStackView
     ]
     inputFields.forEach({ (inputField) in
       inputField?.snp.makeConstraints { $0.width.equalTo(mainView) }
@@ -605,7 +596,7 @@ extension RegisterPropertyRightsViewController {
     downArrowImageView.frame = CGRect(x: 0, y: 0, width: downArrowImageView.size.width + 20.0, height: downArrowImageView.size.height)
     downArrowImageView.contentMode = .center
     assetTypeTextField.setStyle(state: .default)
-    assetTypeTextField.isEnabled = false
+    assetTypeTextField.isUserInteractionEnabled = false
     assetTypeTextField.rightView = downArrowImageView
     assetTypeTextField.rightViewMode = .always
 
@@ -623,9 +614,12 @@ extension RegisterPropertyRightsViewController {
     // *** Setup subviews ***
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "PROPERTY DESCRIPTION")
 
-    let fieldInfoLink = UILabel(text: "What is property description? >>")
-    fieldInfoLink.font = UIFont(name: "Avenir", size: 13)
-    fieldInfoLink.textColor = .mainBlueColor
+    let fieldInfoLink = UIButton(type: .system)
+    fieldInfoLink.contentHorizontalAlignment = .leading
+    fieldInfoLink.setTitle("What is property description? >>", for: .normal)
+    fieldInfoLink.setTitleColor(.mainBlueColor, for: .normal)
+    fieldInfoLink.titleLabel?.font = UIFont(name: "Avenir", size: 13)
+    fieldInfoLink.addTarget(self, action: #selector(goToPropertyDescriptionInfo), for: .touchUpInside)
 
     let separateLine = UIView()
     separateLine.backgroundColor = .mainBlueColor
@@ -655,19 +649,19 @@ extension RegisterPropertyRightsViewController {
     }
 
     fieldInfoLink.snp.makeConstraints { (make) in
-      make.top.equalTo(fieldLabel.snp.bottom)
+      make.top.equalTo(fieldLabel.snp.bottom).offset(-6)
       make.leading.trailing.equalToSuperview()
     }
 
     separateLine.snp.makeConstraints { (make) in
-      make.top.equalTo(fieldInfoLink.snp.bottom).offset(-3)
+      make.top.equalTo(fieldInfoLink.snp.bottom).offset(-9)
       make.leading.equalToSuperview()
       make.width.equalTo(170)
       make.height.equalTo(0.5)
     }
 
     metadataForms.snp.makeConstraints { (make) in
-      make.top.equalTo(separateLine.snp.bottom).offset(15)
+      make.top.equalTo(separateLine.snp.bottom).offset(18)
       make.leading.trailing.equalToSuperview()
     }
 
@@ -679,38 +673,53 @@ extension RegisterPropertyRightsViewController {
     return view
   }
 
-  fileprivate func numberOfBitmarksView() -> UIStackView {
+  fileprivate func numberOfBitmarksView() -> UIView {
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "NUMBER OF BITMARKS TO ISSUE")
-    numberOfBitmarksTextField = DesignedTextField(placeholder: "1~100 BITMARKS")
-    numberOfBitmarksTextField.keyboardType = .numberPad
-    numberOfBitmarksTextField.returnKeyType = .done
+    numberOfBitmarksTextField = GMStepper()
+    numberOfBitmarksTextField.minimumValue = 1
+    numberOfBitmarksTextField.maximumValue = 100
 
     let flexBar = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
     let bar = UIToolbar()
     bar.sizeToFit()
     bar.items = [flexBar, doneButton]
-    numberOfBitmarksTextField.inputAccessoryView = bar
+    numberOfBitmarksTextField.textfield.inputAccessoryView = bar
 
-    errorForNumberOfBitmarksToIssue = CommonUI.errorFieldLabel()
+    let view = UIView()
+    view.addSubview(fieldLabel)
+    view.addSubview(numberOfBitmarksTextField)
 
-    return UIStackView(arrangedSubviews: [fieldLabel, numberOfBitmarksTextField, errorForNumberOfBitmarksToIssue], axis: .vertical, spacing: 15)
+    fieldLabel.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    numberOfBitmarksTextField.snp.makeConstraints { (make) in
+      make.top.equalTo(fieldLabel.snp.bottom).offset(8)
+      make.leading.bottom.equalToSuperview()
+      make.height.equalTo(30)
+      make.width.equalTo(171)
+    }
+
+    return view
   }
 
   fileprivate func ownershipClaimView() -> UIStackView {
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "OWNERSHIP CLAIM")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "RIGHTS CLAIM")
     confirmCheckBox = BEMCheckBox(frame: CGRect(x: 0, y: 0, width: 19, height: 19))
     confirmCheckBox.boxType = .square
     confirmCheckBox.animationDuration = 0.2
+    confirmCheckBox.cornerRadius = 0
 
     let confirmCheckboxView = UIView()
     confirmCheckboxView.addSubview(confirmCheckBox)
+    confirmCheckBox.snp.makeConstraints({ $0.top.equalToSuperview().offset(5) })
 
     let description = CommonUI.descriptionLabel(text: "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.")
 
     let confirmView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
     confirmCheckboxView.snp.makeConstraints({ $0.width.equalTo(19) })
-    description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28)})
+    description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28) })
 
     return UIStackView(arrangedSubviews: [fieldLabel, confirmView], axis: .vertical, spacing: 10)
   }
