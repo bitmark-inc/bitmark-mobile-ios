@@ -34,10 +34,17 @@ class PropertiesViewController: UIViewController {
 
     navigationItem.title = "PROPERTIES"
     let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(tapToAddProperty))
+    let ownershipScanButton = UIBarButtonItem(image: UIImage(named: "qr-code-scan-icon"), style: .plain, target: self, action: #selector(tapToScanOwnershipCode))
     navigationItem.rightBarButtonItem = addBarButton
+    navigationItem.leftBarButtonItem = ownershipScanButton
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
+
+    // *** when open app from deep link; link to QRScannerVC ***
+    if Global.verificationLink != nil {
+      tapToScanOwnershipCode()
+    }
 
     loadData()
     setupBitmarkEventSubscription()
@@ -109,6 +116,23 @@ class PropertiesViewController: UIViewController {
     default:
       break
     }
+  }
+}
+
+// MARK: - QRCodeScannerDelegate
+extension PropertiesViewController: QRCodeScannerDelegate {
+  @objc func tapToScanOwnershipCode() {
+    let qrScannerVC = QRScannerViewController()
+    qrScannerVC.qrCodeScanType = .ownershipCode
+    qrScannerVC.verificationLink = Global.verificationLink
+    qrScannerVC.delegate = self
+    navigationController?.pushViewController(qrScannerVC)
+  }
+
+  // Process qrCode/verificationLink from Chibitronics
+  func process(qrCode: String?) {
+    Global.verificationLink = nil
+    UIAlertController(title: "", message: "To complete the process,\n please return to the browser", defaultActionButtonTitle: "OK").show()
   }
 }
 

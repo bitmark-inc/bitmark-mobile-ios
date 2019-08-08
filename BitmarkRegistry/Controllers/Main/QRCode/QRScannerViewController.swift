@@ -11,24 +11,35 @@ import UIKit
 import AVFoundation
 
 protocol QRCodeScannerDelegate: class {
-  func process(qrCode: String)
+  func process(qrCode: String?)
+}
+
+enum QRCodeScanType {
+  case accountNumber, ownershipCode
 }
 
 class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
 
   // MARK: - Properties
+  var qrCodeScanType: QRCodeScanType!
+  var verificationLink: String?
   var videoPreviewLayer: AVCaptureVideoPreviewLayer!
   var captureSession: AVCaptureSession!
   weak var delegate: QRCodeScannerDelegate!
+  var ownershipService: OwnershipApprovanceService!
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "SCAN QRCODE"
+    title = "SCAN QR CODE"
 
     setupViews()
-
     performRealtimeCapture()
+
+    if let verificationLink = verificationLink {
+      captureSession.stopRunning()
+      processVerificationLink(verificationLink)
+    }
   }
 
   func performRealtimeCapture() {
@@ -68,9 +79,79 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     guard let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject else { return }
     if metadataObj.type == AVMetadataObject.ObjectType.qr, let qrCode = metadataObj.stringValue {
       captureSession.stopRunning()
-      delegate.process(qrCode: qrCode)
-      navigationController?.popViewController(animated: true)
+
+      switch qrCodeScanType! {
+      case .accountNumber:
+        delegate.process(qrCode: qrCode)
+        navigationController?.popViewController(animated: true)
+      case .ownershipCode:
+        processVerificationLink(qrCode)
+      }
     }
+  }
+
+  @objc func backNavigation(_ sender: UIAlertAction) {
+    navigationController?.popViewController(animated: true)
+  }
+}
+
+// MARK: - processVerificationLink - Chibitronics
+extension QRScannerViewController {
+  fileprivate func processVerificationLink(_ code: String) {
+    let verificationLinkSource: VerificationLinkSource = verificationLink == nil ? .qrCode : .deepLink
+    Global.verificationLink = nil
+    ownershipService = OwnershipApprovanceService(verificationLink: code, source: verificationLinkSource)
+
+    guard ownershipService.isValid(),
+          let (_, url) = ownershipService.extractData(), let urlHost = url.host else {
+      let unrecognizedQRCode = Constant.Error.unrecognizedQRCode
+      let alertController = UIAlertController(title: unrecognizedQRCode.title, message: unrecognizedQRCode.message, preferredStyle: .alert)
+      alertController.addAction(title: "OK", style: .default) { [weak self] (_) in
+        self?.captureSession.startRunning()
+      }
+      present(alertController, animated: true, completion: nil)
+      return
+    }
+
+    let authorizationRequired = Constant.Confirmation.authorizationRequired
+    let message = "\(urlHost) \(authorizationRequired.requiredSignatureMessage)"
+    let alertController = UIAlertController(title: authorizationRequired.title, message: message, preferredStyle: .alert)
+    alertController.addAction(title: "Cancel", style: .default, handler: backNavigation(_:))
+    alertController.addAction(title: "Authorize", style: .default, handler: authorize(_:))
+    present(alertController, animated: true, completion: nil)
+  }
+
+  @objc func authorize(_ sender: UIAlertAction) {
+    guard let urlHost = ownershipService.url.host else { return }
+    do {
+      try ownershipService.requestAuthorization(for: Global.currentAccount!) { [weak self] (error) in
+        guard let self = self else { return }
+        DispatchQueue.main.sync {
+
+          if let error = error {
+            ErrorReporting.report(error: error)
+            self.showErrorAlert(title: "Error", message: "There was an error while requesting to \(urlHost)")
+            return
+          }
+
+          self.showQuickMessageAlert(title: "Authorized!", message: "Your authorization has been sent to \(urlHost).") { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+            self?.delegate.process(qrCode: nil)
+          }
+        }
+      }
+    } catch {
+      ErrorReporting.report(error: error)
+      self.showErrorAlert(title: "Error", message: "There was an error while requesting to \(urlHost)")
+    }
+  }
+
+  fileprivate func showErrorAlert(title: String, message: String) {
+    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    alertController.addAction(title: "OK", style: .default) { (_) in
+      self.captureSession.startRunning()
+    }
+    present(alertController, animated: true, completion: nil)
   }
 }
 
@@ -80,18 +161,7 @@ extension QRScannerViewController {
     view.backgroundColor = .white
 
     let descriptionLabelView = CommonUI.descriptionLabel()
-    let descriptionText = NSMutableAttributedString(string: "You can transfer rights to another Bitmark account by scanning the receiving account’s QR code. You can view your account QR code by tapping ")
-
-    let qrCodeAttachment = NSTextAttachment()
-    qrCodeAttachment.image = UIImage(named: "qr-code-icon")
-    qrCodeAttachment.bounds = CGRect(x: 0, y: 0, width: 19, height: 19)
-
-    // add the NSTextAttachment wrapper to our full string, then add some more text.
-    descriptionText.append(NSAttributedString(attachment: qrCodeAttachment))
-    descriptionText.append(NSAttributedString(string: " at the top of the Account screen."))
-
-    // draw the result in a label
-    descriptionLabelView.attributedText = descriptionText
+    descriptionLabelView.attributedText = setupDescriptionText()
 
     // initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
     videoPreviewLayer = AVCaptureVideoPreviewLayer()
@@ -104,6 +174,25 @@ extension QRScannerViewController {
     descriptionLabelView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
           .inset(UIEdgeInsets(top: 25, left: 20, bottom: 0, right: 25))
+    }
+  }
+
+  fileprivate func setupDescriptionText() -> NSMutableAttributedString {
+    guard let qrCodeScanType = qrCodeScanType else { return NSMutableAttributedString(string: "") }
+    switch qrCodeScanType {
+    case .accountNumber:
+      let descriptionText = NSMutableAttributedString(string: "You can transfer rights to another Bitmark account by scanning the receiving account’s QR code. You can view your account QR code by tapping ")
+
+      let qrCodeAttachment = NSTextAttachment()
+      qrCodeAttachment.image = UIImage(named: "qr-code-icon")
+      qrCodeAttachment.bounds = CGRect(x: 0, y: 0, width: 19, height: 19)
+
+      // add the NSTextAttachment wrapper to our full string, then add some more text.
+      descriptionText.append(NSAttributedString(attachment: qrCodeAttachment))
+      descriptionText.append(NSAttributedString(string: " at the top of the Account screen."))
+      return descriptionText
+    case .ownershipCode:
+      return NSMutableAttributedString(string: "You can accept rights transfers from certain websites by scanning QR codes. Please only scan QR codes from websites that you already know and trust.")
     }
   }
 }

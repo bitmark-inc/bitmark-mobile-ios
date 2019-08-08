@@ -107,6 +107,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     registerAPNSSubject.onCompleted()
   }
 
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    guard let _ = url.scheme, let host = url.host else { return false }
+
+    switch host {
+    case "authorization":
+      let verificationLink = String(url.path.dropFirst())
+      Global.verificationLink = verificationLink
+
+      if Global.currentAccount == nil {
+        showAuthorizationRequiredAlert()
+      } else {
+        let navigationController = UINavigationController(rootViewController: CustomTabBarViewController())
+        navigationController.isNavigationBarHidden = true
+        window?.rootViewController = navigationController
+      }
+    default:
+      return false
+    } 
+
+    return true
+  }
 }
 
 private extension AppDelegate {
@@ -151,6 +172,14 @@ private extension AppDelegate {
         }
       }
     }
+  }
+
+  func showAuthorizationRequiredAlert() {
+    let authorizationRequired = Constant.Confirmation.authorizationRequired
+    let message = authorizationRequired.requiredAccountMessage
+
+    let alertController = UIAlertController(title: authorizationRequired.title, message: message, defaultActionButtonTitle: "OK")
+    alertController.show()
   }
 
   // Create a Sentry client and start crash handler

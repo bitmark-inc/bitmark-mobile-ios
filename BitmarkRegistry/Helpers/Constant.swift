@@ -16,6 +16,11 @@ public struct Constant {
   public struct Confirmation {
     public static let deleteLabel = "Are you sure you want to delete this label?"
     public static let skipTouchFaceIdAuthentication = "Are you sure you don't want to protect your data with Touch & Face ID?"
+    public static let authorizationRequired = (
+      title: "Authorization Required",
+      requiredSignatureMessage: "requires your digital signature to authorize this action. To prevent abuse, please only authorize actions from trusted websites.",
+      requiredAccountMessage: "Please sign in or create your Bitmark account to proceed."
+    )
   }
 
   // MARK: - Error Messages
@@ -31,6 +36,10 @@ public struct Constant {
     public static let loadTransaction = "Error happened while loading transactions."
     public static let syncTransaction = "There was a problem to sync your lastest transactions."
     public static let networkError = "Failed to connect to Bitmark. Please check your device's network connection."
+    public static let unrecognizedQRCode = (
+      title: "Unrecognized QR Code",
+      message: "Please scan the QR code again or contact the QR code provider if you’re still experiencing problems."
+    )
     // Common UI error
     public static let cannotNavigate = "Cannot go to expected screen. Please try again with new app update."
     public static let loadData = "Error happended while loading data."

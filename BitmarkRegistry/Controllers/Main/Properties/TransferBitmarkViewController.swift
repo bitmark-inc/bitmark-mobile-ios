@@ -75,6 +75,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
   @objc func touchToScanQRCode(_ sender: UIButton) {
     let qrScannerVC = QRScannerViewController()
+    qrScannerVC.qrCodeScanType = .accountNumber
     qrScannerVC.delegate = self
     navigationController?.pushViewController(qrScannerVC)
   }
@@ -131,7 +132,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
 // MARK: - QRCodeScannerDelegate
 extension TransferBitmarkViewController: QRCodeScannerDelegate {
-  func process(qrCode: String) {
+  func process(qrCode: String?) {
     recipientAccountNumberTextfield.text = qrCode
     recipientAccountNumberTextfield.sendActions(for: .editingDidBegin)
     recipientAccountNumberTextfield.sendActions(for: .editingChanged)

@@ -22,13 +22,25 @@ extension UIViewController {
     alertController.show()
   }
 
-  func showQuickMessageAlert(message: String, handler: @escaping () -> Void) {
+  func showQuickMessageAlert(title: String? = nil, message: String, handler: @escaping () -> Void) {
     let alertController = UIAlertController(title: nil, message: "", preferredStyle: .alert)
 
     let successImageView = UIImageView(image: UIImage(named: "alert-success-icon"))
     let messageLabel = CommonUI.alertMessageLabel(text: message)
 
     alertController.view.addSubview(successImageView)
+    var titleLabel: UILabel?
+    if let title = title {
+      titleLabel = CommonUI.alertTitleLabel(text: title)
+      guard let titleLabel = titleLabel else { return }
+      alertController.view.addSubview(titleLabel)
+
+      titleLabel.snp.makeConstraints { (make) in
+        make.top.equalTo(successImageView.snp.bottom).offset(10)
+        make.centerX.equalToSuperview()
+      }
+    }
+
     alertController.view.addSubview(messageLabel)
 
     successImageView.snp.makeConstraints { (make) in
@@ -37,10 +49,19 @@ extension UIViewController {
     }
 
     messageLabel.snp.makeConstraints { (make) in
-      make.top.equalTo(successImageView.snp.bottom).offset(25)
-      make.bottom.equalToSuperview().offset(-20)
+      let messageCompanion: UIView
+      let messageWidth: CGFloat
+      if let titleLabel = titleLabel {
+        messageCompanion = titleLabel
+        messageWidth = 250
+      } else {
+        messageCompanion = successImageView
+        messageWidth = 212
+      }
+      make.top.equalTo(messageCompanion.snp.bottom).offset(20)
+      make.bottom.equalToSuperview().offset(-30)
       make.centerX.equalToSuperview()
-      make.width.equalTo(212)
+      make.width.equalTo(messageWidth)
     }
 
     alertController.show()
@@ -75,7 +96,7 @@ extension UIViewController {
       make.top.equalTo(activityIndicator.snp.bottom).offset(25)
       make.bottom.equalToSuperview().offset(-20)
       make.centerX.equalToSuperview()
-      make.width.equalTo(212)
+      make.width.equalTo(230)
     }
 
     alertController.show { handler(alertController) }

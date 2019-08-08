@@ -72,6 +72,8 @@
 		E25DF1DB22CB3F4700AC270E /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1D622CB3F4700AC270E /* BitmarkStorage.swift */; };
 		E25DF1DC22CB3F4700AC270E /* TransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */; };
 		E25DF1DD22CB3F4700AC270E /* TransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */; };
+		E26452CD22F2994A0074D9C9 /* OwnershipApprovanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */; };
+		E26452CE22F2994A0074D9C9 /* OwnershipApprovanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */; };
 		E26C196322E96B9E000B4524 /* SeedVersion+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26C196222E96B9E000B4524 /* SeedVersion+Extension.swift */; };
 		E26C196422E96B9E000B4524 /* SeedVersion+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26C196222E96B9E000B4524 /* SeedVersion+Extension.swift */; };
 		E26E7E0E22E1B98E00C3DBAA /* AccountDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26E7E0D22E1B98E00C3DBAA /* AccountDetailViewController.swift */; };
@@ -239,6 +241,7 @@
 		E25DF1D522CB3F4700AC270E /* SyncStorageBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncStorageBase.swift; sourceTree = "<group>"; };
 		E25DF1D622CB3F4700AC270E /* BitmarkStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkStorage.swift; sourceTree = "<group>"; };
 		E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionStorage.swift; sourceTree = "<group>"; };
+		E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnershipApprovanceService.swift; sourceTree = "<group>"; };
 		E26C196222E96B9E000B4524 /* SeedVersion+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SeedVersion+Extension.swift"; sourceTree = "<group>"; };
 		E26E7E0D22E1B98E00C3DBAA /* AccountDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailViewController.swift; sourceTree = "<group>"; };
 		E279F84722D8382D00164E28 /* AppDetailContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailContentViewController.swift; sourceTree = "<group>"; };
@@ -712,6 +715,7 @@
 				E2E798E6229E285600508B69 /* KeychainStore.swift */,
 				E216890722C1F09A00E943B9 /* UserSetting.swift */,
 				E2D4342622CC89EB006A8183 /* FileCourierService.swift */,
+				E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */,
 				E25DF1D422CB3F4700AC270E /* SyncStorage */,
 			);
 			path = Services;
@@ -1009,6 +1013,7 @@
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
 				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2F08CE722C06EA400FFFCCE /* LoginViewController.swift in Sources */,
+				E26452CE22F2994A0074D9C9 /* OwnershipApprovanceService.swift in Sources */,
 				E21B10FF22DB08CE008D2C92 /* UITableView+Extension.swift in Sources */,
 				E2CEDC7822BB93CC00B5BBF9 /* BitmarkService.swift in Sources */,
 				E24D795D22CA169C00BC9912 /* AssetFileService.swift in Sources */,
@@ -1105,6 +1110,7 @@
 				E20472BB22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,
 				E28F1AFE22CA428000B0256F /* Chacha20Poly1305.swift in Sources */,
 				E2ADFD1522BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */,
+				E26452CD22F2994A0074D9C9 /* OwnershipApprovanceService.swift in Sources */,
 				E2E798DD229E25E200508B69 /* Credential.swift in Sources */,
 				E21B10FE22DB08CE008D2C92 /* UITableView+Extension.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
