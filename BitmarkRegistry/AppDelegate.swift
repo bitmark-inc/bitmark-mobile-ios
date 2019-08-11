@@ -72,6 +72,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     } catch {
       ErrorReporting.report(error: error)
       window?.rootViewController = SuspendedViewController()
+        DispatchQueue.global(qos: .utility).async {
+          iCloudService.shared.migrateFileData()
+        }
     }
 
     return true
