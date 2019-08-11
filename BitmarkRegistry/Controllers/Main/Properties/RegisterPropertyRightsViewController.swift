@@ -20,7 +20,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var assetR: AssetR?
   var assetData: Data!
   var assetFingerprint: String!
-  var assetFileName: String?
+  var assetFileName: String!
   var assetURL: URL?
 
   var scrollView: UIScrollView!
@@ -281,7 +281,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
         }
 
-        self.moveFileToAppStorage(of: assetId)
+        iCloudService.localAssetWithFilenameData[assetId] = self.assetFileName
+        self.storeFileInAppStorage(of: assetId)
 
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()
@@ -299,11 +300,13 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     }
   }
 
-  func moveFileToAppStorage(of assetId: String) {
-    guard let assetURL = assetURL else { return }
+  func storeFileInAppStorage(of assetId: String) {
+    guard let assetURL = assetURL, let assetFileName = assetFileName else { return }
+    ErrorReporting.breadcrumbs(info: "Path: \(assetURL.path); Filename: \(assetFileName)", category: .StoreFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: assetId, category: .Asset, traceLog: true)
+
     do {
-      try AssetFileService(owner: Global.currentAccount!, assetId: assetId)
-                          .moveFileToAppStorage(fileURL: assetURL)
+      try iCloudService.shared.storeFile(fileURL: assetURL, filename: assetFileName, assetId: assetId)
     } catch {
       ErrorReporting.report(error: error)
     }

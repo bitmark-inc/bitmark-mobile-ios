@@ -76,7 +76,7 @@ extension iCloudService {
     ErrorReporting.breadcrumbs(info: "migrateDataFromLocalToICloud", category: .MigrationData, traceLog: true)
 
     guard let _ = icloudContainer else { return }
-    let documentsLocalContainer = localContainer.appendingPathComponent("Documents")
+    let documentsLocalContainer = localContainer.appendingPathComponent(user.getAccountNumber())
     guard FileManager.default.fileExists(atPath: documentsLocalContainer.path) else { return }
 
     let localDataURL = getDataURL(documentsLocalContainer)
