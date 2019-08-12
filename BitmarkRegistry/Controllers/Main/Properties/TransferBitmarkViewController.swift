@@ -91,6 +91,9 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   fileprivate func _transferBitmark() {
     view.endEditing(true)
     guard let recipientAccountNumber = recipientAccountNumberTextfield.text else { return }
+    guard recipientAccountNumber != Global.currentAccount?.getAccountNumber() else {
+      errorForInvalidAccountNumber.isHidden = false; return
+    }
     do {
       try recipientAccountNumber.validate()
     } catch {
@@ -106,7 +109,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
         )
 
         // upload transferred file into file courier server
-        self.assetFileService.transferFile(to: recipientAccountNumber)
+        self.assetFileService.transferFile(to: recipientAccountNumber, assetFilename: self.assetR.filename)
 
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()

@@ -10,11 +10,24 @@ import Foundation
 import BitmarkSDK
 import Alamofire
 import MobileCoreServices
+import RxSwift
+import RxAlamofire
+import RxOptional
 
 class FileCourierService {
 
-  static func updateFileToCourierServer(
-    assetId: String, encryptedFileURL: URL,
+  static func apiRequest(endpoint: String) -> Observable<URLRequest> {
+    do {
+      let url = URL(string: Global.ServerURL.fileCourier + endpoint)!
+      var request = URLRequest(url: url)
+      try request.attachAuth()
+      return Observable.just(request)
+    } catch {
+      return Observable.error(error)
+    }
+  }
+
+  static func uploadFile(assetId: String, encryptedFileURL: URL,
     sender: Account, senderSessionData: SessionData,
     receiverAccountNumber: String, receiverSessionData: SessionData) {
 
@@ -62,140 +75,124 @@ class FileCourierService {
     }
   }
 
-  static func getDownloadableAssets(receiver: Account, completion: @escaping ([String]?, Error?) -> Void) {
-    guard let jwt = Global.currentJwt else { return }
+  enum DownloadAssetError: Error {
+    case invalidFormat
+  }
 
-    let url = URL(string: Global.ServerURL.fileCourier + "/v2/files?receiver=" + receiver.getAccountNumber())!
-    var request = URLRequest(url: url)
-    request.allHTTPHeaderFields = [
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + jwt
-    ]
+  static func getDownloadableAssets(receiver: Account) -> Observable<[String]> {
+    ErrorReporting.breadcrumbs(info: "getDownloadableAssets for receiver: \(receiver.getAccountNumber())", category: .FileCourier, traceLog: true)
 
-    URLSession.shared.dataTask(with: request) { (data, _, error) in
-      if let error = error {
-        completion(nil, error); return
-      }
-
-      if let data = data {
-        do {
-          let jsonObject = try JSONDecoder().decode([String : [String]].self, from: data)
-          let downloadableFileInfos = jsonObject["file_ids"]
-
-          // validate file_ids response
-          downloadableFileInfos?.forEach({ (info) in
-            if !isValidDownloadableInfo(info) {
-              completion(nil, nil)
+    return Observable.just(receiver.getAccountNumber())
+      .flatMap { apiRequest(endpoint: "/v2/files?receiver=" + $0) }
+      .flatMap { (request) -> Observable<[String]> in
+        RxAlamofire.request(request)
+          .debug()
+          .responseData()
+          .expectingObject(ofType: [String : [String]].self)
+          .map { $0["file_ids"] ?? [] }
+          .flatMap({ (downloadableFileInfos) -> Observable<[String]> in
+            for info in downloadableFileInfos {
+              if !isValidDownloadableInfo(info) {
+                let error = Global.appError(message: "Downloadable Info is in invalid format - \(downloadableFileInfos)")
+                return Observable.error(error)
+              }
             }
-          })
 
-          completion(downloadableFileInfos, nil)
-        } catch {
-          completion(nil, error)
-        }
+            return Observable.just(downloadableFileInfos)
+          })
       }
-    }.resume()
   }
 
   typealias ResponseData = (sessionData: SessionData, filename: String, encryptedFileData: Data)
-  static func downloadFileFromCourierServer(
-    assetId: String, receiver: Account,
-    senderAccountNumber: String, senderPublicKey: Data,
-    completion: @escaping (ResponseData?, Error?) -> Void) {
+  static func downloadFile(assetId: String, receiver: Account, senderAccountNumber: String, senderPublicKey: Data) -> Observable<ResponseData> {
+    ErrorReporting.breadcrumbs(info: "downloadFile", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "receiver: \(receiver.getAccountNumber())", category: .FileCourier, traceLog: true)
 
-    guard let jwt = Global.currentJwt else { return }
+    let endpoint = "/v2/files/" + assetId + "/" + senderAccountNumber + "?receiver=" + receiver.getAccountNumber()
+    let request = apiRequest(endpoint: endpoint)
+    return request.flatMap { (downloadRequest) -> Observable<ResponseData> in
+      return Observable<ResponseData>.create({ (observer) -> Disposable in
+        URLSession.shared.downloadTask(with: downloadRequest) { (tempLocalURL, response, error) in
+          if let error = error {
+            observer.onError(error); return
+          }
 
-    let downloadURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + senderAccountNumber + "?receiver=" + receiver.getAccountNumber())!
-    var downloadRequest = URLRequest(url: downloadURL)
-    downloadRequest.allHTTPHeaderFields = [
-      "Authorization": "Bearer " + jwt
-    ]
+          do {
+            guard let tempLocalURL = tempLocalURL, let httpResponse = response as? HTTPURLResponse else {
+              throw "Can not parse response in download file: \(String(describing: response))"
+            }
 
-    URLSession.shared.downloadTask(with: downloadRequest) { (tempLocalURL, response, error) in
-      if let error = error {
-        completion(nil, error); return
-      }
+            guard let headers = httpResponse.allHeaderFields as? [String: String] else {
+              throw "Header in download file API is incorrectly formatted: \(httpResponse.allHeaderFields)"
+            }
 
-      guard let tempLocalURL = tempLocalURL,
-            let httpResponse = response as? HTTPURLResponse else {
-        let error = Global.appError(errorCode: 500, message: "Can not parse response in download file")
-        completion(nil, error)
-        return
-      }
+            guard let filename = headers["File-Name"],
+              let encryptedKey = headers["Enc-Data-Key"],
+              let algorithm = headers["Data-Key-Alg"] else {
+                throw "Header in download file response is incorrectly structured: \(headers)"
+            }
 
-      do {
-        guard let headers = httpResponse.allHeaderFields as? [String: String] else {
-          let error = Global.appError(errorCode: 500, message: "Header in download file API is incorrectly formatted.")
-          completion(nil, error)
-          return
-        }
+            let sessionData = SessionData(encryptedKey: encryptedKey.hexDecodedData, algorithm: algorithm)
+            let encryptedData = try Data(contentsOf: tempLocalURL)
 
-        if let filename = headers["File-Name"],
-           let encryptedKey = headers["Enc-Data-Key"],
-           let algorithm = headers["Data-Key-Alg"] {
+            let responseData = (
+              sessionData: sessionData,
+              filename: filename,
+              encryptedFileData: encryptedData
+            )
 
-          let sessionData = SessionData(encryptedKey: encryptedKey.hexDecodedData, algorithm: algorithm)
-          let encryptedData = try Data(contentsOf: tempLocalURL)
+            return observer.onNext(responseData)
+          } catch {
+            return observer.onError(error)
+          }
 
-          let responseData = (
-            sessionData: sessionData,
-            filename: filename,
-            encryptedFileData: encryptedData
-          )
+        }.resume()
 
-          completion(responseData, nil)
-        } else {
-          let error = Global.appError(errorCode: 500, message: "Header in download file response is incorrectly structured.")
-          completion(nil, error)
-        }
-
-      } catch {
-        completion(nil, error)
-      }
-    }.resume()
+        return Disposables.create()
+      })
+    }
   }
 
-  static func checkFileExistence(assetId: String, completion: @escaping (SessionData?, Error?) -> Void) {
-    guard let jwt = Global.currentJwt,
-          let currentAccountNumber = Global.currentAccount?.getAccountNumber() else { return }
+  static func checkFileExistence(senderAccountNumber: AccountNumber, assetId: String) -> Observable<SessionData?> {
+    ErrorReporting.breadcrumbs(info: "checkFileExistence", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(senderAccountNumber)", category: .FileCourier, traceLog: true)
 
-    let checkFileExistenceURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + currentAccountNumber)!
+    let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + senderAccountNumber)
+    return request.flatMap { (checkFileExistenceRequest) -> Observable<SessionData?> in
+      return Observable<SessionData?>.create({ (observer) -> Disposable in
+        URLSession.shared.dataTask(with: checkFileExistenceRequest) { (_, response, error) in
+          if let error = error {
+            ErrorReporting.report(error: error)
+            observer.onNext(nil)
+            return
+          }
 
-    var checkFileExistenceRequest = URLRequest(url: checkFileExistenceURL)
-    checkFileExistenceRequest.httpMethod = "HEAD"
-    checkFileExistenceRequest.allHTTPHeaderFields = [
-      "Accept": "application/json",
-      "Content-Type": "application/json",
-      "Authorization": "Bearer " + jwt
-    ]
-
-    URLSession.shared.dataTask(with: checkFileExistenceRequest) { (_, response, error) in
-      if let error = error {
-        completion(nil, error); return
-      }
-
-      guard let httpResponse = response as? HTTPURLResponse,
+          guard let httpResponse = response as? HTTPURLResponse,
             let responseHeaders = httpResponse.allHeaderFields as? [String : String] else {
-        let error = Global.appError(errorCode: 500, message: "Can not parse response in check File existence file")
-        ErrorReporting.report(error: error)
-        completion(nil, error)
-        return
-      }
+              let error = Global.appError(message: "Can not parse response in check File existence")
+              ErrorReporting.report(error: error)
+              observer.onNext(nil)
+              return
+          }
 
-      guard httpResponse.statusCode == 200 else { completion(nil, nil); return }
+          guard httpResponse.statusCode == 200 else { observer.onNext(nil); return }
 
-      guard let encryptedKey = responseHeaders["Enc-Data-Key"],
+          guard let encryptedKey = responseHeaders["Enc-Data-Key"],
             let algorithm = responseHeaders["Data-Key-Alg"] else {
-        let error = Global.appError(errorCode: 500, message: "Header in check file existence response is incorrectly structured.")
-        ErrorReporting.report(error: error)
-        completion(nil, error)
-        return
-      }
+              let error = Global.appError(message: "Header in check file existence response is incorrectly structured: \(responseHeaders)")
+              ErrorReporting.report(error: error)
+              observer.onNext(nil)
+              return
+          }
 
-      let sessionData = SessionData(encryptedKey: encryptedKey.hexDecodedData, algorithm: algorithm)
-      completion(sessionData, nil)
-    }.resume()
+          let sessionData = SessionData(encryptedKey: encryptedKey.hexDecodedData, algorithm: algorithm)
+          observer.onNext(sessionData)
+        }.resume()
+        return Disposables.create()
+      })
+    }
   }
 
   static func updateAccessFile(assetId: String, sender: Account, receiverAccountNumber: String, receiverSessionData: SessionData) {
@@ -206,8 +203,7 @@ class FileCourierService {
     let headers = ["Authorization": "Bearer " + jwt]
 
     let infoLog = "updateAccess in File for assetId: \(assetId); sender: \(sender.getAccountNumber()); receiver: \(receiverAccountNumber)"
-    ErrorReporting.breadcrumbs(info: infoLog, category: "FileCourier")
-    Global.log.info(infoLog)
+    ErrorReporting.breadcrumbs(info: infoLog, category: .FileCourier, traceLog: true)
 
     Alamofire.request(updateAccessURL, method: .put, parameters: params, encoding: URLEncoding.default, headers: headers)
       .responseJSON { (response) in
@@ -224,8 +220,7 @@ class FileCourierService {
     let headers = ["Authorization": "Bearer " + jwt]
 
     let infoLog = "deleteAccess in File for assetId: \(assetId); sender: \(senderAccountNumber); receiver: \(receiverAccountNumber)"
-    ErrorReporting.breadcrumbs(info: infoLog, category: "FileCourier")
-    Global.log.info(infoLog)
+    ErrorReporting.breadcrumbs(info: infoLog, category: .FileCourier, traceLog: true)
 
     Alamofire.request(deleteAccessURL, method: .delete, parameters: params, headers: headers)
       .responseJSON { (response) in
