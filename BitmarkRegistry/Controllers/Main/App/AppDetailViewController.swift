@@ -90,12 +90,12 @@ extension AppDetailViewController {
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
-    termsOfServiceLink = linkButton(title: AppDetailContent.termsOfService.title())
-    privacyPolicyLink = linkButton(title: AppDetailContent.privacyPolicy.title())
+    termsOfServiceLink = CommonUI.linkButton(title: AppDetailContent.termsOfService.title())
+    privacyPolicyLink = CommonUI.linkButton(title: AppDetailContent.privacyPolicy.title())
 
     // *** Setup subviews ***
     let topStackView = UIStackView(
-      arrangedSubviews: [termsOfServiceLink, separateLine(), privacyPolicyLink, separateLine()],
+      arrangedSubviews: [termsOfServiceLink, CommonUI.linkSeparateLine(), privacyPolicyLink, CommonUI.linkSeparateLine()],
       axis: .vertical,
       spacing: 8
     )
@@ -111,12 +111,12 @@ extension AppDetailViewController {
       make.top.equalToSuperview().offset(18)
     }
 
-    whatNewLink = linkButton(title: "WHAT'S NEW?")
-    appStoreReviewLink = linkButton(title: "APP STORE RATING & REVIEW")
-    shareThisAppLink = linkButton(title: "SHARE THIS APP")
+    whatNewLink = CommonUI.linkButton(title: "WHAT'S NEW?")
+    appStoreReviewLink = CommonUI.linkButton(title: "APP STORE RATING & REVIEW")
+    shareThisAppLink = CommonUI.linkButton(title: "SHARE THIS APP")
 
     let bottomStackView = UIStackView(
-      arrangedSubviews: [whatNewLink, separateLine(), appStoreReviewLink, separateLine(), shareThisAppLink],
+      arrangedSubviews: [whatNewLink, CommonUI.linkSeparateLine(), appStoreReviewLink, CommonUI.linkSeparateLine(), shareThisAppLink],
       axis: .vertical,
       spacing: 8
     )
@@ -146,22 +146,6 @@ extension AppDetailViewController {
       make.edges.equalTo(view.safeAreaLayoutGuide)
           .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
     }
-  }
-
-  fileprivate func linkButton(title: String) -> UIButton{
-    let button = UIButton(type: .system)
-    button.setTitle(title.uppercased(), for: .normal)
-    button.setTitleColor(.mainBlueColor, for: .normal)
-    button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 15)
-    button.contentHorizontalAlignment = .leading
-    return button
-  }
-
-  fileprivate func separateLine() -> UIView {
-    let sl = UIView()
-    sl.backgroundColor = .rockBlue
-    sl.snp.makeConstraints { (make) in make.height.equalTo(1) }
-    return sl
   }
 
   fileprivate func infoLabel(_ text: String = "") -> UILabel {

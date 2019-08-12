@@ -10,16 +10,13 @@ import UIKit
 import IQKeyboardManagerSwift
 import Sentry
 import RxSwift
+import Intercom
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var retryAuthenticationAlert: UIAlertController?
-
-  // Reactive
-  private let disposeBag = DisposeBag()
-  private let registerAPNSSubject = PublishSubject<String>()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // init BitmarkSDK environment & api_token
@@ -48,6 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     evaluatePolicyWhenUserSetEnable()
     initSentry()
     Global.log.logAppDetails()
+
+    // setup intercom
+    let intercomApiKey = Credential.valueForKey(keyName: Constant.InfoKey.intercomAppKey)
+    let intercomApiId = Credential.valueForKey(keyName: Constant.InfoKey.intercomAppId)
+    Intercom.setApiKey(intercomApiKey, forAppId: intercomApiId)
 
     // setup realm db
     do {
@@ -96,15 +98,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
     }
 
-    registerAPNSSubject.onNext(token)
-    registerAPNSSubject.onCompleted()
+    AccountDependencyService.shared.registerAPNSSubject.onNext(token)
+    AccountDependencyService.shared.registerAPNSSubject.onCompleted()
   }
 
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
     #if !targetEnvironment(simulator)
-      registerAPNSSubject.onError(error)
+      AccountInjectionService.shared.registerAPNSSubject.onError(error)
     #endif
-    registerAPNSSubject.onCompleted()
+    AccountDependencyService.shared.registerAPNSSubject.onCompleted()
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -137,25 +139,9 @@ private extension AppDelegate {
    2. request mobile_server_url to get and store jwt
    */
   func evaluatePolicyWhenUserSetEnable() {
-    guard let currentAccount = Global.currentAccount else { return }
-
-    let requestJWTAndAPNSHandler: () -> Void = { [weak self] in
-      guard let self = self else { return }
-      Observable.zip(AccountService.requestJWT(account: currentAccount),
-                     self.registerAPNSSubject.asObservable())
-        .flatMap { (_, token) -> Observable<Void> in
-        return AccountService.registerAPNS(token: token)
-      }.subscribeOn(SerialDispatchQueueScheduler(qos: .background))
-        .subscribe(onError: { (error) in
-          ErrorReporting.report(error: error)
-          Global.log.error(error)
-        }, onCompleted: {
-          Global.log.info("Finish registering jwt and apns.")
-        }).disposed(by: self.disposeBag)
-    }
-
+    guard Global.currentAccount != nil else { return }
     guard UserSetting.shared.getTouchFaceIdSetting() else {
-      requestJWTAndAPNSHandler()
+      AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
       return
     }
     retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
@@ -168,7 +154,7 @@ private extension AppDelegate {
           self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
           self.retryAuthenticationAlert!.show()
         } else {
-          requestJWTAndAPNSHandler()
+          AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
         }
       }
     }

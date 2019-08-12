@@ -39,7 +39,7 @@ class TouchAuthenticationViewController: UIViewController {
         }
         // save enable touch/face id for current account and move to main screen
         UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
-        AccountService.requestJWT(account: Global.currentAccount!)
+        AccountInjectionService.shared.requestJWTAndIntercomAndAPNSHandler()
         self.gotoMainScreen()
       }
     }
@@ -48,7 +48,7 @@ class TouchAuthenticationViewController: UIViewController {
   @objc func skipTouchId(_ sender: UIButton) {
     showConfirmationAlert(message: Constant.Confirmation.skipTouchFaceIdAuthentication) {
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-      AccountService.requestJWT(account: Global.currentAccount!)
+      AccountInjectionService.shared.requestJWTAndIntercomAndAPNSHandler()
       self.gotoMainScreen()
     }
   }

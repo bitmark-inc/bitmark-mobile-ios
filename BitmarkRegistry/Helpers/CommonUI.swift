@@ -122,4 +122,20 @@ class CommonUI {
     view.alpha = 0.7
     return view
   }
+
+  static func linkButton(title: String) -> UIButton {
+    let button = UIButton(type: .system)
+    button.setTitle(title.uppercased(), for: .normal)
+    button.setTitleColor(.mainBlueColor, for: .normal)
+    button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 15)
+    button.contentHorizontalAlignment = .leading
+    return button
+  }
+
+  static func linkSeparateLine() -> UIView {
+    let sl = UIView()
+    sl.backgroundColor = .rockBlue
+    sl.snp.makeConstraints { (make) in make.height.equalTo(1) }
+    return sl
+  }
 }
