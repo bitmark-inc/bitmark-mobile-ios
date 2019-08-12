@@ -10,6 +10,9 @@ import UIKit
 import BitmarkSDK
 import Alamofire
 import RealmSwift
+import RxSwift
+import RxAlamofire
+import RxOptional
 
 class PropertiesViewController: UIViewController {
 
@@ -68,6 +71,8 @@ class PropertiesViewController: UIViewController {
           return
         }
 
+        iCloudService.shared.syncDataFromiCloud()
+
         do {
           self.bitmarkRs = try BitmarkStorage.shared().getData()
         } catch {
@@ -88,6 +93,14 @@ class PropertiesViewController: UIViewController {
     self.realmToken = self.bitmarkRs.observe({ [weak self] (changes) in
       guard let self = self else { return }
       self.yoursTableView.apply(changes: changes)
+
+      switch changes {
+      case .update(_, _, let insertions, _):
+        if insertions.count > 0 { iCloudService.shared.syncDataFromiCloud() }
+      default:
+        break
+      }
+
       self.setupUnreadBadge()
       self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
       self.segmentControl.setBadge(self.bitmarkRs.count, forSegmentAt: 0)

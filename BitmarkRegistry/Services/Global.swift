@@ -86,7 +86,7 @@ class Global {
     return log
   }()
 
-  static func appError(errorCode: Int, message: String) -> NSError {
+  static func appError(errorCode: Int = 400, message: String) -> NSError {
     let hostDomain = "come.bitmark.registry"
     let hostErrorCode = errorCode
 

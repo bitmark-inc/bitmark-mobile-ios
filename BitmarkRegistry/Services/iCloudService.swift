@@ -55,6 +55,27 @@ class iCloudService {
   // MARK: - Handlers
 
   // MARK - Sync Data File
+  func setupDataFile() throws {
+    guard !fileExists(fileURL: dataURL) else { return }
+    let emptyAssetWithFilenameData: [String: String] = [:]
+    let data = try JSONEncoder().encode(emptyAssetWithFilenameData)
+    try data.write(to: dataURL, options: [.atomic])
+  }
+
+  func syncDataFromiCloud() {
+    ErrorReporting.breadcrumbs(info: "syncDataFromiCloud", category: .StoreData, traceLog: true)
+    DispatchQueue.global().async { [weak self] in
+      guard let self = self else { return }
+      self.newDownloadFileObservable
+        .subscribe(onNext: { [weak self] (fileURL) in
+          guard fileURL == self?.dataURL else { return }
+          self?.updateAssetInfoFromData()
+        })
+        .disposed(by: self.bag)
+      self.downloadDataFile()
+    }
+  }
+
   func updateAssetInfoFromData() {
     ErrorReporting.breadcrumbs(info: "updateAssetInfoFromData", category: .StoreData, traceLog: true)
     do {

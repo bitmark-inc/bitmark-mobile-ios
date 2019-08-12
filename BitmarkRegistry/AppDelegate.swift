@@ -67,14 +67,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     Intercom.setApiKey(intercomApiKey, forAppId: intercomApiId)
 
     // setup realm db
-    do {
-      try RealmConfig.setupDBForCurrentAccount()
-    } catch {
-      ErrorReporting.report(error: error)
-      window?.rootViewController = SuspendedViewController()
+    if let _ = Global.currentAccount {
+      do {
+        try RealmConfig.setupDBForCurrentAccount()
+        try iCloudService.shared.setupDataFile()
         DispatchQueue.global(qos: .utility).async {
           iCloudService.shared.migrateFileData()
         }
+      } catch {
+        ErrorReporting.report(error: error)
+        window?.rootViewController = SuspendedViewController()
+      }
     }
 
     return true

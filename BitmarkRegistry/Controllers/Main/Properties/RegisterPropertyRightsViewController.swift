@@ -281,7 +281,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
         }
 
-        iCloudService.localAssetWithFilenameData[assetId] = self.assetFileName
+        iCloudService.shared.localAssetWithFilenameData[assetId] = self.assetFileName
         self.storeFileInAppStorage(of: assetId)
 
         selfAlert.dismiss(animated: true, completion: {
@@ -303,7 +303,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   func storeFileInAppStorage(of assetId: String) {
     guard let assetURL = assetURL, let assetFileName = assetFileName else { return }
     ErrorReporting.breadcrumbs(info: "Path: \(assetURL.path); Filename: \(assetFileName)", category: .StoreFile, traceLog: true)
-    ErrorReporting.breadcrumbs(info: assetId, category: .Asset, traceLog: true)
+    ErrorReporting.breadcrumbs(info: assetId, category: .StoreFile, traceLog: true)
 
     do {
       try iCloudService.shared.storeFile(fileURL: assetURL, filename: assetFileName, assetId: assetId)

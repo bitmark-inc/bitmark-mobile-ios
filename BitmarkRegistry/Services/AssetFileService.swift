@@ -142,7 +142,7 @@ class AssetFileService {
             : self.getDownloadedFileURL(assetFilename: assetFilename) // 3
         })
 
-      iCloudService.shared.downloadDataFile()
+      
       return observable
     }
   }
