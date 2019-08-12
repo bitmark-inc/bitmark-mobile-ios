@@ -18,6 +18,10 @@
 		<string>https://registry.bitmark.com</string>
 		<key>ZERO_ADDRESS</key>
 		<string>a3ezwdYVEVrHwszQrYzDTCAZwUD3yKtNsCq9YhEu97bPaGAKy1</string>
+		<key>INTERCOM_APP_KEY</key>
+		<string>ios_sdk-73c4808d20211944196736d561a405f6ffcdaded</string>
+		<key>INTERCOM_APP_ID</key>
+		<string>ejkeunzw</string>
 	</dict>
 	<key>AppGroupId</key>
 	<string>group.com.bitmark.localstorage</string>

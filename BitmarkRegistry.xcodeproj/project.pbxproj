@@ -143,6 +143,8 @@
 		E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */; };
 		E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
 		E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
+		E2C8BE5D2301438B004962D3 /* AccountDependencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */; };
+		E2C8BE5E2301438B004962D3 /* AccountDependencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */; };
 		E2CE153922F3EC2100964B56 /* GMStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153822F3EC2100964B56 /* GMStepper.swift */; };
 		E2CE153A22F3EC2100964B56 /* GMStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153822F3EC2100964B56 /* GMStepper.swift */; };
 		E2CE153C22F4191600964B56 /* PropertyDescriptionInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */; };
@@ -336,6 +338,7 @@
 		E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPropertyRightsViewController.swift; sourceTree = "<group>"; };
 		E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
+		E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDependencyService.swift; sourceTree = "<group>"; };
 		E2CE153822F3EC2100964B56 /* GMStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMStepper.swift; sourceTree = "<group>"; };
 		E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyDescriptionInfoViewController.swift; sourceTree = "<group>"; };
 		E2CECFC122D3045B00468BFC /* EventDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDelegate.swift; sourceTree = "<group>"; };
@@ -707,6 +710,7 @@
 				E2E798E0229E267500508B69 /* Global.swift */,
 				E2E798DA229E25BC00508B69 /* BitmarkSDKService.swift */,
 				E2E798DE229E264100508B69 /* AccountService.swift */,
+				E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */,
 				E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */,
 				E283CB0522B3B1EA00CCB4E5 /* AssetService.swift */,
 				E24D795B22CA149400BC9912 /* AssetFileService.swift */,
@@ -782,6 +786,7 @@
 				E29A740322AA49990052C716 /* Frameworks */,
 				E29A740522AA49990052C716 /* Resources */,
 				E94854F455DF6F275C6652D0 /* [CP] Embed Pods Frameworks */,
+				1EC8A21C4F6E8598E67635D3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -801,6 +806,7 @@
 				E2E798B3229E189E00508B69 /* Frameworks */,
 				E2E798B4229E189E00508B69 /* Resources */,
 				A50385B7145866B82936D62B /* [CP] Embed Pods Frameworks */,
+				0701456148BCD9116280CCA8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -881,6 +887,40 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0701456148BCD9116280CCA8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		1EC8A21C4F6E8598E67635D3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BitmarkRegistry Dev/Pods-BitmarkRegistry Dev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1EF2783C2F320449B594B7C8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1046,6 +1086,7 @@
 				E2CEDC7422BB934900B5BBF9 /* YourPropertyCell.swift in Sources */,
 				E26E7E0F22E1B98E00C3DBAA /* AccountDetailViewController.swift in Sources */,
 				E25DF1C522CB3C9700AC270E /* Chacha20Poly1305.swift in Sources */,
+				E2C8BE5E2301438B004962D3 /* AccountDependencyService.swift in Sources */,
 				E29A740122AA49990052C716 /* Global.swift in Sources */,
 				E29A740222AA49990052C716 /* KeychainStore.swift in Sources */,
 				E22CBF1A22D08C410024E5C3 /* DesignedWebView.swift in Sources */,
@@ -1143,6 +1184,7 @@
 				E25DF1C122CB3C8600AC270E /* SessionData.swift in Sources */,
 				E2ADFD1A22BC72BF00FC46D8 /* QRViewController.swift in Sources */,
 				E26E7E0E22E1B98E00C3DBAA /* AccountDetailViewController.swift in Sources */,
+				E2C8BE5D2301438B004962D3 /* AccountDependencyService.swift in Sources */,
 				E2CEDC7322BB934900B5BBF9 /* YourPropertyCell.swift in Sources */,
 				E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */,
 				E25DF1DA22CB3F4700AC270E /* BitmarkStorage.swift in Sources */,

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Intercom
 
 class AccountViewController: UIViewController {
 
@@ -17,6 +18,7 @@ class AccountViewController: UIViewController {
   var writeDownRecoveryPhraseButton: UIButton!
   var logoutButton: UIButton!
   var detailsButton: UIButton!
+  var needHelpButton: UIButton!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -65,6 +67,10 @@ extension AccountViewController {
     detailsButton.addAction(for: .touchUpInside) {
       self.navigationController?.pushViewController(AppDetailViewController())
     }
+
+    needHelpButton.addAction(for: .touchUpInside) {
+      Intercom.presentMessenger()
+    }
   }
 
   fileprivate func setupViews() {
@@ -85,10 +91,18 @@ extension AccountViewController {
       axis: .vertical
     )
 
+    needHelpButton = CommonUI.linkButton(title: "NEED HELP?")
+    let needHelpView = UIStackView(
+      arrangedSubviews: [CommonUI.linkSeparateLine(), needHelpButton],
+      axis: .vertical,
+      spacing: 8
+    )
+
     // *** Setup UI in view ***
     let mainView = UIView()
     mainView.addSubview(accountNumberBox)
     mainView.addSubview(buttonsGroupStackView)
+    mainView.addSubview(needHelpView)
 
     accountNumberBox.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
@@ -99,10 +113,14 @@ extension AccountViewController {
       make.leading.trailing.equalToSuperview()
     }
 
+    needHelpView.snp.makeConstraints { (make) in
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+
     view.addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
-                .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
+                .inset(UIEdgeInsets(top: 25, left: 20, bottom: 8, right: 20))
     }
   }
 
@@ -126,8 +144,10 @@ extension AccountViewController {
     copiedToClipboardNotifier.textAlignment = .right
     copiedToClipboardNotifier.isHidden = true
 
-    let accountNumberDescription = CommonUI.descriptionLabel(text:
-      "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public. You can safely share it with others without compromising your security.")
+    let accountNumberDescription = CommonUI.descriptionLabel(text: """
+      To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. \
+      This number is public. You can safely share it with others without compromising your security.
+      """)
     accountNumberDescription.lineHeightMultiple(1.2)
 
     let accountNumberBox = UIView()

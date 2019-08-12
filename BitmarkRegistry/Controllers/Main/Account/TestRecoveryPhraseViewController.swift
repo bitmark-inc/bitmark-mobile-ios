@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Intercom
 
 class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
@@ -84,7 +85,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   @objc func removeAccess(_ sender: UIButton) {
     do {
-      AccountService.deregisterAPNS()
+      AccountInjectionService.shared.deregisterIntercomAndAPNS()
       try KeychainStore.removeSeedCoreFromKeychain()
       Global.clearData()
     } catch {

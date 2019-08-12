@@ -67,6 +67,8 @@ public struct Constant {
     public static let zeroAddress = "ZERO_ADDRESS"
     public static let kVersion = "CFBundleShortVersionString"
     public static let kBundle = "CFBundleVersion"
+    public static let intercomAppKey = "INTERCOM_APP_KEY"
+    public static let intercomAppId = "INTERCOM_APP_ID"
   }
 
   // MARK: - Success Message
