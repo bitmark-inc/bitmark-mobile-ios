@@ -113,7 +113,7 @@ class FileCourierService {
     let request = apiRequest(endpoint: endpoint)
     return request.flatMap { (downloadRequest) -> Observable<ResponseData> in
       return Observable<ResponseData>.create({ (observer) -> Disposable in
-        URLSession.shared.downloadTask(with: downloadRequest) { (tempLocalURL, response, error) in
+        let task = URLSession.shared.downloadTask(with: downloadRequest) { (tempLocalURL, response, error) in
           if let error = error {
             observer.onError(error); return
           }
@@ -147,9 +147,12 @@ class FileCourierService {
             return observer.onError(error)
           }
 
-        }.resume()
+        }
+        task.resume()
 
-        return Disposables.create()
+        return Disposables.create {
+          task.cancel()
+        }
       })
     }
   }
@@ -162,7 +165,7 @@ class FileCourierService {
     let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + senderAccountNumber)
     return request.flatMap { (checkFileExistenceRequest) -> Observable<SessionData?> in
       return Observable<SessionData?>.create({ (observer) -> Disposable in
-        URLSession.shared.dataTask(with: checkFileExistenceRequest) { (_, response, error) in
+        let task = URLSession.shared.dataTask(with: checkFileExistenceRequest) { (_, response, error) in
           if let error = error {
             ErrorReporting.report(error: error)
             observer.onNext(nil)
@@ -189,8 +192,12 @@ class FileCourierService {
 
           let sessionData = SessionData(encryptedKey: encryptedKey.hexDecodedData, algorithm: algorithm)
           observer.onNext(sessionData)
-        }.resume()
-        return Disposables.create()
+        }
+        task.resume()
+
+        return Disposables.create {
+          task.cancel()
+        }
       })
     }
   }

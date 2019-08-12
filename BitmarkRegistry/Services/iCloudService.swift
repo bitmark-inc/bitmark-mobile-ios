@@ -217,6 +217,7 @@ class iCloudService {
 extension iCloudService {
   internal func getAssetWithFilenameData(_ dataURL: URL? = nil) throws -> [String: String] {
     let dataURL = dataURL ?? self.dataURL
+    guard fileExists(fileURL: dataURL) else { return [:] }
     let data = try Data(contentsOf: dataURL)
     return try JSONDecoder().decode([String : String].self, from: data)
   }
