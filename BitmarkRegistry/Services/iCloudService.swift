@@ -18,7 +18,11 @@ enum DownloadFileError: Error {
 class iCloudService {
 
   // MARK: - Properties
-  static var shared = iCloudService(user: Global.currentAccount!)
+  static var _shared: iCloudService?
+  static var shared: iCloudService {
+    _shared = _shared ?? iCloudService(user: Global.currentAccount!)
+    return _shared!
+  }
 
   var user: Account
   lazy var icloudContainer: URL? = {
@@ -89,7 +93,9 @@ class iCloudService {
           assetR.assetType = AssetType.get(from: assetR).rawValue
         }
       }
+      ErrorReporting.breadcrumbs(info: "Finish updateAssetInfoFromData", category: .StoreData, traceLog: true)
     } catch {
+      Global.log.error(error)
       ErrorReporting.report(error: error)
     }
   }
@@ -104,13 +110,19 @@ class iCloudService {
   }
 
   func getFilenameFromiCloudObservable(assetId: String) -> Observable<String?> {
-    let observable = newDownloadFileObservable
-      .map { [weak self] (fileURL) -> String? in
-        guard fileURL == self?.dataURL else { return nil }
-        return self?.getAssetFilename(with: assetId)
-      }.share(replay: 1)
-    iCloudService.shared.downloadDataFile()
-    return observable
+    return Observable<String?>.create({ (observer) -> Disposable in
+      self.newDownloadFileObservable
+        .subscribe(
+          onNext: { [weak self] (fileURL) in
+            guard fileURL == self?.dataURL else { return }
+            observer.onNext(self?.getAssetFilename(with: assetId))
+          },
+          onError: { observer.onError($0) }
+        )
+        .disposed(by: self.bag)
+      iCloudService.shared.downloadDataFile()
+      return Disposables.create()
+    })
   }
 
   func getAssetFilename(with assetId: String) -> String? {
@@ -145,7 +157,6 @@ class iCloudService {
         self?.saveAssetInfoIntoData(assetId: assetId, filename: filename)
       })
       .disposed(by: bag)
-
     downloadDataFile()
   }
 

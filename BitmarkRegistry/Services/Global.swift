@@ -32,6 +32,7 @@ class Global {
     BitmarkStorage._shared = nil
     TransactionStorage._shared = nil
     AccountDependencyService._shared = nil
+    iCloudService._shared = nil
   }
 
   public static func syncNewDataInStorage() {

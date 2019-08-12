@@ -125,25 +125,28 @@ class AssetFileService {
 
     if let assetFilename = assetFilename { // 1
       let assetFileURL = iCloudService.shared.parseAssetFileURL(assetFilename)
-      let observable = iCloudService.shared.newDownloadFileObservable
-        .do(afterNext: { (fileURL) in
-          guard fileURL == assetFileURL else { return }
-          iCloudService.shared.saveDataRecord(assetId: self.assetId, filename: assetFilename)
-        })
-        .share(replay: 1)
-      iCloudService.shared.downloadFile(fileURL: assetFileURL)
-      return observable
+      return Observable<URL>.create({ (observer) -> Disposable in
+        iCloudService.shared.newDownloadFileObservable
+          .do(afterNext: { (fileURL) in
+            guard fileURL == assetFileURL else { return }
+            iCloudService.shared.saveDataRecord(assetId: self.assetId, filename: assetFilename)
+          })
+          .subscribe(
+            onNext: { observer.onNext($0) },
+            onError: { observer.onError($0) }
+          ).disposed(by: self.bag)
+        iCloudService.shared.downloadFile(fileURL: assetFileURL)
+
+        return Disposables.create()
+      })
     } else {
-      let observable = iCloudService.shared.getFilenameFromiCloudObservable(assetId: assetId)
+      return iCloudService.shared.getFilenameFromiCloudObservable(assetId: assetId)
         .flatMap({ [weak self] (assetFilename) -> Observable<URL> in
           guard let self = self else { return Observable.empty() }
           return assetFilename.isNilOrEmpty
             ? self.downloadFileFromFileCourier() // 2
             : self.getDownloadedFileURL(assetFilename: assetFilename) // 3
         })
-
-      
-      return observable
     }
   }
 

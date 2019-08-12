@@ -192,11 +192,13 @@ class BitmarkDetailViewController: UIViewController {
     showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
       self.assetFileService.getDownloadedFileURL(assetFilename: self.assetR.filename)
         .subscribe(
-          onNext: { [weak self] (downloadedFileURL) in
-            guard let self = self else { return }
-            let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
-            self.present(shareVC, animated: true)
-            self.assetR.updateAssetFileInfo(downloadedFileURL.path)
+          onNext: { (downloadedFileURL) in
+            selfAlert.dismiss(animated: true, completion: { [weak self] in
+              guard let self = self else { return }
+              let shareVC = UIActivityViewController(activityItems: [downloadedFileURL], applicationActivities: [])
+              self.present(shareVC, animated: true)
+              self.assetR.updateAssetFileInfo(downloadedFileURL.path)
+            })
           },
           onError: { _ in
             selfAlert.dismiss(animated: true, completion: { [weak self] in
