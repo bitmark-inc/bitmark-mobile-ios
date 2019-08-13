@@ -25,7 +25,6 @@ class AccountDependencyService {
   }
 
   let account: Account
-  var registerAPNSSubject: PublishSubject<String>!
   fileprivate let disposeBag = DisposeBag()
 
   // MARK: - Init
@@ -39,22 +38,26 @@ class AccountDependencyService {
    - When user enters the app from background
    */
   func requestJWTAndIntercomAndAPNSHandler() {
-    registerAPNSSubject = PublishSubject<String>()
-    Observable.zip(requestJWT(),
-                   registerIntercom(),
-                   registerAPNSSubject.asObservable())
-      .flatMap { (_, intercomUserId, token) -> Observable<Void> in
-        return self.registerAPNS(token: token, intercomUserId: intercomUserId)
-      }
-      .subscribeOn(SerialDispatchQueueScheduler(qos: .background))
-      .subscribe(
-        onError: { (error) in
-          ErrorReporting.report(error: error)
-          Global.log.error(error)
-      }, onCompleted: {
-        Global.log.info("Finish registering jwt, intercom and apns.")
-      })
-      .disposed(by: disposeBag)
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+      Observable.zip(self.requestJWT(),
+                     self.registerIntercom(),
+                     appDelegate.registerAPNSSubject.asObservable())
+        .flatMap { (_, intercomUserId, token) -> Observable<Void> in
+          Global.apnsToken = token
+          return self.registerAPNS(token: token, intercomUserId: intercomUserId)
+        }
+        .subscribeOn(SerialDispatchQueueScheduler(qos: .background))
+        .subscribe(
+          onError: { (error) in
+            ErrorReporting.report(error: error)
+            Global.log.error(error)
+        }, onCompleted: {
+          Global.log.info("Finish registering jwt, intercom and apns.")
+        })
+        .disposed(by: self.disposeBag)
+    }
   }
 
   // Remove APNS token from server

@@ -11,6 +11,7 @@ import IQKeyboardManagerSwift
 import Sentry
 import RxSwift
 import Intercom
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
   var retryAuthenticationAlert: UIAlertController?
 
+  var registerAPNSSubject = ReplaySubject<String>.create(bufferSize: 1)
   let disposeBag = DisposeBag()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -113,15 +115,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
     }
 
-    AccountDependencyService.shared.registerAPNSSubject.onNext(token)
-    AccountDependencyService.shared.registerAPNSSubject.onCompleted()
+    registerAPNSSubject.onNext(token)
+    registerAPNSSubject.onCompleted()
   }
 
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
     #if !targetEnvironment(simulator)
-      AccountInjectionService.shared.registerAPNSSubject.onError(error)
+      registerAPNSSubject.onError(error)
     #endif
-    AccountDependencyService.shared.registerAPNSSubject.onCompleted()
+    registerAPNSSubject.onCompleted()
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {

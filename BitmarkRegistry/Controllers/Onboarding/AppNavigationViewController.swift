@@ -30,6 +30,16 @@ class AppNavigationViewController: UIViewController {
       .observeOn(MainScheduler.instance)
       .subscribe(
         onSuccess: { (isAccountExisted) in
+          let initialVC: UIViewController
+          if isAccountExisted {
+            initialVC = CustomTabBarViewController()
+          } else {
+            let navigationController = UINavigationController(rootViewController: OnboardingViewController())
+            navigationController.isNavigationBarHidden = true
+            initialVC = navigationController
+          }
+
+          UIApplication.shared.keyWindow?.rootViewController = initialVC
         },
         onError: { [weak self] (error) in
           guard let self = self else { return }
