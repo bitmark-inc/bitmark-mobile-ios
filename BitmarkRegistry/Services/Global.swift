@@ -31,7 +31,7 @@ class Global {
     currentJwt = nil
     BitmarkStorage._shared = nil
     TransactionStorage._shared = nil
-    AccountInjectionService._shared = nil
+    AccountDependencyService._shared = nil
   }
 
   public static func syncNewDataInStorage() {

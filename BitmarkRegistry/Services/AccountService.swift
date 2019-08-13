@@ -8,8 +8,11 @@
 
 import Foundation
 import BitmarkSDK
+import RxSwift
 
 class AccountService {
+  static let shared = AccountService()
+  let disposeBag = DisposeBag()
 
   static func createNewAccount(completion: @escaping (Account?, Error?) -> Void) throws {
     let account = try Account()
@@ -19,28 +22,25 @@ class AccountService {
     }
   }
 
-  static func existsCurrentAccount() -> Bool {
-    if UserSetting.shared.isUserLoggedIn() {
-      return getCurrentAccount() != nil
-    } else {
-      return false
-    }
-  }
-
-  static func getCurrentAccount() -> Account? {
-    var account: Account?
-    let seedCore = KeychainStore.getSeedDataFromKeychain()
-    if let accountVersion = UserSetting.shared.getAccountVersion(),
-       let seedCore = seedCore {
-      do {
-        let seed = try Seed.fromCore(seedCore, version: accountVersion)
-        account = try Account(seed: seed)
-      } catch {
-        ErrorReporting.report(error: error)
-      }
-    }
-    Global.currentAccount = account
-    return account
+  func existsCurrentAccount() -> Single<Bool> {
+    guard UserSetting.shared.isUserLoggedIn() else { return Single.just(false) }
+    return KeychainStore.getSeedDataFromKeychain()
+      .map({ (seedCore) -> Account? in
+        if let accountVersion = UserSetting.shared.getAccountVersion(),
+          let seedCore = seedCore {
+          do {
+            let seed = try Seed.fromCore(seedCore, version: accountVersion)
+            return try Account(seed: seed)
+          } catch {
+            ErrorReporting.report(error: error)
+          }
+        }
+        return nil
+      })
+      .flatMap({ (account) -> Single<Bool> in
+        Global.currentAccount = account
+        return Single<Bool>.just(account != nil)
+      })
   }
 
   static func getAccount(phrases: [String]) throws -> Account {

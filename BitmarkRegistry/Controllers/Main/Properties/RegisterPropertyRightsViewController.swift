@@ -12,6 +12,7 @@ import SnapKit
 import Alamofire
 import BEMCheckBox
 import IQKeyboardManagerSwift
+import RxSwift
 
 class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
 
@@ -38,6 +39,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
   var networkReachabilityManager = NetworkReachabilityManager()
+  let disposeBag = DisposeBag()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -247,6 +249,12 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   @objc func tapToIssue(_ button: UIButton) {
+    requireAuthenticationForAction(disposeBag) { [weak self] in
+      self?._issue()
+    }
+  }
+
+  fileprivate func _issue() {
     view.endEditing(true)
 
     let quantity = Int(numberOfBitmarksTextField.value)

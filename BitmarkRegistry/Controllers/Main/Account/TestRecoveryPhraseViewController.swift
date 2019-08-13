@@ -85,7 +85,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   @objc func removeAccess(_ sender: UIButton) {
     do {
-      AccountInjectionService.shared.deregisterIntercomAndAPNS()
+      AccountDependencyService.shared.deregisterIntercomAndAPNS()
       try KeychainStore.removeSeedCoreFromKeychain()
       Global.clearData()
     } catch {

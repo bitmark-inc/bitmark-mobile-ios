@@ -19,6 +19,7 @@ class KeychainStore {
   private static let seedValidDuration = 30 // minutes
   private static let keychain: Keychain = {
     return Keychain(service: Bundle.main.bundleIdentifier!)
+                    .authenticationPrompt("Your fingerprint signature is required.")
   }()
   private static let expiryTimeKey = "expiryTimeKey"
 
@@ -52,7 +53,8 @@ class KeychainStore {
     return Single<Data?>.create(subscribe: { (single) -> Disposable in
       DispatchQueue.global().async {
         do {
-          let seedData = try getDataFromKeychain(key: bitmarkSeedCoreKey) ?? getDataFromKeychain(key: bitmarkSeedCoreWithoutAuthentication)
+          let seedData = try keychain.getData(bitmarkSeedCoreKey)
+                          ?? keychain.getData(bitmarkSeedCoreWithoutAuthentication)
           UserDefaults.standard.set(Calendar.current.date(byAdding: .minute, value: seedValidDuration, to: Date()), forKey: expiryTimeKey)
           single(.success(seedData))
         } catch {
@@ -76,15 +78,9 @@ class KeychainStore {
 
   static func getEncryptedDBKeyFromKeychain() -> Data? {
     do {
-      return try getDataFromKeychain(key: bitmarkEncryptedDBKey)
+      return try keychain.getData(bitmarkEncryptedDBKey)
     } catch {
       return nil
     }
-  }
-
-  fileprivate static func getDataFromKeychain(key: String) throws -> Data? {
-    return try keychain
-      .authenticationPrompt("Your fingerprint signature is required.")
-      .getData(key)
   }
 }

@@ -147,6 +147,8 @@
 		E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */; };
 		E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */; };
 		E2C05CA422AEAC89002B3350 /* RecoveryPhraseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */; };
+		E2C5DADE2302779600A71E59 /* AppNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C5DADD2302779600A71E59 /* AppNavigationViewController.swift */; };
+		E2C5DADF2302779600A71E59 /* AppNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C5DADD2302779600A71E59 /* AppNavigationViewController.swift */; };
 		E2C8BE5D2301438B004962D3 /* AccountDependencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */; };
 		E2C8BE5E2301438B004962D3 /* AccountDependencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */; };
 		E2CE153922F3EC2100964B56 /* GMStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153822F3EC2100964B56 /* GMStepper.swift */; };
@@ -344,6 +346,7 @@
 		E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPropertyRightsViewController.swift; sourceTree = "<group>"; };
 		E2C05CA022AEAB7E002B3350 /* RecoveryPhraseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseViewController.swift; sourceTree = "<group>"; };
 		E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
+		E2C5DADD2302779600A71E59 /* AppNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationViewController.swift; sourceTree = "<group>"; };
 		E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDependencyService.swift; sourceTree = "<group>"; };
 		E2CE153822F3EC2100964B56 /* GMStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMStepper.swift; sourceTree = "<group>"; };
 		E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyDescriptionInfoViewController.swift; sourceTree = "<group>"; };
@@ -760,6 +763,7 @@
 		E2E798D2229E1E8F00508B69 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				E2C5DADD2302779600A71E59 /* AppNavigationViewController.swift */,
 				E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */,
 				E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */,
 				E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */,
@@ -1030,6 +1034,7 @@
 				E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */,
 				E29A73FA22AA49990052C716 /* UIViewController+Extension.swift in Sources */,
 				E2BEC96522AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
+				E2C5DADF2302779600A71E59 /* AppNavigationViewController.swift in Sources */,
 				E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E279F84C22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */,
@@ -1130,6 +1135,7 @@
 				E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */,
 				E2E798D4229E1EA300508B69 /* OnboardingViewController.swift in Sources */,
 				E22CBF1722D075D80024E5C3 /* TransactionDetailViewController.swift in Sources */,
+				E2C5DADE2302779600A71E59 /* AppNavigationViewController.swift in Sources */,
 				E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E279F84B22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2F08CE922C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */,

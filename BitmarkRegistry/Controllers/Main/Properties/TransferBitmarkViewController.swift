@@ -10,6 +10,7 @@ import UIKit
 import BitmarkSDK
 import SnapKit
 import Alamofire
+import RxSwift
 
 class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
 
@@ -26,6 +27,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
     return AssetFileService(owner: Global.currentAccount!, assetId: assetR.id)
   }()
   var networkReachabilityManager = NetworkReachabilityManager()
+  let disposeBag = DisposeBag()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -81,6 +83,12 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
   }
 
   @objc func tapToTransfer(button: UIButton) {
+    requireAuthenticationForAction(disposeBag) { [weak self] in
+      self?._transferBitmark()
+    }
+  }
+
+  fileprivate func _transferBitmark() {
     view.endEditing(true)
     guard let recipientAccountNumber = recipientAccountNumberTextfield.text else { return }
     do {
