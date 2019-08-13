@@ -12,6 +12,10 @@
 		5837C98D22D599C200DA270B /* URLRequest+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5837C98C22D599C200DA270B /* URLRequest+JWT.swift */; };
 		5837C98E22D599C900DA270B /* URLRequest+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5837C98C22D599C200DA270B /* URLRequest+JWT.swift */; };
 		587FE40F22CC5A5000028F9A /* ErrorReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DB99D522CB4457004A611E /* ErrorReporting.swift */; };
+		58AB59FA22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AB59F922FD6EF000FF31A3 /* AppDelegate+PushNotification.swift */; };
+		58AB59FB22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AB59F922FD6EF000FF31A3 /* AppDelegate+PushNotification.swift */; };
+		58AB59FD2302644100FF31A3 /* ScreenRouteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AB59FC2302644000FF31A3 /* ScreenRouteService.swift */; };
+		58AB59FE2302644100FF31A3 /* ScreenRouteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AB59FC2302644000FF31A3 /* ScreenRouteService.swift */; };
 		58DB99D622CB4457004A611E /* ErrorReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DB99D522CB4457004A611E /* ErrorReporting.swift */; };
 		D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
 		E20472BB22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E20472BA22CEE44B0022C1D0 /* TransactionListCell.swift */; };
@@ -208,6 +212,8 @@
 		5837C98C22D599C200DA270B /* URLRequest+JWT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+JWT.swift"; sourceTree = "<group>"; };
 		589EFAB422EFFD8200DDC227 /* BitmarkRegistry Dev.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "BitmarkRegistry Dev.entitlements"; sourceTree = "<group>"; };
 		589EFAB522EFFDAB00DDC227 /* BitmarkRegistry.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BitmarkRegistry.entitlements; sourceTree = "<group>"; };
+		58AB59F922FD6EF000FF31A3 /* AppDelegate+PushNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+PushNotification.swift"; sourceTree = "<group>"; };
+		58AB59FC2302644000FF31A3 /* ScreenRouteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRouteService.swift; sourceTree = "<group>"; };
 		58DB99D522CB4457004A611E /* ErrorReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorReporting.swift; sourceTree = "<group>"; };
 		651E9C762774E042F0FA1915 /* Pods-BitmarkRegistry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.release.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.release.xcconfig"; sourceTree = "<group>"; };
 		6F49B2891D8855D7048183F0 /* Pods-BitmarkRegistry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BitmarkRegistry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BitmarkRegistry/Pods-BitmarkRegistry.debug.xcconfig"; sourceTree = "<group>"; };
@@ -642,6 +648,7 @@
 			isa = PBXGroup;
 			children = (
 				E2E798B9229E189E00508B69 /* AppDelegate.swift */,
+				58AB59F922FD6EF000FF31A3 /* AppDelegate+PushNotification.swift */,
 				E2E798D0229E1CBD00508B69 /* Controllers */,
 				E2E798CF229E1CB100508B69 /* Storyboards */,
 				E2C05CA222AEAC74002B3350 /* Cells */,
@@ -721,6 +728,7 @@
 				E2D4342622CC89EB006A8183 /* FileCourierService.swift */,
 				E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */,
 				E25DF1D422CB3F4700AC270E /* SyncStorage */,
+				58AB59FC2302644000FF31A3 /* ScreenRouteService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1025,6 +1033,7 @@
 				E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E279F84C22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */,
+				58AB59FB22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */,
 				E25DF1CA22CB3EAB00AC270E /* TransactionsViewController.swift in Sources */,
 				E2F08CEA22C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */,
 				E2CEDC8022BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */,
@@ -1064,6 +1073,7 @@
 				E2E18C1B22DC1F4C004078C3 /* BlockR.swift in Sources */,
 				E2BEC95622AF987E009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E24B527F22BBB8B400E160E3 /* TransactionService.swift in Sources */,
+				58AB59FE2302644100FF31A3 /* ScreenRouteService.swift in Sources */,
 				E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
 				E25DF1DD22CB3F4700AC270E /* TransactionStorage.swift in Sources */,
 				E22CBF1B22D092C60024E5C3 /* TransactionDetailViewController.swift in Sources */,
@@ -1123,6 +1133,7 @@
 				E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E279F84B22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2F08CE922C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */,
+				58AB59FA22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */,
 				E2CEDC7F22BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */,
 				E24D795A22CA146D00BC9912 /* BitmarkFileUtil.swift in Sources */,
 				E2BEC96422AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift in Sources */,
@@ -1162,6 +1173,7 @@
 				E2E798DB229E25BC00508B69 /* BitmarkSDKService.swift in Sources */,
 				E2E18C1A22DC1F4C004078C3 /* BlockR.swift in Sources */,
 				E2E067ED22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */,
+				58AB59FD2302644100FF31A3 /* ScreenRouteService.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
 				E24B527E22BBB8B400E160E3 /* TransactionService.swift in Sources */,
 				E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,

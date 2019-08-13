@@ -30,21 +30,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.makeKeyAndVisible()
 
     // Redirect Screen for new user / existing user
-    let initialVC = AccountService.existsCurrentAccount()
-                          ? CustomTabBarViewController()
-                          : OnboardingViewController()
-
+    var initialVC: UIViewController
+    
+    if AccountService.existsCurrentAccount() {
+      initialVC = CustomTabBarViewController()
+    } else {
+      let navigationController = UINavigationController(rootViewController: OnboardingViewController())
+      navigationController.isNavigationBarHidden = true
+      initialVC = navigationController
+    }
+    
     // Add navigation controller
-    let navigationController = UINavigationController(rootViewController: initialVC)
-    navigationController.isNavigationBarHidden = true
-    window?.rootViewController = navigationController
+    window?.rootViewController = initialVC
 
     // Register APNS
+    UNUserNotificationCenter.current()
+      .requestAuthorization(options: [.alert, .sound, .badge])
+       { [weak self] (granted, error) in
+        if granted {
+          UNUserNotificationCenter.current().delegate = self
+        }
+       }
+    
     UIApplication.shared.registerForRemoteNotifications()
 
     evaluatePolicyWhenUserSetEnable()
     initSentry()
     Global.log.logAppDetails()
+    
+    // Check if launched from notification
+    let notificationOption = launchOptions?[.remoteNotification]
+
+    if let notification = notificationOption as? [String: AnyObject],
+      let aps = notification["aps"] as? [String: AnyObject] {
+      Global.log.debug(aps)
+    }
 
     // setup intercom
     let intercomApiKey = Credential.valueForKey(keyName: Constant.InfoKey.intercomAppKey)
