@@ -18,7 +18,7 @@ class AccountDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "REGISTRY"
+    title = "Registry".localized().localizedUppercase
 
     setupViews()
     mainView.loadWeb()

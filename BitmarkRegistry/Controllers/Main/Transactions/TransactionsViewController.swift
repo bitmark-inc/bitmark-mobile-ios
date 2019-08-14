@@ -25,7 +25,7 @@ class TransactionsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationItem.title = "TRANSACTIONS"
+    navigationItem.title = "Transactions".localized().localizedUppercase
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
@@ -155,10 +155,10 @@ extension TransactionsViewController {
   }
 
   fileprivate func setupEmptyView() -> UIView {
-    let titleLabel = CommonUI.pageTitleLabel(text: "NO TRANSACTION HISTORY.")
+    let titleLabel = CommonUI.pageTitleLabel(text: "transactions_noTxHistoryTitle".localized(tableName: "Phrase").localizedUppercase)
     titleLabel.textColor = .mainBlueColor
 
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Your transaction history will be available here.")
+    let descriptionLabel = CommonUI.descriptionLabel(text: "transactions_noTxHistoryMessage".localized(tableName: "Phrase"))
 
     let view = UIView()
     view.isHidden = true

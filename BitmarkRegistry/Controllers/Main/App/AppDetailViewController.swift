@@ -23,7 +23,7 @@ class AppDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "DETAILS"
+    title = "Details".localized().localizedUppercase
     navigationItem.backBarButtonItem = UIBarButtonItem()
 
     setupViews()
@@ -100,7 +100,7 @@ extension AppDetailViewController {
       spacing: 8
     )
 
-    let versionTitle = infoLabel("Version:")
+    let versionTitle = infoLabel("Version:".localized())
     versionInfoLabel = infoLabel()
     let versionInfoView = UIStackView(arrangedSubviews: [versionTitle, versionInfoLabel], axis: .horizontal, spacing: 8)
 
@@ -111,9 +111,9 @@ extension AppDetailViewController {
       make.top.equalToSuperview().offset(18)
     }
 
-    whatNewLink = CommonUI.linkButton(title: "WHAT'S NEW?")
-    appStoreReviewLink = CommonUI.linkButton(title: "APP STORE RATING & REVIEW")
-    shareThisAppLink = CommonUI.linkButton(title: "SHARE THIS APP")
+    whatNewLink = CommonUI.linkButton(title: "appDetails_whatsnew".localized(tableName: "Phrase").localizedUppercase)
+    appStoreReviewLink = CommonUI.linkButton(title: "appDetails_appStore&Review".localized(tableName: "Phrase").localizedUppercase)
+    shareThisAppLink = CommonUI.linkButton(title: "appDetails_shareThisApp".localized(tableName: "Phrase").localizedUppercase)
 
     let bottomStackView = UIStackView(
       arrangedSubviews: [whatNewLink, CommonUI.linkSeparateLine(), appStoreReviewLink, CommonUI.linkSeparateLine(), shareThisAppLink],

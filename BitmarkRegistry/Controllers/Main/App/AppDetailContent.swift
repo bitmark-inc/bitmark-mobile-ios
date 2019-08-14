@@ -15,9 +15,9 @@ enum AppDetailContent {
   func title() -> String {
     switch self {
     case .termsOfService:
-      return "TERMS OF SERVICE"
+      return "TermsOfService".localized().localizedUppercase
     case .privacyPolicy:
-      return "PRIVACY POLICY"
+      return "PrivacyPolicy".localized().localizedUppercase
     }
   }
 

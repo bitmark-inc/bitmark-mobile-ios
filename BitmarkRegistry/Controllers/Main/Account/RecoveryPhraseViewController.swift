@@ -20,9 +20,9 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   lazy var screenTitle: String = {
     switch recoveryPhraseSource! {
     case .testRecoveryPhrase:
-      return "RECOVERY PHRASE"
+      return "RecoveryPhrase".localized().localizedUppercase
     case .removeAccess:
-      return "WRITE DOWN RECOVERY PHRASE"
+      return "WriteDownRecoveryPhrase".localized().localizedUppercase
     }
   }()
 
@@ -81,7 +81,7 @@ extension RecoveryPhraseViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Please write down your recovery phrase in the exact sequence below:")
+    let descriptionLabel = CommonUI.descriptionLabel(text: "recoveryPhrases_Description".localized(tableName: "Phrase"))
     descriptionLabel.lineHeightMultiple(1.2)
 
     let mainScrollView = UIScrollView()
@@ -120,13 +120,13 @@ extension RecoveryPhraseViewController {
   fileprivate func setupbuttonsGroup() -> UIStackView {
     switch recoveryPhraseSource! {
     case .testRecoveryPhrase:
-      testRecoveryPhraseButton = CommonUI.blueButton(title: "TEST RECOVERY PHRASE")
-      doneButton = CommonUI.lightButton(title: "DONE")
+      testRecoveryPhraseButton = CommonUI.blueButton(title: "TestRecoveryPhrase".localized().localizedUppercase)
+      doneButton = CommonUI.lightButton(title: "Done".localized().localizedUppercase)
       testRecoveryPhraseButton.addTarget(self, action: #selector(moveToTestRecoveryPhrase), for: .touchUpInside)
       doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
       return UIStackView(arrangedSubviews: [testRecoveryPhraseButton, doneButton], axis: .vertical)
     case .removeAccess:
-      doneButton = CommonUI.blueButton(title: "DONE")
+      doneButton = CommonUI.blueButton(title: "Done".localized().localizedUppercase)
       doneButton.addTarget(self, action: #selector(moveToTestRecoveryPhrase), for: .touchUpInside)
       return UIStackView(arrangedSubviews: [doneButton], axis: .vertical)
     }

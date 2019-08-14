@@ -15,7 +15,7 @@ class PropertyDescriptionInfoViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "REGISTER PROPERTY RIGHTS"
+    title = "registerPropertyRights_title".localized(tableName: "Phrase").localizedUppercase
 
     setupViews()
   }

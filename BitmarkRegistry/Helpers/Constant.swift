@@ -14,8 +14,6 @@ public struct Constant {
 
   // MARK: - Confirmation
   public struct Confirmation {
-    public static let deleteLabel = "Are you sure you want to delete this label?"
-    public static let skipTouchFaceIdAuthentication = "Are you sure you don't want to protect your data with Touch & Face ID?"
     public static let authorizationRequired = (
       title: "Authorization Required",
       requiredSignatureMessage: "requires your digital signature to authorize this action. To prevent abuse, please only authorize actions from trusted websites.",
@@ -26,7 +24,6 @@ public struct Constant {
   // MARK: - Error Messages
   public struct Error {
     public static let createAccount = "There was a problem to create your account."
-    public static let downloadAsset = "Your bitmark isn't ready to download. Please try again later."
     public static let keychainStore = "There was a problem saving data in a safe place."
     public static let removeAccess = "There was a problem from removing the access."
     public static let accessFile = "There was a problem to access your selected file."
@@ -35,7 +32,6 @@ public struct Constant {
     public static let markReadForBitmark = "Error happened while marking this bitmark as read."
     public static let loadTransaction = "Error happened while loading transactions."
     public static let syncTransaction = "There was a problem to sync your lastest transactions."
-    public static let networkError = "Failed to connect to Bitmark. Please check your device's network connection."
     public static let unrecognizedQRCode = (
       title: "Unrecognized QR Code",
       message: "Please scan the QR code again or contact the QR code provider if you’re still experiencing problems."
@@ -43,15 +39,6 @@ public struct Constant {
     // Common UI error
     public static let cannotNavigate = "Cannot go to expected screen. Please try again with new app update."
     public static let loadData = "Error happended while loading data."
-
-    public struct Metadata {
-      public static let duplication = "Duplicated labels! "
-    }
-
-    public struct NumberOfBitmarks {
-      public static let minimumQuantity = "Create property requires a minimum quantity of 1 bitmark issuance."
-      public static let maxinumQuantity = "You cannot issue more than 100 birmarks"
-    }
 
     public struct Permission {
       public static let photo = "Please enable access to photos in privacy setting."

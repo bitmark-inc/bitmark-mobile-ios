@@ -45,7 +45,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "REGISTER PROPERTY RIGHTS"
+    title = "registerPropertyRights_title".localized(tableName: "Phrase").localizedUppercase
     navigationItem.backBarButtonItem = UIBarButtonItem()
 
     setupViews()
@@ -127,17 +127,20 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   @objc func showAssetTypePicker() {
     guard assetR == nil else { return }
     let alertController = UIAlertController()
-    ["Photo", "Video", "File"].forEach { (assetType) in
+    [
+      "Photo", "Video",
+      "File".localized()
+    ].forEach { (assetType) in
       alertController.addAction(title: assetType, handler: selectAssetType)
     }
-    alertController.addAction(title: "Cancel", style: .cancel, handler: selectAssetType)
+    alertController.addAction(title: "Cancel".localized(), style: .cancel, handler: selectAssetType)
     present(alertController, animated: true, completion: nil)
     assetTypeTextField.setStyle(state: .focus)
   }
 
   @objc func selectAssetType(_ sender: UIAlertAction) {
     guard let title = sender.title else { return }
-    if title != "Cancel" {
+    if title != "Cancel".localized() {
       assetTypeTextField.text = sender.title?.uppercased()
     } else if assetTypeTextField.isEmpty {
       assetTypeTextField.setStyle(state: .error)
@@ -408,7 +411,7 @@ extension RegisterPropertyRightsViewController {
       metadataForms.forEach { $0.setStyle(state: .success) }
     } else {
       issueButton.isEnabled = false
-      errorForMetadata.text = Constant.Error.Metadata.duplication
+      errorForMetadata.text = "registerPropertyRights_duplicatedLabels".localized(tableName: "Error")
 
       for form in metadataForms {
         let isDuplicated = duplicatedLabelForms.contains(form)
@@ -427,15 +430,6 @@ extension RegisterPropertyRightsViewController {
         duplicatedForms += forms
       }
     })
-  }
-
-  func errorNumberOfBitmarksToIssue(_ quantity: Int) -> String? {
-    if quantity <= 0 {
-      return Constant.Error.NumberOfBitmarks.minimumQuantity
-    } else if quantity > 100 {
-      return Constant.Error.NumberOfBitmarks.maxinumQuantity
-    }
-    return nil
   }
 
   func validToIssue() -> Bool {
@@ -552,13 +546,13 @@ extension RegisterPropertyRightsViewController {
 
   fileprivate func assetFingerpintView() -> UIView {
     // *** Setup subviews ***
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "ASSET FINGERPRINT")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_assetFingerprintLabel".localized(tableName: "Phrase").localizedUppercase)
 
-    assetFingerprintLabel = CommonUI.infoLabel(text: "Analyzing your file data...")
+    assetFingerprintLabel = CommonUI.infoLabel(text: "")
     assetFingerprintLabel.textColor = .mainBlueColor
 
     let generatedFromLabel = UILabel()
-    generatedFromLabel.text = "GENERATED FROM"
+    generatedFromLabel.text = "registerPropertyRights_generatedFromLabel".localized(tableName: "Phrase")
     generatedFromLabel.font = UIFont(name: "Avenir-Light", size: 14)
     generatedFromLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
@@ -592,15 +586,15 @@ extension RegisterPropertyRightsViewController {
   }
 
   fileprivate func propertyNameView() -> UIStackView {
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "PROPERTY NAME")
-    propertyNameTextField = DesignedTextField(placeholder: "64-CHARACTER MAX")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_propertyNameLabel".localized(tableName: "Phrase").localizedUppercase)
+    propertyNameTextField = DesignedTextField(placeholder: "registerPropertyRights_64characterMax".localized(tableName: "Phrase"))
     propertyNameTextField.returnKeyType = .done
 
     return UIStackView(arrangedSubviews: [fieldLabel, propertyNameTextField], axis: .vertical, spacing: 15)
   }
 
   fileprivate func assetTypeView() -> UIStackView {
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "ASSET TYPE")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_assetTypeLabel".localized(tableName: "Phrase"))
     assetTypeTextField = BoxTextField(placeholder: "SELECT ASSET TYPE")
     assetTypeTextField.setPlaceHolderTextColor(.mainBlueColor)
     let downArrowImageView = UIImageView(image: UIImage(named: "arrow-down-tf"))
@@ -685,13 +679,13 @@ extension RegisterPropertyRightsViewController {
   }
 
   fileprivate func numberOfBitmarksView() -> UIView {
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "NUMBER OF BITMARKS TO ISSUE")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_quantityLabel".localized(tableName: "Phrase"))
     numberOfBitmarksTextField = GMStepper()
     numberOfBitmarksTextField.minimumValue = 1
     numberOfBitmarksTextField.maximumValue = 100
 
     let flexBar = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-    let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(dismissKeyboard))
+    let doneButton = UIBarButtonItem(title: "Done".localized(), style: .done, target: self, action: #selector(dismissKeyboard))
     let bar = UIToolbar()
     bar.sizeToFit()
     bar.items = [flexBar, doneButton]
@@ -726,7 +720,7 @@ extension RegisterPropertyRightsViewController {
     confirmCheckboxView.addSubview(confirmCheckBox)
     confirmCheckBox.snp.makeConstraints({ $0.top.equalToSuperview().offset(5) })
 
-    let description = CommonUI.descriptionLabel(text: "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.")
+    let description = CommonUI.descriptionLabel(text: "registerPropertyRights_ownershipClaimMessage".localized(tableName: "Phrase"))
 
     let confirmView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
     confirmCheckboxView.snp.makeConstraints({ $0.width.equalTo(19) })
@@ -751,8 +745,8 @@ extension RegisterPropertyRightsViewController {
   fileprivate func setupMetadataEditModeButton() {
     metadataEditModeButton = UIButton()
     metadataEditModeButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
-    metadataEditModeButton.setTitle("EDIT", for: .normal)
-    metadataEditModeButton.setTitle("DONE", for: .selected)
+    metadataEditModeButton.setTitle("Edit".localized().localizedUppercase, for: .normal)
+    metadataEditModeButton.setTitle("Done".localized().localizedUppercase, for: .selected)
     metadataEditModeButton.setTitleColor(.mainBlueColor, for: .normal)
     metadataEditModeButton.titleEdgeInsets.top = 2.0
     metadataEditModeButton.isHidden = true

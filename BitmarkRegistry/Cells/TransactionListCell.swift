@@ -34,14 +34,14 @@ class TransactionListCell: UITableViewCell {
   // MARK: - Data Handlers
   func loadWith(_ txR: TransactionR) {
     if txR.isTransferTx() {
-      txTypeLabel.text = "P2P TRANSFER"
-      txTitle.text = "SEND"
+      txTypeLabel.text = "P2P_TRANSFER".localized().localizedUppercase
+      txTitle.text = "Send".localized().localizedUppercase
       accountFromLabel.text = CustomUserDisplay.accountNumber(txR.previousOwner)
       accountToTitleLabel.text = "TO"
       accountToLabel.text = CustomUserDisplay.accountNumber(txR.owner)
     } else {
-      txTypeLabel.text = "PROPERTY ISSUANCE"
-      txTitle.text = "ISSUANCE"
+      txTypeLabel.text = "PropertyIssuance".localized().localizedUppercase
+      txTitle.text = "Issuance".localized().localizedUppercase
       accountFromLabel.text = CustomUserDisplay.accountNumber(txR.owner)
     }
 
@@ -52,7 +52,7 @@ class TransactionListCell: UITableViewCell {
       txTitle.isHidden = true
       completedMarkTitle.isHidden = false
     } else {
-      txTimestampLabel.text = "PENDING..."
+      txTimestampLabel.text = "Pending...".localized().localizedUppercase
       txTitle.isHidden = false
       completedMarkTitle.isHidden = true
     }
@@ -131,7 +131,7 @@ extension TransactionListCell {
   }
 
   fileprivate func setupPropertyNameRow() -> UIStackView {
-    let propertyNameTitle = CommonUI.infoLabel(text: "PROPERTY")
+    let propertyNameTitle = CommonUI.infoLabel(text: "Property".localized().localizedUppercase)
     propertyNameLabel = UILabel()
     propertyNameLabel.font = UIFont(name: "Avenir-Black", size: 14)
 
@@ -153,8 +153,8 @@ extension TransactionListCell {
     accountToTitleLabel = CommonUI.infoLabel()
     let titleStackView = UIStackView(
       arrangedSubviews: [
-        CommonUI.infoLabel(text: "TYPE"),
-        CommonUI.infoLabel(text: "FROM"),
+        CommonUI.infoLabel(text: "Type".localized().localizedUppercase),
+        CommonUI.infoLabel(text: "From".localized().localizedUppercase),
         accountToTitleLabel
       ],
       axis: .vertical, spacing: rowSpacing, alignment: .leading, distribution: .fill

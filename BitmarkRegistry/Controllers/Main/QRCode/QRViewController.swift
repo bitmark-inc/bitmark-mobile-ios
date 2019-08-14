@@ -137,7 +137,7 @@ extension QRViewController {
   fileprivate func setupShareButton() -> UIButton {
     let shareButton = UIButton(type: .system, imageName: "white-share-icon")
     shareButton.titleLabel?.font = UIFont(name: "Avenir-Black", size: 17)
-    shareButton.setTitle("SHARE", for: .normal)
+    shareButton.setTitle("Share".localized().localizedUppercase, for: .normal)
     shareButton.setTitleColor(.white, for: .normal)
     shareButton.tintColor = .white
     shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 13)

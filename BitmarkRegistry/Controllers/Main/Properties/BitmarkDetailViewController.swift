@@ -202,18 +202,17 @@ class BitmarkDetailViewController: UIViewController {
           },
           onError: { _ in
             selfAlert.dismiss(animated: true, completion: { [weak self] in
-              self?.showErrorAlert(message: Constant.Error.downloadAsset)
+              self?.showErrorAlert(message: "noReadyToDownload".localized(tableName: "Error"))
             })
           })
         .disposed(by: self.disposeBag)
-
     }
   }
 
   @objc func tapToDelete(_ sender: UIButton) {
-    let alertController = UIAlertController(title: "This bitmark will be deleted.", message: nil, preferredStyle: .actionSheet)
-    alertController.addAction(title: "Delete", style: .destructive, handler: deleteBitmark)
-    alertController.addAction(title: "Cancel", style: .cancel)
+    let alertController = UIAlertController(title: "deleteBitmark_titleModal".localized(tableName: "Phrase"), message: nil, preferredStyle: .actionSheet)
+    alertController.addAction(title: "Delete".localized(), style: .destructive, handler: deleteBitmark)
+    alertController.addAction(title: "Cancel".localized(), style: .cancel)
     present(alertController, animated: true, completion: nil)
   }
 
@@ -408,9 +407,9 @@ extension BitmarkDetailViewController {
   }
 
   fileprivate func setupActionMenuView() -> UIView {
-    copyIdButton = CommonUI.actionMenuButton(title: "COPY ID")
+    copyIdButton = CommonUI.actionMenuButton(title: "CopyBitmarkId".localized().localizedUppercase)
 
-    copiedToClipboardNotifier = UILabel(text: "Copied to clipboard!")
+    copiedToClipboardNotifier = UILabel(text: "CopiedToClipboard".localized())
     copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
     copiedToClipboardNotifier.textColor = .mainBlueColor
     copiedToClipboardNotifier.textAlignment = .right
@@ -429,9 +428,9 @@ extension BitmarkDetailViewController {
       make.leading.trailing.bottom.equalToSuperview()
     }
 
-    downloadButton = CommonUI.actionMenuButton(title: "DOWNLOAD")
-    transferButton = CommonUI.actionMenuButton(title: "TRANSFER")
-    deleteButton = CommonUI.actionMenuButton(title: "DELETE")
+    downloadButton = CommonUI.actionMenuButton(title: "Download".localized().localizedUppercase)
+    transferButton = CommonUI.actionMenuButton(title: "Transfer".localized().localizedUppercase)
+    deleteButton = CommonUI.actionMenuButton(title: "Delete".localized().localizedUppercase)
 
     let stackview = UIStackView(
       arrangedSubviews: [copyIdView, downloadButton, transferButton, deleteButton],
@@ -463,10 +462,10 @@ extension BitmarkDetailViewController {
     assetNameLabel.font = UIFont(name: "Avenir-Black", size: 18)
     assetNameLabel.numberOfLines = 0
 
-    prefixIssueDateLabel = CommonUI.infoLabel(text: "ISSUED ON")
+    prefixIssueDateLabel = CommonUI.infoLabel(text: "bitmarkDetail_issuedOn".localized(tableName: "Phrase"))
     prefixIssueDateLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
-    pendingIssueDateLabel = CommonUI.infoLabel(text: "Pending")
+    pendingIssueDateLabel = CommonUI.infoLabel(text: "Pending".localized())
     pendingIssueDateLabel.textColor = .dustyGray
 
     issueDateLabel = CommonUI.infoLabel()
@@ -498,7 +497,7 @@ extension BitmarkDetailViewController {
   }
 
   fileprivate func setupProvenanceView() -> UIView {
-    let provenanceTitle = CommonUI.inputFieldTitleLabel(text: "PROVENANCE")
+    let provenanceTitle = CommonUI.inputFieldTitleLabel(text: "Provenance".localized().localizedUppercase)
 
     transactionTableView = UITableView()
     transactionTableView.separatorStyle = .none
@@ -530,8 +529,8 @@ extension BitmarkDetailViewController {
 
   // layout header of provenance - transactions table view
   fileprivate func provenanceTableViewHeader(_ tableView: UITableView) -> UIView {
-    let timestampLabel = CommonUI.infoLabel(text: "TIMESTAMP")
-    let ownerLabel = CommonUI.infoLabel(text: "OWNER")
+    let timestampLabel = CommonUI.infoLabel(text: "Timestamp".localized().localizedUppercase)
+    let ownerLabel = CommonUI.infoLabel(text: "Owner".localized().localizedUppercase)
 
     let stackView = UIStackView(
       arrangedSubviews: [timestampLabel, ownerLabel],

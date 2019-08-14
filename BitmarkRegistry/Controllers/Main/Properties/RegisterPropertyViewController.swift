@@ -42,8 +42,8 @@ class RegisterPropertyViewController: UIViewController {
   // Show actionSheet Alert with option: Choose from Library
   @objc func tapPhotosToRegiter(_ sender: UIButton) {
     let alertController = UIAlertController()
-    alertController.addAction(title: "Choose from Library...", handler: imagePickerHandler)
-    alertController.addAction(title: "Cancel", style: .cancel)
+    alertController.addAction(title: "registerProperty_chooseFromLibrary".localized(tableName: "Phrase"), handler: imagePickerHandler)
+    alertController.addAction(title: "Cancel".localized(), style: .cancel)
     present(alertController, animated: true, completion: nil)
   }
 
@@ -57,7 +57,7 @@ class RegisterPropertyViewController: UIViewController {
     browserFileAlertController = UIAlertController()
     browserFileAlertController.view.addSubview(browserButton)
     browserFileAlertController.addAction(browserAction)
-    browserFileAlertController.addAction(title: "Cancel", style: .cancel)
+    browserFileAlertController.addAction(title: "Cancel".localized(), style: .cancel)
 
     present(browserFileAlertController, animated: true, completion: nil)
   }
@@ -174,7 +174,7 @@ extension RegisterPropertyViewController {
 
     // *** Setup subviews ***
     registerByPhotoButton = registerButton(by: "PHOTO OR VIDEO", imageName: "image-picker")
-    registerByFileButton = registerButton(by: "FILE", imageName: "file-picker")
+    registerByFileButton = registerButton(by: "File".localized().localizedUppercase, imageName: "file-picker")
 
     let registerSelectionView = UIStackView(
       arrangedSubviews: [registerByPhotoButton, registerByFileButton],
@@ -187,10 +187,7 @@ extension RegisterPropertyViewController {
       $0.snp.makeConstraints { $0.width.equalToSuperview() }
     })
 
-    descriptionLabel = CommonUI.descriptionLabel(text: """
-      To register your media and assets, first create an asset record.
-      You can then issue that asset and transfer it. All of this is recorded on the blockchain.
-      """)
+    descriptionLabel = CommonUI.descriptionLabel(text: "registerProperty_message".localized(tableName: "Phrase"))
     descriptionLabel.lineHeightMultiple(1.2)
 
     // *** Setup UI in view ***
