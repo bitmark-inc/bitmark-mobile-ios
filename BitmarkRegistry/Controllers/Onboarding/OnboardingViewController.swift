@@ -40,24 +40,11 @@ class OnboardingViewController: UIViewController {
           }
 
           if let account = account {
-            do {
-              Global.currentAccount = account // track and store currentAccount
-              UserSetting.shared.setAccountVersion(.v2)
-              try KeychainStore.saveToKeychain(account.seed.core)
+            Global.currentAccount = account // track and store currentAccount
+            UserSetting.shared.setAccountVersion(.v2)
 
-              // setup realm db
-              do {
-                try RealmConfig.setupDBForCurrentAccount()
-              } catch {
-                ErrorReporting.report(error: error)
-                self.navigationController?.viewControllers = [SuspendedViewController()]
-              }
-
-              let touchAuthenticationViewController = TouchAuthenticationViewController()
-              self.navigationController?.pushViewController(touchAuthenticationViewController) // redirect to Onboarding Screens
-            } catch {
-              self.showErrorAlert(message: Constant.Error.keychainStore)
-            }
+            let touchAuthenticationViewController = TouchAuthenticationViewController()
+            self.navigationController?.pushViewController(touchAuthenticationViewController) // redirect to Onboarding Screens
           }
         }
       }

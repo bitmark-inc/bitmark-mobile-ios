@@ -11,12 +11,16 @@ import IQKeyboardManagerSwift
 import Sentry
 import RxSwift
 import Intercom
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
   var retryAuthenticationAlert: UIAlertController?
+
+  var registerAPNSSubject = ReplaySubject<String>.create(bufferSize: 1)
+  let disposeBag = DisposeBag()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // init BitmarkSDK environment & api_token
@@ -30,18 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.makeKeyAndVisible()
 
     // Redirect Screen for new user / existing user
-    var initialVC: UIViewController
-    
-    if AccountService.existsCurrentAccount() {
-      initialVC = CustomTabBarViewController()
-    } else {
-      let navigationController = UINavigationController(rootViewController: OnboardingViewController())
-      navigationController.isNavigationBarHidden = true
-      initialVC = navigationController
-    }
-    
-    // Add navigation controller
-    window?.rootViewController = initialVC
+    let navigationVC = UINavigationController(rootViewController: AppNavigationViewController())
+    navigationVC.isNavigationBarHidden = true
+    window?.rootViewController = navigationVC
 
     // Register APNS
     UNUserNotificationCenter.current()
@@ -99,8 +94,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationWillEnterForeground(_ application: UIApplication) {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-    evaluatePolicyWhenUserSetEnable()
-    Global.syncNewDataInStorage()
+    if Global.currentAccount != nil {
+      evaluatePolicyWhenUserSetEnable()
+      Global.syncNewDataInStorage()
+    }
   }
 
   func applicationDidBecomeActive(_ application: UIApplication) {
@@ -118,15 +115,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
     }
 
-    AccountDependencyService.shared.registerAPNSSubject.onNext(token)
-    AccountDependencyService.shared.registerAPNSSubject.onCompleted()
+    registerAPNSSubject.onNext(token)
+    registerAPNSSubject.onCompleted()
   }
 
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
     #if !targetEnvironment(simulator)
-      AccountInjectionService.shared.registerAPNSSubject.onError(error)
+      registerAPNSSubject.onError(error)
     #endif
-    AccountDependencyService.shared.registerAPNSSubject.onCompleted()
+    registerAPNSSubject.onCompleted()
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
@@ -160,24 +157,22 @@ private extension AppDelegate {
    */
   func evaluatePolicyWhenUserSetEnable() {
     guard Global.currentAccount != nil else { return }
-    guard UserSetting.shared.getTouchFaceIdSetting() else {
+    guard UserSetting.shared.getTouchFaceIdSetting() && KeychainStore.isAccountExpired() else {
       AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
       return
     }
     retryAuthenticationAlert?.dismiss(animated: false, completion: nil)
 
-    BiometricAuth().authorizeAccess { [weak self] (errorMessage) in
-      guard let self = self else { return }
-      DispatchQueue.main.async {
-        if let errorMessage = errorMessage {
-          self.retryAuthenticationAlert = UIAlertController(title: "Error", message: errorMessage, preferredStyle: .alert)
-          self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
-          self.retryAuthenticationAlert!.show()
-        } else {
-          AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
-        }
-      }
-    }
+    AccountService.shared.existsCurrentAccount()
+      .subscribe(onSuccess: { (_) in
+        AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
+      }, onError: { [weak self] (error) in
+        guard let self = self else { return }
+        self.retryAuthenticationAlert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
+        self.retryAuthenticationAlert!.show()
+      })
+      .disposed(by: disposeBag)
   }
 
   func showAuthorizationRequiredAlert() {

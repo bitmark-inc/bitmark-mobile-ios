@@ -79,7 +79,6 @@ class LoginViewController: BaseRecoveryPhraseViewController {
       UserSetting.shared.setAccountVersion(seedVersion)
       let account = try AccountService.getAccount(phrases: userInputPhrases)
       Global.currentAccount = account // track and store currentAccount
-      try KeychainStore.saveToKeychain(account.seed.core)
     } catch is RecoverPhrase.RecoverPhraseError {
       displayErrorView(isHidden: false)
       return

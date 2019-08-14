@@ -10,6 +10,7 @@ import UIKit
 import BitmarkSDK
 import Alamofire
 import RealmSwift
+import RxSwift
 
 class BitmarkDetailViewController: UIViewController {
 
@@ -45,6 +46,7 @@ class BitmarkDetailViewController: UIViewController {
   var assetNotificationToken: NotificationToken?
   var bitmarkNotificationToken: NotificationToken?
   var txNotificationToken: NotificationToken?
+  let disposeBag = DisposeBag()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -216,6 +218,12 @@ class BitmarkDetailViewController: UIViewController {
 
   // delete bitmark means transfer bitmark to zero address
   fileprivate func deleteBitmark(_ sender: UIAlertAction) {
+    requireAuthenticationForAction(disposeBag) { [weak self] in
+      self?._deleteBitmark()
+    }
+  }
+
+  fileprivate func _deleteBitmark() {
     guard  let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
       Global.showNoInternetBanner()
       return

@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import RxSwift
 
 class TouchAuthenticationViewController: UIViewController {
 
   // MARK: - Properties
   var enableButton: UIButton!
   var skipButton: UIButton!
+  let disposeBag = DisposeBag()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -25,32 +27,38 @@ class TouchAuthenticationViewController: UIViewController {
   }
 
   @objc func enableTouchId(_ sender: UIButton) {
-    BiometricAuth().authorizeAccess { [weak self] (errorMessage) in
-      guard let self = self else { return }
-
-      DispatchQueue.main.async {
-        guard errorMessage == nil else {
-          let alertController = UIAlertController(title: "Error", message: errorMessage, defaultActionButtonTitle: "Cancel")
-          alertController.addAction(title: "Retry", style: .default, handler: { [weak self] _ in
-            self?.enableTouchId(sender)
-          })
-          self.present(alertController, animated: true, completion: nil)
-          return
-        }
-        // save enable touch/face id for current account and move to main screen
-        UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
-        AccountInjectionService.shared.requestJWTAndIntercomAndAPNSHandler()
-        self.gotoMainScreen()
-      }
-    }
+    UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
+    saveAccountAndProcess()
   }
 
   @objc func skipTouchId(_ sender: UIButton) {
     showConfirmationAlert(message: Constant.Confirmation.skipTouchFaceIdAuthentication) {
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-      AccountInjectionService.shared.requestJWTAndIntercomAndAPNSHandler()
-      self.gotoMainScreen()
+      self.saveAccountAndProcess()
     }
+  }
+
+  fileprivate func saveAccountAndProcess() {
+    guard let currentAccount = Global.currentAccount else { return }
+    KeychainStore.saveToKeychain(currentAccount.seed.core)
+      .observeOn(MainScheduler.instance)
+      .subscribe(
+        onCompleted: { [weak self] in
+          guard let self = self else { return }
+          do {
+            try RealmConfig.setupDBForCurrentAccount()
+            AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
+            let homeTabbarViewController = CustomTabBarViewController()
+            self.navigationController?.setViewControllers([homeTabbarViewController], animated: true)
+          } catch {
+            ErrorReporting.report(error: error)
+            self.navigationController?.viewControllers = [SuspendedViewController()]
+          }
+        },
+        onError: { [weak self] (_) in
+          self?.showErrorAlert(message: Constant.Error.keychainStore)
+        })
+      .disposed(by: self.disposeBag)
   }
 }
 

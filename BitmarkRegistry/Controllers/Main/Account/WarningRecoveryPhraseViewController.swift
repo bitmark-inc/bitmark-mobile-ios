@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import RxSwift
 
 class WarningRecoveryPhraseViewController: UIViewController {
 
   // MARK: - Properties
   var writeDownRecoveryPhraseButton: UIButton!
+  let disposeBag = DisposeBag()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -20,20 +22,19 @@ class WarningRecoveryPhraseViewController: UIViewController {
     title = "RECOVERY PHRASE"
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
-    setupEvents()
+  }
+
+  @objc func gotoRecoveryPhraseVC() {
+    requireAuthenticationForAction(disposeBag) { [weak self] in
+      let recoveryPhraseVC = RecoveryPhraseViewController()
+      recoveryPhraseVC.recoveryPhraseSource = .testRecoveryPhrase
+      self?.navigationController?.pushViewController(recoveryPhraseVC)
+    }
   }
 }
 
 // MARK: - Setup Views/Events
 extension WarningRecoveryPhraseViewController {
-  fileprivate func setupEvents() {
-    writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
-      let recoveryPhraseVC = RecoveryPhraseViewController()
-      recoveryPhraseVC.recoveryPhraseSource = RecoveryPhraseSource.testRecoveryPhrase
-      self.navigationController?.pushViewController(recoveryPhraseVC)
-    })
-  }
-
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
@@ -78,6 +79,7 @@ extension WarningRecoveryPhraseViewController {
     }
 
     writeDownRecoveryPhraseButton = CommonUI.blueButton(title: "WRITE DOWN RECOVERY PHRASE")
+    writeDownRecoveryPhraseButton.addTarget(self, action: #selector(gotoRecoveryPhraseVC), for: .touchUpInside)
 
     // *** Setup UI in view ***
     view.addSubview(mainView)

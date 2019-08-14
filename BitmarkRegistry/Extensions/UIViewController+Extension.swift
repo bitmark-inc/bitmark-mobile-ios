@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import RxSwift
 
 extension UIViewController {
 
@@ -102,12 +103,6 @@ extension UIViewController {
     alertController.show { handler(alertController) }
   }
 
-  // MARK: Navigation
-  func gotoMainScreen() {
-    let homeTabbarViewController = CustomTabBarViewController()
-    self.navigationController?.setViewControllers([homeTabbarViewController], animated: true)
-  }
-
   // MARK: - Support Functions
   func askForPhotosPermission(handler: @escaping (PHAuthorizationStatus) -> Void ) {
     let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
@@ -118,5 +113,19 @@ extension UIViewController {
     } else {
       handler(photoAuthorizationStatus)
     }
+  }
+
+  func requireAuthenticationForAction(_ disposeBag: DisposeBag, action: @escaping () -> Void) {
+    guard UserSetting.shared.getTouchFaceIdSetting() else {
+      action()
+      return
+    }
+
+    BiometricAuth().authorizeAccess()
+      .observeOn(MainScheduler.instance)
+      .subscribe(onCompleted: {
+        action()
+      })
+     .disposed(by: disposeBag)
   }
 }
