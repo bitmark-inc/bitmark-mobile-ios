@@ -75,10 +75,6 @@ class FileCourierService {
     }
   }
 
-  enum DownloadAssetError: Error {
-    case invalidFormat
-  }
-
   static func getDownloadableAssets(receiver: Account) -> Observable<[String]> {
     ErrorReporting.breadcrumbs(info: "getDownloadableAssets for receiver: \(receiver.getAccountNumber())", category: .FileCourier, traceLog: true)
 
@@ -165,6 +161,8 @@ class FileCourierService {
     let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + senderAccountNumber)
     return request.flatMap { (checkFileExistenceRequest) -> Observable<SessionData?> in
       return Observable<SessionData?>.create({ (observer) -> Disposable in
+        var checkFileExistenceRequest = checkFileExistenceRequest
+        checkFileExistenceRequest.httpMethod = "HEAD"
         let task = URLSession.shared.dataTask(with: checkFileExistenceRequest) { (_, response, error) in
           if let error = error {
             ErrorReporting.report(error: error)
@@ -180,7 +178,7 @@ class FileCourierService {
               return
           }
 
-          guard httpResponse.statusCode == 200 else { observer.onNext(nil); return }
+          guard 200..<300 ~= httpResponse.statusCode else { observer.onNext(nil); return }
 
           guard let encryptedKey = responseHeaders["Enc-Data-Key"],
             let algorithm = responseHeaders["Data-Key-Alg"] else {

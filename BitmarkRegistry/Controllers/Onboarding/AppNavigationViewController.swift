@@ -32,6 +32,18 @@ class AppNavigationViewController: UIViewController {
         onSuccess: { (isAccountExisted) in
           let initialVC: UIViewController
           if isAccountExisted {
+            // setup realm db & icloud
+            do {
+              try RealmConfig.setupDBForCurrentAccount()
+              try iCloudService.shared.setupDataFile()
+              DispatchQueue.global(qos: .utility).async {
+                iCloudService.shared.migrateFileData()
+              }
+              AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
+            } catch {
+              ErrorReporting.report(error: error)
+              UIApplication.shared.keyWindow?.rootViewController = SuspendedViewController()
+            }
             initialVC = CustomTabBarViewController()
           } else {
             let navigationController = UINavigationController(rootViewController: OnboardingViewController())

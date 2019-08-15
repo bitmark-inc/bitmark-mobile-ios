@@ -109,7 +109,7 @@ extension AccountViewController {
     }
 
     buttonsGroupStackView.snp.makeConstraints { (make) in
-      make.top.equalTo(accountNumberBox.snp.bottom).offset(45)
+      make.top.equalTo(accountNumberBox.snp.bottom).offset(35)
       make.leading.trailing.equalToSuperview()
     }
 

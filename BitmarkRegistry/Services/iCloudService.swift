@@ -61,9 +61,11 @@ class iCloudService {
   // MARK - Sync Data File
   func setupDataFile() throws {
     guard !fileExists(fileURL: dataURL) else { return }
+    ErrorReporting.breadcrumbs(info: "createDataFile", category: .StoreData, traceLog: true)
     let emptyAssetWithFilenameData: [String: String] = [:]
     let data = try JSONEncoder().encode(emptyAssetWithFilenameData)
     try data.write(to: dataURL, options: [.atomic])
+    ErrorReporting.breadcrumbs(info: "Finished to createDataFile", category: .StoreData, traceLog: true)
   }
 
   func syncDataFromiCloud() {

@@ -49,6 +49,9 @@ class TouchAuthenticationViewController: UIViewController {
             // setup realm db & icloud db
             try RealmConfig.setupDBForCurrentAccount()
             try iCloudService.shared.setupDataFile()
+            DispatchQueue.global(qos: .utility).async {
+              iCloudService.shared.migrateFileData()
+            }
             AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
             let homeTabbarViewController = CustomTabBarViewController()
             self.navigationController?.setViewControllers([homeTabbarViewController], animated: true)

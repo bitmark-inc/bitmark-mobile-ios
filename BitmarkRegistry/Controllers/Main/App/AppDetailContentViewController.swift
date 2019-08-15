@@ -32,7 +32,6 @@ extension AppDetailContentViewController {
 
     // *** Setup UI in view ***
     let txWebURL = appDetailContent.contentLink()
-    print(txWebURL.embedInApp())
     mainView = DesignedWebView(urlString: txWebURL.embedInApp(), hasNavigation: false)
 
     view.addSubview(mainView)

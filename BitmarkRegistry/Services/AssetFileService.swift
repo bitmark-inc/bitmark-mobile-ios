@@ -144,8 +144,8 @@ class AssetFileService {
         .flatMap({ [weak self] (assetFilename) -> Observable<URL> in
           guard let self = self else { return Observable.empty() }
           return assetFilename.isNilOrEmpty
-            ? self.downloadFileFromFileCourier() // 2
-            : self.getDownloadedFileURL(assetFilename: assetFilename) // 3
+            ? self.downloadFileFromFileCourier() // 3
+            : self.getDownloadedFileURL(assetFilename: assetFilename) // 2
         })
     }
   }
