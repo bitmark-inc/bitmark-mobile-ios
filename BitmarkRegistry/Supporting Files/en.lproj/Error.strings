@@ -1,0 +1,10 @@
+/* 
+  Error.strings
+  BitmarkRegistry
+
+  Created by Macintosh on 8/14/19.
+  Copyright © 2019 thuyentruong. All rights reserved.
+*/
+
+"registerPropertyRights_duplicatedLabels" = "Duplicated labels!";
+"noReadyToDownload" = "Your bitmark isn't ready to download. Please try again later.";

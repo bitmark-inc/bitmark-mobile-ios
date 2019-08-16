@@ -25,6 +25,10 @@ class OnboardingViewController: UIViewController {
 
     setupViews()
     setupEvents()
+
+    askForPhotosPermission { (status) in
+      print(status)
+    }
   }
 
   // MARK: - Handlers
@@ -86,8 +90,8 @@ extension OnboardingViewController {
       make.centerY.equalToSuperview().offset(100)
     }
 
-    registerButton = CommonUI.blueButton(title: "CREATE NEW ACCOUNT")
-    loginButton = CommonUI.lightButton(title: "ACCESS EXISTING ACCOUNT")
+    registerButton = CommonUI.blueButton(title: "CreateNewAccount".localized().localizedUppercase)
+    loginButton = CommonUI.lightButton(title: "AccessExistingAccount".localized().localizedUppercase)
     let buttonsGroupStackView = UIStackView(
       arrangedSubviews: [registerButton, loginButton],
       axis: .vertical

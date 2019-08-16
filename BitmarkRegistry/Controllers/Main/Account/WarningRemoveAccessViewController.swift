@@ -19,7 +19,7 @@ class WarningRemoveAccessViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "REMOVE ACCESS"
+    title = "warningRemoveAccess_Title".localized(tableName: "Phrase").localizedUppercase
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
   }
@@ -43,7 +43,7 @@ extension WarningRemoveAccessViewController {
     pageIcon.image = UIImage(named: "Warning")
     pageIcon.contentMode = .scaleAspectFit
 
-    let pageLabel = CommonUI.pageTitleLabel(text: "WARNING!")
+    let pageLabel = CommonUI.pageTitleLabel(text: "Warning!".localized().localizedUppercase)
     pageLabel.textColor = .mainRedColor
 
     let pageTitle = UIStackView(
@@ -59,17 +59,7 @@ extension WarningRemoveAccessViewController {
     warningTextView.isUserInteractionEnabled = true
     warningTextView.isEditable = false
     warningTextView.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 15, right: 20)
-    warningTextView.text = """
-      Your recovery phrase is the only way to access your Bitmark account after signing out.\
-      If you have not already written down your recovery phrase, you must do \
-      so now or you will be permanently lose access to your account and lose ownership of all your digital properties.
-
-      Your recovery phrase is a list of 24 words to write on a piece of paper and keep safe. \
-      Make sure you are in a private location when you write it down.
-
-      This will completely remove access to your account on this device. \
-      Regular data bitmarking and data donations will be paused until you sign back in with your recovery phrase.
-      """
+    warningTextView.text = "warningRemoveAccess_Description".localized(tableName: "Phrase")
 
     let mainView = UIView()
     mainView.addSubview(pageTitle)
@@ -84,7 +74,7 @@ extension WarningRemoveAccessViewController {
       make.leading.trailing.bottom.equalToSuperview()
     }
 
-    writeDownRecoveryPhraseButton = CommonUI.blueButton(title: "WRITE DOWN RECOVERY PHRASE")
+    writeDownRecoveryPhraseButton = CommonUI.blueButton(title: "WriteDownRecoveryPhrase".localized().localizedUppercase)
     writeDownRecoveryPhraseButton.addTarget(self, action: #selector(gotoRecoveryPhraseVC), for: .touchUpInside)
 
     // *** Setup UI in view ***

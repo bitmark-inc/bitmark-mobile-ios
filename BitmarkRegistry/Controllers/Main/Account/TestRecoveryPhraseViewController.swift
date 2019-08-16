@@ -44,9 +44,9 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "TEST RECOVERY PHRASE"
+    title = "TestRecoveryPhrase".localized().localizedUppercase
     navigationItem.setHidesBackButton(true, animated: false)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(doneHandler))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel".localized(), style: .plain, target: self, action: #selector(doneHandler))
     setupViews()
 
     recoveryPhraseCollectionView.register(cellWithClass: TestRecoveryPhraseCell.self)
@@ -219,7 +219,7 @@ extension TestRecoveryPhraseViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Tap the words to put them in the correct order for your recovery phrase:")
+    let descriptionLabel = CommonUI.descriptionLabel(text: "testRecoveryPhrases_Description".localized(tableName: "Phrase"))
     descriptionLabel.lineHeightMultiple(1.2)
 
     let mainScrollView = UIScrollView()
@@ -274,11 +274,11 @@ extension TestRecoveryPhraseViewController {
 
   func setupSuccessResultView() {
     let viewFont = UIFont(name: "Avenir", size: 15)
-    let successTitle = UILabel(text: "Success!")
+    let successTitle = UILabel(text: "Success!".localized())
     successTitle.font = viewFont?.bold
     successTitle.textAlignment = .center
 
-    let message = UILabel(text: "Keep your written copy private in a secure and safe location.")
+    let message = UILabel(text: "testRecoveryPhrases_successMessage.".localized(tableName: "Phrase"))
     message.font = viewFont
     message.numberOfLines = 0
     message.textAlignment = .center
@@ -300,15 +300,15 @@ extension TestRecoveryPhraseViewController {
 
     switch recoveryPhraseSource! {
     case .testRecoveryPhrase:
-      doneButton = CommonUI.blueButton(title: "DONE")
+      doneButton = CommonUI.blueButton(title: "Done".localized().localizedUppercase)
       doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
       successButton = doneButton
     case .removeAccess:
-      removeAccessButton = CommonUI.blueButton(title: "REMOVE ACCESS")
+      removeAccessButton = CommonUI.blueButton(title: "removeAccess".localized().localizedUppercase)
       removeAccessButton.addTarget(self, action: #selector(removeAccess), for: .touchUpInside)
       successButton = removeAccessButton
     }
-    doneButton = CommonUI.blueButton(title: "DONE")
+    doneButton = CommonUI.blueButton(title: "Done".localized().localizedUppercase)
 
     successResultView.addSubview(textView)
     successResultView.addSubview(successButton)
@@ -325,12 +325,12 @@ extension TestRecoveryPhraseViewController {
 
   func setupErrorResultView() {
     let viewFont = UIFont(name: "Avenir", size: 15)
-    let errorTitle = UILabel(text: "Error!")
+    let errorTitle = UILabel(text: "Error!".localized().localizedUppercase)
     errorTitle.font = viewFont?.bold
     errorTitle.textAlignment = .center
     errorTitle.textColor = .mainRedColor
 
-    let message = UILabel(text: "Please try again!")
+    let message = UILabel(text: "PleaseTryAgain!".localized())
     message.font = viewFont
     message.numberOfLines = 0
     message.textAlignment = .center
@@ -349,7 +349,7 @@ extension TestRecoveryPhraseViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    retryButton = CommonUI.blueButton(title: "RETRY")
+    retryButton = CommonUI.blueButton(title: "Retry".localized().localizedUppercase)
     retryButton.addTarget(self, action: #selector(clickRetryWhenError), for: .touchUpInside)
 
     errorResultView.addSubview(textView)

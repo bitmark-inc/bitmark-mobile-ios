@@ -55,9 +55,9 @@ extension YourPropertyCell {
   fileprivate func statusInWord(status: String) -> String {
     switch BitmarkStatus(rawValue: status)! {
     case .issuing:
-      return "REGISTERING..."
+      return "Registering...".localized().localizedUppercase
     case .transferring:
-      return "INCOMING..."
+      return "Incoming...".localized().localizedUppercase
     default:
       return ""
     }

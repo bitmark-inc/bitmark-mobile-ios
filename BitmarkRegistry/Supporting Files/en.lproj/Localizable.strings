@@ -1,0 +1,66 @@
+/* 
+  Localizable.strings
+  BitmarkRegistry
+
+  Created by Macintosh on 8/13/19.
+  Copyright © 2019 thuyentruong. All rights reserved.
+*/
+
+"AccessExistingAccount" = "ACCESS EXISTING ACCOUNT";
+"Account" = "Account";
+"Cancel" = "Cancel";
+"Close" = "Close";
+"CopiedToClipboard" = "Copied to clipboard!";
+"CopyBitmarkId" = "Copy ID";
+"CreateNewAccount" = "Create New Account";
+"dAgo" = "%dd ago";
+"Delete" = "Delete";
+"Details" = "Details";
+"Details »" = "DETAILS »";
+"Done" = "Done";
+"Download" = "Download";
+"Edit" = "Edit";
+"Error" = "Error";
+"Error!" = "Error!";
+"File" = "File";
+"From" = "FROM";
+"Global" = "Global";
+"Incoming..." = "Incoming...";
+"Issuance" = "Issuance";
+"Logout »" = "Log Out »";
+"NeedHelp?" = "Need Help?";
+"No" = "No";
+"OK" = "OK";
+"Owner" = "Owner";
+"P2P_TRANSFER" = "P2P TRANSFER";
+"Pending" = "Pending";
+"Pending..." = "Pending...";
+"PleaseTryAgain!" = "Please try again!";
+"PrivacyPolicy" = "Privacy Policy";
+"Properties" = "Properties";
+"Property" = "Property";
+"PropertyIssuance" = "Property Issuance";
+"Provenance" = "Provenance";
+"RecoveryPhrase" = "Recovery Phrase";
+"Registering..." = "Registering...";
+"Registry" = "Registry";
+"Retry" = "Retry";
+"Send" = "Send";
+"Share" = "Share";
+"Skip" = "Skip";
+"Submit" = "Submit";
+"Success!" = "Success!";
+"TermsOfService" = "Terms Of Service";
+"TestRecoveryPhrase" = "TEST RECOVERY PHRASE";
+"Timestamp" = "Timestamp";
+"Transactions" = "Transactions";
+"Transfer" = "TRANSFER";
+"Type" = "TYPE";
+"Version:" = "Version:";
+"VersionApp" = "VERSION ";
+"Warning!" = "Warning!";
+"WriteDownRecoveryPhrase" = "WRITE DOWN RECOVERY PHRASE";
+"WriteDownRecoveryPhrase »" = "WRITE DOWN RECOVERY PHRASE »";
+"Yes" = "Yes";
+"Yours" = "Yours";
+"Your fingerprint signature is required." = "Your fingerprint signature is required.";

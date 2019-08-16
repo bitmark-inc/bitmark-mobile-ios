@@ -24,7 +24,7 @@ class AccountViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationItem.title = "ACCOUNT"
+    navigationItem.title = "Account".localized().localizedUppercase
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
@@ -79,9 +79,9 @@ extension AccountViewController {
     // *** Setup subviews ***
     let accountNumberBox = setupAccountNumberBox()
 
-    writeDownRecoveryPhraseButton = CommonUI.actionButton(title: "WRITE DOWN RECOVERY PHRASE »")
-    logoutButton = CommonUI.actionButton(title: "LOG OUT »")
-    detailsButton = CommonUI.actionButton(title: "DETAILS »")
+    writeDownRecoveryPhraseButton = CommonUI.actionButton(title: "WriteDownRecoveryPhrase »".localized().localizedUppercase)
+    logoutButton = CommonUI.actionButton(title: "Logout »".localized().localizedUppercase)
+    detailsButton = CommonUI.actionButton(title: "Details »".localized().localizedUppercase)
     let buttonsGroupStackView = UIStackView(
       arrangedSubviews: [
           writeDownRecoveryPhraseButton,
@@ -91,7 +91,7 @@ extension AccountViewController {
       axis: .vertical
     )
 
-    needHelpButton = CommonUI.linkButton(title: "NEED HELP?")
+    needHelpButton = CommonUI.linkButton(title: "NeedHelp?".localized().localizedUppercase)
     let needHelpView = UIStackView(
       arrangedSubviews: [CommonUI.linkSeparateLine(), needHelpButton],
       axis: .vertical,
@@ -125,7 +125,7 @@ extension AccountViewController {
   }
 
   fileprivate func setupAccountNumberBox() -> UIView {
-    let accountNumberTitleLabel = CommonUI.fieldTitleLabel(text: "YOUR BITMARK ACCOUNT NUMBER")
+    let accountNumberTitleLabel = CommonUI.fieldTitleLabel(text: "account_accountNumberLabel".localized(tableName: "Phrase").localizedUppercase)
 
     qrShowButton = UIButton(type: .system, imageName: "qr-code-icon")
     qrShowButton.snp.makeConstraints { $0.width.height.equalTo(19) }
@@ -138,16 +138,13 @@ extension AccountViewController {
     accountNumberLabel.contentHorizontalAlignment = .fill
     accountNumberLabel.underlinedLineColor = .mainBlueColor
 
-    copiedToClipboardNotifier = UILabel(text: "Copied to clipboard!")
+    copiedToClipboardNotifier = UILabel(text: "CopiedToClipboard".localized())
     copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
     copiedToClipboardNotifier.textColor = .mainBlueColor
     copiedToClipboardNotifier.textAlignment = .right
     copiedToClipboardNotifier.isHidden = true
 
-    let accountNumberDescription = CommonUI.descriptionLabel(text: """
-      To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. \
-      This number is public. You can safely share it with others without compromising your security.
-      """)
+    let accountNumberDescription = CommonUI.descriptionLabel(text: "account_message".localized(tableName: "Phrase"))
     accountNumberDescription.lineHeightMultiple(1.2)
 
     let accountNumberBox = UIView()

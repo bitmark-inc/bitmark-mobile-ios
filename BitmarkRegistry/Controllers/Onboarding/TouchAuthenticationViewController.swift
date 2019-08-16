@@ -32,7 +32,7 @@ class TouchAuthenticationViewController: UIViewController {
   }
 
   @objc func skipTouchId(_ sender: UIButton) {
-    showConfirmationAlert(message: Constant.Confirmation.skipTouchFaceIdAuthentication) {
+    showConfirmationAlert(message: "facetouch_id_skipConfirmMessage".localized(tableName: "Phrase")) {
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
       self.saveAccountAndProcess()
     }
@@ -78,10 +78,10 @@ extension TouchAuthenticationViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let titlePageLabel = CommonUI.pageTitleLabel(text: "TOUCH/FACE ID")
+    let titlePageLabel = CommonUI.pageTitleLabel(text: "facetouchid_title".localized(tableName: "Phrase").localizedUppercase)
     titlePageLabel.textColor = .mainBlueColor
 
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Use Touch/Face ID to sign and encrypt your data.")
+    let descriptionLabel = CommonUI.descriptionLabel(text: "facetouchid_title_description".localized(tableName: "Phrase"))
 
     let touchFaceIdImageView = UIImageView()
     touchFaceIdImageView.image = UIImage(named: "touch-face-id")
@@ -95,8 +95,8 @@ extension TouchAuthenticationViewController {
       distribution: .fill
     )
 
-    enableButton = CommonUI.blueButton(title: "ENABLE TOUCH/FACE ID")
-    skipButton = CommonUI.lightButton(title: "SKIP")
+    enableButton = CommonUI.blueButton(title: "facetouchid_enableButton".localized(tableName: "Phrase"))
+    skipButton = CommonUI.lightButton(title: "Skip".localized().localizedUppercase)
     let buttonsGroupStackView = UIStackView(
       arrangedSubviews: [enableButton, skipButton],
       axis: .vertical

@@ -1,0 +1,10 @@
+/* 
+  Error.strings
+  BitmarkRegistry
+
+  Created by Macintosh on 8/14/19.
+  Copyright © 2019 thuyentruong. All rights reserved.
+*/
+
+"registerPropertyRights_duplicatedLabels" = "重複的標籤!";
+"noReadyToDownload" = "你的 bitmark 資產尚未準備好下載，請稍後再試。";

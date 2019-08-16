@@ -38,16 +38,16 @@ class LoginViewController: BaseRecoveryPhraseViewController {
   let recoveryPhraseWords = RecoverPhrase.bip39ENWords
   let numberOfShowWord = 3
   var descriptionText: String {
-    return "Please type all \(numberOfPhrases) words of your recovery phrase in the exact sequence below:"
+    return String.localizedStringWithFormat("signin_writeRecoveryPhraseContentMessage".localized(tableName: "Phrase"), numberOfPhrases)
   }
-  let changeTo24phrases = "Are you using 24 words of recovery phrase?\nTap here to switch the form."
-  let changeTo12phrases = "Are you using 12 words of recovery phrase?\nTap here to switch the form."
+  let changeTo24phrases = String.localizedStringWithFormat("signin_switchFormMessage".localized(tableName: "Phrase"), 24)
+  let changeTo12phrases = String.localizedStringWithFormat("signin_switchFormMessage".localized(tableName: "Phrase"), 12)
 
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "RECOVERY PHRASE SIGN-IN"
+    title = "signin_title".localized(tableName: "Phrase")
     navigationController?.isNavigationBarHidden = false
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
@@ -257,7 +257,7 @@ extension LoginViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    descriptionLabel = CommonUI.descriptionLabel(text: "Please type all 12 words of your recovery phrase in the exact sequence below:")
+    descriptionLabel = CommonUI.descriptionLabel(text: descriptionText)
     descriptionLabel.lineHeightMultiple(1.2)
 
     let mainScrollView = UIScrollView()
@@ -281,7 +281,7 @@ extension LoginViewController {
     setupErrorResultView()
     errorResultView.isHidden = true
 
-    submitButton = SubmitButton(title: "SUBMIT")
+    submitButton = SubmitButton(title: "Submit".localized().localizedUppercase)
 
     changePhraseOptionsButton = UIButton(type: .system)
     changePhraseOptionsButton.setTitle(changeTo24phrases, for: .normal)
@@ -322,12 +322,12 @@ extension LoginViewController {
 
   fileprivate func setupErrorResultView() {
     let viewFont = UIFont(name: "Avenir", size: 15)
-    let errorTitle = UILabel(text: "Wrong Recovery Phrase!")
+    let errorTitle = UILabel(text: "signin_resultWrong".localized(tableName: "Phrase"))
     errorTitle.font = viewFont?.bold
     errorTitle.textAlignment = .center
     errorTitle.textColor = .mainRedColor
 
-    let message = UILabel(text: "Please try again!")
+    let message = UILabel(text: "signin_resultWrongMessage".localized(tableName: "Phrase"))
     message.font = viewFont
     message.textAlignment = .center
     message.textColor = .mainRedColor
@@ -346,7 +346,7 @@ extension LoginViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    retryButton = CommonUI.blueButton(title: "RETRY")
+    retryButton = CommonUI.blueButton(title: "Retry".localized().localizedUppercase)
 
     errorResultView.addSubview(textView)
     errorResultView.addSubview(retryButton)

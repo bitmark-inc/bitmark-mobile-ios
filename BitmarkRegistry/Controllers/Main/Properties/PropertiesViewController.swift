@@ -35,7 +35,7 @@ class PropertiesViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationItem.title = "PROPERTIES"
+    navigationItem.title = "Properties".localized().localizedUppercase
     let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(tapToAddProperty))
     let ownershipScanButton = UIBarButtonItem(image: UIImage(named: "qr-code-scan-icon"), style: .plain, target: self, action: #selector(tapToScanOwnershipCode))
     navigationItem.rightBarButtonItem = addBarButton
@@ -145,7 +145,7 @@ extension PropertiesViewController: QRCodeScannerDelegate {
   // Process qrCode/verificationLink from Chibitronics
   func process(qrCode: String?) {
     Global.verificationLink = nil
-    UIAlertController(title: "", message: "To complete the process,\n please return to the browser", defaultActionButtonTitle: "OK").show()
+    UIAlertController(title: "", message: "To complete the process,\n please return to the browser", defaultActionButtonTitle: "OK".localized()).show()
   }
 }
 
@@ -210,7 +210,10 @@ extension PropertiesViewController {
     navigationController?.navigationBar.shadowImage = UIImage()
 
     // *** Setup subviews ***
-    segmentControl = DesignedSegmentControl(titles: ["YOURS", "GLOBAL"], width: view.frame.width, height: 38)
+    segmentControl = DesignedSegmentControl(
+      titles: ["Yours".localized().localizedUppercase, "Global".localized().localizedUppercase],
+      width: view.frame.width, height: 38
+    )
     yoursView = setupYoursView()
     globalView = DesignedWebView(urlString: Global.ServerURL.registry.embedInApp())
 
@@ -269,15 +272,10 @@ extension PropertiesViewController {
   }
 
   fileprivate func setupYoursEmptyView() -> UIView {
-    let welcomeLabel = CommonUI.pageTitleLabel(text: "WELCOME TO BITMARK!")
+    let welcomeLabel = CommonUI.pageTitleLabel(text: "properties_welcomeLabel".localized(tableName: "Phrase"))
     welcomeLabel.textColor = .mainBlueColor
 
-    let descriptionLabel = CommonUI.descriptionLabel(text: """
-      Bitmark is the property system for establishing value and legal control over the world’s data. \
-      Our mission is to define digital property, defend it, and make it economically divisible.
-
-      Register, track, and trade property rights for your digital assets.
-      """)
+    let descriptionLabel = CommonUI.descriptionLabel(text: "properties_description".localized(tableName: "Phrase"))
 
     let contentView = UIView()
     contentView.addSubview(welcomeLabel)
@@ -292,7 +290,7 @@ extension PropertiesViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    createFirstProperty = CommonUI.blueButton(title: "CREATE FIRST PROPERTY")
+    createFirstProperty = CommonUI.blueButton(title: "properties_createFirstProperty".localized(tableName: "Phrase"))
 
     let view = UIView()
     view.isHidden = true

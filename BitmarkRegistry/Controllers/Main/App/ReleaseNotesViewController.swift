@@ -21,9 +21,9 @@ class ReleaseNotesViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "RELEASE NOTES"
+    title = "appDetails_releaseNotes".localized(tableName: "Phrase").localizedUppercase
     navigationItem.setHidesBackButton(true, animated: false)
-    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .plain, target: self, action: #selector(closeHandler))
+    navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close".localized(), style: .plain, target: self, action: #selector(closeHandler))
 
     setupViews()
     loadData()
@@ -76,8 +76,7 @@ extension ReleaseNotesViewController {
 
     releaseNotesContent = CommonUI.descriptionLabel(text: "___")
 
-    let feedbackDescription = CommonUI.descriptionLabel(text:
-      "We value your feedback, if you have ideas or suggestions on how to make our app even better, please email us at")
+    let feedbackDescription = CommonUI.descriptionLabel(text: "appDetails_supportMessage".localized(tableName: "Phrase"))
     let emailUsLink = UIButton(type: .system)
 
     emailUsLink.setTitle("support@bitmark.com", for: .normal)

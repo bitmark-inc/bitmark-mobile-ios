@@ -35,7 +35,7 @@ class MetadataLabelViewController: UIViewController, UITextFieldDelegate {
     super.viewDidLoad()
 
     title = metadataLabel.isEmpty ? defaultTitle : metadataLabel
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(doneUpdate))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done".localized(), style: .plain, target: self, action: #selector(doneUpdate))
     setupViews()
     setupEvents()
 

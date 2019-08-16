@@ -165,7 +165,7 @@ extension TransferBitmarkViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let transferTitle = CommonUI.inputFieldTitleLabel(text: "TRANSFER BITMARK")
+    let transferTitle = CommonUI.inputFieldTitleLabel(text: "transferBitmark_transferLabel".localized(tableName: "Phrase"))
     scanQRButton = UIButton(type: .system, imageName: "qr-code-scan-icon")
     scanQRButton.snp.makeConstraints { (make) in
       make.width.height.equalTo(19)
@@ -173,15 +173,15 @@ extension TransferBitmarkViewController {
 
     let transferView = UIStackView(arrangedSubviews: [transferTitle, scanQRButton])
 
-    recipientAccountNumberTextfield = DesignedTextField(placeholder: "RECIPIENT BITMARK ACCOUNT NUMBER")
+    recipientAccountNumberTextfield = DesignedTextField(placeholder: "transferBitmark_recipientBitmarkAccountNumber".localized(tableName: "Phrase"))
     recipientAccountNumberTextfield.autocorrectionType = .no
     recipientAccountNumberTextfield.clearButtonMode = .always
     recipientAccountNumberTextfield.returnKeyType = .done
 
-    errorForInvalidAccountNumber = CommonUI.errorFieldLabel(text: "Invalid bitmark account number!")
+    errorForInvalidAccountNumber = CommonUI.errorFieldLabel(text: "transferBitmark_invalidBitmarkAccountNumber".localized(tableName: "Phrase"))
     errorForInvalidAccountNumber.isHidden = true
 
-    let descriptionLabel = CommonUI.descriptionLabel(text: "Enter the Bitmark account number to which you would like to transfer ownership of this property.")
+    let descriptionLabel = CommonUI.descriptionLabel(text: "transferBitmark_description".localized(tableName: "Phrase"))
 
     let mainView = UIView()
     mainView.addSubview(transferView)
@@ -208,7 +208,7 @@ extension TransferBitmarkViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    transferButton = SubmitButton(title: "TRANSFER")
+    transferButton = SubmitButton(title: "Transfer".localized().localizedUppercase)
 
     // *** Setup UI in view ***
     view.addSubview(mainView)

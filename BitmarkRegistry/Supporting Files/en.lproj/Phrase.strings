@@ -1,0 +1,64 @@
+/* 
+  Phrase.strings
+  BitmarkRegistry
+
+  Created by Macintosh on 8/14/19.
+  Copyright © 2019 thuyentruong. All rights reserved.
+*/
+
+"signin_title" = "RECOVERY PHRASE SIGN-IN";
+"signin_writeRecoveryPhraseContentMessage" = "Please type all %d words of your recovery phrase in the exact sequence below:";
+"signin_switchFormMessage" = "Are you using %d words of recovery phrase?\n Tap here to switch the form.";
+"signin_resultWrongMessage" = "Please try again!";
+"signin_resultWrong" = "Wrong Recovery Phrase!";
+
+"facetouchid_title" = "TOUCH/FACE ID";
+"facetouchid_title_description" = "Use Touch/Face ID to sign and encrypt your data.";
+"facetouchid_enableButton" = "ENABLE TOUCH/FACE ID";
+"facetouch_id_skipConfirmMessage" = "Are you sure you don’t want to protect your data with Touch & Face ID?";
+
+"properties_welcomeLabel" = "WELCOME TO BITMARK!";
+"properties_description" = "Bitmark is the property system for establishing value and legal control over the world’s data. Our mission is to define digital property, defend it, and make it economically divisible.\n\nRegister, track, and trade property rights for your digital assets.";
+"properties_createFirstProperty" = "CREATE FIRST PROPERTY";
+
+"transactions_noTxHistoryTitle" = "NO TRANSACTION HISTORY.";
+"transactions_noTxHistoryMessage" = "Your transaction history will be available here.";
+
+"account_accountNumberLabel" = "YOUR BITMARK ACCOUNT NUMBER";
+"account_message" = "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public.\nYou can safely share it with others without compromising your security.";
+
+"registerProperty_message" = "To register your media and assets, first create an asset record.\nYou can then issue that asset and transfer it. All of this is recorded on the blockchain.";
+"registerProperty_chooseFromLibrary" = "Choose from Library...";
+
+"registerPropertyRights_title" = "REGISTER PROPERTY RIGHTS";
+"registerPropertyRights_assetFingerprintLabel" = "ASSET FINGERPRINT";
+"registerPropertyRights_generatedFromLabel" = "GENERATED FROM";
+"registerPropertyRights_propertyNameLabel" = "PROPERTY NAME";
+"registerPropertyRights_64characterMax" = "64-CHARACTER MAX";
+"registerPropertyRights_assetTypeLabel" = "ASSET TYPE";
+"registerPropertyRights_quantityLabel" = "NUMBER OF BITMARKS TO ISSUE";
+"registerPropertyRights_ownershipClaimMessage" = "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.";
+
+"deleteBitmark_titleModal" = "This bitmark will be deleted.";
+
+"bitmarkDetail_issuedOn" = "ISSUED ON";
+"transferBitmark_transferLabel" = "TRANSFER BITMARK";
+"transferBitmark_recipientBitmarkAccountNumber" = "RECIPIENT BITMARK ACCOUNT NUMBER";
+"transferBitmark_invalidBitmarkAccountNumber" = "Invalid bitmark account number!";
+"transferBitmark_description" = "Enter the Bitmark account number to which you would like to send ownership of this property.";
+
+"warningRecoveryPhrase_Title" = "RECOVERY PHRASE";
+"warningRecoveryPhrase_Description" = "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\nWe will show you a list of words to write down on a piece of paper and keep safe.\n\nMake sure you are in a private location before writing down your recovery phrase.";
+
+"warningRemoveAccess_Title" = "REMOVE ACCESS";
+"warningRemoveAccess_Description" = "Your recovery phrase is the only way to access your Bitmark account after signing out. If you have not already written down your recovery phrase, you must do so now or you will be permanently lose access to your account and lose ownership of all your digital properties.\n\nYour recovery phrase is a list of 12 words to write on a piece of paper and keep safe. Make sure you are in a private location when you write it down.\n\nThis will completely remove access to your account on this device. Regular data bitmarking will be paused until you sign back in with your recovery phrase.";
+
+"recoveryPhrases_Description" = "Please write down your recovery phrase in the exact sequence below:";
+"testRecoveryPhrases_Description" = "Tap the words to put them in the correct order for your recovery phrase:";
+"testRecoveryPhrases_successMessage" = "Keep your written copy private in a secure and safe location.";
+
+"appDetails_whatsnew" = "WHAT'S NEW?";
+"appDetails_appStore&Review" = "APP STORE RATING & REVIEW";
+"appDetails_shareThisApp" = "SHARE THIS APP";
+"appDetails_releaseNotes" = "RELEASE NOTES";
+"appDetails_supportMessage" = "We value your feedback, if you have ideas or suggestions on how to make our app even better, please email us at";

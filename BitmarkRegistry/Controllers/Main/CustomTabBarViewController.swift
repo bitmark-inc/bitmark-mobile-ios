@@ -33,7 +33,7 @@ class CustomTabBarViewController: UITabBarController {
   // MARK: - Setup TabBarItems
   fileprivate func setupPropertiesTabBarItem() -> UITabBarItem {
     return UITabBarItem(
-      title: "Properties",
+      title: "Properties".localized(),
       image: UIImage(named: "Properties - inactive"),
       selectedImage: UIImage(named: "Properties - selected")
    )
@@ -41,7 +41,7 @@ class CustomTabBarViewController: UITabBarController {
 
   fileprivate func setupTransactionsTabBarItem() -> UITabBarItem {
     return UITabBarItem(
-      title: "Transactions",
+      title: "Transactions".localized(),
       image: UIImage(named: "Transactions - inactive"),
       selectedImage: UIImage(named: "Transactions - selected")
     )
@@ -49,7 +49,7 @@ class CustomTabBarViewController: UITabBarController {
 
   fileprivate func setupAccountTabBarItem() -> UITabBarItem {
     return UITabBarItem(
-      title: "Account",
+      title: "Account".localized(),
       image: UIImage(named: "Account-inactive"),
       selectedImage: UIImage(named: "AccountSelected")
     )

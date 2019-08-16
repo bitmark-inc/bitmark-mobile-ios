@@ -26,7 +26,7 @@ class BiometricAuth {
         return disposable
       }
 
-      self.context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication, localizedReason: "Your fingerprint signature is required.") { (isSuccess, evaluateError) in
+      self.context.evaluatePolicy(LAPolicy.deviceOwnerAuthentication, localizedReason: "Your fingerprint signature is required.".localized()) { (isSuccess, evaluateError) in
         if isSuccess {
           completable(.completed)
         } else {

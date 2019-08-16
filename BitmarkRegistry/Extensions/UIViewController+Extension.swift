@@ -73,8 +73,8 @@ extension UIViewController {
   }
 
   func showConfirmationAlert(message: String, handler: @escaping () -> Void) {
-    let alertController = UIAlertController(title: "", message: message, defaultActionButtonTitle: "No")
-    alertController.addAction(title: "Yes", style: .default, isEnabled: true, handler: {_ in handler() })
+    let alertController = UIAlertController(title: "", message: message, defaultActionButtonTitle: "No".localized())
+    alertController.addAction(title: "Yes".localized(), style: .default, isEnabled: true, handler: {_ in handler() })
     present(alertController, animated: true, completion: nil)
   }
 
