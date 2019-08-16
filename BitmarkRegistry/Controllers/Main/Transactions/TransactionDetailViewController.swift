@@ -27,13 +27,18 @@ class TransactionDetailViewController: UIViewController {
 
   // MARK: Data Handlers
   fileprivate func extractURL() -> String {
-    if transactionR.isTransferTx() {
-      return Global.ServerURL.registry + "/transaction/" + transactionR.id
-    } else {
+    guard let txType = TransactionType(rawValue: transactionR.txType) else { return "" }
+    switch txType {
+    case .issurance:
       guard let assetR = transactionR.assetR, let blockR = transactionR.blockR else {
         return Global.ServerURL.registry
       }
       return Global.ServerURL.registry + "/issuance/\(blockR.number)/" + assetR.id + "/\(assetR.registrant)"
+
+    case .transfer:
+      return Global.ServerURL.registry + "/transaction/" + transactionR.id
+    default:
+      return ""
     }
   }
 }

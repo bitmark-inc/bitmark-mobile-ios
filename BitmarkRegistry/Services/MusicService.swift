@@ -25,4 +25,23 @@ class MusicService {
       .responseData()
       .expectingObject(ofType: ClaimingAssetInfo.self)
   }
+
+  static func listAllClaimRequests() -> Observable<[ClaimRequest]> {
+    let url = URL(string: Global.ServerURL.mobile + "/api/claim_requests?asset_id=" + assetId)!
+    var apiRequest = URLRequest(url: url)
+
+    do {
+      try apiRequest.attachAuth()
+    } catch {
+      return Observable.error(error)
+    }
+
+    return RxAlamofire.request(apiRequest)
+      .debug()
+      .responseData()
+      .expectingObject(ofType: ClaimRequests.self)
+      .flatMap({ (data) -> Observable<[ClaimRequest]> in
+        return Observable.just(data.my_submitted_claim_requests)
+      })
+  }
 }

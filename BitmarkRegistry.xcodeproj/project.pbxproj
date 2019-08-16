@@ -53,6 +53,10 @@
 		E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B528322BBB8EB00E160E3 /* TransactionCell.swift */; };
 		E24CEC432305180200E8DC08 /* ClaimingAssetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC422305180200E8DC08 /* ClaimingAssetInfo.swift */; };
 		E24CEC442305180200E8DC08 /* ClaimingAssetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC422305180200E8DC08 /* ClaimingAssetInfo.swift */; };
+		E24CEC4623057F5B00E8DC08 /* TransactionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC4523057F5B00E8DC08 /* TransactionType.swift */; };
+		E24CEC4723057F5B00E8DC08 /* TransactionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC4523057F5B00E8DC08 /* TransactionType.swift */; };
+		E24CEC492305862500E8DC08 /* ClaimRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC482305862500E8DC08 /* ClaimRequest.swift */; };
+		E24CEC4A2305862500E8DC08 /* ClaimRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC482305862500E8DC08 /* ClaimRequest.swift */; };
 		E24D795A22CA146D00BC9912 /* BitmarkFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */; };
 		E24D795C22CA149500BC9912 /* AssetFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795B22CA149400BC9912 /* AssetFileService.swift */; };
 		E24D795D22CA169C00BC9912 /* AssetFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795B22CA149400BC9912 /* AssetFileService.swift */; };
@@ -276,6 +280,8 @@
 		E24B528022BBB8E600E160E3 /* MetadataDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetailCell.swift; sourceTree = "<group>"; };
 		E24B528322BBB8EB00E160E3 /* TransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		E24CEC422305180200E8DC08 /* ClaimingAssetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimingAssetInfo.swift; sourceTree = "<group>"; };
+		E24CEC4523057F5B00E8DC08 /* TransactionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionType.swift; sourceTree = "<group>"; };
+		E24CEC482305862500E8DC08 /* ClaimRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRequest.swift; sourceTree = "<group>"; };
 		E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkFileUtil.swift; sourceTree = "<group>"; };
 		E24D795B22CA149400BC9912 /* AssetFileService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetFileService.swift; sourceTree = "<group>"; };
 		E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -636,6 +642,7 @@
 			isa = PBXGroup;
 			children = (
 				E23B33FA22EAEFB100BC2B2A /* AssetType.swift */,
+				E24CEC4523057F5B00E8DC08 /* TransactionType.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -695,6 +702,8 @@
 				E2F866B022D9CEB1002D7059 /* MetadataR.swift */,
 				E2E18C1622DC1E0D004078C3 /* TransactionR.swift */,
 				E2E18C1922DC1F4C004078C3 /* BlockR.swift */,
+				E24CEC422305180200E8DC08 /* ClaimingAssetInfo.swift */,
+				E24CEC482305862500E8DC08 /* ClaimRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1132,6 +1141,7 @@
 				E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E2C62556230A8E0100AE479B /* OnboardingFlow.swift in Sources */,
 				E2FE87452303B6AE00265905 /* MusicBitmarkDetailViewController.swift in Sources */,
+				E24CEC442305180200E8DC08 /* ClaimingAssetInfo.swift in Sources */,
 				E279F84C22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */,
 				58AB59FB22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */,
@@ -1163,6 +1173,7 @@
 				E2C8BE5B23011038004962D3 /* Observable+Extension.swift in Sources */,
 				E20472BC22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,
 				E26D78AE230AC9F10048E7DD /* AccountFlow.swift in Sources */,
+				E24CEC4A2305862500E8DC08 /* ClaimRequest.swift in Sources */,
 				E2ADFD1622BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
 				E2BEC95722AF9880009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
@@ -1172,6 +1183,7 @@
 				E2CEDC7822BB93CC00B5BBF9 /* BitmarkService.swift in Sources */,
 				E24D795D22CA169C00BC9912 /* AssetFileService.swift in Sources */,
 				E25DF1DB22CB3F4700AC270E /* BitmarkStorage.swift in Sources */,
+				E24CEC4723057F5B00E8DC08 /* TransactionType.swift in Sources */,
 				E2BEC96222AFC282009F7DF5 /* Constant.swift in Sources */,
 				E283FC6F22D448160035210D /* UIButton+Extension.swift in Sources */,
 				E205107A22B0A0A000475871 /* SubmitButton.swift in Sources */,
@@ -1243,6 +1255,7 @@
 				E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E2C62555230A8E0100AE479B /* OnboardingFlow.swift in Sources */,
 				E2FE87442303B6AE00265905 /* MusicBitmarkDetailViewController.swift in Sources */,
+				E24CEC432305180200E8DC08 /* ClaimingAssetInfo.swift in Sources */,
 				E279F84B22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2F08CE922C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */,
 				58AB59FA22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */,
@@ -1275,6 +1288,7 @@
 				E2C8BE5A23011038004962D3 /* Observable+Extension.swift in Sources */,
 				E2BEC94F22AF699D009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E26D78AD230AC9F10048E7DD /* AccountFlow.swift in Sources */,
+				E24CEC492305862500E8DC08 /* ClaimRequest.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E20472BB22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,
 				E28F1AFE22CA428000B0256F /* Chacha20Poly1305.swift in Sources */,
@@ -1284,6 +1298,7 @@
 				E21B10FE22DB08CE008D2C92 /* UITableView+Extension.swift in Sources */,
 				E2E798DF229E264100508B69 /* AccountService.swift in Sources */,
 				E2F08CE622C06EA400FFFCCE /* LoginViewController.swift in Sources */,
+				E24CEC4623057F5B00E8DC08 /* TransactionType.swift in Sources */,
 				E2CEDC7722BB93CC00B5BBF9 /* BitmarkService.swift in Sources */,
 				E24D9C5022AE149D0095E11D /* UIView+Extension.swift in Sources */,
 				E283FC6E22D448160035210D /* UIButton+Extension.swift in Sources */,

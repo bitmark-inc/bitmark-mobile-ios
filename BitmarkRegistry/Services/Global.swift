@@ -138,6 +138,11 @@ enum TransactionStatus: String {
   case pending
 }
 
+enum ClaimRequestStatus: String {
+  case accepted
+  case rejected
+}
+
 enum FieldState {
   case `default`, success, error, focus
 }

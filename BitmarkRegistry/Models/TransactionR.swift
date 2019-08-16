@@ -21,6 +21,8 @@ class TransactionR: Object {
   @objc dynamic var previousOwner: String?
   @objc dynamic var status: String = ""
   @objc dynamic var offset: Int64 = 0
+  @objc dynamic var confirmedAt: Date?
+  @objc dynamic var txType: String = ""
 
   override static func primaryKey() -> String? {
     return "id"
@@ -35,17 +37,23 @@ class TransactionR: Object {
     self.previousOwner = tx.previous_owner
     self.status = tx.status
     self.offset = tx.offset
+    self.txType = extractTxType().rawValue
+  }
+
+  convenience init(claimRequest: ClaimRequest) {
+    self.init()
+    self.id = claimRequest.id
+    self.bitmarkId = claimRequest.info.bitmark_id
+    self.owner = claimRequest.from
+    self.status = claimRequest.status
+    self.confirmedAt = claimRequest.created_at
+    self.txType = TransactionType.claimRequest.rawValue
   }
 }
 
 // MARK: - Data Handlers
 extension TransactionR {
-  var confirmedAt: Date? {
-    guard status == TransactionStatus.confirmed.rawValue, let blockR = blockR else { return nil }
-    return blockR.createdAt
-  }
-
-  func isTransferTx() -> Bool {
-    return previousOwner != nil
+  fileprivate func extractTxType() -> TransactionType {
+    return previousOwner == nil ? .issurance : .transfer
   }
 }
