@@ -26,6 +26,14 @@ class MusicService {
       .expectingObject(ofType: ClaimingAssetInfo.self)
   }
 
+  static func assetThumbnail(assetId: String) -> Observable<UIImage?> {
+    let url = URL(string: Global.ServerURL.profiles + "/s/asset/thumbnail?asset_id=" + assetId)!
+    return requestData(.get, url)
+      .flatMap({ (responseData) -> Observable<UIImage?> in
+        return Observable.just(UIImage(data: responseData.1))
+      })
+  }
+
   static func listAllClaimRequests() -> Observable<[ClaimRequest]> {
     let url = URL(string: Global.ServerURL.mobile + "/api/claim_requests?asset_id=" + assetId)!
     var apiRequest = URLRequest(url: url)

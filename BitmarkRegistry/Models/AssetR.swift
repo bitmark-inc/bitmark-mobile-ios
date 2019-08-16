@@ -66,4 +66,13 @@ extension AssetR {
       ErrorReporting.report(error: error)
     }
   }
+
+  func isPochangMusic() -> Bool {
+    return id == MusicService.assetId
+  }
+
+  func composer() -> String? {
+    guard isPochangMusic() else { return nil }
+    return metadata.first(where: { $0.key == "composer" })?.value
+  }
 }

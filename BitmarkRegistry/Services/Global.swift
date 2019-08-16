@@ -100,6 +100,7 @@ class Global {
     public static let keyAccountAsset = Credential.valueForKey(keyName: Constant.InfoKey.keyAccountAssetServerURL)
     public static let fileCourier = Credential.valueForKey(keyName: Constant.InfoKey.fileCourierServerURL)
     public static let registry = Credential.valueForKey(keyName: Constant.InfoKey.registryServerURL)
+    public static let profiles = Credential.valueForKey(keyName: Constant.InfoKey.profilesServerURL)
   }
 }
 

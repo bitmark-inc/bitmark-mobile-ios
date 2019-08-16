@@ -36,6 +36,7 @@ class iCloudService {
   lazy var containerURL: URL = {
     let container: URL = (icloudContainer ?? localContainer).appendingPathComponent(user.getAccountNumber())
     try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true)
+    Global.log.info("ContainerURL: \(container)")
     return container
   }()
   lazy var dataURL: URL = { getDataURL(containerURL) }()
