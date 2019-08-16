@@ -110,6 +110,13 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
   }
 
   fileprivate func performMoveToRegisterPropertyRights() {
+    guard let assetURL = self.assetURL else { return }
+    guard isFileSizeValid(assetURL) else {
+      showErrorAlert(message: "This asset size is too large. The maximum asset size is 100MB.")
+      enableScreen()
+      return
+    }
+
     let assetFingerprint = AssetService.getFingerprintFrom(assetData)
     let assetIfExisted = AssetService.getAsset(from: assetFingerprint)
 
@@ -121,6 +128,17 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
     registerPropertyRightsVC.assetFileName = assetFileName
     registerPropertyRightsVC.assetURL = assetURL
     navigationController?.pushViewController(registerPropertyRightsVC)
+  }
+
+  fileprivate func isFileSizeValid(_ assetURL: URL) -> Bool {
+    do {
+      let fileAttributes = try FileManager.default.attributesOfItem(atPath: assetURL.path)
+      guard let fileSizeinB = fileAttributes[FileAttributeKey.size] as? NSNumber else { return false }
+      return (fileSizeinB.uint64Value / 1024 / 1024) <= 100 // limit 100MB
+    } catch {
+      ErrorReporting.report(error: error)
+      return false
+    }
   }
 }
 
