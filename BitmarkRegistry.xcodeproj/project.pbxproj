@@ -51,6 +51,8 @@
 		E24B528222BBB8E600E160E3 /* MetadataDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B528022BBB8E600E160E3 /* MetadataDetailCell.swift */; };
 		E24B528422BBB8EB00E160E3 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B528322BBB8EB00E160E3 /* TransactionCell.swift */; };
 		E24B528522BBB8EB00E160E3 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B528322BBB8EB00E160E3 /* TransactionCell.swift */; };
+		E24CEC432305180200E8DC08 /* ClaimingAssetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC422305180200E8DC08 /* ClaimingAssetInfo.swift */; };
+		E24CEC442305180200E8DC08 /* ClaimingAssetInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24CEC422305180200E8DC08 /* ClaimingAssetInfo.swift */; };
 		E24D795A22CA146D00BC9912 /* BitmarkFileUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */; };
 		E24D795C22CA149500BC9912 /* AssetFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795B22CA149400BC9912 /* AssetFileService.swift */; };
 		E24D795D22CA169C00BC9912 /* AssetFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24D795B22CA149400BC9912 /* AssetFileService.swift */; };
@@ -87,6 +89,8 @@
 		E26D78AE230AC9F10048E7DD /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26D78AC230AC9F10048E7DD /* AccountFlow.swift */; };
 		E26E7E0E22E1B98E00C3DBAA /* AccountDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26E7E0D22E1B98E00C3DBAA /* AccountDetailViewController.swift */; };
 		E26E7E0F22E1B98E00C3DBAA /* AccountDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26E7E0D22E1B98E00C3DBAA /* AccountDetailViewController.swift */; };
+		E26E7E0E22E1B98E00C3DBAA /* RegistrytDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26E7E0D22E1B98E00C3DBAA /* RegistrytDetailViewController.swift */; };
+		E26E7E0F22E1B98E00C3DBAA /* RegistrytDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26E7E0D22E1B98E00C3DBAA /* RegistrytDetailViewController.swift */; };
 		E279F84822D8382D00164E28 /* AppDetailContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E279F84722D8382D00164E28 /* AppDetailContentViewController.swift */; };
 		E279F84922D8382D00164E28 /* AppDetailContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E279F84722D8382D00164E28 /* AppDetailContentViewController.swift */; };
 		E279F84B22D839FA00164E28 /* AppDetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E279F84A22D839FA00164E28 /* AppDetailContent.swift */; };
@@ -232,6 +236,10 @@
 		E2FE874A2303C09800265905 /* Phrase.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2FE874C2303C09800265905 /* Phrase.strings */; };
 		E2FE87522303FA6900265905 /* Error.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2FE87552303FA6900265905 /* Error.strings */; };
 		E2FE87532303FA6900265905 /* Error.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2FE87552303FA6900265905 /* Error.strings */; };
+		E2FE87412303AEAE00265905 /* MusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FE87402303AEAE00265905 /* MusicService.swift */; };
+		E2FE87422303AEAE00265905 /* MusicService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FE87402303AEAE00265905 /* MusicService.swift */; };
+		E2FE87442303B6AE00265905 /* MusicBitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FE87432303B6AE00265905 /* MusicBitmarkDetailViewController.swift */; };
+		E2FE87452303B6AE00265905 /* MusicBitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2FE87432303B6AE00265905 /* MusicBitmarkDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -267,6 +275,7 @@
 		E24B527D22BBB8B400E160E3 /* TransactionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
 		E24B528022BBB8E600E160E3 /* MetadataDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetadataDetailCell.swift; sourceTree = "<group>"; };
 		E24B528322BBB8EB00E160E3 /* TransactionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		E24CEC422305180200E8DC08 /* ClaimingAssetInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimingAssetInfo.swift; sourceTree = "<group>"; };
 		E24D795922CA146D00BC9912 /* BitmarkFileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkFileUtil.swift; sourceTree = "<group>"; };
 		E24D795B22CA149400BC9912 /* AssetFileService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetFileService.swift; sourceTree = "<group>"; };
 		E24D9C4922ADFE8E0095E11D /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -285,6 +294,7 @@
 		E26D78A9230AC9E60048E7DD /* TransactionsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsFlow.swift; sourceTree = "<group>"; };
 		E26D78AC230AC9F10048E7DD /* AccountFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFlow.swift; sourceTree = "<group>"; };
 		E26E7E0D22E1B98E00C3DBAA /* AccountDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailViewController.swift; sourceTree = "<group>"; };
+		E26E7E0D22E1B98E00C3DBAA /* RegistrytDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrytDetailViewController.swift; sourceTree = "<group>"; };
 		E279F84722D8382D00164E28 /* AppDetailContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailContentViewController.swift; sourceTree = "<group>"; };
 		E279F84A22D839FA00164E28 /* AppDetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailContent.swift; sourceTree = "<group>"; };
 		E27B6D4122D734E800351182 /* AppDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDetailViewController.swift; sourceTree = "<group>"; };
@@ -426,6 +436,8 @@
 		E2FE874E2303C24200265905 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Phrase.strings"; sourceTree = "<group>"; };
 		E2FE87542303FA6900265905 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Error.strings; sourceTree = "<group>"; };
 		E2FE87562303FA6B00265905 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Error.strings"; sourceTree = "<group>"; };
+		E2FE87402303AEAE00265905 /* MusicService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicService.swift; sourceTree = "<group>"; };
+		E2FE87432303B6AE00265905 /* MusicBitmarkDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBitmarkDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -636,8 +648,9 @@
 				E2BEC96322AFC9B0009F7DF5 /* RegisterPropertyRightsViewController.swift */,
 				E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */,
 				E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */,
+				E2FE87432303B6AE00265905 /* MusicBitmarkDetailViewController.swift */,
 				E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */,
-				E26E7E0D22E1B98E00C3DBAA /* AccountDetailViewController.swift */,
+				E26E7E0D22E1B98E00C3DBAA /* RegistrytDetailViewController.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -798,6 +811,7 @@
 				58AB59FC2302644000FF31A3 /* ScreenRouteService.swift */,
 				E2F05AD122F8236400EAD8D9 /* iCloudService.swift */,
 				E296D5D8230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift */,
+				E2FE87402303AEAE00265905 /* MusicService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1117,6 +1131,7 @@
 				E2C5DADF2302779600A71E59 /* AppNavigationViewController.swift in Sources */,
 				E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E2C62556230A8E0100AE479B /* OnboardingFlow.swift in Sources */,
+				E2FE87452303B6AE00265905 /* MusicBitmarkDetailViewController.swift in Sources */,
 				E279F84C22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */,
 				58AB59FB22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */,
@@ -1185,7 +1200,7 @@
 				E2C62550230A8BC300AE479B /* BitmarkStep.swift in Sources */,
 				E2ADFD1B22BC72BF00FC46D8 /* QRViewController.swift in Sources */,
 				E2CEDC7422BB934900B5BBF9 /* YourPropertyCell.swift in Sources */,
-				E26E7E0F22E1B98E00C3DBAA /* AccountDetailViewController.swift in Sources */,
+				E26E7E0F22E1B98E00C3DBAA /* RegistrytDetailViewController.swift in Sources */,
 				E25DF1C522CB3C9700AC270E /* Chacha20Poly1305.swift in Sources */,
 				E2C8BE5E2301438B004962D3 /* AccountDependencyService.swift in Sources */,
 				E29A740122AA49990052C716 /* Global.swift in Sources */,
@@ -1201,6 +1216,7 @@
 				E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */,
 				E2F866AC22D9BDBC002D7059 /* BitmarkR.swift in Sources */,
 				E2DFDA3322B1EB43008B1AD5 /* MetadataForm.swift in Sources */,
+				E2FE87422303AEAE00265905 /* MusicService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1226,6 +1242,7 @@
 				E2C5DADE2302779600A71E59 /* AppNavigationViewController.swift in Sources */,
 				E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */,
 				E2C62555230A8E0100AE479B /* OnboardingFlow.swift in Sources */,
+				E2FE87442303B6AE00265905 /* MusicBitmarkDetailViewController.swift in Sources */,
 				E279F84B22D839FA00164E28 /* AppDetailContent.swift in Sources */,
 				E2F08CE922C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */,
 				58AB59FA22FD6EF000FF31A3 /* AppDelegate+PushNotification.swift in Sources */,
@@ -1296,7 +1313,7 @@
 				E2E798E1229E267500508B69 /* Global.swift in Sources */,
 				E25DF1C122CB3C8600AC270E /* SessionData.swift in Sources */,
 				E2ADFD1A22BC72BF00FC46D8 /* QRViewController.swift in Sources */,
-				E26E7E0E22E1B98E00C3DBAA /* AccountDetailViewController.swift in Sources */,
+				E26E7E0E22E1B98E00C3DBAA /* RegistrytDetailViewController.swift in Sources */,
 				E2C8BE5D2301438B004962D3 /* AccountDependencyService.swift in Sources */,
 				E2CEDC7322BB934900B5BBF9 /* YourPropertyCell.swift in Sources */,
 				E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */,
@@ -1311,6 +1328,8 @@
 				E2C6255B230A958500AE479B /* PropertiesFlow.swift in Sources */,
 				E2F866AB22D9BDBC002D7059 /* BitmarkR.swift in Sources */,
 				E27B6D4222D734E800351182 /* AppDetailViewController.swift in Sources */,
+				E24D9C4E22AE08EF0095E11D /* CustomTabBarViewController.swift in Sources */,
+				E2FE87412303AEAE00265905 /* MusicService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

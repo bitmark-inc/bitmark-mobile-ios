@@ -35,7 +35,10 @@ enum BitmarkStep: Step {
   case deleteBitmarkIsComplete
   case scanOwnershipCode
   case viewBitmarkDetails(bitmarkR: BitmarkR, assetR: AssetR)
-  case viewBitmarkAccountDetails(accountNumber: String)
+  case viewRegistryAccountDetails(accountNumber: String)
+  case viewMusicBitmarkDetails(bitmarkR: BitmarkR, assetR: AssetR)
+  case viewMusicBitmarkDetailsIsComplete
+  case viewRegistryBitmarkDetails(bitmarkId: String)
 
   // Transactions
   case listOfTransactions

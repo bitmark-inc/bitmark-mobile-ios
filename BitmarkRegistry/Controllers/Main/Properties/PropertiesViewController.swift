@@ -156,7 +156,10 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
       showErrorAlert(message: Constant.Error.loadData)
       return
     }
-    steps.accept(BitmarkStep.viewBitmarkDetails(bitmarkR: bitmarkR, assetR: assetR))
+
+    assetR.isPochangMusic()
+      ? steps.accept(BitmarkStep.viewMusicBitmarkDetails(bitmarkR: bitmarkR, assetR: assetR))
+      : steps.accept(BitmarkStep.viewBitmarkDetails(bitmarkR: bitmarkR, assetR: assetR))
 
     guard let cell = tableView.cellForRow(at: indexPath) as? YourPropertyCell else { return }
     cell.setReadStyle(read: true)
