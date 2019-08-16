@@ -50,7 +50,7 @@ class TransactionListCell: UITableViewCell {
       txTitle.text = "CLAIM"
       accountFromLabel.text = CustomUserDisplay.accountNumber(txR.owner)
       accountToTitleLabel.text = "TO"
-      accountToLabel.text = CustomUserDisplay.accountNumber(txR.assetR?.registrant)
+      accountToLabel.text = txR.assetR?.composer() ?? CustomUserDisplay.accountNumber(txR.assetR?.registrant)
     }
 
     propertyNameLabel.text = txR.assetR?.name
@@ -75,6 +75,9 @@ extension TransactionListCell {
     if [TransactionStatus.confirmed.rawValue, ClaimRequestStatus.accepted.rawValue].contains(txStatus) {
       txTitle.textColor = .mainBlueColor
       txTimestampLabel.textColor = .mainBlueColor
+    } else if txStatus == ClaimRequestStatus.rejected.rawValue {
+      completedMarkTitle.image = UIImage(named: "rejected-mark")
+      txTimestampLabel.textColor = .mainRedColor
     } else {
       txTitle.textColor = .dustyGray
       txTimestampLabel.textColor = .dustyGray

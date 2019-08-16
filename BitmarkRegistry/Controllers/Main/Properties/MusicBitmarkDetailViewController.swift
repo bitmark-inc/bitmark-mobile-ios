@@ -135,7 +135,7 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
         },
           onError: { _ in
             selfAlert.dismiss(animated: true, completion: { [weak self] in
-              self?.showErrorAlert(message: Constant.Error.downloadAsset)
+              self?.showErrorAlert(message: "noReadyToDownload".localized(tableName: "Error"))
             })
         })
         .disposed(by: self.disposeBag)
