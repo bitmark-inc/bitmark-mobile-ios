@@ -68,7 +68,7 @@ class AccountDependencyService {
       return
     }
 
-    ErrorReporting.breadcrumbs(info: token, category: "APNS")
+    ErrorReporting.breadcrumbs(info: token, category: .APNS)
     Global.log.info("Registering user notification with token: \(token)")
 
     do {
@@ -137,7 +137,7 @@ extension AccountDependencyService {
   func registerIntercom() -> Observable<String> {
     Intercom.logout()
     let intercomUserId = account.getAccountNumber().intercomUserId()
-    ErrorReporting.breadcrumbs(info: intercomUserId, category: "Intercom")
+    ErrorReporting.breadcrumbs(info: intercomUserId, category: .Intercom)
     Global.log.info("Registering user intercom with intercomUserId: \(intercomUserId)")
 
     return Observable.create { (observer) -> Disposable in
@@ -150,7 +150,7 @@ extension AccountDependencyService {
 
   // Register push notification service with device token to server
   func registerAPNS(token: String, intercomUserId: String) -> Observable<Void> {
-    ErrorReporting.breadcrumbs(info: token, category: "APNS")
+    ErrorReporting.breadcrumbs(info: token, category: .APNS)
     Global.log.info("Registering user notification with token: \(token)")
 
     return Observable<URLRequest>.create { (observer) -> Disposable in

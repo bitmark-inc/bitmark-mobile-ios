@@ -97,6 +97,8 @@
 		E28D437522DEE54300749320 /* CustomUserDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D437322DEE54300749320 /* CustomUserDisplay.swift */; };
 		E28F1AFD22CA428000B0256F /* libsodium-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E28F1AEA22CA428000B0256F /* libsodium-ios.a */; };
 		E28F1AFE22CA428000B0256F /* Chacha20Poly1305.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28F1AFC22CA428000B0256F /* Chacha20Poly1305.swift */; };
+		E296D5D9230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296D5D8230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift */; };
+		E296D5DA230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E296D5D8230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift */; };
 		E297F30322DB34C000BB79F7 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E297F30222DB34C000BB79F7 /* RealmConfig.swift */; };
 		E297F30422DB34C000BB79F7 /* RealmConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E297F30222DB34C000BB79F7 /* RealmConfig.swift */; };
 		E29A73F922AA49990052C716 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27CD23D229E407C00503D6A /* UILabel+Extension.swift */; };
@@ -151,6 +153,8 @@
 		E2C5DADF2302779600A71E59 /* AppNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C5DADD2302779600A71E59 /* AppNavigationViewController.swift */; };
 		E2C8BE5D2301438B004962D3 /* AccountDependencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */; };
 		E2C8BE5E2301438B004962D3 /* AccountDependencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */; };
+		E2C8BE5A23011038004962D3 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5923011038004962D3 /* Observable+Extension.swift */; };
+		E2C8BE5B23011038004962D3 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5923011038004962D3 /* Observable+Extension.swift */; };
 		E2CE153922F3EC2100964B56 /* GMStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153822F3EC2100964B56 /* GMStepper.swift */; };
 		E2CE153A22F3EC2100964B56 /* GMStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153822F3EC2100964B56 /* GMStepper.swift */; };
 		E2CE153C22F4191600964B56 /* PropertyDescriptionInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */; };
@@ -194,6 +198,8 @@
 		E2E798E1229E267500508B69 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E0229E267500508B69 /* Global.swift */; };
 		E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E6229E285600508B69 /* KeychainStore.swift */; };
 		E2E798E9229E2A2300508B69 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */; };
+		E2F05AD222F8236400EAD8D9 /* iCloudService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F05AD122F8236400EAD8D9 /* iCloudService.swift */; };
+		E2F05AD322F8236400EAD8D9 /* iCloudService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F05AD122F8236400EAD8D9 /* iCloudService.swift */; };
 		E2F08CE622C06EA400FFFCCE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */; };
 		E2F08CE722C06EA400FFFCCE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */; };
 		E2F08CE922C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F08CE822C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift */; };
@@ -326,6 +332,7 @@
 		E28F1AFA22CA428000B0256F /* crypto_generichash_blake2b.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_generichash_blake2b.h; sourceTree = "<group>"; };
 		E28F1AFB22CA428000B0256F /* crypto_sign_edwards25519sha512batch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_sign_edwards25519sha512batch.h; sourceTree = "<group>"; };
 		E28F1AFC22CA428000B0256F /* Chacha20Poly1305.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chacha20Poly1305.swift; sourceTree = "<group>"; };
+		E296D5D8230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iCloudService+MigrateData+Extension.swift"; sourceTree = "<group>"; };
 		E297F30222DB34C000BB79F7 /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* BitmarkRegistry Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BitmarkRegistry Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "/Users/mac/code/Bitcoin - Blockchain/Swift/BitmarkRegistry/Dev-Info.plist"; sourceTree = "<absolute>"; };
@@ -348,6 +355,7 @@
 		E2C05CA322AEAC89002B3350 /* RecoveryPhraseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseCell.swift; sourceTree = "<group>"; };
 		E2C5DADD2302779600A71E59 /* AppNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationViewController.swift; sourceTree = "<group>"; };
 		E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDependencyService.swift; sourceTree = "<group>"; };
+		E2C8BE5923011038004962D3 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		E2CE153822F3EC2100964B56 /* GMStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMStepper.swift; sourceTree = "<group>"; };
 		E2CE153B22F4191600964B56 /* PropertyDescriptionInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyDescriptionInfoViewController.swift; sourceTree = "<group>"; };
 		E2CECFC122D3045B00468BFC /* EventDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDelegate.swift; sourceTree = "<group>"; };
@@ -376,6 +384,7 @@
 		E2E798E0229E267500508B69 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E2E798E6229E285600508B69 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
 		E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		E2F05AD122F8236400EAD8D9 /* iCloudService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudService.swift; sourceTree = "<group>"; };
 		E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E2F08CE822C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestRecoveryPhraseLoginCell.swift; sourceTree = "<group>"; };
 		E2F4893422BFC1E00099DA83 /* WarningRemoveAccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningRemoveAccessViewController.swift; sourceTree = "<group>"; };
@@ -693,6 +702,7 @@
 				E2E798E8229E2A2300508B69 /* UIViewController+Extension.swift */,
 				5837C98C22D599C200DA270B /* URLRequest+JWT.swift */,
 				E26C196222E96B9E000B4524 /* SeedVersion+Extension.swift */,
+				E2C8BE5923011038004962D3 /* Observable+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -732,6 +742,8 @@
 				E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */,
 				E25DF1D422CB3F4700AC270E /* SyncStorage */,
 				58AB59FC2302644000FF31A3 /* ScreenRouteService.swift */,
+				E2F05AD122F8236400EAD8D9 /* iCloudService.swift */,
+				E296D5D8230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -844,12 +856,18 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 					E2E798B5229E189E00508B69 = {
 						CreatedOnToolsVersion = 10.2.1;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
 								enabled = 1;
 							};
 						};
@@ -1062,6 +1080,7 @@
 				E29A73FF22AA49990052C716 /* BitmarkSDKService.swift in Sources */,
 				E29CE44E22F0408D00C50CF4 /* ReleaseNotesViewController.swift in Sources */,
 				E24D9C5422AE49510095E11D /* UIView+Extension.swift in Sources */,
+				E2C8BE5B23011038004962D3 /* Observable+Extension.swift in Sources */,
 				E20472BC22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,
 				E2ADFD1622BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
@@ -1104,10 +1123,12 @@
 				E2C8BE5E2301438B004962D3 /* AccountDependencyService.swift in Sources */,
 				E29A740122AA49990052C716 /* Global.swift in Sources */,
 				E29A740222AA49990052C716 /* KeychainStore.swift in Sources */,
+				E296D5DA230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift in Sources */,
 				E22CBF1A22D08C410024E5C3 /* DesignedWebView.swift in Sources */,
 				E26C196422E96B9E000B4524 /* SeedVersion+Extension.swift in Sources */,
 				E2DFDA3422B1EB46008B1AD5 /* MetadataLabelViewController.swift in Sources */,
 				E27B6D4322D734E800351182 /* AppDetailViewController.swift in Sources */,
+				E2F05AD322F8236400EAD8D9 /* iCloudService.swift in Sources */,
 				E2E56F2F22E59488001EB6D3 /* DesignedSegmentControl.swift in Sources */,
 				E283CB0722B3B22000CCB4E5 /* AssetService.swift in Sources */,
 				E2F866AC22D9BDBC002D7059 /* BitmarkR.swift in Sources */,
@@ -1163,6 +1184,7 @@
 				E2BEC94D22AF612C009F7DF5 /* TestRecoveryPhraseCell.swift in Sources */,
 				E29CE44D22F0408D00C50CF4 /* ReleaseNotesViewController.swift in Sources */,
 				E2CECFC222D3045B00468BFC /* EventDelegate.swift in Sources */,
+				E2C8BE5A23011038004962D3 /* Observable+Extension.swift in Sources */,
 				E2BEC94F22AF699D009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E20472BB22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,
@@ -1205,10 +1227,12 @@
 				E2C8BE5D2301438B004962D3 /* AccountDependencyService.swift in Sources */,
 				E2CEDC7322BB934900B5BBF9 /* YourPropertyCell.swift in Sources */,
 				E2C05CA122AEAB7E002B3350 /* RecoveryPhraseViewController.swift in Sources */,
+				E296D5D9230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift in Sources */,
 				E25DF1DA22CB3F4700AC270E /* BitmarkStorage.swift in Sources */,
 				E2E798E7229E285600508B69 /* KeychainStore.swift in Sources */,
 				E26C196322E96B9E000B4524 /* SeedVersion+Extension.swift in Sources */,
 				E24D9C5E22AE5E480095E11D /* UIControl+AddTargetClosure+Extension.swift in Sources */,
+				E2F05AD222F8236400EAD8D9 /* iCloudService.swift in Sources */,
 				E283CB0622B3B1EA00CCB4E5 /* AssetService.swift in Sources */,
 				E2F866AB22D9BDBC002D7059 /* BitmarkR.swift in Sources */,
 				E27B6D4222D734E800351182 /* AppDetailViewController.swift in Sources */,

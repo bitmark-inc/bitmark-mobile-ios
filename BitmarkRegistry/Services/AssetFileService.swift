@@ -9,34 +9,19 @@
 import Foundation
 import BitmarkSDK
 import Alamofire
+import RxSwift
+import RxAlamofire
 
 class AssetFileService {
 
   // MARK: Properties
   let owner: Account
   let assetId: String
-
-  lazy var downloadedFolderURL: URL = {
-    let directoryURL = URL(
-      fileURLWithPath: owner.getAccountNumber() + "/assets/" + assetId + "/downloaded",
-      relativeTo: FileManager.sharedDirectoryURL
-    )
-    try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
-    return directoryURL
-  }()
+  let bag = DisposeBag()
 
   lazy var encryptedFolderURL: URL = {
     let directoryURL = URL(
-      fileURLWithPath: owner.getAccountNumber() + "/assets/" + assetId + "/encrypted",
-      relativeTo: FileManager.sharedDirectoryURL
-    )
-    try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
-    return directoryURL
-  }()
-
-  lazy var downloadingFolderPath: URL = {
-    let directoryURL = URL(
-      fileURLWithPath: owner.getAccountNumber() + "/assets/" + assetId + "/downloading",
+      fileURLWithPath: owner.getAccountNumber() + "/encrypted-assets/" + assetId,
       relativeTo: FileManager.sharedDirectoryURL
     )
     try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
@@ -50,148 +35,185 @@ class AssetFileService {
   }
 
   // MARK: Handlers
-  func moveFileToAppStorage(fileURL: URL) throws {
-    let filename = fileURL.lastPathComponent
-    let destinationURL = downloadedFolderURL.appendingPathComponent(filename)
-
-    try FileManager.default.copyItem(at: fileURL, to: destinationURL)
-  }
-
   /**
    if current user has already uploaded the file into fileCourier: => update access of the file (case 1)
    otherwise, upload new file into fileCourier (case 2)
    */
-  func transferFile(to receiverAccountNumber: String) {
-    AccountKeyService.getEncryptionPublicKey(accountNumber: receiverAccountNumber) { (receiverPublicKey, error) in
-      if let error = error {
-        ErrorReporting.report(error: error)
-        return
-      }
+  func transferFile(to receiverAccountNumber: String, assetFilename: String?) {
+    ErrorReporting.breadcrumbs(info: "sender: \(owner.getAccountNumber())", category: .TransferFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "receiver: \(receiverAccountNumber)", category: .TransferFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .TransferFile, traceLog: true)
 
-      guard let receiverPublicKey = receiverPublicKey else { return }
-      FileCourierService.checkFileExistence(assetId: self.assetId, completion: { [weak self] (currentSessionData, error) in
+    let receiverPubKeyObservable = AccountKeyService.getEncryptionPublicKey(accountNumber: receiverAccountNumber)
+    let checkFileExistenceObservable = FileCourierService.checkFileExistence(senderAccountNumber: owner.getAccountNumber(), assetId: assetId)
+
+    Observable.zip(receiverPubKeyObservable, checkFileExistenceObservable)
+      .subscribe(onNext: { [weak self] (receiverPubKey, currentSessionData) in
         guard let self = self else { return }
-        do {
-          if let currentSessionData = currentSessionData { // case 1
-            let assetEncryption = try AssetEncryption(
-              from: currentSessionData,
-              receiverAccount: self.owner, senderEncryptionPublicKey: self.owner.publicKey
-            )
-            let receiverSessionData = try SessionData.createSessionData(
-              sender: self.owner,
-              sessionKey: assetEncryption.key, algorithm: currentSessionData.algorithm,
-              receiverPublicKey: receiverPublicKey
-            )
-
-            FileCourierService.updateAccessFile(
-              assetId: self.assetId,
-              sender: self.owner,
-              receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
-            )
-          } else { // case 2
-            guard let assetFileURL = try self.getAssetFile() else { return } // ignore if current user hasn't downloaded the file into local yet.
-            let assetFilename = assetFileURL.lastPathComponent
-            let encryptedFileURL = self.encryptedFolderURL.appendingPathComponent(assetFilename)
-
-            let (senderSessionData, receiverSessionData) = try BitmarkFileUtil.encryptFile(
-              fileURL: assetFileURL, destinationURL: encryptedFileURL,
-              sender: self.owner, receiverPublicKey: receiverPublicKey
-            )
-
-            FileCourierService.updateFileToCourierServer(
-              assetId: self.assetId, encryptedFileURL: encryptedFileURL,
-              sender: self.owner, senderSessionData: senderSessionData,
-              receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
-            )
-          }
-        } catch {
-          ErrorReporting.report(error: error)
+        if let currentSessionData = currentSessionData {  // case 1
+          self.updateAccessFile(receiverAccountNumber, receiverPubKey, with: currentSessionData)
+        } else { // case 2
+          self.getDownloadedFileURL(assetFilename: assetFilename)
+            .subscribe(
+              onNext: { [weak self] (assetFileURL) in
+                self?.uploadFile(assetFileURL, receiverAccountNumber, receiverPubKey)
+              },
+              onError: { (error) in
+                ErrorReporting.report(error: error)
+              })
+            .disposed(by: self.bag)
         }
+      }, onError: { (error) in
+        ErrorReporting.report(error: error)
       })
+    .disposed(by: bag)
+  }
+
+  fileprivate func updateAccessFile(_ receiverAccountNumber: String, _ receiverPubKey: Data, with currentSessionData: SessionData) {
+    ErrorReporting.breadcrumbs(info: "updateAccessFile", category: .UpdateAccessFile, traceLog: true)
+    do {
+      let assetEncryption = try AssetEncryption(
+        from: currentSessionData,
+        receiverAccount: owner, senderEncryptionPublicKey: owner.publicKey
+      )
+      let receiverSessionData = try SessionData.createSessionData(
+        sender: owner,
+        sessionKey: assetEncryption.key, algorithm: currentSessionData.algorithm,
+        receiverPublicKey: receiverPubKey
+      )
+
+      FileCourierService.updateAccessFile(
+        assetId: assetId,
+        sender: owner,
+        receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
+      )
+    } catch {
+      ErrorReporting.report(error: error)
     }
   }
 
-  func getDownloadedFileURL(completion: @escaping (URL?, Error?) -> Void) {
-    //  return local asset file if it's existed
-    if let assetFileURL = try? getAssetFile() {
-      completion(assetFileURL, nil)
-      return
+  fileprivate func uploadFile(_ assetFileURL: URL, _ receiverAccountNumber: String, _ receiverPubKey: Data) {
+    ErrorReporting.breadcrumbs(info: "uploadFile", category: .UploadFile, traceLog: true)
+    do {
+      let assetFilename = assetFileURL.lastPathComponent
+      let encryptedFileURL = encryptedFolderURL.appendingPathComponent(assetFilename)
+
+      let (senderSessionData, receiverSessionData) = try BitmarkFileUtil.encryptFile(
+        fileURL: assetFileURL, destinationURL: encryptedFileURL,
+        sender: owner, receiverPublicKey: receiverPubKey
+      )
+
+      FileCourierService.uploadFile(
+        assetId: assetId, encryptedFileURL: encryptedFileURL,
+        sender: owner, senderSessionData: senderSessionData,
+        receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
+      )
+    } catch {
+      ErrorReporting.report(error: error)
     }
+  }
 
-    getSenderAccountNumber { [weak self] (senderAccountNumber, error) in
-      guard let self = self else { return }
-      if let error = error {
-        completion(nil, error); return
-      }
+  /**
+   - Return local asset file if it's existed
+      * when filename was stored in Realm; we use it to parse fileURL and download the file (1)
+      * when filename is empty in Realm (in case the realm data has not synced with data storage);
+        we get filename from data storage and work as above case (2)
+   - otherwise, download file from file courier and return (3)
+   */
+  func getDownloadedFileURL(assetFilename: String?) -> Observable<URL> {
+    ErrorReporting.breadcrumbs(info: "getDownloadedFileURL", category: .DownloadFile, traceLog: true)
 
-      guard let senderAccountNumber = senderAccountNumber else { return }
-      self.downloadFileFromCourierServer(senderAccountNumber: senderAccountNumber, completion: { (downloadedFileURL, error) in
-        if let error = error {
-          completion(nil, error); return
-        }
+    if let assetFilename = assetFilename { // 1
+      let assetFileURL = iCloudService.shared.parseAssetFileURL(assetFilename)
+      return Observable<URL>.create({ (observer) -> Disposable in
+        iCloudService.shared.newDownloadFileObservable
+          .do(afterNext: { (fileURL) in
+            guard fileURL == assetFileURL else { return }
+            iCloudService.shared.saveDataRecord(assetId: self.assetId, filename: assetFilename)
+          })
+          .subscribe(
+            onNext: { observer.onNext($0) },
+            onError: { observer.onError($0) }
+          ).disposed(by: self.bag)
+        iCloudService.shared.downloadFile(fileURL: assetFileURL)
 
-        DispatchQueue.main.async { [weak self] in
-          guard let self = self else { return }
-          FileCourierService.deleteAccessFile(
-            assetId: self.assetId,
-            senderAccountNumber: senderAccountNumber, receiverAccountNumber: self.owner.getAccountNumber()
-          )
-        }
-
-        completion(downloadedFileURL, nil)
+        return Disposables.create()
       })
+    } else {
+      return iCloudService.shared.getFilenameFromiCloudObservable(assetId: assetId)
+        .flatMap({ [weak self] (assetFilename) -> Observable<URL> in
+          guard let self = self else { return Observable.empty() }
+          return assetFilename.isNilOrEmpty
+            ? self.downloadFileFromFileCourier() // 3
+            : self.getDownloadedFileURL(assetFilename: assetFilename) // 2
+        })
     }
   }
 
-  func getSenderAccountNumber(completion: @escaping (String?, Error?) -> Void) {
-    FileCourierService.getDownloadableAssets(receiver: owner) { [weak self] (downloadableFileIds, error) in
-      guard let self = self else { return }
-      guard error == nil else { completion(nil, error); return }
+  typealias ResponseData = (sessionData: SessionData, filename: String, encryptedFileData: Data)
+  func downloadFileFromFileCourier() -> Observable<URL> {
+    ErrorReporting.breadcrumbs(info: "downloadFileFromFileCourier", category: .DownloadFile, traceLog: true)
 
-      if let downloadableFileIds = downloadableFileIds, !downloadableFileIds.isEmpty,
-        let downloadableFileInfo = downloadableFileIds.first(where: { $0.contains(self.assetId) }),
-        let senderAccountNumber = downloadableFileInfo.split(separator: "/").last {
-          completion(String(senderAccountNumber), nil)
-      } else {
-        let error = Global.appError(errorCode: 401, message: "user does not have permission to access asset file in FileCourierServer")
-        completion(nil, error)
-      }
-    }
-  }
+    let senderAccountnumberObservable = FileCourierService.getDownloadableAssets(receiver: self.owner)
+      .flatMap { self.getSenderAccountNumber(from: $0) }
+      .share(replay: 1)
 
-  func downloadFileFromCourierServer(senderAccountNumber: String, completion: @escaping (URL?, Error?) -> Void) {
-    AccountKeyService.getEncryptionPublicKey(accountNumber: senderAccountNumber) { [weak self] (senderPublicKey, error) in
-      guard let self = self else { return }
-      guard let senderPublicKey = senderPublicKey else { return }
-      FileCourierService.downloadFileFromCourierServer(
-        assetId: self.assetId, receiver: self.owner,
-        senderAccountNumber: senderAccountNumber, senderPublicKey: senderPublicKey, completion: { (responseData, error) in
+    let senderPublicKeyObservable = senderAccountnumberObservable
+      .flatMap { AccountKeyService.getEncryptionPublicKey(accountNumber: $0) }
+      .share(replay: 1)
 
-        if let error = error {
-          ErrorReporting.report(error: error)
-          return
-        }
-
-        guard let responseData = responseData else { return }
-        do {
-          let assetEncryption = try AssetEncryption(
-            from: responseData.sessionData, receiverAccount: self.owner, senderEncryptionPublicKey: senderPublicKey)
-          let decryptedData = try assetEncryption.decryptData(responseData.encryptedFileData)
-          let downloadedFileURL = self.downloadedFolderURL.appendingPathComponent(responseData.filename)
-
-          try decryptedData.write(to: downloadedFileURL)
-
-          completion(downloadedFileURL, nil)
-        } catch {
-          completion(nil, error)
-        }
+    let downloadedFileDataObservable = Observable.zip(senderAccountnumberObservable, senderPublicKeyObservable)
+      .flatMap({ [weak self] (senderAccountNumber, senderPublicKey) -> Observable<ResponseData> in
+        guard let self = self else { return Observable.empty() }
+        return FileCourierService.downloadFile(
+          assetId: self.assetId, receiver: self.owner,
+          senderAccountNumber: senderAccountNumber,
+          senderPublicKey: senderPublicKey
+        )
       })
+
+    return Observable<URL>.create { (observer) -> Disposable in
+      Observable.zip(senderAccountnumberObservable, senderPublicKeyObservable, downloadedFileDataObservable)
+        .subscribe(
+          onNext: { [weak self] (senderAccountNumber, senderPublicKey, fileResponseData) in
+            guard let self = self else { return }
+            do {
+              let assetEncryption = try AssetEncryption(
+                from: fileResponseData.sessionData, receiverAccount: self.owner, senderEncryptionPublicKey: senderPublicKey)
+              let decryptedData = try assetEncryption.decryptData(fileResponseData.encryptedFileData)
+              let assetFilename = fileResponseData.filename
+              let downloadedFileURL = iCloudService.shared.parseAssetFileURL(assetFilename)
+              try decryptedData.write(to: downloadedFileURL)
+              iCloudService.shared.saveDataRecord(assetId: self.assetId, filename: assetFilename)
+
+              FileCourierService.deleteAccessFile(
+                assetId: self.assetId,
+                senderAccountNumber: senderAccountNumber, receiverAccountNumber: self.owner.getAccountNumber()
+              )
+
+              observer.onNext(downloadedFileURL)
+            } catch {
+              ErrorReporting.report(error: error)
+              observer.onError(error)
+            }
+          }, onError: { error in
+            ErrorReporting.report(error: error)
+            observer.onError(error)
+        }).disposed(by: self.bag)
+      return Disposables.create()
     }
   }
 
-  // MARK: Support Functions
-  func getAssetFile() throws -> URL? {
-    let directoryContents = try FileManager.default.contentsOfDirectory(at: downloadedFolderURL, includingPropertiesForKeys: nil)
-    return directoryContents.count > 0 ? directoryContents[0] : nil
+  func getSenderAccountNumber(from downloadableFileIds: [String]) -> Observable<String> {
+    ErrorReporting.breadcrumbs(info: "getSenderAccountNumber from downloadableFileIds: \(downloadableFileIds)", category: .DownloadFile, traceLog: true)
+
+    if !downloadableFileIds.isEmpty,
+      let downloadableFileInfo = downloadableFileIds.first(where: { $0.contains(self.assetId) }),
+      let senderAccountNumber = downloadableFileInfo.split(separator: "/").last {
+      return Observable.just(String(senderAccountNumber))
+    } else {
+      let error = Global.appError(errorCode: 401, message: "user does not have permission to access asset file in FileCourierServer")
+      return Observable.error(error)
+    }
   }
 }

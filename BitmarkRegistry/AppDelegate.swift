@@ -44,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        { [weak self] (granted, error) in
         if granted {
           UNUserNotificationCenter.current().delegate = self
+        } else {
+          self?.registerAPNSSubject.onCompleted()
         }
        }
     
@@ -65,14 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let intercomApiKey = Credential.valueForKey(keyName: Constant.InfoKey.intercomAppKey)
     let intercomApiId = Credential.valueForKey(keyName: Constant.InfoKey.intercomAppId)
     Intercom.setApiKey(intercomApiKey, forAppId: intercomApiId)
-
-    // setup realm db
-    do {
-      try RealmConfig.setupDBForCurrentAccount()
-    } catch {
-      ErrorReporting.report(error: error)
-      window?.rootViewController = SuspendedViewController()
-    }
 
     return true
   }

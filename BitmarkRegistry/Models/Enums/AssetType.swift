@@ -44,8 +44,8 @@ enum AssetType: String {
       return assetType
     }
 
-    if let assetFilePath = assetR.assetFilePath {
-      return AssetType.get(fromFilePath: assetFilePath)
+    if let assetFilename = assetR.filename {
+      return AssetType.get(fromFilename: assetFilename)
     }
 
     return .unknown
@@ -62,8 +62,8 @@ enum AssetType: String {
     }
   }
 
-  fileprivate static func get(fromFilePath filepath: String) -> AssetType {
-    let pathExtension: CFString = filepath.pathExtension as CFString
+  fileprivate static func get(fromFilename filename: String) -> AssetType {
+    let pathExtension: CFString = filename.pathExtension as CFString
     guard let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, nil)?.takeRetainedValue() else { return .unknown }
 
     for imageType in FileType.imageTypes {

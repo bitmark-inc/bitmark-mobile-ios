@@ -29,7 +29,7 @@ enum RealmConfig {
     switch self {
     case .user(let accountNumber):
       return Realm.Configuration(
-        fileURL: dbDirectoryURL().appendingPathComponent("main-\(accountNumber).realm"),
+        fileURL: dbDirectoryURL().appendingPathComponent("\(accountNumber).realm"),
         encryptionKey: try getKey(),
         schemaVersion: 1
       )

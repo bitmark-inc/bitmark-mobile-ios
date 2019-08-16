@@ -49,9 +49,16 @@ struct ErrorReporting {
   }
 
   // Log info to sentry
-  public static func breadcrumbs(info msg: String, category: String) {
-    let breadcrumb = Breadcrumb(level: .info, category: category)
+  public static func breadcrumbs(info msg: String, category: ReportCategory, traceLog: Bool = false) {
+    let breadcrumb = Breadcrumb(level: .info, category: category.rawValue)
     breadcrumb.message = msg
     Client.shared?.breadcrumbs.add(breadcrumb)
+
+    if traceLog { Global.log.info(msg) }
   }
+}
+
+enum ReportCategory: String {
+  case BitmarkSDK, APNS, Intercom, FileCourier, OwnershipApprovance, KeyAccountAsset
+  case StoreFile, MigrationData, TransferFile, UpdateAccessFile, UploadFile, DownloadFile, StoreData
 }

@@ -8,12 +8,17 @@
 
 import Foundation
 import BitmarkSDK
+import RxSwift
+import RxAlamofire
+import RxOptional
 
 class AccountKeyService {
 
   static let apiServerURL = Credential.valueForKey(keyName: Constant.InfoKey.apiServerURL)
 
   static func registerEncryptionPublicKey(account: Account, completion: @escaping (Error?) -> Void) {
+    ErrorReporting.breadcrumbs(info: "registerEncryptionPublicKey - user: \(account.getAccountNumber())", category: .KeyAccountAsset, traceLog: true)
+
     do {
       let encryptionPublicKey = account.encryptionKey.publicKey
       let signature = try account.sign(message: encryptionPublicKey)
@@ -41,7 +46,9 @@ class AccountKeyService {
     }
   }
 
-  static func getEncryptionPublicKey(accountNumber: String, completion: @escaping (Data?, Error?) -> Void) {
+  static func getEncryptionPublicKey(accountNumber: String) -> Observable<Data> {
+    ErrorReporting.breadcrumbs(info: "getEncryptionPublicKey - user: \(accountNumber)", category: .KeyAccountAsset, traceLog: true)
+
     let url = URL(string: Global.ServerURL.keyAccountAsset + "/" + accountNumber)!
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
@@ -50,20 +57,13 @@ class AccountKeyService {
       "Content-Type": "application/json"
     ]
 
-    URLSession.shared.dataTask(with: request) { (data, _, error) in
-      if let error = error {
-        completion(nil, error)
-        return
-      }
-
-      guard let data = data else { return }
-      do {
-        let jsonObject = try JSONDecoder().decode([String: String].self, from: data)
-        let encryptionPubkey = jsonObject["encryption_pubkey"]?.hexDecodedData
-        completion(encryptionPubkey, nil)
-      } catch {
-        completion(nil, error)
-      }
-    }.resume()
+    return RxAlamofire.request(request)
+      .debug()
+      .responseData()
+      .expectingObject(ofType: [String: String].self)
+      .flatMap({ (data) -> Observable<Data?> in
+        return Observable.just(data["encryption_pubkey"]?.hexDecodedData)
+      })
+      .errorOnNil()
   }
 }

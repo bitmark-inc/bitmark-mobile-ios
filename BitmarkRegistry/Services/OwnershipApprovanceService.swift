@@ -50,7 +50,7 @@ class OwnershipApprovanceService {
     let signature = try account.sign(message: message.data(using: .utf8)!)
 
     let infoLog = "requestAuthorization for account: \(account.getAccountNumber()); code: \(code)"
-    ErrorReporting.breadcrumbs(info: infoLog, category: "Chibitronics")
+    ErrorReporting.breadcrumbs(info: infoLog, category: .OwnershipApprovance)
     Global.log.info(infoLog)
 
     let params: [String : String] = [

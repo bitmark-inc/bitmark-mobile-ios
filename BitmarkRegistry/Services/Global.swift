@@ -32,6 +32,7 @@ class Global {
     BitmarkStorage._shared = nil
     TransactionStorage._shared = nil
     AccountDependencyService._shared = nil
+    iCloudService._shared = nil
   }
 
   public static func syncNewDataInStorage() {
@@ -86,7 +87,7 @@ class Global {
     return log
   }()
 
-  static func appError(errorCode: Int, message: String) -> NSError {
+  static func appError(errorCode: Int = 400, message: String) -> NSError {
     let hostDomain = "come.bitmark.registry"
     let hostErrorCode = errorCode
 
