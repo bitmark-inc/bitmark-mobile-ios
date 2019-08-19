@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  BitmarkRegistry
+
+  Created by Macintosh on 8/20/19.
+  Copyright © 2019 thuyentruong. All rights reserved.
+*/
+
+NSPhotoLibraryUsageDescription = "Bitmark 想要取用您的照片，進而讓您登記這些照片。";
+NSFaceIDUsageDescription = "為了提高安全性，請開啟臉部辨識。";
+NSCameraUsageDescription = "QR碼掃描需開啟相機權限。";

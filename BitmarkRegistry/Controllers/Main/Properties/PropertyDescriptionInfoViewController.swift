@@ -27,19 +27,11 @@ extension PropertyDescriptionInfoViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let pageTitle = CommonUI.pageTitleLabel(text: "WHAT IS PROPERTY DESCRIPTON?")
+    let pageTitle = CommonUI.pageTitleLabel(text: "propertyDescriptionInfo_title".localized(tableName: "Phrase").localizedUppercase)
     pageTitle.textColor = .mainBlueColor
     pageTitle.textAlignment = .center
 
-    let descriptionText = CommonUI.descriptionLabel(text: """
-      The property description consists of KEY & VALUE, it helps to store and categorize your data in the property system. \
-      This gives anyone the ability to transact and identify the data without seeing the data itself, \
-      thus turning the data economically meaningful.
-
-      Property description will be permanently recorded in the Bitmark blockchain and cannot be modified or deleted after this register is confirmed.
-
-      Here is an example of a property description for a jornalist’s file:
-      """)
+    let descriptionText = CommonUI.descriptionLabel(text: "propertyDescriptionInfo_message".localized(tableName: "Phrase"))
 
     let exampleTable = UIImageView(image: UIImage(named: "property-description-example"))
     exampleTable.contentMode = .scaleAspectFit

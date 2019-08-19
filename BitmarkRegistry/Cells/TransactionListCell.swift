@@ -43,13 +43,13 @@ class TransactionListCell: UITableViewCell {
       txTypeLabel.text = "P2P_TRANSFER".localized().localizedUppercase
       txTitle.text = "Send".localized().localizedUppercase
       accountFromLabel.text = CustomUserDisplay.accountNumber(txR.previousOwner)
-      accountToTitleLabel.text = "TO"
+      accountToTitleLabel.text = "To".localized().localizedUppercase
       accountToLabel.text = CustomUserDisplay.accountNumber(txR.owner)
     case .claimRequest:
-      txTypeLabel.text = "CLAIM REQUEST"
-      txTitle.text = "CLAIM"
+      txTypeLabel.text = "ClaimRequest".localized().localizedUppercase
+      txTitle.text = "ClaimRequest".localized().localizedUppercase
       accountFromLabel.text = CustomUserDisplay.accountNumber(txR.owner)
-      accountToTitleLabel.text = "TO"
+      accountToTitleLabel.text = "To".localized().localizedUppercase
       accountToLabel.text = txR.assetR?.composer() ?? CustomUserDisplay.accountNumber(txR.assetR?.registrant)
     }
 

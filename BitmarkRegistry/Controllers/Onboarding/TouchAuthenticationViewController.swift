@@ -29,7 +29,9 @@ class TouchAuthenticationViewController: UIViewController, Stepper {
 
   @objc func enableTouchId(_ sender: UIButton) {
     UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
-    saveAccountAndProcess()
+    requireAuthenticationForAction(disposeBag) { [weak self] in
+      self?.saveAccountAndProcess()
+    }
   }
 
   @objc func skipTouchId(_ sender: UIButton) {
@@ -62,7 +64,7 @@ class TouchAuthenticationViewController: UIViewController, Stepper {
           }
         },
         onError: { [weak self] (_) in
-          self?.showErrorAlert(message: Constant.Error.keychainStore)
+          self?.showErrorAlert(message: "keychainStore".localized(tableName: "Error"))
         })
       .disposed(by: self.disposeBag)
   }

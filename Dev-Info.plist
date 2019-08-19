@@ -10,20 +10,20 @@
 		<string>bmk-lljpzkhqdkzmblhg</string>
 		<key>FILE_COURIER_SERVER_URL</key>
 		<string>https://file-courier.test.bitmark.com</string>
+		<key>INTERCOM_APP_ID</key>
+		<string>ejkeunzw</string>
+		<key>INTERCOM_APP_KEY</key>
+		<string>ios_sdk-73c4808d20211944196736d561a405f6ffcdaded</string>
 		<key>KEY_ACCOUNT_ASSET_SERVER_URL</key>
 		<string>https://key.test.bitmarkaccountassets.com</string>
 		<key>MOBILE_SERVER_URL</key>
 		<string>https://bm.test.bitmark.com</string>
-		<key>REGISTRY_SERVER_URL</key>
-		<string>https://registry.test.bitmark.com</string>
 		<key>PROFILES_SERVER_URL</key>
 		<string>https://profiles.test.bitmark.com</string>
+		<key>REGISTRY_SERVER_URL</key>
+		<string>https://registry.test.bitmark.com</string>
 		<key>ZERO_ADDRESS</key>
 		<string>dw9MQXcC5rJZb3QE1nz86PiQAheMP1dx9M3dr52tT8NNs14m33</string>
-		<key>INTERCOM_APP_KEY</key>
-		<string>ios_sdk-73c4808d20211944196736d561a405f6ffcdaded</string>
-		<key>INTERCOM_APP_ID</key>
-		<string>ejkeunzw</string>
 	</dict>
 	<key>AppGroupId</key>
 	<string>group.com.bitmark.localstorage</string>
@@ -42,7 +42,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.60.2</string>
+	<string>1.60.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

@@ -170,8 +170,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     guard assetRVariable.value == nil else { return }
     let alertController = UIAlertController()
     [
-      "Photo", "Video",
-      "File".localized()
+      "Photo".localized(), "Video".localized(),"File".localized()
     ].forEach { (assetType) in
       alertController.addAction(title: assetType, handler: selectAssetType)
     }
@@ -303,7 +302,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     let quantity = Int(numberOfBitmarksTextField.value)
 
-    showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
+    showIndicatorAlert(message: "sendingTransaction".localized(tableName: "Message")) { (selfAlert) in
       do {
         var assetId: String = ""
         // *** Register Asset if asset has not existed; then issue ***
@@ -339,7 +338,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()
 
-          self.showQuickMessageAlert(message: Constant.Success.issue) { [weak self] in
+          self.showQuickMessageAlert(message: "successIssue".localized(tableName: "Message")) { [weak self] in
             self?.steps.accept(BitmarkStep.issueIsComplete)
           }
         })
@@ -549,7 +548,7 @@ extension RegisterPropertyRightsViewController {
       make.width.equalToSuperview().offset(-40)
     }
 
-    issueButton = SubmitButton(title: "REGISTER")
+    issueButton = SubmitButton(title: "Register".localized().localizedUppercase)
 
     view.addSubview(scrollView)
     view.addSubview(issueButton)
@@ -646,7 +645,7 @@ extension RegisterPropertyRightsViewController {
 
   fileprivate func assetTypeView() -> UIStackView {
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_assetTypeLabel".localized(tableName: "Phrase"))
-    assetTypeTextField = BoxTextField(placeholder: "SELECT ASSET TYPE")
+    assetTypeTextField = BoxTextField(placeholder: "registerPropertyRights_selectAssetType".localized(tableName: "Phrase").localizedUppercase)
     assetTypeTextField.setPlaceHolderTextColor(.mainBlueColor)
     let downArrowImageView = UIImageView(image: UIImage(named: "arrow-down-tf"))
     downArrowImageView.frame = CGRect(x: 0, y: 0, width: downArrowImageView.size.width + 20.0, height: downArrowImageView.size.height)
@@ -668,11 +667,11 @@ extension RegisterPropertyRightsViewController {
 
   fileprivate func metadataView() -> UIView {
     // *** Setup subviews ***
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "PROPERTY DESCRIPTION")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_propertyDescription".localized(tableName: "Phrase").localizedUppercase)
 
     let fieldInfoLink = UIButton(type: .system)
     fieldInfoLink.contentHorizontalAlignment = .leading
-    fieldInfoLink.setTitle("What is property description? >>", for: .normal)
+    fieldInfoLink.setTitle("registerPropertyRights_whatIsPropertyDescription? >>".localized(tableName: "Phrase"), for: .normal)
     fieldInfoLink.setTitleColor(.mainBlueColor, for: .normal)
     fieldInfoLink.titleLabel?.font = UIFont(name: "Avenir", size: 13)
     fieldInfoLink.addTarget(self, action: #selector(goToPropertyDescriptionInfo), for: .touchUpInside)
@@ -706,13 +705,13 @@ extension RegisterPropertyRightsViewController {
 
     fieldInfoLink.snp.makeConstraints { (make) in
       make.top.equalTo(fieldLabel.snp.bottom).offset(-6)
-      make.leading.trailing.equalToSuperview()
+      make.leading.equalToSuperview()
     }
 
     separateLine.snp.makeConstraints { (make) in
-      make.top.equalTo(fieldInfoLink.snp.bottom).offset(-9)
+      make.top.equalTo(fieldInfoLink.snp.bottom).offset(-8)
       make.leading.equalToSuperview()
-      make.width.equalTo(170)
+      make.width.equalTo(fieldInfoLink.snp.width).offset(-20)
       make.height.equalTo(0.5)
     }
 
@@ -761,7 +760,7 @@ extension RegisterPropertyRightsViewController {
   }
 
   fileprivate func ownershipClaimView() -> UIStackView {
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "RIGHTS CLAIM")
+    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_rightsClaimTitle".localized(tableName: "Phrase").localizedUppercase)
     confirmCheckBox = BEMCheckBox(frame: CGRect(x: 0, y: 0, width: 19, height: 19))
     confirmCheckBox.boxType = .square
     confirmCheckBox.animationDuration = 0.2
@@ -771,7 +770,7 @@ extension RegisterPropertyRightsViewController {
     confirmCheckboxView.addSubview(confirmCheckBox)
     confirmCheckBox.snp.makeConstraints({ $0.top.equalToSuperview().offset(5) })
 
-    let description = CommonUI.descriptionLabel(text: "registerPropertyRights_ownershipClaimMessage".localized(tableName: "Phrase"))
+    let description = CommonUI.descriptionLabel(text: "registerPropertyRights_rightsClaimMessage".localized(tableName: "Phrase"))
 
     let confirmView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
     confirmCheckboxView.snp.makeConstraints({ $0.width.equalTo(19) })
@@ -802,7 +801,7 @@ extension RegisterPropertyRightsViewController {
     metadataAddButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
     metadataAddButton.setImage(UIImage(named: "add_label"), for: .normal)
     metadataAddButton.setImage(UIImage(named: "add_label_disabled"), for: .disabled)
-    metadataAddButton.setTitle("ADD NEW FIELD", for: .normal)
+    metadataAddButton.setTitle("registerPropertyRights_addNewField".localized(tableName: "Phrase").localizedUppercase, for: .normal)
     metadataAddButton.setTitleColor(.mainBlueColor, for: .normal)
     metadataAddButton.setTitleColor(.silver, for: .disabled)
     metadataAddButton.centerTextAndImage(spacing: 5.0)

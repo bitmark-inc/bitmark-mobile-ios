@@ -28,10 +28,6 @@ class OnboardingViewController: UIViewController, Stepper {
 
     setupViews()
     setupEvents()
-
-    askForPhotosPermission { (status) in
-      print(status)
-    }
   }
 
   // MARK: - Handlers
@@ -54,7 +50,7 @@ class OnboardingViewController: UIViewController, Stepper {
         }
       }
     } catch {
-      showErrorAlert(message: Constant.Error.createAccount)
+      showErrorAlert(message: "createAccount".localized(tableName: "Error"))
       ErrorReporting.report(error: error)
     }
   }

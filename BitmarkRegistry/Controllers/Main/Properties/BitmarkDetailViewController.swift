@@ -77,7 +77,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
     do {
       try BitmarkStorage.shared().markRead(for: bitmarkR)
     } catch {
-      showErrorAlert(message: Constant.Error.markReadForBitmark)
+      ErrorReporting.report(error: error)
     }
   }
 
@@ -192,7 +192,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
       return
     }
 
-    showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
+    showIndicatorAlert(message: "preparingToExport".localized(tableName: "Message")) { (selfAlert) in
       self.assetFileService.getDownloadedFileURL(assetFilename: self.assetR.filename)
         .subscribe(
           onNext: { (downloadedFileURL) in
@@ -213,7 +213,10 @@ class BitmarkDetailViewController: UIViewController, Stepper {
   }
 
   @objc func tapToDelete(_ sender: UIButton) {
-    let alertController = UIAlertController(title: "deleteBitmark_titleModal".localized(tableName: "Phrase"), message: nil, preferredStyle: .actionSheet)
+    let alertController = UIAlertController(
+      title: "deleteBitmark_titleModal".localized(tableName: "Phrase"),
+      message: nil, preferredStyle: .actionSheet
+    )
     alertController.addAction(title: "Delete".localized(), style: .destructive, handler: deleteBitmark)
     alertController.addAction(title: "Cancel".localized(), style: .cancel)
     present(alertController, animated: true, completion: nil)
@@ -233,7 +236,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
     }
 
     let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
-    showIndicatorAlert(message: Constant.Message.deletingBitmark) { (selfAlert) in
+    showIndicatorAlert(message: "deletingBitmark".localized(tableName: "Message")) { (selfAlert) in
       do {
         _ = try BitmarkService.directTransfer(
           account: Global.currentAccount!,
@@ -244,7 +247,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()
 
-          self.showQuickMessageAlert(message: Constant.Success.delete) { [weak self] in
+          self.showQuickMessageAlert(message: "successDelete".localized(tableName: "Message")) { [weak self] in
             self?.steps.accept(BitmarkStep.deleteBitmarkIsComplete)
           }
         })
