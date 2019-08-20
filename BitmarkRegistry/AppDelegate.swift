@@ -10,6 +10,8 @@ import UIKit
 import IQKeyboardManagerSwift
 import Sentry
 import RxSwift
+import RxFlow
+import RxCocoa
 import Intercom
 import UserNotifications
 
@@ -21,8 +23,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var registerAPNSSubject = ReplaySubject<String>.create(bufferSize: 1)
   let disposeBag = DisposeBag()
+  var coordinator = FlowCoordinator()
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    window = UIWindow(frame: UIScreen.main.bounds)
+    guard let window = self.window else { return false }
+    window.makeKeyAndVisible()
+
     // init BitmarkSDK environment & api_token
     BitmarkSDKService.setupConfig()
 
@@ -30,13 +37,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     IQKeyboardManager.shared.shouldResignOnTouchOutside = true
     IQKeyboardManager.shared.enableAutoToolbar = false
 
-    window = UIWindow(frame: UIScreen.main.bounds)
-    window?.makeKeyAndVisible()
+    let appFlow = AppFlow()
+    Flows.whenReady(flow1: appFlow) { (root) in
+      window.rootViewController = root
+    }
 
-    // Redirect Screen for new user / existing user
-    let navigationVC = UINavigationController(rootViewController: AppNavigationViewController())
-    navigationVC.isNavigationBarHidden = true
-    window?.rootViewController = navigationVC
+    self.coordinator.coordinate(flow: appFlow, with: AppStepper())
 
     // Register APNS
     UNUserNotificationCenter.current()
@@ -131,9 +137,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       if Global.currentAccount == nil {
         showAuthorizationRequiredAlert()
       } else {
-        let navigationController = UINavigationController(rootViewController: CustomTabBarViewController())
-        navigationController.isNavigationBarHidden = true
-        window?.rootViewController = navigationController
+        let propertiesVC = ScreenRouteService.routeToPropertiesVC()
+        propertiesVC?.tapToScanOwnershipCode()
       }
     default:
       return false

@@ -9,8 +9,11 @@
 import UIKit
 import SnapKit
 import SwifterSwift
+import RxFlow
+import RxCocoa
 
-class OnboardingViewController: UIViewController {
+class OnboardingViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var registerButton: UIButton!
@@ -46,9 +49,7 @@ class OnboardingViewController: UIViewController {
           if let account = account {
             Global.currentAccount = account // track and store currentAccount
             UserSetting.shared.setAccountVersion(.v2)
-
-            let touchAuthenticationViewController = TouchAuthenticationViewController()
-            self.navigationController?.pushViewController(touchAuthenticationViewController) // redirect to Onboarding Screens
+            self.steps.accept(BitmarkStep.askingTouchFaceIdAuthentication)
           }
         }
       }
@@ -63,8 +64,8 @@ class OnboardingViewController: UIViewController {
 extension OnboardingViewController {
   fileprivate func setupEvents() {
     registerButton.addTarget(self, action: #selector(createNewAccount), for: .touchUpInside)
-    loginButton.addAction(for: .touchUpInside) {
-      self.navigationController?.pushViewController(LoginViewController())
+    loginButton.addAction(for: .touchUpInside) { [weak self] in
+      self?.steps.accept(BitmarkStep.testLogin)
     }
   }
 

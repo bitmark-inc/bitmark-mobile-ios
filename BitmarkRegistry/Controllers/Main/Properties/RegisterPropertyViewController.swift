@@ -8,11 +8,13 @@
 
 import UIKit
 import Photos
+import RxFlow
+import RxCocoa
 
-class RegisterPropertyViewController: UIViewController {
+class RegisterPropertyViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
-  var assetData: Data!
   var assetFileName: String?
   var assetURL: URL?
 
@@ -36,6 +38,10 @@ class RegisterPropertyViewController: UIViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     enableScreen()
+  }
+
+  deinit {
+    disabledScreen.removeFromSuperview()
   }
 
   // MARK: - Handlers
@@ -91,11 +97,8 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
     disabledScreen.isHidden = false
 
     picker.dismiss(animated: true) { [weak self] in
-      guard let self = self else { return }
-
-      // get image
-      guard let image = info[.originalImage] as? UIImage else { return }
-      self.assetData = image.pngData()
+      guard let self = self, let assetURL = info[.imageURL] as? URL else { return }
+      self.assetURL = assetURL
 
       // get image name
       if let asset = info[.phAsset] as? PHAsset,
@@ -103,31 +106,19 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
         self.assetFileName = assetResource.originalFilename
       }
 
-      self.assetURL = info[.imageURL] as? URL
-
       self.performMoveToRegisterPropertyRights()
     }
   }
 
   fileprivate func performMoveToRegisterPropertyRights() {
-    guard let assetURL = self.assetURL else { return }
+    guard let assetURL = self.assetURL, let assetFileName = assetFileName else { return }
     guard isFileSizeValid(assetURL) else {
       showErrorAlert(message: "This asset size is too large. The maximum asset size is 100MB.")
       enableScreen()
       return
     }
 
-    let assetFingerprint = AssetService.getFingerprintFrom(assetData)
-    let assetIfExisted = AssetService.getAsset(from: assetFingerprint)
-
-    let registerPropertyRightsVC = RegisterPropertyRightsViewController()
-    registerPropertyRightsVC.hidesBottomBarWhenPushed = true
-    registerPropertyRightsVC.assetR = assetIfExisted
-    registerPropertyRightsVC.assetData = assetData
-    registerPropertyRightsVC.assetFingerprint = assetFingerprint
-    registerPropertyRightsVC.assetFileName = assetFileName
-    registerPropertyRightsVC.assetURL = assetURL
-    navigationController?.pushViewController(registerPropertyRightsVC)
+    steps.accept(BitmarkStep.createPropertyRights(assetURL: assetURL, assetFilename: assetFileName))
   }
 
   fileprivate func isFileSizeValid(_ assetURL: URL) -> Bool {
@@ -160,13 +151,6 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
       let fileCoordinator = NSFileCoordinator()
       var error: NSError?
       fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { (newURL) in
-        do {
-          self.assetData = try Data(contentsOf: newURL)
-        } catch {
-          self.showErrorAlert(message: Constant.Error.accessFile)
-          self.enableScreen()
-          return
-        }
         self.assetFileName = newURL.lastPathComponent
         self.assetURL = newURL
         self.performMoveToRegisterPropertyRights()
@@ -284,7 +268,7 @@ extension RegisterPropertyViewController {
 
     guard let currentWindow: UIWindow = UIApplication.shared.keyWindow else { return }
     currentWindow.addSubview(disabledScreen)
-    currentWindow.addSubview(activityIndicator)
+    disabledScreen.addSubview(activityIndicator)
     disabledScreen.isHidden = true
 
     disabledScreen.snp.makeConstraints { (make) in

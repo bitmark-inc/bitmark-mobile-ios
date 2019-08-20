@@ -9,8 +9,11 @@
 import UIKit
 import SnapKit
 import RxSwift
+import RxFlow
+import RxCocoa
 
-class AppNavigationViewController: UIViewController {
+class AppNavigationViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   let disposeBag = DisposeBag()
@@ -30,7 +33,6 @@ class AppNavigationViewController: UIViewController {
       .observeOn(MainScheduler.instance)
       .subscribe(
         onSuccess: { (isAccountExisted) in
-          let initialVC: UIViewController
           if isAccountExisted {
             // setup realm db & icloud
             do {
@@ -44,14 +46,10 @@ class AppNavigationViewController: UIViewController {
               ErrorReporting.report(error: error)
               UIApplication.shared.keyWindow?.rootViewController = SuspendedViewController()
             }
-            initialVC = CustomTabBarViewController()
+            self.steps.accept(BitmarkStep.dashboardIsRequired)
           } else {
-            let navigationController = UINavigationController(rootViewController: OnboardingViewController())
-            navigationController.isNavigationBarHidden = true
-            initialVC = navigationController
+            self.steps.accept(BitmarkStep.onboardingIsRequired)
           }
-
-          UIApplication.shared.keyWindow?.rootViewController = initialVC
         },
         onError: { [weak self] (error) in
           guard let self = self else { return }

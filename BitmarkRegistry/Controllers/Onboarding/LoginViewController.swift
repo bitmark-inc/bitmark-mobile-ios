@@ -10,8 +10,11 @@ import UIKit
 import SnapKit
 import BitmarkSDK
 import IQKeyboardManagerSwift
+import RxFlow
+import RxCocoa
 
-class LoginViewController: BaseRecoveryPhraseViewController {
+class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   fileprivate var _numericOrders: [Int]?
@@ -48,10 +51,13 @@ class LoginViewController: BaseRecoveryPhraseViewController {
     super.viewDidLoad()
 
     title = "signin_title".localized(tableName: "Phrase")
-    navigationController?.isNavigationBarHidden = false
-    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.isNavigationBarHidden = true
   }
 
   // MARK: - Handlers
@@ -92,8 +98,7 @@ class LoginViewController: BaseRecoveryPhraseViewController {
       return
     }
 
-    let touchAuthenticationVC = TouchAuthenticationViewController()
-    navigationController?.pushViewController(touchAuthenticationVC)
+    steps.accept(BitmarkStep.askingTouchFaceIdAuthentication)
   }
 
   // clear text in all textfields and hide errorResultView

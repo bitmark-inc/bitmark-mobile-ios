@@ -7,25 +7,19 @@
 //
 
 import UIKit
+import RxFlow
+import RxCocoa
 
 enum RecoveryPhraseSource {
   case testRecoveryPhrase
   case removeAccess
 }
 
-class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
+class RecoveryPhraseViewController: BaseRecoveryPhraseViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var recoveryPhraseSource: RecoveryPhraseSource!
-  lazy var screenTitle: String = {
-    switch recoveryPhraseSource! {
-    case .testRecoveryPhrase:
-      return "RecoveryPhrase".localized().localizedUppercase
-    case .removeAccess:
-      return "WriteDownRecoveryPhrase".localized().localizedUppercase
-    }
-  }()
-
   private var recoveryPhrases = [String]()
   var testRecoveryPhraseButton: UIButton!
   var doneButton: UIButton!
@@ -34,7 +28,6 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = screenTitle
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
 
@@ -52,13 +45,16 @@ class RecoveryPhraseViewController: BaseRecoveryPhraseViewController {
 
   // MARK: - Handlers
   @objc func moveToTestRecoveryPhrase(_ sender: UIButton) {
-    let testRecoveryPhraseVC = TestRecoveryPhraseViewController()
-    testRecoveryPhraseVC.recoveryPhraseSource = recoveryPhraseSource
-    navigationController?.pushViewController(testRecoveryPhraseVC)
+    switch recoveryPhraseSource! {
+    case .testRecoveryPhrase:
+      steps.accept(BitmarkStep.testRecoveryPhrase)
+    case .removeAccess:
+      steps.accept(BitmarkStep.testRecoveryPhraseToRemoveAccess)
+    }
   }
 
   @objc func doneHandler(_ sender: UIButton) {
-    navigationController?.popToRootViewController(animated: true)
+    steps.accept(BitmarkStep.viewRecoveryPhraseIsComplete)
   }
 }
 

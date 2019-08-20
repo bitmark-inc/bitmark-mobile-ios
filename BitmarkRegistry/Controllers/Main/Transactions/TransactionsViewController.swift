@@ -9,8 +9,11 @@
 import UIKit
 import BitmarkSDK
 import RealmSwift
+import RxFlow
+import RxCocoa
 
-class TransactionsViewController: UIViewController {
+class TransactionsViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var emptyView: UIView!
@@ -87,10 +90,7 @@ extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let transactionR = transactionRs[indexPath.row]
-    let txDetailVC = TransactionDetailViewController()
-    txDetailVC.hidesBottomBarWhenPushed = true
-    txDetailVC.transactionR = transactionR
-    navigationController?.pushViewController(txDetailVC)
+    steps.accept(BitmarkStep.viewTransactionDetails(transactionR: transactionR))
   }
 }
 

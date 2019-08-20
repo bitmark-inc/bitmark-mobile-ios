@@ -11,8 +11,11 @@ import BitmarkSDK
 import Alamofire
 import RealmSwift
 import RxSwift
+import RxFlow
+import RxCocoa
 
-class BitmarkDetailViewController: UIViewController {
+class BitmarkDetailViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var bitmarkR: BitmarkR!
@@ -242,7 +245,7 @@ class BitmarkDetailViewController: UIViewController {
           Global.syncNewDataInStorage()
 
           self.showQuickMessageAlert(message: Constant.Success.delete) { [weak self] in
-            self?.navigationController?.popToRootViewController(animated: true)
+            self?.steps.accept(BitmarkStep.deleteBitmarkIsComplete)
           }
         })
       } catch {
@@ -294,9 +297,7 @@ extension BitmarkDetailViewController: UITableViewDelegate {
     guard let cell = tableView.cellForRow(at: indexPath) as? TransactionCell,
           cell.isConfirmed else { return }
     let txR = transactionRs[indexPath.row]
-    let accountDetailVC = AccountDetailViewController()
-    accountDetailVC.accountNumber = txR.owner
-    navigationController?.pushViewController(accountDetailVC)
+    steps.accept(BitmarkStep.viewBitmarkAccountDetails(accountNumber: txR.owner))
   }
 }
 
@@ -347,10 +348,7 @@ extension BitmarkDetailViewController {
 
   fileprivate func performMoveToTransferBitmark() {
     tapToToggleActionMenu(menuBarButton)
-    let transferBitmarkVC = TransferBitmarkViewController()
-    transferBitmarkVC.assetR = assetR
-    transferBitmarkVC.bitmarkId = bitmarkR.id
-    navigationController?.pushViewController(transferBitmarkVC)
+    steps.accept(BitmarkStep.viewTransferBitmark(bitmarkId: bitmarkR.id, assetR: assetR))
   }
 
   fileprivate func setupViews() {

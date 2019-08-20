@@ -8,8 +8,11 @@
 
 import UIKit
 import Intercom
+import RxFlow
+import RxCocoa
 
-class AccountViewController: UIViewController {
+class AccountViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var accountNumberLabel: UIButton!
@@ -57,15 +60,15 @@ extension AccountViewController {
     qrShowButton.addTarget(self, action: #selector(showReceiverQR), for: .touchUpInside)
 
     writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
-      self.navigationController?.pushViewController(WarningRecoveryPhraseViewController())
+      self.steps.accept(BitmarkStep.viewWarningWriteDownRecoveryPhrase)
     })
 
-    logoutButton.addAction(for: .touchUpInside) {
-      self.navigationController?.pushViewController(WarningRemoveAccessViewController())
+    logoutButton.addAction(for: .touchUpInside) { [unowned self] in
+      self.steps.accept(BitmarkStep.viewWarningRemoveAccess)
     }
 
-    detailsButton.addAction(for: .touchUpInside) {
-      self.navigationController?.pushViewController(AppDetailViewController())
+    detailsButton.addAction(for: .touchUpInside) { [unowned self] in
+      self.steps.accept(BitmarkStep.viewAppDetails)
     }
 
     needHelpButton.addAction(for: .touchUpInside) {

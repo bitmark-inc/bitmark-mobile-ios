@@ -13,16 +13,22 @@ import Alamofire
 import BEMCheckBox
 import IQKeyboardManagerSwift
 import RxSwift
+import RxFlow
+import RxCocoa
 
-class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
+class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
-  var assetR: AssetR?
-  var assetData: Data!
-  var assetFingerprint: String!
   var assetFileName: String!
-  var assetURL: URL?
+  var assetURL: URL!
+  lazy var assetURLObservable: Observable<URL> = {
+    return Observable.just(assetURL!)
+  }()
 
+  var assetDataObservable: Observable<Data>!
+  var assetFingerprintObservable: Observable<String>!
+  var assetRVariable = BehaviorRelay<AssetR?>(value: nil)
   var scrollView: UIScrollView!
   var assetFingerprintLabel: UILabel!
   var assetFilenameLabel: UILabel!
@@ -38,6 +44,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var confirmCheckBox: BEMCheckBox!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
+  var disabledScreen: UIView!
+  var activityIndicator: UIActivityIndicatorView!
   var networkReachabilityManager = NetworkReachabilityManager()
   let disposeBag = DisposeBag()
 
@@ -51,11 +59,28 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     setupViews()
     setupEvents()
 
-    // Add default Metadata
-    if assetR == nil {
-      setDefaultMetadataFormState()
-      propertyNameTextField.becomeFirstResponder()
-    }
+    activityIndicator.startAnimating()
+    disabledScreen.isHidden = false
+
+    assetDataObservable = assetURLObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { try Data(contentsOf: $0) }
+      .share(replay: 1, scope: .forever)
+
+    assetFingerprintObservable = assetDataObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { AssetService.getFingerprintFrom($0) }
+      .share(replay: 1, scope: .forever)
+
+    assetFingerprintObservable
+      .bind(to: assetFingerprintLabel.rx.text)
+      .disposed(by: disposeBag)
+
+    assetFingerprintObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { AssetService.getAsset(from: $0) }
+      .bind(to: assetRVariable)
+      .disposed(by: disposeBag)
 
     loadData()
   }
@@ -89,43 +114,60 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   // MARK: - Load Data
   fileprivate func loadData() {
-    assetFingerprintLabel.text = assetFingerprint
     assetFilenameLabel.text = assetFileName
 
-    if let assetR = assetR {
-      propertyNameTextField.text = assetR.name
-
-      var assetTypeValue: String?
-
-      assetR.metadata.forEach { (metadataR) in
-        metadataAddButton.sendActions(for: .touchUpInside)
-        guard let metadataForm = metadataForms.last else { return }
-        metadataForm.labelTextField.text = metadataR.key
-        metadataForm.descriptionTextField.text = metadataR.value
-        metadataForm.labelTextField.isEnabled = false
-        metadataForm.descriptionTextField.isEnabled = false
-
-        if metadataR.key == "source" {
-          assetTypeValue = metadataR.value
-        }
+    assetRVariable.asObservable().skip(1).subscribe(onNext: { [weak self] (assetR) in
+      guard let self = self else { return }
+      if let assetR = assetR {
+        self.loadAssetRData(assetR)
+      } else {
+        self.setupDefaultForm()
       }
+      self.activityIndicator.stopAnimating()
+      self.disabledScreen.isHidden = true
+    })
+    .disposed(by: disposeBag)
+  }
 
-      assetTypeTextField.text = assetTypeValue
+  fileprivate func loadAssetRData(_ assetR: AssetR) {
+    propertyNameTextField.text = assetR.name
 
-      // Disable assetForm when asset has been existed
-      propertyNameTextField.isEnabled = false
-      assetTypeTextField.rightViewMode = .never
-      assetTypeTextField.isEnabled = false
-      assetTypeTextField.placeholder = ""
-      metadataAddButton.removeFromSuperview()
-      metadataEditModeButton.removeFromSuperview()
+    var assetTypeValue: String?
+
+    assetR.metadata.forEach { (metadataR) in
+      metadataAddButton.sendActions(for: .touchUpInside)
+      guard let metadataForm = metadataForms.last else { return }
+      metadataForm.labelTextField.text = metadataR.key
+      metadataForm.descriptionTextField.text = metadataR.value
+      metadataForm.labelTextField.isEnabled = false
+      metadataForm.descriptionTextField.isEnabled = false
+
+      if metadataR.key == "source" {
+        assetTypeValue = metadataR.value
+      }
     }
+
+    assetTypeTextField.text = assetTypeValue
+
+    // Disable assetForm when asset has been existed
+    propertyNameTextField.isEnabled = false
+    assetTypeTextField.rightViewMode = .never
+    assetTypeTextField.isEnabled = false
+    assetTypeTextField.placeholder = ""
+    metadataAddButton.removeFromSuperview()
+    metadataEditModeButton.removeFromSuperview()
+  }
+
+  fileprivate func setupDefaultForm() {
+    setDefaultMetadataFormState() // Add default Metadata
+    propertyNameTextField.becomeFirstResponder()
+    scrollView.setContentOffset(CGPoint.zero, animated: false)
   }
 
   // MARK: - Handlers
   // *** Asset Type ***
   @objc func showAssetTypePicker() {
-    guard assetR == nil else { return }
+    guard assetRVariable.value == nil else { return }
     let alertController = UIAlertController()
     [
       "Photo", "Video",
@@ -152,8 +194,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   // *** Metadata Form ***
   @objc func goToPropertyDescriptionInfo(_ sender: UIButton) {
-    let infoVC = PropertyDescriptionInfoViewController()
-    navigationController?.pushViewController(infoVC)
+    steps.accept(BitmarkStep.viewPropertyDescriptionInfo)
   }
 
   /**
@@ -185,7 +226,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     view.endEditing(true)
 
-    if assetR == nil {
+    if assetRVariable.value == nil {
       newMetadataForm.labelTextField.becomeFirstResponder()
 
       // adjust scroll to help user still able to click "Add new field" without needing scroll down
@@ -264,9 +305,9 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     showIndicatorAlert(message: Constant.Message.sendingTransaction) { (selfAlert) in
       do {
-        let assetId: String
+        var assetId: String = ""
         // *** Register Asset if asset has not existed; then issue ***
-        if let assetR = self.assetR {
+        if let assetR = self.assetRVariable.value {
           assetId = assetR.id
           try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
         } else {
@@ -274,14 +315,22 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           var metadata = self.extractMetadataFromForms()
           metadata["source"] = self.assetTypeTextField.text!
 
-          guard let fingerprint = self.assetData else { return }
-          let assetInfo = (
-            registrant: Global.currentAccount!,
-            assetName: assetName,
-            fingerprint: fingerprint,
-            metadata: metadata
-          )
-          assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
+          self.assetDataObservable.subscribe(onNext: { (assetData) in
+            do {
+              let assetInfo = (
+                registrant: Global.currentAccount!,
+                assetName: assetName,
+                fingerprint: assetData,
+                metadata: metadata
+              )
+              assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
+            } catch {
+              ErrorReporting.report(error: error)
+            }
+          }, onError: { (error) in
+            ErrorReporting.report(error: error)
+          })
+          .disposed(by: self.disposeBag)
         }
 
         iCloudService.shared.localAssetWithFilenameData[assetId] = self.assetFileName
@@ -291,7 +340,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           Global.syncNewDataInStorage()
 
           self.showQuickMessageAlert(message: Constant.Success.issue) { [weak self] in
-            self?.navigationController?.popToRootViewController(animated: true)
+            self?.steps.accept(BitmarkStep.issueIsComplete)
           }
         })
       } catch {
@@ -433,7 +482,7 @@ extension RegisterPropertyRightsViewController {
   }
 
   func validToIssue() -> Bool {
-    if assetR == nil {
+    if assetRVariable.value == nil {
       return !propertyNameTextField.isEmpty &&
               errorForMetadata.text?.isEmpty ?? true &&
               validMetadata() &&
@@ -525,6 +574,8 @@ extension RegisterPropertyRightsViewController {
     let recognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     recognizer.cancelsTouchesInView = true
     view.addGestureRecognizer(recognizer)
+
+    setupDisabledScreen()
   }
 
   fileprivate func setupMainView() -> UIStackView {
@@ -727,6 +778,23 @@ extension RegisterPropertyRightsViewController {
     description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28) })
 
     return UIStackView(arrangedSubviews: [fieldLabel, confirmView], axis: .vertical, spacing: 10)
+  }
+
+  fileprivate func setupDisabledScreen() {
+    disabledScreen = CommonUI.disabledScreen()
+    activityIndicator = CommonUI.appActivityIndicator()
+
+    guard let currentWindow: UIWindow = UIApplication.shared.keyWindow else { return }
+    currentWindow.addSubview(disabledScreen)
+    disabledScreen.addSubview(activityIndicator)
+
+    disabledScreen.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
   }
 
   fileprivate func setupMetadataAddButton() {

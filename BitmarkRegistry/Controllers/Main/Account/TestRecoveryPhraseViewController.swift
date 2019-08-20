@@ -8,8 +8,11 @@
 
 import UIKit
 import Intercom
+import RxFlow
+import RxCocoa
 
-class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
+class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var recoveryPhraseSource: RecoveryPhraseSource!
@@ -43,10 +46,6 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    title = "TestRecoveryPhrase".localized().localizedUppercase
-    navigationItem.setHidesBackButton(true, animated: false)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel".localized(), style: .plain, target: self, action: #selector(doneHandler))
     setupViews()
 
     recoveryPhraseCollectionView.register(cellWithClass: TestRecoveryPhraseCell.self)
@@ -80,7 +79,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
   }
 
   @objc func doneHandler(_ sender: UIButton) {
-    navigationController?.popToRootViewController(animated: true)
+    steps.accept(BitmarkStep.testRecoveryPhraseIsComplete)
   }
 
   @objc func removeAccess(_ sender: UIButton) {
@@ -91,8 +90,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController {
     } catch {
       showErrorAlert(message: Constant.Error.removeAccess)
     }
-
-    UIApplication.shared.keyWindow?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
+    steps.accept(BitmarkStep.removeAccessIsComplete)
   }
 
   // MARK: Data Handlers

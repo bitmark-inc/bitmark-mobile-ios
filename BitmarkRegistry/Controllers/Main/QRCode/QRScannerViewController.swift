@@ -9,6 +9,9 @@
 
 import UIKit
 import AVFoundation
+import RxSwift
+import RxFlow
+import RxCocoa
 
 protocol QRCodeScannerDelegate: class {
   func process(qrCode: String?)
@@ -18,7 +21,8 @@ enum QRCodeScanType {
   case accountNumber, ownershipCode
 }
 
-class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var qrCodeScanType: QRCodeScanType!

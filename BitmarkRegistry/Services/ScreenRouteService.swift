@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 import RealmSwift
+import RxFlow
+import RxCocoa
 
 /*
  Idea: Route to specific screen from any screen.
@@ -21,45 +23,38 @@ class ScreenRouteService {
   
   // Route to bitmark detail screen
   static func routeToBitmarkDetail(bitmarkID: String, completionHandler: RouteCompletionHandler?) {
-    guard let tabbarController = UIApplication.shared.keyWindow?.rootViewController as? UITabBarController else {
+    guard Global.currentAccount != nil, let _ = routeToPropertiesVC() else {
       completionHandler?(false)
       return
     }
-    
-    guard let currentAccount = Global.currentAccount else {
-      completionHandler?(false)
-      return
-    }
-    
-    // Select first tab
-    tabbarController.selectedIndex = 0
-    
-    // Detect root view controller
-    guard let navigationController = tabbarController.viewControllers?[0] as? UINavigationController else {
-      completionHandler?(false)
-      return
-    }
-    
+
     do {
-      let userConfiguration = try RealmConfig.user(currentAccount.getAccountNumber()).configuration()
-      let realm = try Realm(configuration: userConfiguration)
-      let bitmarkR = realm.object(ofType: BitmarkR.self, forPrimaryKey: bitmarkID)
-      
-      // Init bitmark detail view controller
-      let bitmarkDetailsVC = BitmarkDetailViewController()
-      bitmarkDetailsVC.bitmarkR = bitmarkR
-      bitmarkDetailsVC.assetR = bitmarkR?.assetR
-      bitmarkDetailsVC.hidesBottomBarWhenPushed = true
-      
-      // Replace entire view controller stack with new one
-      navigationController.setViewControllers([navigationController.viewControllers.first!,
-                                               bitmarkDetailsVC], animated: true)
-      
+      let currentRealm = try RealmConfig.currentRealm()
+
+      guard let bitmarkR = currentRealm?.object(ofType: BitmarkR.self, forPrimaryKey: bitmarkID),
+            let assetR = bitmarkR.assetR else {
+        completionHandler?(false)
+        return
+      }
+
+      PropertiesStepper.shared.goToBitmarkDetailsScreen(bitmarkR: bitmarkR, assetR: assetR)
       completionHandler?(true)
     } catch let e {
       ErrorReporting.report(error: e)
       completionHandler?(false)
     }
   }
-  
+
+  static func routeToPropertiesVC() -> PropertiesViewController? {
+    guard let window = UIApplication.shared.keyWindow else { return nil }
+
+    guard let rootNavigationController = window.rootViewController as? UINavigationController,
+       let tabBarVC = rootNavigationController.viewControllers.last as? UITabBarController else { return nil }
+
+    // Select first tab - properties tab
+    tabBarVC.selectedIndex = 0
+
+    guard let propertiesFlowRootVC = tabBarVC.selectedViewController as? UINavigationController else { return nil }
+    return propertiesFlowRootVC.viewControllers.first as? PropertiesViewController
+  }
 }

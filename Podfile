@@ -20,6 +20,7 @@ def sharedPods
   # ReactiveX
   pod 'RxSwift', '~> 5'
   pod 'RxCocoa', '~> 5'
+  pod 'RxFlow'
   pod 'RxAlamofire'
   pod 'RxOptional'
   
