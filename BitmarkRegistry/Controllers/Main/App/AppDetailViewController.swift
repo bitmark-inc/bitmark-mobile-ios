@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import RxFlow
+import RxCocoa
 
-class AppDetailViewController: UIViewController {
+class AppDetailViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   let productURL = URL(string: "https://apps.apple.com/us/app/bitmark/id1429427796")!
@@ -42,23 +45,6 @@ class AppDetailViewController: UIViewController {
   }
 
   // MARK: - Handlers
-  @objc func gotoTermsOfService() {
-    let appDetailContentVC = AppDetailContentViewController()
-    appDetailContentVC.appDetailContent = .termsOfService
-    navigationController?.pushViewController(appDetailContentVC)
-  }
-
-  @objc func gotoPrivacyPolicy() {
-    let appDetailContentVC = AppDetailContentViewController()
-    appDetailContentVC.appDetailContent = .privacyPolicy
-    navigationController?.pushViewController(appDetailContentVC)
-  }
-
-  @objc func gotoReleaseNotes() {
-    let releaseNotesContentVC = ReleaseNotesViewController()
-    navigationController?.pushViewController(releaseNotesContentVC)
-  }
-
   @objc func gotoAppStoreReview() {
     guard var components = URLComponents(url: productURL, resolvingAgainstBaseURL: false) else { return }
     components.queryItems = [
@@ -79,10 +65,15 @@ class AppDetailViewController: UIViewController {
 // MARK: - Setup Views/Events
 extension AppDetailViewController {
   fileprivate func setupEvents() {
-    termsOfServiceLink.addTarget(self, action: #selector(gotoTermsOfService), for: .touchUpInside)
-    privacyPolicyLink.addTarget(self, action: #selector(gotoPrivacyPolicy), for: .touchUpInside)
-
-    whatNewLink.addTarget(self, action: #selector(gotoReleaseNotes), for: .touchUpInside)
+    termsOfServiceLink.addAction(for: .touchUpInside) { [weak self] in
+      self?.steps.accept(BitmarkStep.viewTermsOfService)
+    }
+    privacyPolicyLink.addAction(for: .touchUpInside) { [weak self] in
+      self?.steps.accept(BitmarkStep.viewPrivacyPolicy)
+    }
+    whatNewLink.addAction(for: .touchUpInside) { [weak self] in
+      self?.steps.accept(BitmarkStep.viewReleaseNotes)
+    }
     appStoreReviewLink.addTarget(self, action: #selector(gotoAppStoreReview), for: .touchUpInside)
     shareThisAppLink.addTarget(self, action: #selector(shareThisApp), for: .touchUpInside)
   }

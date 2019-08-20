@@ -8,8 +8,11 @@
 
 import UIKit
 import RxSwift
+import RxFlow
+import RxCocoa
 
-class TouchAuthenticationViewController: UIViewController {
+class TouchAuthenticationViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var enableButton: UIButton!
@@ -19,8 +22,6 @@ class TouchAuthenticationViewController: UIViewController {
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    navigationController?.isNavigationBarHidden = true
 
     setupViews()
     setupEvents()
@@ -53,8 +54,8 @@ class TouchAuthenticationViewController: UIViewController {
               iCloudService.shared.migrateFileData()
             }
             AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
-            let homeTabbarViewController = CustomTabBarViewController()
-            self.navigationController?.setViewControllers([homeTabbarViewController], animated: true)
+
+            self.steps.accept(BitmarkStep.userIsLoggedIn)
           } catch {
             ErrorReporting.report(error: error)
             self.navigationController?.viewControllers = [SuspendedViewController()]

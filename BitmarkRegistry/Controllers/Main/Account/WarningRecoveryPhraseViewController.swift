@@ -8,8 +8,11 @@
 
 import UIKit
 import RxSwift
+import RxFlow
+import RxCocoa
 
-class WarningRecoveryPhraseViewController: UIViewController {
+class WarningRecoveryPhraseViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var writeDownRecoveryPhraseButton: UIButton!
@@ -26,9 +29,7 @@ class WarningRecoveryPhraseViewController: UIViewController {
 
   @objc func gotoRecoveryPhraseVC() {
     requireAuthenticationForAction(disposeBag) { [weak self] in
-      let recoveryPhraseVC = RecoveryPhraseViewController()
-      recoveryPhraseVC.recoveryPhraseSource = .testRecoveryPhrase
-      self?.navigationController?.pushViewController(recoveryPhraseVC)
+      self?.steps.accept(BitmarkStep.viewRecoveryPhrase)
     }
   }
 }

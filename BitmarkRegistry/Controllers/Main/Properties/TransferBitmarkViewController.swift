@@ -11,8 +11,11 @@ import BitmarkSDK
 import SnapKit
 import Alamofire
 import RxSwift
+import RxFlow
+import RxCocoa
 
-class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
+class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var assetR: AssetR!
@@ -115,7 +118,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate {
           Global.syncNewDataInStorage()
 
           self.showQuickMessageAlert(message: Constant.Success.transfer) { [weak self] in
-            self?.navigationController?.popToRootViewController(animated: true)
+            self?.steps.accept(BitmarkStep.transferBitmarkIsComplete)
           }
         })
       } catch {

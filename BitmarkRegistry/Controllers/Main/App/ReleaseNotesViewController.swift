@@ -9,8 +9,12 @@
 
 import UIKit
 import Alamofire
+import RxFlow
+import RxCocoa
 
-class ReleaseNotesViewController: UIViewController {
+class ReleaseNotesViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
+
   // MARK: - Properties
   let releaseNotesPath = "https://raw.githubusercontent.com/bitmark-inc/bitmark-mobile-ios/master/BitmarkRegistry/Supporting%20Files/ReleaseNotes.md"
   var versionInfoLabel: UILabel!
@@ -54,7 +58,7 @@ class ReleaseNotesViewController: UIViewController {
   }
 
   @objc func closeHandler(_ sender: UIButton) {
-    navigationController?.popViewController(animated: true)
+    steps.accept(BitmarkStep.viewReleaseNotesIsComplete)
   }
 }
 

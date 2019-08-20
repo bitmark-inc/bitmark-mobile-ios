@@ -13,16 +13,19 @@ import Alamofire
 import BEMCheckBox
 import IQKeyboardManagerSwift
 import RxSwift
+import RxFlow
+import RxCocoa
 
-class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate {
+class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegate, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
-  var assetR: AssetR?
-  var assetData: Data!
-  var assetFingerprint: String!
   var assetFileName: String!
-  var assetURL: URL?
+  var assetURL: URL!
 
+  var assetR: AssetR?
+  var assetFingerprint: String!
+  var assetData: Data!
   var scrollView: UIScrollView!
   var assetFingerprintLabel: UILabel!
   var assetFilenameLabel: UILabel!
@@ -38,6 +41,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var confirmCheckBox: BEMCheckBox!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
+  var disabledScreen: UIView!
+  var activityIndicator: UIActivityIndicatorView!
   var networkReachabilityManager = NetworkReachabilityManager()
   let disposeBag = DisposeBag()
 
@@ -51,13 +56,21 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     setupViews()
     setupEvents()
 
-    // Add default Metadata
-    if assetR == nil {
-      setDefaultMetadataFormState()
-      propertyNameTextField.becomeFirstResponder()
-    }
-
-    loadData()
+    fetchAssetIfExisted()
+      .observeOn(MainScheduler.instance)
+      .subscribe(onSuccess: { [weak self] (assetIfExisted) in
+        guard let self = self else { return }
+        self.activityIndicator.stopAnimating()
+        self.disabledScreen.removeFromSuperview()
+        self.assetR = assetIfExisted
+        self.loadData()
+      }, onError: { [weak self] (error) in
+        guard let self = self else { return }
+        self.showErrorAlert(message: Constant.Error.accessFile)
+        self.activityIndicator.stopAnimating()
+        self.disabledScreen.removeFromSuperview()
+      })
+      .disposed(by: disposeBag)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -88,7 +101,32 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   // MARK: - Load Data
+  fileprivate func fetchAssetIfExisted() -> Single<AssetR?> {
+    activityIndicator.startAnimating()
+    disabledScreen.isHidden = false
+
+    return Single<AssetR?>.create(subscribe: { (single) -> Disposable in
+      DispatchQueue.global().async {
+        do {
+          self.assetData = try Data(contentsOf: self.assetURL)
+          self.assetFingerprint = AssetService.getFingerprintFrom(self.assetData)
+          let assetIfExisted = AssetService.getAsset(from: self.assetFingerprint)
+          single(.success(assetIfExisted))
+        } catch {
+          single(.error(error))
+        }
+      }
+      return Disposables.create()
+    })
+  }
+
   fileprivate func loadData() {
+    if assetR == nil {
+      setDefaultMetadataFormState() // Add default Metadata
+      propertyNameTextField.becomeFirstResponder()
+      scrollView.setContentOffset(CGPoint.zero, animated: false)
+    }
+
     assetFingerprintLabel.text = assetFingerprint
     assetFilenameLabel.text = assetFileName
 
@@ -152,8 +190,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   // *** Metadata Form ***
   @objc func goToPropertyDescriptionInfo(_ sender: UIButton) {
-    let infoVC = PropertyDescriptionInfoViewController()
-    navigationController?.pushViewController(infoVC)
+    steps.accept(BitmarkStep.viewPropertyDescriptionInfo)
   }
 
   /**
@@ -274,7 +311,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           var metadata = self.extractMetadataFromForms()
           metadata["source"] = self.assetTypeTextField.text!
 
-          guard let fingerprint = self.assetData else { return }
+          let fingerprint = try Data(contentsOf: self.assetURL)
           let assetInfo = (
             registrant: Global.currentAccount!,
             assetName: assetName,
@@ -291,7 +328,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           Global.syncNewDataInStorage()
 
           self.showQuickMessageAlert(message: Constant.Success.issue) { [weak self] in
-            self?.navigationController?.popToRootViewController(animated: true)
+            self?.steps.accept(BitmarkStep.issueIsComplete)
           }
         })
       } catch {
@@ -525,6 +562,8 @@ extension RegisterPropertyRightsViewController {
     let recognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     recognizer.cancelsTouchesInView = true
     view.addGestureRecognizer(recognizer)
+
+    setupDisabledScreen()
   }
 
   fileprivate func setupMainView() -> UIStackView {
@@ -727,6 +766,23 @@ extension RegisterPropertyRightsViewController {
     description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28) })
 
     return UIStackView(arrangedSubviews: [fieldLabel, confirmView], axis: .vertical, spacing: 10)
+  }
+
+  fileprivate func setupDisabledScreen() {
+    disabledScreen = CommonUI.disabledScreen()
+    activityIndicator = CommonUI.appActivityIndicator()
+
+    guard let currentWindow: UIWindow = UIApplication.shared.keyWindow else { return }
+    currentWindow.addSubview(disabledScreen)
+    disabledScreen.addSubview(activityIndicator)
+
+    disabledScreen.snp.makeConstraints { (make) in
+      make.edges.equalToSuperview()
+    }
+
+    activityIndicator.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+    }
   }
 
   fileprivate func setupMetadataAddButton() {

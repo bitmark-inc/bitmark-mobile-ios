@@ -11,10 +11,13 @@ import BitmarkSDK
 import Alamofire
 import RealmSwift
 import RxSwift
+import RxFlow
+import RxCocoa
 import RxAlamofire
 import RxOptional
 
-class PropertiesViewController: UIViewController {
+class PropertiesViewController: UIViewController, Stepper {
+  var steps = PublishRelay<Step>()
 
   // MARK: - Properties
   var segmentControl: DesignedSegmentControl!
@@ -29,25 +32,13 @@ class PropertiesViewController: UIViewController {
   var yoursActivityIndicator: UIActivityIndicatorView!
   var bitmarkRs: Results<BitmarkR>!
   fileprivate var realmToken: NotificationToken?
-  var networkReachabilityManager = NetworkReachabilityManager()
 
   // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationItem.title = "Properties".localized().localizedUppercase
-    let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(tapToAddProperty))
-    let ownershipScanButton = UIBarButtonItem(image: UIImage(named: "qr-code-scan-icon"), style: .plain, target: self, action: #selector(tapToScanOwnershipCode))
-    navigationItem.rightBarButtonItem = addBarButton
-    navigationItem.leftBarButtonItem = ownershipScanButton
-    navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
-
-    // *** when open app from deep link; link to QRScannerVC ***
-    if Global.verificationLink != nil {
-      tapToScanOwnershipCode()
-    }
 
     loadData()
     setupBitmarkEventSubscription()
@@ -109,12 +100,7 @@ class PropertiesViewController: UIViewController {
 
   // MARK: - Handlers
   @objc func tapToAddProperty() {
-    guard let networkReachabilityManager = networkReachabilityManager, networkReachabilityManager.isReachable else {
-      Global.showNoInternetBanner()
-      return
-    }
-
-    navigationController?.pushViewController(RegisterPropertyViewController())
+    self.steps.accept(BitmarkStep.createProperty)
   }
 
   @objc func segmentChanged(_ sender: DesignedSegmentControl) {
@@ -170,11 +156,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
       showErrorAlert(message: Constant.Error.loadData)
       return
     }
-    let bitmarkDetailsVC = BitmarkDetailViewController()
-    bitmarkDetailsVC.hidesBottomBarWhenPushed = true
-    bitmarkDetailsVC.bitmarkR = bitmarkR
-    bitmarkDetailsVC.assetR = assetR
-    navigationController?.pushViewController(bitmarkDetailsVC)
+    steps.accept(BitmarkStep.viewBitmarkDetails(bitmarkR: bitmarkR, assetR: assetR))
 
     guard let cell = tableView.cellForRow(at: indexPath) as? YourPropertyCell else { return }
     cell.setReadStyle(read: true)
@@ -207,7 +189,6 @@ extension PropertiesViewController {
 
   fileprivate func setupViews() {
     view.backgroundColor = .white
-    navigationController?.navigationBar.shadowImage = UIImage()
 
     // *** Setup subviews ***
     segmentControl = DesignedSegmentControl(
