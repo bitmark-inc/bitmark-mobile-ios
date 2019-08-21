@@ -36,7 +36,8 @@ struct ErrorReporting {
   // Report error to sentry
   public static func report(error err: Error) {
     let errorEvent = Event(level: .error)
-    errorEvent.message = err.localizedDescription
+    let errMessage = err is String ? (err as? String) : err.localizedDescription
+    errorEvent.message = errMessage ?? ""
     Client.shared?.appendStacktrace(to: errorEvent)
     Client.shared?.send(event: errorEvent, completion: nil)
   }
