@@ -16,6 +16,8 @@
 		<string>https://bm.bitmark.com</string>
 		<key>REGISTRY_SERVER_URL</key>
 		<string>https://registry.bitmark.com</string>
+		<key>PROFILES_SERVER_URL</key>
+		<string>https://profiles.bitmark.com</string>
 		<key>ZERO_ADDRESS</key>
 		<string>a3ezwdYVEVrHwszQrYzDTCAZwUD3yKtNsCq9YhEu97bPaGAKy1</string>
 		<key>INTERCOM_APP_KEY</key>

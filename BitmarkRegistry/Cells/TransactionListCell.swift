@@ -33,16 +33,24 @@ class TransactionListCell: UITableViewCell {
 
   // MARK: - Data Handlers
   func loadWith(_ txR: TransactionR) {
-    if txR.isTransferTx() {
+    guard let txType = TransactionType(rawValue: txR.txType) else { return }
+    switch txType {
+    case .issurance:
+      txTypeLabel.text = "PropertyIssuance".localized().localizedUppercase
+      txTitle.text = "Issuance".localized().localizedUppercase
+      accountFromLabel.text = CustomUserDisplay.accountNumber(txR.owner)
+    case .transfer:
       txTypeLabel.text = "P2P_TRANSFER".localized().localizedUppercase
       txTitle.text = "Send".localized().localizedUppercase
       accountFromLabel.text = CustomUserDisplay.accountNumber(txR.previousOwner)
       accountToTitleLabel.text = "TO"
       accountToLabel.text = CustomUserDisplay.accountNumber(txR.owner)
-    } else {
-      txTypeLabel.text = "PropertyIssuance".localized().localizedUppercase
-      txTitle.text = "Issuance".localized().localizedUppercase
+    case .claimRequest:
+      txTypeLabel.text = "CLAIM REQUEST"
+      txTitle.text = "CLAIM"
       accountFromLabel.text = CustomUserDisplay.accountNumber(txR.owner)
+      accountToTitleLabel.text = "TO"
+      accountToLabel.text = txR.assetR?.composer() ?? CustomUserDisplay.accountNumber(txR.assetR?.registrant)
     }
 
     propertyNameLabel.text = txR.assetR?.name
@@ -64,9 +72,12 @@ class TransactionListCell: UITableViewCell {
 // MARK: - Setup Views
 extension TransactionListCell {
   fileprivate func setupTitleStyle(with txStatus: String) {
-    if txStatus == TransactionStatus.confirmed.rawValue {
+    if [TransactionStatus.confirmed.rawValue, ClaimRequestStatus.accepted.rawValue].contains(txStatus) {
       txTitle.textColor = .mainBlueColor
       txTimestampLabel.textColor = .mainBlueColor
+    } else if txStatus == ClaimRequestStatus.rejected.rawValue {
+      completedMarkTitle.image = UIImage(named: "rejected-mark")
+      txTimestampLabel.textColor = .mainRedColor
     } else {
       txTitle.textColor = .dustyGray
       txTimestampLabel.textColor = .dustyGray

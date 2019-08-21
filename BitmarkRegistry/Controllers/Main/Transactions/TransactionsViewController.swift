@@ -85,6 +85,9 @@ extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate
     let cell = tableView.dequeueReusableCell(withClass: TransactionListCell.self, for: indexPath)
     let transactionR = transactionRs[indexPath.row]
     cell.loadWith(transactionR)
+    if transactionR.txType == TransactionType.claimRequest.rawValue {
+      cell.isUserInteractionEnabled = false
+    }
     return cell
   }
 

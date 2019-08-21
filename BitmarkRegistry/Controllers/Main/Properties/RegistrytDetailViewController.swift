@@ -1,5 +1,5 @@
 //
-//  AccountDetailViewController.swift
+//  RegistryDetailViewController.swift
 //  BitmarkRegistry
 //
 //  Created by Macintosh on 7/19/19.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class AccountDetailViewController: UIViewController {
+class RegistryDetailViewController: UIViewController {
 
   // MARK: - Properties
-  var accountNumber: String!
+  var query: String!
   var mainView: DesignedWebView!
 
   // MARK: - Init
@@ -26,12 +26,12 @@ class AccountDetailViewController: UIViewController {
 }
 
 // MARK: - Setup Views
-extension AccountDetailViewController {
+extension RegistryDetailViewController {
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup UI in view ***
-    let txWebURL = Global.ServerURL.registry + "/account/" + accountNumber
+    let txWebURL = Global.ServerURL.registry + query
     mainView = DesignedWebView(urlString: txWebURL.embedInApp())
 
     view.addSubview(mainView)

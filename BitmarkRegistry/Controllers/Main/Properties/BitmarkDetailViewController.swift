@@ -297,7 +297,7 @@ extension BitmarkDetailViewController: UITableViewDelegate {
     guard let cell = tableView.cellForRow(at: indexPath) as? TransactionCell,
           cell.isConfirmed else { return }
     let txR = transactionRs[indexPath.row]
-    steps.accept(BitmarkStep.viewBitmarkAccountDetails(accountNumber: txR.owner))
+    steps.accept(BitmarkStep.viewRegistryAccountDetails(accountNumber: txR.owner))
   }
 }
 

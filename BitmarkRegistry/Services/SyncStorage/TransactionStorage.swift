@@ -9,6 +9,7 @@
 import Foundation
 import BitmarkSDK
 import RealmSwift
+import RxSwift
 
 class TransactionStorage: SyncStorageBase<Transaction> {
 
@@ -18,6 +19,8 @@ class TransactionStorage: SyncStorageBase<Transaction> {
     _shared = _shared ?? TransactionStorage(owner: Global.currentAccount!)
     return _shared!
   }
+  let disposeBag = DisposeBag()
+
   // Ignore if owner of transaction is zeroAccountNumber - delete bitmark
   let ignoreDeleteTxPredicate: NSPredicate = {
     let zeroAccountNumber = Credential.valueForKey(keyName: Constant.InfoKey.zeroAddress)
@@ -31,10 +34,14 @@ class TransactionStorage: SyncStorageBase<Transaction> {
 
   // MARK: - Handlers
   func getData() throws -> Results<TransactionR> {
+    let sortProperties = [
+      SortDescriptor(keyPath: "confirmedAt", ascending: false),
+      SortDescriptor(keyPath: "offset", ascending: false)
+    ]
     return try ownerRealm().objects(TransactionR.self)
                            .filter(ignoreDeleteTxPredicate)
                            .filter(ignoreUnownedTxPredicate)
-                           .sorted(byKeyPath: "offset", ascending: false)
+                           .sorted(by: sortProperties)
   }
 
   func syncData(for bitmarkR: BitmarkR) throws {
@@ -57,7 +64,7 @@ class TransactionStorage: SyncStorageBase<Transaction> {
 
     repeat {
       let (txs, assets, blocks) = try TransactionService.listAllTransactions(ownerNumber: owner.getAccountNumber(), at: latestOffset, direction: .later)
-      guard !txs.isEmpty else { return }
+      guard !txs.isEmpty else { break }
 
       try storeData(in: backgroundOwnerRealm, txs: txs, relations: (assets: assets, blocks: blocks))
       latestOffset = txs.last!.offset
@@ -65,6 +72,20 @@ class TransactionStorage: SyncStorageBase<Transaction> {
     } while true
 
     storeLatestOffset(value: latestOffset)
+
+    // Sync ClaimRequest
+    MusicService.listAllClaimRequests()
+      .subscribe(onNext: { [weak self] (claimRequests) in
+        guard let self = self else { return }
+        do {
+          try self.storeData(in: try self.ownerRealm(), claimRequests: claimRequests)
+        } catch {
+          ErrorReporting.report(error: error)
+        }
+      }, onError: {
+        ErrorReporting.report(error: $0)
+      })
+      .disposed(by: disposeBag)
   }
 
   fileprivate func storeData(in realm: Realm, txs: [Transaction], relations: (assets: [Asset]?, blocks: [Block])) throws {
@@ -84,6 +105,17 @@ class TransactionStorage: SyncStorageBase<Transaction> {
 
         txR.assetR = assetR
         txR.blockR = blockR
+        txR.confirmedAt = blockR?.createdAt
+        realm.add(txR, update: .modified)
+      }
+    }
+  }
+
+  fileprivate func storeData(in realm: Realm, claimRequests: [ClaimRequest]) throws {
+    try claimRequests.forEach { (claimRequest) in
+      let txR = TransactionR(claimRequest: claimRequest)
+      try realm.write {
+        txR.assetR = realm.object(ofType: AssetR.self, forPrimaryKey: claimRequest.asset_id)
         realm.add(txR, update: .modified)
       }
     }

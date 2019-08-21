@@ -8,6 +8,7 @@
 
 import UIKit
 import BitmarkSDK
+import RxSwift
 
 class YourPropertyCell: UITableViewCell {
 
@@ -16,6 +17,7 @@ class YourPropertyCell: UITableViewCell {
   let assetNameLabel = UILabel()
   let issuerLabel = UILabel()
   let thumbnailImageView = UIImageView()
+  let disposeBag = DisposeBag()
 
   // MARK: - Init
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -37,9 +39,28 @@ class YourPropertyCell: UITableViewCell {
     }
     issuerLabel.text = CustomUserDisplay.accountNumber(bitmarkR.issuer)
 
-    if let assetR = bitmarkR.assetR, let assetType = assetR.assetType {
+    guard let assetR = bitmarkR.assetR else { return }
+    if assetR.isPochangMusic() {
+      loadMusicThumbnail(assetId: assetR.id)
+      if let composer = assetR.composer() {
+        issuerLabel.text = composer
+      }
+    } else if let assetType = assetR.assetType {
       thumbnailImageView.image = AssetType(rawValue: assetType)?.thumbnailImage()
     }
+  }
+
+  // Get music thumbnail from server
+  fileprivate func loadMusicThumbnail(assetId: String) {
+    MusicService.assetThumbnail(assetId: assetId)
+      .observeOn(MainScheduler.instance)
+      .subscribe(onNext: { [weak self] (image) in
+        self?.thumbnailImageView.image = image
+        }, onError: { (error) in
+          Global.log.error(error)
+          ErrorReporting.report(error: error)
+      })
+      .disposed(by: disposeBag)
   }
 }
 

@@ -51,6 +51,7 @@ public struct Constant {
     public static let keyAccountAssetServerURL = "KEY_ACCOUNT_ASSET_SERVER_URL"
     public static let mobileServerURL = "MOBILE_SERVER_URL"
     public static let registryServerURL = "REGISTRY_SERVER_URL"
+    public static let profilesServerURL = "PROFILES_SERVER_URL"
     public static let zeroAddress = "ZERO_ADDRESS"
     public static let kVersion = "CFBundleShortVersionString"
     public static let kBundle = "CFBundleVersion"
