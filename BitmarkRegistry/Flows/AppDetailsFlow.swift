@@ -61,6 +61,7 @@ class AppDetailsFlow: Flow {
 
   fileprivate func navigateToViewReleaseNotesScreen() -> FlowContributors {
     let releaseNotesContentVC = ReleaseNotesViewController()
+    releaseNotesContentVC.hidesBottomBarWhenPushed = true
     rootViewController.pushViewController(releaseNotesContentVC)
     return .one(flowContributor: .contribute(withNextPresentable: releaseNotesContentVC, withNextStepper: releaseNotesContentVC))
   }

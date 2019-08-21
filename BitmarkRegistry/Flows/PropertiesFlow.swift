@@ -122,7 +122,8 @@ class PropertiesFlow: Flow {
     bitmarkDetailsVC.bitmarkR = bitmarkR
     bitmarkDetailsVC.assetR = assetR
 
-    self.rootViewController.pushViewController(bitmarkDetailsVC)
+    bitmarkDetailsVC.hidesBottomBarWhenPushed = true
+    rootViewController.pushViewController(bitmarkDetailsVC)
 
     return .one(flowContributor: .contribute(withNextPresentable: bitmarkDetailsVC, withNextStepper: bitmarkDetailsVC))
   }
@@ -138,7 +139,9 @@ class PropertiesFlow: Flow {
     let musicBitmarkDetailsVC = MusicBitmarkDetailViewController()
     musicBitmarkDetailsVC.bitmarkR = bitmarkR
     musicBitmarkDetailsVC.assetR = assetR
-    self.rootViewController.pushViewController(musicBitmarkDetailsVC)
+
+    musicBitmarkDetailsVC.hidesBottomBarWhenPushed = true
+    rootViewController.pushViewController(musicBitmarkDetailsVC)
 
     return .one(flowContributor: .contribute(withNextPresentable: musicBitmarkDetailsVC, withNextStepper: musicBitmarkDetailsVC))
   }

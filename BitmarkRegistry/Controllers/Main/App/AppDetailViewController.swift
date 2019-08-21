@@ -135,7 +135,7 @@ extension AppDetailViewController {
     view.addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
-          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 25, right: 20))
+          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 8, right: 20))
     }
   }
 
