@@ -24,6 +24,7 @@ class DesignedSegmentControl: UIControl {
   var segmentTitles: [String]!
   let badgeLimit = 99
   var badgeCenterXOffsetConstraints = [Constraint]()
+  var segmentTitleFont = UIFont(name: "Avenir-Black", size: 14)!
 
   // MARK: - Init
   init(titles: [String], width: CGFloat, height: CGFloat) {
@@ -64,7 +65,8 @@ class DesignedSegmentControl: UIControl {
   func setBadge(_ badge: Int, forSegmentAt index: Int) {
     let badgeText = badge > badgeLimit ? "\(badgeLimit)+" : String(badge)
     segmentBadgeLabels[index].text = "(\(badgeText))"
-    badgeCenterXOffsetConstraints[index].update(offset: 33 + (Double(badgeText.count - 1) * 2.5))
+    let titleLength = segmentTitles[index].size(withAttributes: [.font: segmentTitleFont])
+    badgeCenterXOffsetConstraints[index].update(offset: Double(titleLength.width) / 2 + 7 + (Double(badgeText.count - 1) * 2.7))
   }
 
   // MARK: - Setup Views/Events
@@ -111,7 +113,7 @@ class DesignedSegmentControl: UIControl {
     let button = UIButton(type: .system)
     button.backgroundColor = .backgroundNavBar
     button.shadowOpacity = 0.15
-    button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 14)
+    button.titleLabel?.font = segmentTitleFont
     button.setTitle(title, for: .normal)
     button.setTitleColor(.silver, for: .normal)
     button.setTitleColor(.black, for: .selected)

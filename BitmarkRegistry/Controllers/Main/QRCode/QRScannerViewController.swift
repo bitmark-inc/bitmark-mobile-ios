@@ -170,14 +170,22 @@ extension QRScannerViewController {
     // initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
     videoPreviewLayer = AVCaptureVideoPreviewLayer()
     videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-    videoPreviewLayer.frame = CGRect(x: 0, y: 250, width: view.frame.width, height: view.frame.width)
+    videoPreviewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
+
+    let videoPreviewLayerCover = UIView()
+    videoPreviewLayerCover.layer.addSublayer(videoPreviewLayer)
 
     view.addSubview(descriptionLabelView)
-    view.layer.addSublayer(videoPreviewLayer)
+    view.addSubview(videoPreviewLayerCover)
 
     descriptionLabelView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
           .inset(UIEdgeInsets(top: 25, left: 20, bottom: 0, right: 25))
+    }
+
+    videoPreviewLayerCover.snp.makeConstraints { (make) in
+      make.top.equalTo(descriptionLabelView.snp.bottom).offset(25)
+      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
     }
   }
 

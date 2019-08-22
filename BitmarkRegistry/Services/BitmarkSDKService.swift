@@ -37,7 +37,7 @@ class BitmarkSDKServiceLogger: SDKLogger {
                      userInfo: ["Source": "BitmarkSDK"])
 
     if level == .error {
-      ErrorReporting.report(error: message)
+      ErrorReporting.breadcrumbs(info: message, category: .WarningError)
     } else {
       ErrorReporting.breadcrumbs(info: message, category: .BitmarkSDK)
     }
