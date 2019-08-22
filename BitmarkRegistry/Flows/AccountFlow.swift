@@ -41,7 +41,7 @@ class AccountFlow: Flow {
     case .testRecoveryPhraseToRemoveAccess:
       return navigateToTestRecoveryPhraseToRemoveAccessScreen()
     case .removeAccessIsComplete:
-      return .end(forwardToParentFlowWithStep: BitmarkStep.onboardingIsRequired)
+      return .end(forwardToParentFlowWithStep: BitmarkStep.dashboardIsComplete)
     case .viewAppDetails:
       return navigateToAppDetailsFlow()
     default:

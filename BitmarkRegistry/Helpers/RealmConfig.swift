@@ -20,6 +20,7 @@ enum RealmConfig {
   static func currentRealm() throws -> Realm? {
     guard let accountNumber = Global.currentAccount?.getAccountNumber() else { return nil }
     let userConfiguration = try RealmConfig.user(accountNumber).configuration()
+    Global.log.info("UserRealm: \(userConfiguration)")
     return try Realm(configuration: userConfiguration)
   }
 
@@ -55,9 +56,10 @@ enum RealmConfig {
   fileprivate func getKey() throws -> Data {
     guard let encryptedDBKey = KeychainStore.getEncryptedDBKeyFromKeychain() else {
       var key = Data(count: 64)
-      _ = key.withUnsafeMutableBytes {
-        SecRandomCopyBytes(kSecRandomDefault, 64, $0)
-      }
+      _ = key.withUnsafeMutableBytes({ (ptr: UnsafeMutableRawBufferPointer) -> Void in
+        guard let pointer = ptr.bindMemory(to: UInt8.self).baseAddress else { return }
+        _ = SecRandomCopyBytes(kSecRandomDefault, 64, pointer)
+      })
 
       try KeychainStore.saveEncryptedDBKeyToKeychain(key)
 

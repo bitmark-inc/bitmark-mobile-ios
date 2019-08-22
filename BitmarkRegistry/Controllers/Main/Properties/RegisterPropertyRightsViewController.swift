@@ -143,7 +143,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       metadataForm.labelTextField.isEnabled = false
       metadataForm.descriptionTextField.isEnabled = false
 
-      if metadataR.key == "source" {
+      if metadataR.key.caseInsensitiveCompare("source") == .orderedSame {
         assetTypeValue = metadataR.value
       }
     }
@@ -313,7 +313,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         } else {
           let assetName = self.propertyNameTextField.text!
           var metadata = self.extractMetadataFromForms()
-          metadata["source"] = self.assetTypeTextField.text!
+          metadata["SOURCE"] = self.assetTypeTextField.text!
 
           self.assetDataObservable.subscribe(onNext: { (assetData) in
             do {

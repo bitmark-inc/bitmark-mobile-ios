@@ -15,9 +15,10 @@ struct AssetEncryption {
 
   init() {
     var key = Data(count: 32)
-    _ = key.withUnsafeMutableBytes {
-      return SecRandomCopyBytes(kSecRandomDefault, 32, $0)
-    }
+    _ = key.withUnsafeMutableBytes({ (ptr: UnsafeMutableRawBufferPointer) -> Void in
+      guard let pointer = ptr.bindMemory(to: UInt8.self).baseAddress else { return }
+      _ = SecRandomCopyBytes(kSecRandomDefault, 32, pointer)
+    })
     self.key = key
   }
 

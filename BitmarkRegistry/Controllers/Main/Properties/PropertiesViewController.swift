@@ -295,6 +295,7 @@ extension PropertiesViewController {
   }
 
   fileprivate func setupUnreadBadge() {
+    guard let tabBarItem = navigationController?.tabBarItem else { return }
     tabBarItem.badgeValue = BitmarkStorage.shared().hasUnread() ? "●" : nil
     tabBarItem.badgeColor = .clear
     tabBarItem.setBadgeTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], for: .normal)
