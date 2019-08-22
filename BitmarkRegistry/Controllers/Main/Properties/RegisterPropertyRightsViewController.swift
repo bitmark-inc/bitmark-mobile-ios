@@ -40,6 +40,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var metadataAddButton: UIButton!
   var metadataEditModeButton: UIButton!
   var errorForMetadata: UILabel!
+  var numberOfBitmarksBox: UIView!
   var numberOfBitmarksTextField: GMStepper!
   var confirmCheckBox: BEMCheckBox!
   var issueButton: UIButton!
@@ -565,7 +566,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     let inputFields = [
-      propertyNameTextField, assetTypeTextField, metadataStackView
+      propertyNameTextField, assetTypeTextField, metadataStackView, numberOfBitmarksBox
     ]
     inputFields.forEach({ (inputField) in
       inputField?.snp.makeConstraints { $0.width.equalTo(mainView) }
@@ -742,9 +743,9 @@ extension RegisterPropertyRightsViewController {
     bar.items = [flexBar, doneButton]
     numberOfBitmarksTextField.textfield.inputAccessoryView = bar
 
-    let view = UIView()
-    view.addSubview(fieldLabel)
-    view.addSubview(numberOfBitmarksTextField)
+    numberOfBitmarksBox = UIView()
+    numberOfBitmarksBox.addSubview(fieldLabel)
+    numberOfBitmarksBox.addSubview(numberOfBitmarksTextField)
 
     fieldLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
@@ -757,7 +758,7 @@ extension RegisterPropertyRightsViewController {
       make.width.equalTo(171)
     }
 
-    return view
+    return numberOfBitmarksBox
   }
 
   fileprivate func ownershipClaimView() -> UIStackView {

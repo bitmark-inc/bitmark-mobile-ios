@@ -62,5 +62,5 @@ struct ErrorReporting {
 enum ReportCategory: String {
   case BitmarkSDK, APNS, Intercom, FileCourier, OwnershipApprovance, KeyAccountAsset
   case StoreFile, MigrationData, TransferFile, UpdateAccessFile, UploadFile, DownloadFile, StoreData
-  case Keychain
+  case Keychain, WarningError
 }
