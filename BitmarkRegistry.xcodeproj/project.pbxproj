@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		171019F658C2E946E9937FC0 /* Pods_BitmarkRegistry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E7CECCA519385B4CF367DD /* Pods_BitmarkRegistry.framework */; };
 		2BE5095F442A2BCB182D166B /* Pods_BitmarkRegistry_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3A5FB43309FD36695FB8495 /* Pods_BitmarkRegistry_Dev.framework */; };
 		5837C98D22D599C200DA270B /* URLRequest+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5837C98C22D599C200DA270B /* URLRequest+JWT.swift */; };
 		5837C98E22D599C900DA270B /* URLRequest+JWT.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5837C98C22D599C200DA270B /* URLRequest+JWT.swift */; };
@@ -466,7 +465,6 @@
 			files = (
 				E28F1AFD22CA428000B0256F /* libsodium-ios.a in Frameworks */,
 				D12662CE31EFB13CAF295499 /* Pods_BitmarkRegistry.framework in Frameworks */,
-				171019F658C2E946E9937FC0 /* Pods_BitmarkRegistry.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -930,7 +928,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = thuyentruong;
 				TargetAttributes = {
 					E29A73F622AA49990052C716 = {
@@ -1477,6 +1475,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1538,6 +1537,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
