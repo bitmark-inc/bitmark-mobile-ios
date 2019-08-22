@@ -56,8 +56,12 @@ class AppNavigationViewController: UIViewController, Stepper {
         },
         onError: { [weak self] (error) in
           guard let self = self else { return }
-          let retryAuthenticationAlert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-          retryAuthenticationAlert.addAction(title: "Retry", style: .default, handler: { [weak self] _ in self?.navigate() })
+          let retryAuthenticationAlert = UIAlertController(
+            title: "Error".localized(),
+            message: "PleaseAuthorize".localized().localizedUppercase,
+            preferredStyle: .alert
+          )
+          retryAuthenticationAlert.addAction(title: "Retry".localized(), style: .default, handler: { [weak self] _ in self?.navigate() })
           retryAuthenticationAlert.show()
         }
       )

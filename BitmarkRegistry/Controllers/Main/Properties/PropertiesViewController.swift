@@ -57,7 +57,7 @@ class PropertiesViewController: UIViewController, Stepper {
         self.yoursActivityIndicator.stopAnimating()
 
         if let error = error {
-          self.showErrorAlert(message: Constant.Error.syncBitmark)
+          self.showErrorAlert(message: "syncBitmark".localized(tableName: "Error"))
           ErrorReporting.report(error: error)
           return
         }
@@ -67,7 +67,7 @@ class PropertiesViewController: UIViewController, Stepper {
         do {
           self.bitmarkRs = try BitmarkStorage.shared().getData()
         } catch {
-          self.showErrorAlert(message: Constant.Error.loadBitmark)
+          self.showErrorAlert(message: "loadBitmark".localized(tableName: "Error"))
           ErrorReporting.report(error: error)
           return
         }
@@ -75,7 +75,7 @@ class PropertiesViewController: UIViewController, Stepper {
         self.setupRealmObserverForLoadingBitmarks()
       }
     } catch {
-      showErrorAlert(message: Constant.Error.loadBitmark)
+      showErrorAlert(message: "loadBitmark".localized(tableName: "Error"))
       ErrorReporting.report(error: error)
     }
   }
@@ -131,7 +131,7 @@ extension PropertiesViewController: QRCodeScannerDelegate {
   // Process qrCode/verificationLink from Chibitronics
   func process(qrCode: String?) {
     Global.verificationLink = nil
-    UIAlertController(title: "", message: "To complete the process,\n please return to the browser", defaultActionButtonTitle: "OK".localized()).show()
+    UIAlertController(title: "", message: "ownershipClaim_complete".localized(tableName: "Phrase"), defaultActionButtonTitle: "OK".localized()).show()
   }
 }
 
@@ -153,7 +153,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
     let bitmarkR = bitmarkRs[indexPath.row]
     guard let assetR = bitmarkR.assetR else {
       ErrorReporting.report(message: "Missing assetId for bitmark with id " + bitmarkR.id)
-      showErrorAlert(message: Constant.Error.loadData)
+      showErrorAlert(message: "loadData".localized(tableName: "Error"))
       return
     }
 

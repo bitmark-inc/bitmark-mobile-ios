@@ -36,8 +36,13 @@
 "registerPropertyRights_propertyNameLabel" = "PROPERTY NAME";
 "registerPropertyRights_64characterMax" = "64-CHARACTER MAX";
 "registerPropertyRights_assetTypeLabel" = "ASSET TYPE";
+"registerPropertyRights_selectAssetType" = "SELECT ASSET TYPE";
+"registerPropertyRights_propertyDescription" = "PROPERTY DESCRIPTION";
+"registerPropertyRights_whatIsPropertyDescription? >>" = "What is property description? >>";
+"registerPropertyRights_addNewField" = "ADD NEW FIELD";
 "registerPropertyRights_quantityLabel" = "NUMBER OF BITMARKS TO ISSUE";
-"registerPropertyRights_ownershipClaimMessage" = "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.";
+"registerPropertyRights_rightsClaimTitle" = "RIGHTS CLAIM";
+"registerPropertyRights_rightsClaimMessage" = "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.\"";
 
 "deleteBitmark_titleModal" = "This bitmark will be deleted.";
 
@@ -61,4 +66,28 @@
 "appDetails_appStore&Review" = "APP STORE RATING & REVIEW";
 "appDetails_shareThisApp" = "SHARE THIS APP";
 "appDetails_releaseNotes" = "RELEASE NOTES";
+"appDetails_versionApp" = "VERSION %@";
 "appDetails_supportMessage" = "We value your feedback, if you have ideas or suggestions on how to make our app even better, please email us at";
+
+"propertyDescriptionInfo_title" = "WHAT IS PROPERTY DESCRIPTON?";
+"propertyDescriptionInfo_message" = "The property description consists of KEY & VALUE, it helps to store and categorize your data in the property system. This gives anyone the ability to transact and identify the data without seeing the data itself, making the data economically meaningful.\n\nProperty descriptions are permanently recorded in the Bitmark blockchain and cannot be modified or deleted later.\n\nHere is an example of a property description for a journalist's file:";
+
+"scanQRCode_accountNumber_description_part1" = "You can transfer rights to another Bitmark account by scanning the receiving account’s QR code. You can view your account QR code by tapping ";
+"scanQRCode_accountNumber_description_part2" = " at the top of the Account screen.";
+
+"scanQRCode_rightTransfer_description" = "You can accept rights transfers from certain websites by scanning QR codes. Please only scan QR codes from websites that you already know and trust.";
+
+"authorizationRequired_title" = "Authorization Required";
+"authorizationRequired_message" = " requires your digital signature to authorize this action. To prevent abuse, please only authorize actions from trusted websites.";
+
+"ownershipClaim_complete" = "To complete the process,\nplease return to the browser.";
+
+"music_securedByBitmark" = "SECURED BY BITMARK";
+"music_playOnStreamingPlatform" = "Play on Streaming Platform";
+"music_downloadProperty" = "Download Property";
+"music_transferOwnership" = "Transfer Ownership";
+"music_bitmarkOptions" = "Bitmark Options";
+"music_viewBitmarkOptions" = "VIEW BITMARK OPTIONS";
+"music_authenticatingTransferToYou" = "AUTHENTICATING TRANSFER TO YOU...";
+"music_assetId: " = "ASSET ID: %@";
+"music_dateOfIssuance: " = "DATE OF ISSUANCE: %@";

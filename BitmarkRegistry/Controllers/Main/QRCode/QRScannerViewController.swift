@@ -35,7 +35,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "SCAN QR CODE"
+    title = "ScanQRCode".localized().localizedUppercase
 
     setupViews()
     performRealtimeCapture()
@@ -50,7 +50,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     let deviceDiscoverySession  = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back)
 
     guard let captureDevice = deviceDiscoverySession.devices.first else {
-      showErrorAlert(message: "Failed to get the camera device")
+      showErrorAlert(message: "noCamera".localized(tableName: "Error"))
       return
     }
 
@@ -60,7 +60,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
       let input = try AVCaptureDeviceInput(device: captureDevice)
       captureSession.addInput(input)
     } catch {
-      showErrorAlert(message: "The device cannot be opened because it is no longer available or because it is in use.")
+      showErrorAlert(message: "noCamera".localized(tableName: "Error"))
       return
     }
 
@@ -108,20 +108,23 @@ extension QRScannerViewController {
 
     guard ownershipService.isValid(),
           let (_, url) = ownershipService.extractData(), let urlHost = url.host else {
-      let unrecognizedQRCode = Constant.Error.unrecognizedQRCode
-      let alertController = UIAlertController(title: unrecognizedQRCode.title, message: unrecognizedQRCode.message, preferredStyle: .alert)
-      alertController.addAction(title: "OK", style: .default) { [weak self] (_) in
+      let alertController = UIAlertController(
+        title: "unrecognizedQRCode_title".localized(tableName: "Error"),
+        message: "unrecognizedQRCode_message".localized(tableName: "Error"),
+        preferredStyle: .alert
+      )
+      alertController.addAction(title: "OK".localized(), style: .default) { [weak self] (_) in
         self?.captureSession.startRunning()
       }
       present(alertController, animated: true, completion: nil)
       return
     }
 
-    let authorizationRequired = Constant.Confirmation.authorizationRequired
-    let message = "\(urlHost) \(authorizationRequired.requiredSignatureMessage)"
-    let alertController = UIAlertController(title: authorizationRequired.title, message: message, preferredStyle: .alert)
-    alertController.addAction(title: "Cancel", style: .default, handler: backNavigation(_:))
-    alertController.addAction(title: "Authorize", style: .default, handler: authorize(_:))
+    let message = urlHost + "authorizationRequired_message".localized(tableName: "Phrase")
+    let alertController = UIAlertController(
+      title: "authorizationRequired_title".localized(tableName: "Phrase"), message: message, preferredStyle: .alert)
+    alertController.addAction(title: "Cancel".localized(), style: .default, handler: backNavigation(_:))
+    alertController.addAction(title: "Authorize".localized(), style: .default, handler: authorize(_:))
     present(alertController, animated: true, completion: nil)
   }
 
@@ -134,11 +137,17 @@ extension QRScannerViewController {
 
           if let error = error {
             ErrorReporting.report(error: error)
-            self.showErrorAlert(title: "Error", message: "There was an error while requesting to \(urlHost)")
+            self.showErrorAlert(
+              title: "Error".localized(),
+              message: String(format: "ownershipClaim_errorRequest".localized(tableName: "Error"), urlHost)
+            )
             return
           }
 
-          self.showQuickMessageAlert(title: "Authorized!", message: "Your authorization has been sent to \(urlHost).") { [weak self] in
+          self.showQuickMessageAlert(
+            title: "Authorized!".localized(),
+            message: String(format: "ownershipClaim_sendAuthorization".localized(tableName: "Message"), urlHost)
+          ) { [weak self] in
             self?.navigationController?.popViewController(animated: true)
             self?.delegate.process(qrCode: nil)
           }
@@ -146,13 +155,16 @@ extension QRScannerViewController {
       }
     } catch {
       ErrorReporting.report(error: error)
-      self.showErrorAlert(title: "Error", message: "There was an error while requesting to \(urlHost)")
+      self.showErrorAlert(
+        title: "Error".localized(),
+        message: String(format: "ownershipClaim_errorRequest".localized(tableName: "Error"), urlHost)
+      )
     }
   }
 
   fileprivate func showErrorAlert(title: String, message: String) {
     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    alertController.addAction(title: "OK", style: .default) { (_) in
+    alertController.addAction(title: "OK".localized(), style: .default) { (_) in
       self.captureSession.startRunning()
     }
     present(alertController, animated: true, completion: nil)
@@ -193,7 +205,7 @@ extension QRScannerViewController {
     guard let qrCodeScanType = qrCodeScanType else { return NSMutableAttributedString(string: "") }
     switch qrCodeScanType {
     case .accountNumber:
-      let descriptionText = NSMutableAttributedString(string: "You can transfer rights to another Bitmark account by scanning the receiving account’s QR code. You can view your account QR code by tapping ")
+      let descriptionText = NSMutableAttributedString(string: "scanQRCode_accountNumber_description_part1".localized(tableName: "Phrase"))
 
       let qrCodeAttachment = NSTextAttachment()
       qrCodeAttachment.image = UIImage(named: "qr-code-icon")
@@ -201,10 +213,10 @@ extension QRScannerViewController {
 
       // add the NSTextAttachment wrapper to our full string, then add some more text.
       descriptionText.append(NSAttributedString(attachment: qrCodeAttachment))
-      descriptionText.append(NSAttributedString(string: " at the top of the Account screen."))
+      descriptionText.append(NSAttributedString(string: "scanQRCode_accountNumber_description_part2".localized(tableName: "Phrase")))
       return descriptionText
     case .ownershipCode:
-      return NSMutableAttributedString(string: "You can accept rights transfers from certain websites by scanning QR codes. Please only scan QR codes from websites that you already know and trust.")
+      return NSMutableAttributedString(string: "scanQRCode_rightTransfer_description".localized(tableName: "Phrase"))
     }
   }
 }

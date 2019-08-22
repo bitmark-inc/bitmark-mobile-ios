@@ -63,7 +63,7 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
     do {
       try BitmarkStorage.shared().markRead(for: bitmarkR)
     } catch {
-      showErrorAlert(message: Constant.Error.markReadForBitmark)
+      ErrorReporting.report(error: error)
     }
   }
 
@@ -107,11 +107,13 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
   }
 
   @objc func tapToViewBitmarkOptions(_ sender: UIButton) {
-    let alertController = UIAlertController(title: "", message: "Bitmark Options", preferredStyle: .actionSheet)
-    alertController.addAction(title: "Play on Streaming Platform", handler: tapToPlayOnStreamingPlatform)
-    alertController.addAction(title: "Download Property", handler: tapToDownloadProperty)
-    alertController.addAction(title: "Transfer Ownership", handler: tapToTransferOwnership)
-    alertController.addAction(title: "Cancel", style: .cancel)
+    let alertController = UIAlertController(
+      title: "", message: "music_bitmarkOptions".localized(tableName: "Phrase"), preferredStyle: .actionSheet
+    )
+    alertController.addAction(title: "music_playOnStreamingPlatform".localized(tableName: "Phrase"), handler: tapToPlayOnStreamingPlatform)
+    alertController.addAction(title: "music_downloadProperty".localized(tableName: "Phrase"), handler: tapToDownloadProperty)
+    alertController.addAction(title: "music_transferOwnership".localized(tableName: "Phrase"), handler: tapToTransferOwnership)
+    alertController.addAction(title: "Cancel".localized(), style: .cancel)
     present(alertController, animated: true, completion: nil)
   }
 
@@ -122,7 +124,7 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
   }
 
   @objc func tapToDownloadProperty(_ sender: UIAlertAction) {
-    showIndicatorAlert(message: Constant.Message.preparingToExport) { (selfAlert) in
+    showIndicatorAlert(message: "preparingToExport".localized(tableName: "Message")) { (selfAlert) in
       self.assetFileService.getDownloadedFileURL(assetFilename: self.assetR.filename)
         .subscribe(
           onNext: { (downloadedFileURL) in
@@ -233,7 +235,10 @@ extension MusicBitmarkDetailViewController {
   fileprivate func setupBitmarkDetailsView() -> UIView {
     let miniLogoImageView = UIImageView(image: UIImage(named: "mini-logo"))
     miniLogoImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-    let securedByBitmarkTitle = UIStackView(arrangedSubviews: [miniLogoImageView, infoLabel(text: "secured by bitmark".uppercased())], axis: .horizontal, spacing: 5)
+    let securedByBitmarkTitle = UIStackView(
+      arrangedSubviews: [miniLogoImageView, infoLabel(text: "music_securedByBitmark".localized(tableName: "Phrase").localizedUppercase)],
+      axis: .horizontal, spacing: 5
+    )
 
     let blackLine = UIView()
     blackLine.backgroundColor = .black
@@ -249,8 +254,13 @@ extension MusicBitmarkDetailViewController {
 
     let separateView = UIStackView(arrangedSubviews: [prefixPlusIcon, plusIcon], axis: .horizontal, spacing: 10)
 
-    let assetIdView = infoLabel(text: "ASSET ID: " + assetR.id)
-    let dateIssuance = infoLabel(text: "DATE OF ISSUANCE: " + (CustomUserDisplay.date(assetR.createdAt) ?? ""))
+    let assetIdView = infoLabel(text:
+      String(format: "music_assetId: ".localized(tableName: "Phrase"), assetR.id)
+    )
+    let dateIssuance = infoLabel(text:
+      String(format: "music_dateOfIssuance: ".localized(tableName: "Phrase"),
+                    (CustomUserDisplay.date(assetR.createdAt) ?? ""))
+    )
 
     let bitmarkDetailsDataView = UIStackView(
       arrangedSubviews: [securedByBitmarkTitle, separateView, assetIdView, dateIssuance],
@@ -288,7 +298,7 @@ extension MusicBitmarkDetailViewController {
 
   fileprivate func setupViewBitmarkOptionsBtn() {
     viewBitmarkOptionsBtn = musicBitmarkBtn()
-    viewBitmarkOptionsBtn.setTitle("VIEW BITMARK OPTIONS", for: .normal)
+    viewBitmarkOptionsBtn.setTitle("music_viewBitmarkOptions".localized(tableName: "Phrase").localizedUppercase, for: .normal)
     viewBitmarkOptionsBtn.setTitleColor(.mainBlueColor, for: .normal)
 
     viewBitmarkOptionsBtn.snp.makeConstraints { (make) in
@@ -302,7 +312,7 @@ extension MusicBitmarkDetailViewController {
 
   fileprivate func setupAuthenticatingTransferBtn() {
     authenticatingTransferBtn = musicBitmarkBtn()
-    authenticatingTransferBtn.setTitle("AUTHENTICATING TRANSFER TO YOU...", for: .normal)
+    authenticatingTransferBtn.setTitle("music_authenticatingTransferToYou".localized(tableName: "Phrase").localizedUppercase, for: .normal)
     authenticatingTransferBtn.setTitleColor(.dustyGray, for: .normal)
     authenticatingTransferBtn.isUserInteractionEnabled = false
 

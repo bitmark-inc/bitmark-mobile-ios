@@ -88,7 +88,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController, Steppe
       try KeychainStore.removeSeedCoreFromKeychain()
       Global.clearData()
     } catch {
-      showErrorAlert(message: Constant.Error.removeAccess)
+      showErrorAlert(message: "removeAccess".localized(tableName: "Error"))
     }
     steps.accept(BitmarkStep.removeAccessIsComplete)
   }
@@ -276,7 +276,7 @@ extension TestRecoveryPhraseViewController {
     successTitle.font = viewFont?.bold
     successTitle.textAlignment = .center
 
-    let message = UILabel(text: "testRecoveryPhrases_successMessage.".localized(tableName: "Phrase"))
+    let message = UILabel(text: "testRecoveryPhrases_successMessage".localized(tableName: "Phrase"))
     message.font = viewFont
     message.numberOfLines = 0
     message.textAlignment = .center
@@ -302,7 +302,7 @@ extension TestRecoveryPhraseViewController {
       doneButton.addTarget(self, action: #selector(doneHandler), for: .touchUpInside)
       successButton = doneButton
     case .removeAccess:
-      removeAccessButton = CommonUI.blueButton(title: "removeAccess".localized().localizedUppercase)
+      removeAccessButton = CommonUI.blueButton(title: "RemoveAccess".localized().localizedUppercase)
       removeAccessButton.addTarget(self, action: #selector(removeAccess), for: .touchUpInside)
       successButton = removeAccessButton
     }

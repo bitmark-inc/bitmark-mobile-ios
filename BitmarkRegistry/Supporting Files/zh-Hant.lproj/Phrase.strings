@@ -36,8 +36,13 @@
 "registerPropertyRights_propertyNameLabel" = "資產名稱";
 "registerPropertyRights_64characterMax" = "字元限制64";
 "registerPropertyRights_assetTypeLabel" = "資產種類";
+"registerPropertyRights_selectAssetType" = "選擇資產種類";
+"registerPropertyRights_propertyDescription" = "資產描述";
+"registerPropertyRights_whatIsPropertyDescription? >>" = "資產描述是什麼? >>";
+"registerPropertyRights_addNewField" = "新增欄位";
 "registerPropertyRights_quantityLabel" = "發行 bitmarks 數量";
-"registerPropertyRights_ownershipClaimMessage" = "「本人在此聲明為此資產之擁有者，並且同意將資產所有權登記在Bitmark區塊鏈上面。」";
+"registerPropertyRights_rightsClaimTitle" = "產權主張";
+"registerPropertyRights_rightsClaimMessage" = "「本人在此聲明為此資產之擁有者，並且同意將資產所有權登記在Bitmark區塊鏈上面。」";
 
 "deleteBitmark_titleModal" = "請確認刪除此 bitmark";
 
@@ -50,7 +55,7 @@
 "warningRecoveryPhrase_Title" = "帳戶復原碼";
 "warningRecoveryPhrase_Description" = "當你丟失、弄壞或更換了你的手機裝置，帳戶復原碼將會是你恢復Bitmark帳戶的唯一方法。\n\n我們接下來將呈現給你一列字串，請你將此字串依照順序寫在一張紙上並將其保存在安全的地方。\n\n請確保你在一個有隱私的情況下抄寫此字串，以免他人取得你的重要資訊。";
 
-"warningRemoveAccess_Title" = "登出";
+"warningRemoveAccess_Title" = "移除授權";
 "warningRemoveAccess_Description" = "登出此帳戶後，你將可以在此裝置上讀取和管理其他Bitmark帳戶。\n\n你現有的帳戶將會被從此裝置移除。若你將來希望能恢復此帳戶，你將會需要輸入你的帳戶復原馬碼。";
 
 "recoveryPhrases_Description" = "請依照以下順序記下你的帳戶復原碼：";
@@ -61,4 +66,28 @@
 "appDetails_appStore&Review" = "應用商城評分";
 "appDetails_shareThisApp" = "分享這個應用程式";
 "appDetails_releaseNotes" = "版本歷史紀錄";
+"appDetails_versionApp" = "版本 %@";
 "appDetails_supportMessage" = "我們重視所有使用者的體驗，如果在使用過程中有遇到任何的問題或者有建議想對我們說，請傳送電子郵件至";
+
+"propertyDescriptionInfo_title" = "資產描述是什麼?";
+"propertyDescriptionInfo_message" = "資產描述是由KEY 和VALUE組成，它能在數位系統內有效地儲存並分類您的數據。在看不到數據本身的情況下，讓任何人能夠交易和辨識出自己想要的數據，進而使數據在經濟上產生價值。\n\n資產描述將永久記錄在Bitmark區塊鏈中，無法再做修改或刪除。\n\n以下是一位記者檔案的資產描述範例：";
+
+"scanQRCode_accountNumber_description_part1" = "你可以掃描接收者的帳戶QR碼，將資產所有權轉移到另一個Bitmark帳戶。 你也可以在帳戶上方點擊 ";
+"scanQRCode_accountNumber_description_part2" = " 並查看自己的QR碼。";
+
+"scanQRCode_rightTransfer_description" = "你可以掃描特定網站上的QR碼，並接受資產所有權的轉移。";
+
+"authorizationRequired_title" = "授權允許";
+"authorizationRequired_message" = " 需要您的數位簽名授權。 為防止濫用，請僅授權給來自信任的網站。";
+
+"ownershipClaim_complete" = "請返回瀏覽器,\n並繼續完成流程。";
+
+"music_securedByBitmark" = "此資產由 BITMARK 保護";
+"music_playOnStreamingPlatform" = "播放音樂於串流平台";
+"music_downloadProperty" = "下載數位資產";
+"music_transferOwnership" = "轉移所有權";
+"music_bitmarkOptions" = "BITMARK 選項";
+"music_viewBitmarkOptions" = "查看 BITMARK 選項";
+"music_authenticatingTransferToYou" = "資產轉移認證中...";
+"music_assetId: " = "資產辨識碼：%@";
+"music_dateOfIssuance: " = "資產發行日期：%@";

@@ -15,10 +15,6 @@ class DashboardFlow: Flow {
   }
   let rootViewController = UITabBarController()
 
-  deinit {
-    print("\(type(of: self)): \(#function)")
-  }
-
   func navigate(to step: Step) -> FlowContributors {
     guard let step = step as? BitmarkStep else { return .none }
 

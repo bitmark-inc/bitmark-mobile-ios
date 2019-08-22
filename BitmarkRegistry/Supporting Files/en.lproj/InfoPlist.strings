@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  BitmarkRegistry
+
+  Created by Macintosh on 8/20/19.
+  Copyright © 2019 thuyentruong. All rights reserved.
+*/
+
+NSPhotoLibraryUsageDescription = "Bitmark will use photos from your library to issue bitmarks.";
+NSFaceIDUsageDescription = "Please enable FaceID to increase the security of your app. ";
+NSCameraUsageDescription = "QR code scanning requires camera access. ";

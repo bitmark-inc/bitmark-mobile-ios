@@ -23,7 +23,10 @@ class Global {
   static var apnsToken: String? // Push notification token
   static var verificationLink: String? // Chibitronics
   static var noInternetBanner: NotificationBanner = {
-    return NotificationBanner(title: "", subtitle: "NO INTERNET CONNECTION", style: .danger, colors: CustomBannerColors())
+    return NotificationBanner(
+      title: "", subtitle: "NoInternetConnection".localized().localizedUppercase,
+      style: .danger, colors: CustomBannerColors()
+    )
   }()
 
   public static func clearData() {

@@ -99,7 +99,7 @@ class AccountFlow: Flow {
 
   fileprivate func navigateToTestRecoveryPhraseToRemoveAccessScreen() -> FlowContributors {
     let testRecoveryPhraseVC = TestRecoveryPhraseViewController()
-    testRecoveryPhraseVC.title = "RecoveryPhrase".localized().localizedUppercase
+    testRecoveryPhraseVC.title = "RecoveryPhraseSignOut".localized().localizedUppercase
     testRecoveryPhraseVC.recoveryPhraseSource = .removeAccess
     rootViewController.pushViewController(testRecoveryPhraseVC)
 
