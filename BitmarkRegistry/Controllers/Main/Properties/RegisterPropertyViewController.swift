@@ -29,7 +29,7 @@ class RegisterPropertyViewController: UIViewController, Stepper {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "REGISTER"
+    title = "Register".localized().localizedUppercase
     navigationItem.backBarButtonItem = UIBarButtonItem()
     setupViews()
     setupEvents()
@@ -77,7 +77,7 @@ class RegisterPropertyViewController: UIViewController, Stepper {
         imagePickerController.sourceType = .photoLibrary
         self.present(imagePickerController, animated: true, completion: nil)
       } else {
-        self.showErrorAlert(message: Constant.Error.Permission.photo)
+        self.showErrorAlert(message: "permissionPhoto".localized(tableName: "Error"))
       }
     }
   }
@@ -113,7 +113,7 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
   fileprivate func performMoveToRegisterPropertyRights() {
     guard let assetURL = self.assetURL, let assetFileName = assetFileName else { return }
     guard isFileSizeValid(assetURL) else {
-      showErrorAlert(message: "This asset size is too large. The maximum asset size is 100MB.")
+      showErrorAlert(message: "fileSizeTooLarge".localized(tableName: "Error"))
       enableScreen()
       return
     }
@@ -175,7 +175,7 @@ extension RegisterPropertyViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    registerByPhotoButton = registerButton(by: "PHOTO OR VIDEO", imageName: "image-picker")
+    registerByPhotoButton = registerButton(by: "PhotoOrVideo".localized().localizedUppercase, imageName: "image-picker")
     registerByFileButton = registerButton(by: "File".localized().localizedUppercase, imageName: "file-picker")
 
     let registerSelectionView = UIStackView(
@@ -247,14 +247,14 @@ extension RegisterPropertyViewController {
   }
 
   fileprivate func setupBrowserActionButton() -> UIButton {
-    let browserTextLabel = UILabel(text: "Browse")
+    let browserTextLabel = UILabel(text: "Browse".localized())
     browserTextLabel.font = UIFont(name: "Arial", size: 16)
     let browserImage = UIImage(named: "browser-icon")
 
     let browserButton = UIButton()
     browserButton.frame = CGRect(x: 0, y: 16, width: view.frame.width - 35, height: 25)
     browserButton.contentHorizontalAlignment = .leading
-    browserButton.setTitle("Browse", for: .normal)
+    browserButton.setTitle("Browse".localized(), for: .normal)
     browserButton.setTitleColor(.black, for: .normal)
     browserButton.setImage(browserImage, for: .normal)
     browserButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: browserButton.frame.width - 20, bottom: 0, right: 0)

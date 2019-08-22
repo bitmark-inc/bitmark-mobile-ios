@@ -103,7 +103,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
       errorForInvalidAccountNumber.isHidden = false; return
     }
 
-    showIndicatorAlert(message: Constant.Message.transferringTransaction) { (selfAlert) in
+    showIndicatorAlert(message: "transferringTransaction".localized(tableName: "Message")) { (selfAlert) in
       do {
         _ = try BitmarkService.directTransfer(
           account: Global.currentAccount!,
@@ -117,7 +117,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()
 
-          self.showQuickMessageAlert(message: Constant.Success.transfer) { [weak self] in
+          self.showQuickMessageAlert(message: "successTransfer".localized(tableName: "Message")) { [weak self] in
             self?.steps.accept(BitmarkStep.transferBitmarkIsComplete)
           }
         })

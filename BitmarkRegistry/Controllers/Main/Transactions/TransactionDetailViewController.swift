@@ -19,7 +19,7 @@ class TransactionDetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = "REGISTRY"
+    title = "Registry".localized().localizedUppercase
 
     setupViews()
     mainView.loadWeb()
@@ -33,8 +33,7 @@ class TransactionDetailViewController: UIViewController {
       guard let assetR = transactionR.assetR, let blockR = transactionR.blockR else {
         return Global.ServerURL.registry
       }
-      return Global.ServerURL.registry + "/issuance/\(blockR.number)/" + assetR.id + "/\(assetR.registrant)"
-
+      return Global.ServerURL.registry + "/issuance/\(blockR.number)/" + assetR.id + "/\(transactionR.owner)"
     case .transfer:
       return Global.ServerURL.registry + "/transaction/" + transactionR.id
     default:

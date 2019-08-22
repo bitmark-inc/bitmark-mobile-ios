@@ -46,7 +46,7 @@ class TransactionsViewController: UIViewController, Stepper {
         self.activityIndicator.stopAnimating()
 
         if let error = error {
-          self.showErrorAlert(message: Constant.Error.syncTransaction)
+          self.showErrorAlert(message: "syncTransaction".localized(tableName: "Error"))
           ErrorReporting.report(error: error)
           return
         }
@@ -54,7 +54,7 @@ class TransactionsViewController: UIViewController, Stepper {
         do {
           self.transactionRs = try TransactionStorage.shared().getData()
         } catch {
-          self.showErrorAlert(message: Constant.Error.loadTransaction)
+          self.showErrorAlert(message: "loadTransaction".localized(tableName: "Error"))
           ErrorReporting.report(error: error)
           return
         }
@@ -62,7 +62,7 @@ class TransactionsViewController: UIViewController, Stepper {
         self.setupRealmObserverForLoadingTransactions()
       }
     } catch let e {
-      showErrorAlert(message: Constant.Error.loadTransaction)
+      showErrorAlert(message: "loadTransaction".localized(tableName: "Error"))
       ErrorReporting.report(error: e)
     }
   }
@@ -85,7 +85,7 @@ extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate
     let cell = tableView.dequeueReusableCell(withClass: TransactionListCell.self, for: indexPath)
     let transactionR = transactionRs[indexPath.row]
     cell.loadWith(transactionR)
-    if transactionR.txType == TransactionType.claimRequest.rawValue {
+    if transactionR.status == TransactionStatus.pending.rawValue || transactionR.txType == TransactionType.claimRequest.rawValue {
       cell.isUserInteractionEnabled = false
     }
     return cell

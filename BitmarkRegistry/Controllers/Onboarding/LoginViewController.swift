@@ -92,7 +92,7 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
       displayErrorView(isHidden: false)
       return
     } catch {
-      showErrorAlert(message: Constant.Error.keychainStore)
+      showErrorAlert(message: "keychainStore".localized(tableName: "Error"))
       ErrorReporting.report(error: error)
       displayErrorView(isHidden: false)
       return

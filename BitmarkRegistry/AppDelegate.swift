@@ -167,19 +167,19 @@ private extension AppDelegate {
         AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
       }, onError: { [weak self] (error) in
         guard let self = self else { return }
-        self.retryAuthenticationAlert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-        self.retryAuthenticationAlert!.addAction(title: "Retry", style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
+        self.retryAuthenticationAlert = UIAlertController(title: "Error".localized(), message: error.localizedDescription, preferredStyle: .alert)
+        self.retryAuthenticationAlert!.addAction(title: "Retry".localized(), style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
         self.retryAuthenticationAlert!.show()
       })
       .disposed(by: disposeBag)
   }
 
   func showAuthorizationRequiredAlert() {
-    let authorizationRequired = Constant.Confirmation.authorizationRequired
-    let message = authorizationRequired.requiredAccountMessage
-
-    let alertController = UIAlertController(title: authorizationRequired.title, message: message, defaultActionButtonTitle: "OK")
-    alertController.show()
+    UIAlertController(
+      title: "authorizationRequired_title".localized(tableName: "Phrase"),
+      message: "accessRequired".localized(tableName: "Error"),
+      defaultActionButtonTitle: "OK".localized()
+    ).show()
   }
 
   // Create a Sentry client and start crash handler

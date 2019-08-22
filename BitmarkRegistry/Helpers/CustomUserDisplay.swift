@@ -12,7 +12,7 @@ struct CustomUserDisplay {
   static func accountNumber(_ accountNumber: String?) -> String? {
     guard let accountNumber = accountNumber else { return nil }
     if let currentAccount = Global.currentAccount, currentAccount.getAccountNumber() == accountNumber {
-      return "YOU"
+      return "You".localized().localizedUppercase
     }
 
    return accountNumber.middleShorten()

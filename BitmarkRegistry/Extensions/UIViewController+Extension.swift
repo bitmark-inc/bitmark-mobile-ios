@@ -14,12 +14,12 @@ extension UIViewController {
 
   // MARK: - Alert
   func showErrorAlert(message: String) {
-    showAlert(title: "Error", message: message)
+    showAlert(title: "Error".localized(), message: message, buttonTitles: ["OK".localized()])
   }
 
   func showSuccessAlert(message: String, handler: @escaping () -> Void) {
-    let alertController = UIAlertController(title: "Success!", message: message, preferredStyle: .alert)
-    alertController.addAction(title: "OK", style: .default, handler: {_ in handler() })
+    let alertController = UIAlertController(title: "Success!".localized(), message: message, preferredStyle: .alert)
+    alertController.addAction(title: "OK".localized(), style: .default, handler: {_ in handler() })
     alertController.show()
   }
 

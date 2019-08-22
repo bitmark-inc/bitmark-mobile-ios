@@ -16,7 +16,10 @@ class ReleaseNotesViewController: UIViewController, Stepper {
   var steps = PublishRelay<Step>()
 
   // MARK: - Properties
-  let releaseNotesPath = "https://raw.githubusercontent.com/bitmark-inc/bitmark-mobile-ios/master/BitmarkRegistry/Supporting%20Files/ReleaseNotes.md"
+  let releaseNotesPath: String = {
+    let releaseNotesFile = (NSLocale.preferredLanguages[0].range(of: "zh") != nil) ? "ReleaseNotes.zh.md" : "ReleaseNotes.md"
+    return "https://raw.githubusercontent.com/bitmark-inc/bitmark-mobile-ios/master/BitmarkRegistry/Supporting%20Files/" + releaseNotesFile
+  }()
   var versionInfoLabel: UILabel!
   var updatedDateLabel: UILabel!
   var releaseNotesContent: UILabel!
@@ -35,13 +38,13 @@ class ReleaseNotesViewController: UIViewController, Stepper {
 
   fileprivate func loadData() {
     if let appVersion = Bundle.main.infoDictionary?[Constant.InfoKey.kVersion] as? String {
-      versionInfoLabel.text = "VERSION \(appVersion)"
+      versionInfoLabel.text = String(format: "appDetails_versionApp".localized(tableName: "Phrase"), appVersion)
     }
 
     if let pathToInfoPlist = Bundle.main.path(forResource: "Info", ofType: "plist"),
        let updateDate = try? FileManager.default.attributesOfItem(atPath: pathToInfoPlist)[.modificationDate] as? Date {
         let durationInDays = Calendar.current.dateComponents([.day], from: updateDate)
-        updatedDateLabel.text = "\(durationInDays.day!)d ago"
+        updatedDateLabel.text = String(format: "dAgo".localized(), durationInDays.day!)
     }
 
     Alamofire.request(releaseNotesPath).responseString { (response) in
@@ -49,12 +52,6 @@ class ReleaseNotesViewController: UIViewController, Stepper {
         self.releaseNotesContent.text = utf8Data
       }
     }
-  }
-
-  @objc func emailUs(_ sender: UIButton) {
-    guard let supportEmail = sender.title(for: .normal),
-          let url = URL(string: "mailto:\(supportEmail)") else { return }
-      UIApplication.shared.open(url)
   }
 
   @objc func closeHandler(_ sender: UIButton) {
@@ -80,19 +77,23 @@ extension ReleaseNotesViewController {
 
     releaseNotesContent = CommonUI.descriptionLabel(text: "___")
 
-    let feedbackDescription = CommonUI.descriptionLabel(text: "appDetails_supportMessage".localized(tableName: "Phrase"))
-    let emailUsLink = UIButton(type: .system)
+    let feedbackSupportMessage = "appDetails_supportMessage".localized(tableName: "Phrase")
+    let supportEmail = "support@bitmark.com"
+    let feedbackDescription = NSMutableAttributedString(
+      string: feedbackSupportMessage + " " +  supportEmail,
+      attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir", size: 17)!]
+    )
+    feedbackDescription.addAttribute(.link, value: URL(string: "mailto:\(supportEmail)")!, range: NSRange(location: feedbackSupportMessage.count + 1, length: supportEmail.count))
 
-    emailUsLink.setTitle("support@bitmark.com", for: .normal)
-    emailUsLink.addTarget(self, action: #selector(emailUs), for: .touchUpInside)
-
-    let feedbackView = UIStackView(arrangedSubviews: [feedbackDescription, emailUsLink], axis: .vertical, spacing: -4, alignment: .leading)
+    let feedbackTextView = UITextView()
+    feedbackTextView.attributedText = feedbackDescription
+    feedbackTextView.isEditable = false
 
     let mainView = UIView()
 
     mainView.addSubview(titleStackView)
     mainView.addSubview(releaseNotesContent)
-    mainView.addSubview(feedbackView)
+    mainView.addSubview(feedbackTextView)
 
     titleStackView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
@@ -103,9 +104,9 @@ extension ReleaseNotesViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    feedbackView.snp.makeConstraints { (make) in
-      make.top.equalTo(releaseNotesContent.snp.bottom)
-      make.leading.trailing.equalToSuperview()
+    feedbackTextView.snp.makeConstraints { (make) in
+      make.top.equalTo(releaseNotesContent.snp.bottom).offset(-10)
+      make.leading.trailing.bottom.equalToSuperview()
     }
 
     // *** Setup UI in view ***

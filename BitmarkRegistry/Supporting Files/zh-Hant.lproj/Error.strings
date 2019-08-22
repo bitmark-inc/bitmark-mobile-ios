@@ -6,5 +6,24 @@
   Copyright © 2019 thuyentruong. All rights reserved.
 */
 
-"registerPropertyRights_duplicatedLabels" = "重複的標籤!";
+"accessFile" = "選取的檔案權限發生問題。";
+"accessRequired" = "如要繼續，請登入或創建新的Bitmark帳戶。";
+"cannotNavigate" = "無法進入預期的視窗。 請更新應用程式，再試一次。";
+"createAccount" = "創建新帳戶時發生問題。";
+"fileSizeTooLarge" = "數位資產太大。數位資產不能超過100MB。";
+"keychainStore" = "存取資料時發生問題。";
+"loadBitmark" = "載入bitmarks時發生錯誤。";
+"loadData" = "載入資料時發生錯誤。";
+"loadRecoveryPhrase" = "載入復原碼時發生錯誤。";
+"loadTransaction" = "同步最新交易事項時發生錯誤。";
+"markReadForBitmark" = "標記bitmark已讀取時發生錯誤。";
+"noCamera" = "相機無法啟動，因為此相機已無法再使用或正在使用中。";
 "noReadyToDownload" = "你的 bitmark 資產尚未準備好下載，請稍後再試。";
+"ownershipClaim_errorRequest" = "在索取%@時發生錯誤。";
+"permissionPhoto" = "請開啟相簿權限。";
+"registerPropertyRights_duplicatedLabels" = "重複的標籤!";
+"removeAccess" = "登出時發生問題。";
+"syncBitmark" = "同步最新bitmarks時發生問題。";
+"syncTransaction" = "載入交易事項時發生錯誤。";
+"unrecognizedQRCode_title" = "無法辨識QR碼";
+"unrecognizedQRCode_message" = "請再次掃描QR碼，如需進一步協助請聯絡QR碼提供者。";

@@ -6,5 +6,24 @@
   Copyright © 2019 thuyentruong. All rights reserved.
 */
 
-"registerPropertyRights_duplicatedLabels" = "Duplicated labels!";
+"accessFile" = "There was a problem to access your selected file.";
+"accessRequired" = "Please sign in or create your Bitmark account to proceed.";
+"cannotNavigate" = "Cannot go to expected screen. Please try again with new app update.";
+"createAccount" = "The app encountered a problem while creating your account.";
+"fileSizeTooLarge" = "This asset size is too large. The maximum asset size is 100MB.";
+"keychainStore" = "The app encountered a problem while saving your data. ";
+"loadBitmark" = "Error happened while loading bitmarks.";
+"loadData" = "Error happended while loading data.";
+"loadRecoveryPhrase" = "Error happened while loading recovery phrase.";
+"loadTransaction" = "There was a problem to sync your lastest transactions.";
+"markReadForBitmark" = "Error happened while marking this bitmark as read.";
+"noCamera" = "The camera device cannot be opened because it is no longer available or because it is in use.";
 "noReadyToDownload" = "Your bitmark isn't ready to download. Please try again later.";
+"ownershipClaim_errorRequest" = "There was an error while requesting to %@.";
+"permissionPhoto" = "Please allow access to your photos.";
+"registerPropertyRights_duplicatedLabels" = "Duplicated labels!";
+"removeAccess" = "There was a problem from removing the access.";
+"syncBitmark" = "There was a problem to sync your lastest bitmarks.";
+"syncTransaction" = "Error happened while loading transactions.";
+"unrecognizedQRCode_title" = "Unrecognized QR Code";
+"unrecognizedQRCode_message" = "Please scan the QR code again or contact the QR code provider if you’re still experiencing problems.";

@@ -7,3 +7,10 @@
 */
 
 "sendingTransaction" = "Registering your rights in the Bitmark Digital Property System...";
+"transferringTransaction" = "Transferring your rights...";
+"deletingBitmark" = "Deleting your rights...";
+"preparingToExport" = "Preparing to export...";
+"successIssue" = "Your rights to this property have been registered.";
+"successTransfer" = "Your rights to this property have been transferred.";
+"successDelete" = "Your rights to this property have been permanently removed from your account.";
+"ownershipClaim_sendAuthorization" = "Your authorization has been sent to %@.";
