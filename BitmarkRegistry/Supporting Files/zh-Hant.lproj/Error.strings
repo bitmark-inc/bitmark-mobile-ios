@@ -17,7 +17,7 @@
 "loadRecoveryPhrase" = "載入復原碼時發生錯誤。";
 "loadTransaction" = "同步最新交易事項時發生錯誤。";
 "markReadForBitmark" = "標記bitmark已讀取時發生錯誤。";
-"noCamera" = "相機無法啟動，因為此相機已無法再使用或正在使用中。";
+"noCamera" = "無法啟動相機。";
 "noReadyToDownload" = "你的 bitmark 資產尚未準備好下載，請稍後再試。";
 "ownershipClaim_errorRequest" = "在索取%@時發生錯誤。";
 "permissionPhoto" = "請開啟相簿權限。";

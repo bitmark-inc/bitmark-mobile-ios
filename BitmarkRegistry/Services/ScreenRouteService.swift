@@ -55,6 +55,7 @@ class ScreenRouteService {
     tabBarVC.selectedIndex = 0
 
     guard let propertiesFlowRootVC = tabBarVC.selectedViewController as? UINavigationController else { return nil }
+    propertiesFlowRootVC.popToRootViewController(animated: false)
     return propertiesFlowRootVC.viewControllers.first as? PropertiesViewController
   }
 }
