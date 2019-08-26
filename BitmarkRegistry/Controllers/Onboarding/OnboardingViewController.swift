@@ -56,6 +56,21 @@ class OnboardingViewController: UIViewController, Stepper {
   }
 }
 
+extension OnboardingViewController: UITextViewDelegate {
+  func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    guard let _ = URL.scheme, let host = URL.host, let agreementLink = AppDetailContent(rawValue: host) else { return false }
+
+    switch agreementLink {
+    case .termsOfService:
+      steps.accept(BitmarkStep.viewTermsOfService)
+    case .privacyPolicy:
+      steps.accept(BitmarkStep.viewPrivacyPolicy)
+    }
+
+    return true
+  }
+}
+
 // MARK: - Setup Views/Events
 extension OnboardingViewController {
   fileprivate func setupEvents() {
@@ -69,18 +84,50 @@ extension OnboardingViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let logoImageView = UIImageView()
-    logoImageView.image = UIImage(named: "Bitmark_Logo-8")
+    let titlePageLabel = CommonUI.pageTitleLabel(text: "onboarding_title".localized(tableName: "Phrase").localizedUppercase)
+    titlePageLabel.textColor = .mainBlueColor
+
+    let descriptionLabel = CommonUI.descriptionLabel(text: "onboarding_title_description".localized(tableName: "Phrase"))
+
+    let introductionImageView = UIImageView()
+    introductionImageView.image = UIImage(named: "introduction")
+    introductionImageView.contentMode = .scaleAspectFit
+
+    let titleView = UIStackView(
+      arrangedSubviews: [titlePageLabel, descriptionLabel],
+      axis: .vertical,
+      spacing: 50.0,
+      alignment: .leading,
+      distribution: .fill
+    )
+
+    let agreementTextView = UITextView()
+    agreementTextView.attributedText = createTermsPrivacyAgreementText()
+    agreementTextView.delegate = self
+    agreementTextView.isEditable = false
 
     activityIndicator = CommonUI.appActivityIndicator()
 
     let contentView = UIView()
-    contentView.addSubview(logoImageView)
+    contentView.addSubview(titleView)
+    contentView.addSubview(introductionImageView)
+    contentView.addSubview(agreementTextView)
     contentView.addSubview(activityIndicator)
 
-    logoImageView.snp.makeConstraints({ (make) in
-      make.centerX.centerY.equalToSuperview()
-    })
+    titleView.snp.makeConstraints { (make) in
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    introductionImageView.snp.makeConstraints { (make) in
+      make.top.equalTo(titleView.snp.bottom).offset(100)
+      make.centerX.leading.trailing.equalToSuperview()
+    }
+
+    agreementTextView.snp.makeConstraints { (make) in
+      make.top.greaterThanOrEqualTo(introductionImageView)
+      make.height.equalTo(50)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
 
     activityIndicator.snp.makeConstraints { (make) in
       make.centerX.equalToSuperview()
@@ -101,10 +148,11 @@ extension OnboardingViewController {
 
     contentView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
+          .inset(UIEdgeInsets(top: 50, left: 50, bottom: 30, right: 27))
     }
 
     buttonsGroupStackView.snp.makeConstraints { (make) in
-      make.top.equalTo(contentView.snp.bottom)
+      make.top.equalTo(contentView.snp.bottom).offset(30)
       make.leading.trailing.bottom.equalToSuperview()
     }
 
@@ -112,5 +160,27 @@ extension OnboardingViewController {
     mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
     }
+  }
+
+  fileprivate func createTermsPrivacyAgreementText() -> NSMutableAttributedString {
+    let termsOfServiceText = "TermsOfService".localized()
+    let privacyPolicyText = "PrivacyPolicy".localized()
+    let termsPrivacyAgreementText = String(format: "onboarding_termsPrivacyAgreement".localized(tableName: "Phrase"), termsOfServiceText, privacyPolicyText)
+    let agreementText = NSMutableAttributedString(
+      string: termsPrivacyAgreementText,
+      attributes: [NSAttributedString.Key.font: UIFont(name: "Avenir", size: 13)!]
+    )
+
+    guard let termsOfServiceRange = termsPrivacyAgreementText.range(of: termsOfServiceText),
+          let privacyPolicyRange = termsPrivacyAgreementText.range(of: privacyPolicyText) else { return agreementText }
+    agreementText.addAttribute(.link,
+                                value: URL(string: "bitmark://\(AppDetailContent.termsOfService.rawValue)")!,
+                                range: termsPrivacyAgreementText.nsRange(from: termsOfServiceRange)
+    )
+    agreementText.addAttribute(.link,
+                               value: URL(string: "bitmark://\(AppDetailContent.privacyPolicy.rawValue)")!,
+                               range: termsPrivacyAgreementText.nsRange(from: privacyPolicyRange)
+    )
+    return agreementText
   }
 }

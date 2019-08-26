@@ -12,6 +12,10 @@
 "signin_resultWrongMessage" = "請再試一次!";
 "signin_resultWrong" = "錯誤的帳戶恢復碼";
 
+"onboarding_title" = "BITMARK REGISTRY";
+"onboarding_title_description" = "守護您的數據與其他數位資產的合法權利。";
+"onboarding_termsPrivacyAgreement" = "開始下一步表示您同意 Bitmark %@ 和 %@ 。";
+
 "facetouchid_title" = "指紋或臉部辨識";
 "facetouchid_title_description" = "使用指紋或臉部辨識來加密與簽署你的數據資料。";
 "facetouchid_enableButton" = "開啟指紋或臉部辨識";

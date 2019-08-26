@@ -54,6 +54,7 @@ class PropertiesFlow: Flow {
     case .viewMusicBitmarkDetails(let bitmarkR, let assetR):
       return navigateToMusicBitmarkDetails(bitmarkR: bitmarkR, assetR: assetR)
     case .viewMusicBitmarkDetailsIsComplete:
+      rootViewController.isNavigationBarHidden = false
       rootViewController.popViewController(animated: true)
       return .none
     case .viewRegistryBitmarkDetails(let bitmarkId):
@@ -145,6 +146,7 @@ class PropertiesFlow: Flow {
 
     musicBitmarkDetailsVC.hidesBottomBarWhenPushed = true
     rootViewController.pushViewController(musicBitmarkDetailsVC)
+    rootViewController.isNavigationBarHidden = true
 
     return .one(flowContributor: .contribute(withNextPresentable: musicBitmarkDetailsVC, withNextStepper: musicBitmarkDetailsVC))
   }

@@ -55,11 +55,6 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
     setupEvents()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.isNavigationBarHidden = true
-  }
-
   // MARK: - Handlers
   @objc func changePhraseOptions(_ sender: UIButton) {
     if numberOfPhrases == 12 {

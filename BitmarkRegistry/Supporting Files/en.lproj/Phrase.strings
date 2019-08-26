@@ -12,6 +12,10 @@
 "signin_resultWrongMessage" = "Please try again!";
 "signin_resultWrong" = "Wrong Recovery Phrase!";
 
+"onboarding_title" = "BITMARK REGISTRY";
+"onboarding_title_description" = "Protect the legal rights to your data and other digital assets.";
+"onboarding_termsPrivacyAgreement" = "By continuing, you agree to the Bitmark %@ and %@.";
+
 "facetouchid_title" = "TOUCH/FACE ID";
 "facetouchid_title_description" = "Use Touch/Face ID to sign and encrypt your data.";
 "facetouchid_enableButton" = "ENABLE TOUCH/FACE ID";

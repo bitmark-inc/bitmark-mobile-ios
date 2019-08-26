@@ -29,6 +29,10 @@ class OnboardingFlow: Flow {
       return navigateToLoginScreen()
     case .askingTouchFaceIdAuthentication:
       return navigateToTouchAuthenticationScreen()
+    case .viewTermsOfService:
+      return navigateToViewTermsOfServiceScreen()
+    case .viewPrivacyPolicy:
+      return navigateToViewPrivacyPolicyScreen()
     case .userIsLoggedIn:
       return .end(forwardToParentFlowWithStep: BitmarkStep.dashboardIsRequired)
     default:
@@ -38,25 +42,52 @@ class OnboardingFlow: Flow {
 
   private func navigateToOnboardingScreen() -> FlowContributors {
     let onboardingVC = OnboardingViewController()
-    self.rootViewController.isNavigationBarHidden = true
-    self.rootViewController.pushViewController(onboardingVC, animated: false)
+    rootViewController.isNavigationBarHidden = true
+    rootViewController.setViewControllers([onboardingVC], animated: true)
     return .one(flowContributor: .contribute(withNextPresentable: onboardingVC,
                                              withNextStepper: onboardingVC))
   }
 
   fileprivate func navigateToLoginScreen() -> FlowContributors {
     let loginVC = LoginViewController()
-    self.rootViewController.pushViewController(loginVC, animated: true)
-    self.rootViewController.isNavigationBarHidden = false
-    self.rootViewController.navigationItem.backBarButtonItem = UIBarButtonItem()
+    rootViewController.pushViewController(loginVC, animated: true)
+    setupNewBackButton(in: loginVC.navigationItem)
     return .one(flowContributor: .contribute(withNextPresentable: loginVC,
                                              withNextStepper: loginVC))
   }
 
   fileprivate func navigateToTouchAuthenticationScreen() -> FlowContributors {
     let touchAuthenticationVC = TouchAuthenticationViewController()
-    self.rootViewController.pushViewController(touchAuthenticationVC, animated: false)
+    rootViewController.pushViewController(touchAuthenticationVC, animated: false)
+    rootViewController.isNavigationBarHidden = true
     return .one(flowContributor: .contribute(withNextPresentable: touchAuthenticationVC,
                                              withNextStepper: touchAuthenticationVC))
+  }
+
+  fileprivate func navigateToViewTermsOfServiceScreen() -> FlowContributors {
+    let appDetailContentVC = AppDetailContentViewController()
+    appDetailContentVC.appDetailContent = .termsOfService
+    rootViewController.pushViewController(appDetailContentVC)
+    setupNewBackButton(in: appDetailContentVC.navigationItem)
+    return .none
+  }
+
+  fileprivate func navigateToViewPrivacyPolicyScreen() -> FlowContributors {
+    let appDetailContentVC = AppDetailContentViewController()
+    appDetailContentVC.appDetailContent = .privacyPolicy
+    rootViewController.pushViewController(appDetailContentVC)
+    setupNewBackButton(in: appDetailContentVC.navigationItem)
+    return .none
+  }
+
+  fileprivate func setupNewBackButton(in navigationItem: UINavigationItem) {
+    rootViewController.isNavigationBarHidden = false
+    let newBackButton = UIBarButtonItem(image: UIImage(named: "Nav-Back")!, style: .plain, target: self, action: #selector(tapBackNav))
+    navigationItem.leftBarButtonItem = newBackButton
+  }
+
+  @objc func tapBackNav(_ sender: UIBarButtonItem) {
+    rootViewController.popViewController(animated: true)
+    rootViewController.setNavigationBarHidden(true, animated: false)
   }
 }

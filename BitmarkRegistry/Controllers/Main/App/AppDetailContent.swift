@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AppDetailContent {
+enum AppDetailContent: String {
   case termsOfService
   case privacyPolicy
 
