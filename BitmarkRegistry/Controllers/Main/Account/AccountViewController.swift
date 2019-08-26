@@ -22,6 +22,7 @@ class AccountViewController: UIViewController, Stepper {
   var logoutButton: UIButton!
   var detailsButton: UIButton!
   var needHelpButton: UIButton!
+  let accountNumberFont = UIFont(name: Constant.andaleMono, size: 11)!
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -137,8 +138,8 @@ extension AccountViewController {
 
     accountNumberLabel = UIButton(type: .system)
     accountNumberLabel.setTitleColor(.mainBlueColor, for: .normal)
-    accountNumberLabel.titleLabel?.font = UIFont(name: "Courier", size: 11)
     accountNumberLabel.contentHorizontalAlignment = .fill
+    accountNumberLabel.titleLabel?.font = UIFont(name: Constant.andaleMono, size: 11)
     accountNumberLabel.underlinedLineColor = .mainBlueColor
 
     copiedToClipboardNotifier = UILabel(text: "CopiedToClipboard".localized())

@@ -141,7 +141,7 @@ extension AppDetailViewController {
 
   fileprivate func infoLabel(_ text: String = "") -> UILabel {
     let label = UILabel(text: text)
-    label.font = UIFont(name: "Courier", size: 14)
+    label.font = UIFont(name: Constant.andaleMono, size: 14)
     return label
   }
 }

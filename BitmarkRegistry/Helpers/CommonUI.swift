@@ -89,7 +89,7 @@ class CommonUI {
 
   static func infoLabel(text: String = "") -> UILabel {
     let label = UILabel(text: text)
-    label.font = UIFont(name: "Courier", size: 13)
+    label.font = UIFont(name: Constant.andaleMono, size: 13)
     label.lineHeightMultiple(1.2)
     return label
   }

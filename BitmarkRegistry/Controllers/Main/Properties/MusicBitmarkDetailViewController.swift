@@ -336,7 +336,7 @@ extension MusicBitmarkDetailViewController {
 
   fileprivate func infoLabel(text: String) -> UILabel {
     let label = UILabel(text: text)
-    label.font = UIFont(name: "Courier", size: 14)
+    label.font = UIFont(name: Constant.andaleMono, size: 14)
     label.textColor = .emperor
     return label
   }

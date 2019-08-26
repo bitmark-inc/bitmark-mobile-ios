@@ -82,6 +82,8 @@
 		E25DF1DB22CB3F4700AC270E /* BitmarkStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1D622CB3F4700AC270E /* BitmarkStorage.swift */; };
 		E25DF1DC22CB3F4700AC270E /* TransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */; };
 		E25DF1DD22CB3F4700AC270E /* TransactionStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */; };
+		E25FF4DA230FD57500413C85 /* andale_mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E25FF4D9230FD57500413C85 /* andale_mono.ttf */; };
+		E25FF4DB230FD57500413C85 /* andale_mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E25FF4D9230FD57500413C85 /* andale_mono.ttf */; };
 		E26452CD22F2994A0074D9C9 /* OwnershipApprovanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */; };
 		E26452CE22F2994A0074D9C9 /* OwnershipApprovanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */; };
 		E26C196322E96B9E000B4524 /* SeedVersion+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26C196222E96B9E000B4524 /* SeedVersion+Extension.swift */; };
@@ -296,6 +298,7 @@
 		E25DF1D522CB3F4700AC270E /* SyncStorageBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncStorageBase.swift; sourceTree = "<group>"; };
 		E25DF1D622CB3F4700AC270E /* BitmarkStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkStorage.swift; sourceTree = "<group>"; };
 		E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionStorage.swift; sourceTree = "<group>"; };
+		E25FF4D9230FD57500413C85 /* andale_mono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = andale_mono.ttf; sourceTree = "<group>"; };
 		E26452CC22F2994A0074D9C9 /* OwnershipApprovanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnershipApprovanceService.swift; sourceTree = "<group>"; };
 		E26C196222E96B9E000B4524 /* SeedVersion+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SeedVersion+Extension.swift"; sourceTree = "<group>"; };
 		E26D78A9230AC9E60048E7DD /* TransactionsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsFlow.swift; sourceTree = "<group>"; };
@@ -521,6 +524,14 @@
 				E25DF1D722CB3F4700AC270E /* TransactionStorage.swift */,
 			);
 			path = SyncStorage;
+			sourceTree = "<group>";
+		};
+		E25FF4D8230FD54000413C85 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				E25FF4D9230FD57500413C85 /* andale_mono.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		E279F84622D837F200164E28 /* App */ = {
@@ -756,6 +767,7 @@
 		E2E798CB229E1CA700508B69 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E25FF4D8230FD54000413C85 /* Fonts */,
 				E2E798C0229E189F00508B69 /* Assets.xcassets */,
 				E29CE44922F03C1400C50CF4 /* ReleaseNotes.md */,
 				E2F1D3E6230E4A40006870B4 /* ReleaseNotes.zh.md */,
@@ -979,6 +991,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E25FF4DB230FD57500413C85 /* andale_mono.ttf in Resources */,
 				E29A740622AA49990052C716 /* LaunchScreen.storyboard in Resources */,
 				E2F1D3E8230E4A40006870B4 /* ReleaseNotes.zh.md in Resources */,
 				E28E3565230BF5720097DBFA /* InfoPlist.strings in Resources */,
@@ -995,6 +1008,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E25FF4DA230FD57500413C85 /* andale_mono.ttf in Resources */,
 				E2E798C4229E189F00508B69 /* LaunchScreen.storyboard in Resources */,
 				E2F1D3E7230E4A40006870B4 /* ReleaseNotes.zh.md in Resources */,
 				E28E3564230BF5720097DBFA /* InfoPlist.strings in Resources */,

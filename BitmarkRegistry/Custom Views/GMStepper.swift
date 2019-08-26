@@ -141,7 +141,7 @@ import UIKit
   }
 
   /// Font of the middle label. Defaults to AvenirNext-Bold, 25.0 points in size.
-  @objc public var labelFont = UIFont(name: "Courier", size: 13.0)! {
+  @objc public var labelFont = UIFont(name: Constant.andaleMono, size: 13.0)! {
     didSet {
       textfield.font = labelFont
     }
