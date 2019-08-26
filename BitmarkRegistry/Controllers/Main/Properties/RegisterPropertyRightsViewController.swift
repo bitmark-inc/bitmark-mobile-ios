@@ -34,6 +34,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var assetFilenameLabel: UILabel!
   var propertyNameTextField: DesignedTextField!
   var assetTypeTextField: BoxTextField!
+  var downArrowAssetTypeSelection: UIButton!
   var metadataForms = [MetadataForm]()
   var metadataStackView: UIStackView!
   var metadataSettingButtons: UIStackView!
@@ -169,6 +170,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // *** Asset Type ***
   @objc func showAssetTypePicker() {
     guard assetRVariable.value == nil else { return }
+    assetTypeTextField.setPlaceHolderTextColor(.mainBlueColor)
+    downArrowAssetTypeSelection.isSelected = true
     let alertController = UIAlertController()
     [
       "Photo".localized(), "Video".localized(),"File".localized()
@@ -374,6 +377,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == propertyNameTextField {
+      textField.endEditing(true)
       showAssetTypePicker()
       return true
     }
@@ -385,7 +389,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         guard let currentIndex = metadataForms.firstIndex(of: currentMetadataForm) else { return true }
         let nextIndex = currentIndex + 1
         if nextIndex >= metadataForms.count {
-          return numberOfBitmarksTextField.textfield.becomeFirstResponder()
+          return currentMetadataForm.endEditing(true)
         } else {
           return metadataForms[nextIndex].labelTextField.becomeFirstResponder()
         }
@@ -526,6 +530,7 @@ extension RegisterPropertyRightsViewController {
   fileprivate func setupEvents() {
     propertyNameTextField.delegate = self
     propertyNameTextField.addTarget(self, action: #selector(propertyNameFieldEditingChanged), for: .editingChanged)
+    propertyNameTextField.addTarget(self, action: #selector(propertyNameFieldEditingChanged), for: .editingDidEnd)
 
     metadataAddButton.addTarget(self, action: #selector(addMetadataForm), for: .touchUpInside)
     metadataEditModeButton.addTarget(self, action: #selector(setModeMetadataForm), for: .touchUpInside)
@@ -646,14 +651,11 @@ extension RegisterPropertyRightsViewController {
 
   fileprivate func assetTypeView() -> UIStackView {
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_assetTypeLabel".localized(tableName: "Phrase"))
+
     assetTypeTextField = BoxTextField(placeholder: "registerPropertyRights_selectAssetType".localized(tableName: "Phrase").localizedUppercase)
-    assetTypeTextField.setPlaceHolderTextColor(.mainBlueColor)
-    let downArrowImageView = UIImageView(image: UIImage(named: "arrow-down-tf"))
-    downArrowImageView.frame = CGRect(x: 0, y: 0, width: downArrowImageView.size.width + 20.0, height: downArrowImageView.size.height)
-    downArrowImageView.contentMode = .center
     assetTypeTextField.setStyle(state: .default)
     assetTypeTextField.isUserInteractionEnabled = false
-    assetTypeTextField.rightView = downArrowImageView
+    assetTypeTextField.rightView = getDownArrowAssetTypeSelectionView()
     assetTypeTextField.rightViewMode = .always
 
     let assetTypeBox = UIView()
@@ -764,6 +766,9 @@ extension RegisterPropertyRightsViewController {
     let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_rightsClaimTitle".localized(tableName: "Phrase").localizedUppercase)
     confirmCheckBox = BEMCheckBox(frame: CGRect(x: 0, y: 0, width: 19, height: 19))
     confirmCheckBox.boxType = .square
+    confirmCheckBox.onCheckColor = .white
+    confirmCheckBox.onFillColor = .mainBlueColor
+    confirmCheckBox.onTintColor = .mainBlueColor
     confirmCheckBox.animationDuration = 0.2
     confirmCheckBox.cornerRadius = 0
 
@@ -800,14 +805,14 @@ extension RegisterPropertyRightsViewController {
   fileprivate func setupMetadataAddButton() {
     metadataAddButton = UIButton(type: .system)
     metadataAddButton.titleLabel?.font = UIFont(name: Constant.andaleMono, size: 13)
-    metadataAddButton.setImage(UIImage(named: "add_label"), for: .normal)
-    metadataAddButton.setImage(UIImage(named: "add_label_disabled"), for: .disabled)
+    metadataAddButton.setImage(UIImage(named: "add_label")!.original, for: .normal)
+    metadataAddButton.setImage(UIImage(named: "add_label_disabled")!.original, for: .disabled)
     metadataAddButton.setTitle("registerPropertyRights_addNewField".localized(tableName: "Phrase").localizedUppercase, for: .normal)
     metadataAddButton.setTitleColor(.mainBlueColor, for: .normal)
     metadataAddButton.setTitleColor(.silver, for: .disabled)
-    metadataAddButton.centerTextAndImage(spacing: 5.0)
+    metadataAddButton.centerTextAndImage(spacing: 8.0)
     metadataAddButton.contentHorizontalAlignment = .left
-    metadataAddButton.titleEdgeInsets.top = 2.0
+    metadataAddButton.imageView?.contentMode = .scaleAspectFit
   }
 
   fileprivate func setupMetadataEditModeButton() {
@@ -816,8 +821,22 @@ extension RegisterPropertyRightsViewController {
     metadataEditModeButton.setTitle("Edit".localized().localizedUppercase, for: .normal)
     metadataEditModeButton.setTitle("Done".localized().localizedUppercase, for: .selected)
     metadataEditModeButton.setTitleColor(.mainBlueColor, for: .normal)
-    metadataEditModeButton.titleEdgeInsets.top = 2.0
     metadataEditModeButton.isHidden = true
+  }
+
+  fileprivate func getDownArrowAssetTypeSelectionView() -> UIView {
+    downArrowAssetTypeSelection = UIButton()
+    downArrowAssetTypeSelection.setImage(UIImage(named: "gray-arrow-down-tf"), for: .normal)
+    downArrowAssetTypeSelection.setImage(UIImage(named: "arrow-down-tf"), for: .selected)
+
+    let downArrowView = UIView()
+    downArrowView.snp.makeConstraints { (make) in
+      make.height.equalTo(20)
+      make.width.equalTo(40)
+    }
+    downArrowView.addSubview(downArrowAssetTypeSelection)
+    downArrowAssetTypeSelection.snp.makeConstraints { $0.edges.equalToSuperview() }
+    return downArrowView
   }
 }
 

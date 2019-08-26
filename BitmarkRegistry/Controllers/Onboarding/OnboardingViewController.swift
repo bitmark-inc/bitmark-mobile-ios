@@ -96,7 +96,7 @@ extension OnboardingViewController {
     let titleView = UIStackView(
       arrangedSubviews: [titlePageLabel, descriptionLabel],
       axis: .vertical,
-      spacing: 50.0,
+      spacing: 30.0,
       alignment: .leading,
       distribution: .fill
     )
@@ -109,8 +109,8 @@ extension OnboardingViewController {
     activityIndicator = CommonUI.appActivityIndicator()
 
     let contentView = UIView()
-    contentView.addSubview(titleView)
     contentView.addSubview(introductionImageView)
+    contentView.addSubview(titleView)
     contentView.addSubview(agreementTextView)
     contentView.addSubview(activityIndicator)
 
@@ -119,13 +119,14 @@ extension OnboardingViewController {
     }
 
     introductionImageView.snp.makeConstraints { (make) in
-      make.top.equalTo(titleView.snp.bottom).offset(100)
+      make.height.equalTo(view.frame.height * 0.33)
+      make.top.lessThanOrEqualTo(titleView.snp.bottom).offset(80)
       make.centerX.leading.trailing.equalToSuperview()
     }
 
     agreementTextView.snp.makeConstraints { (make) in
-      make.top.greaterThanOrEqualTo(introductionImageView)
-      make.height.equalTo(50)
+      make.top.greaterThanOrEqualTo(introductionImageView.snp.bottom).offset(25)
+      make.height.equalTo(75)
       make.leading.trailing.bottom.equalToSuperview()
     }
 
@@ -148,11 +149,11 @@ extension OnboardingViewController {
 
     contentView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
-          .inset(UIEdgeInsets(top: 50, left: 50, bottom: 30, right: 27))
+          .inset(UIEdgeInsets(top: 50, left: 50, bottom: 0, right: 50))
     }
 
     buttonsGroupStackView.snp.makeConstraints { (make) in
-      make.top.equalTo(contentView.snp.bottom).offset(30)
+      make.top.equalTo(contentView.snp.bottom)
       make.leading.trailing.bottom.equalToSuperview()
     }
 

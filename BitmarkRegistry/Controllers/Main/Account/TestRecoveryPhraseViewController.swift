@@ -19,7 +19,7 @@ class TestRecoveryPhraseViewController: BaseRecoveryPhraseViewController, Steppe
   private var recoveryPhrases = [String]()
 
   // *** Properties for Hidden Phrase Function ***
-  private let numberOfHiddenPhrases = 5
+  private let numberOfHiddenPhrases = 4
   private var hiddenPhraseIndexes = [Int]()
   private lazy var orderedHiddenPhraseIndexes: [Int] = {
     return hiddenPhraseIndexes.sorted()
