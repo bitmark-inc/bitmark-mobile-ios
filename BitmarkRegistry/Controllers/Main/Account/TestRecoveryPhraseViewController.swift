@@ -230,7 +230,7 @@ extension TestRecoveryPhraseViewController {
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
-      make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
+      make.top.equalTo(descriptionLabel.snp.bottom).offset(35)
       make.width.equalToSuperview().offset(-40)
       make.leading.trailing.bottom.equalToSuperview()
           .inset(UIEdgeInsets(top: 0, left: 20, bottom: 25, right: 20))
@@ -248,7 +248,7 @@ extension TestRecoveryPhraseViewController {
     phraseOptionCollectionView.snp.makeConstraints { (make) in
       make.top.equalTo(mainScrollView.snp.bottom).offset(25)
       make.height.equalTo(150)
-      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+      make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
           .inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
     }
 

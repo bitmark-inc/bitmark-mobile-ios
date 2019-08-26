@@ -25,7 +25,7 @@ class LabelCell: UITableViewCell {
   fileprivate func setupViews() {
     // *** Setup subviews ***
     label = UILabel()
-    label.font = UIFont(name: "Courier", size: 15)
+    label.font = UIFont(name: Constant.andaleMono, size: 15)
     label.textColor = .mainBlueColor
 
     // *** Setup UI in view ***

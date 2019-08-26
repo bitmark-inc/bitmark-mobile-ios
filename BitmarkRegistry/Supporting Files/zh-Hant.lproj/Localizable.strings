@@ -11,7 +11,6 @@
 "Authorize" = "授权";
 "Authorized!" = "已授權!";
 "BitmarkAccount" = "Bitmark 帳戶";
-"Browse" = "瀏覽";
 "Cancel" = "取消";
 "Close" = "關閉";
 "ClaimRequest" = "索取";
@@ -25,6 +24,7 @@
 "Done" = "完成";
 "Download" = "下載";
 "Edit" = "編輯";
+"EnableAccess" = "開啟權限";
 "Error" = "發生錯誤";
 "Error!" = "發生錯誤!";
 "File" = "檔案";
@@ -79,4 +79,4 @@
 "Yes" = "確認";
 "You" = "你";
 "Yours" = "你的資產";
-"Your fingerprint signature is required." = "請提供你的指紋簽名。";
+"YourAuthorizationIsRequired" = "您的授權允許。";

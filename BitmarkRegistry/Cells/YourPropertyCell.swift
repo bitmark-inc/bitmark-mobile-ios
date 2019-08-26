@@ -90,9 +90,9 @@ extension YourPropertyCell {
     selectionStyle = .none
 
     // *** Setup subviews ***
-    dateLabel.font = UIFont(name: "Courier", size: 13)
+    dateLabel.font = UIFont(name: Constant.andaleMono, size: 13)
     assetNameLabel.font = UIFont(name: "Avenir-Black", size: 14)
-    issuerLabel.font = UIFont(name: "Courier", size: 13)
+    issuerLabel.font = UIFont(name: Constant.andaleMono, size: 13)
 
     let stackView = UIStackView(
       arrangedSubviews: [dateLabel, assetNameLabel, issuerLabel],

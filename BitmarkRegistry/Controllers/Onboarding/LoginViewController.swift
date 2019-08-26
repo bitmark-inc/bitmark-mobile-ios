@@ -55,11 +55,6 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
     setupEvents()
   }
 
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.isNavigationBarHidden = true
-  }
-
   // MARK: - Handlers
   @objc func changePhraseOptions(_ sender: UIButton) {
     if numberOfPhrases == 12 {
@@ -276,7 +271,7 @@ extension LoginViewController {
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
-      make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
+      make.top.equalTo(descriptionLabel.snp.bottom).offset(35)
       make.width.equalToSuperview().offset(-40)
       make.leading.trailing.bottom.equalToSuperview()
           .inset(UIEdgeInsets(top: 0, left: 20, bottom: 25, right: 20))

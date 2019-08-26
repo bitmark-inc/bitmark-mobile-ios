@@ -11,7 +11,6 @@
 "Authorize" = "Authorize";
 "Authorized!" = "Authorized!";
 "BitmarkAccount" = "Bitmark Account";
-"Browse" = "Browse";
 "Cancel" = "Cancel";
 "Close" = "Close";
 "ClaimRequest" = "Claim Request";
@@ -25,6 +24,7 @@
 "Done" = "Done";
 "Download" = "Download";
 "Edit" = "Edit";
+"EnableAccess" = "Enable Access";
 "Error" = "Error";
 "Error!" = "Error!";
 "File" = "File";
@@ -79,4 +79,4 @@
 "Yes" = "Yes";
 "You" = "You";
 "Yours" = "Yours";
-"Your fingerprint signature is required." = "Your fingerprint signature is required.";
+"YourAuthorizationIsRequired" = "Your authorization is required.";

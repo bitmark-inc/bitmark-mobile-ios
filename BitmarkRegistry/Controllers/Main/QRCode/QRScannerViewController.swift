@@ -32,6 +32,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
   weak var delegate: QRCodeScannerDelegate!
   var ownershipService: OwnershipApprovanceService!
 
+  // MARK: - Init
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -46,11 +47,12 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     }
   }
 
+  // MARK: - Handlers
   func performRealtimeCapture() {
     let deviceDiscoverySession  = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back)
 
     guard let captureDevice = deviceDiscoverySession.devices.first else {
-      showErrorAlert(message: "noCamera".localized(tableName: "Error"))
+      askEnableAccessAlert()
       return
     }
 
@@ -60,7 +62,7 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
       let input = try AVCaptureDeviceInput(device: captureDevice)
       captureSession.addInput(input)
     } catch {
-      showErrorAlert(message: "noCamera".localized(tableName: "Error"))
+      askEnableAccessAlert()
       return
     }
 
@@ -92,6 +94,24 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
         processVerificationLink(qrCode)
       }
     }
+  }
+
+  func askEnableAccessAlert() {
+    let alertController = UIAlertController(
+      title: "noCamera_title".localized(tableName: "Error"),
+      message: "noCamera_message".localized(tableName: "Error"),
+      preferredStyle: .alert
+    )
+    alertController.addAction(
+      title: "EnableAccess".localized(),
+      style: .default, handler: openAppSettings
+    )
+    alertController.show()
+  }
+
+  @objc func openAppSettings(_ sender: UIAlertAction) {
+    guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 
   @objc func backNavigation(_ sender: UIAlertAction) {

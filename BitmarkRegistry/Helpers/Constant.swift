@@ -10,6 +10,7 @@ import Foundation
 
 public struct Constant {
   public static let systemFullFormatDate = "yyyy MMM dd HH:mm:ss"
+  public static let andaleMono = "andale_mono"
 
   public struct InfoKey {
     public static let apiServerURL = "API_SERVER_URL"

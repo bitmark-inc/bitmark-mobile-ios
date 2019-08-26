@@ -22,6 +22,10 @@ class AccountViewController: UIViewController, Stepper {
   var logoutButton: UIButton!
   var detailsButton: UIButton!
   var needHelpButton: UIButton!
+  let accountNumberFont = UIFont(name: Constant.andaleMono, size: 11)!
+  lazy var currentAccountNumber: String = {
+    return Global.currentAccount?.getAccountNumber() ?? ""
+  }()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -37,18 +41,23 @@ class AccountViewController: UIViewController, Stepper {
 
   // MARK: Data Handlers
   private func loadData() {
-    accountNumberLabel.setTitle(Global.currentAccount!.getAccountNumber(), for: .normal)
+    let attributedTitleString = stretchAttributedText(
+      text: currentAccountNumber,
+      font: accountNumberFont, width: view.width - 45
+    )
+    accountNumberLabel.setAttributedTitle(attributedTitleString, for: .normal)
+    accountNumberLabel.sizeToFit()
   }
 
   // MARK: - Handlers
   @objc func tapToCopyAccountNumber(_ sender: UIButton) {
-    UIPasteboard.general.string = accountNumberLabel.currentTitle
+    UIPasteboard.general.string = currentAccountNumber
     copiedToClipboardNotifier.showIn(period: 1.2)
   }
 
   @objc func showReceiverQR(_ sender: UIButton) {
     let qrVC = QRViewController()
-    qrVC.accountNumber = accountNumberLabel.currentTitle
+    qrVC.accountNumber = currentAccountNumber
     presentPanModal(qrVC)
   }
 }
@@ -137,12 +146,12 @@ extension AccountViewController {
 
     accountNumberLabel = UIButton(type: .system)
     accountNumberLabel.setTitleColor(.mainBlueColor, for: .normal)
-    accountNumberLabel.titleLabel?.font = UIFont(name: "Courier", size: 11)
-    accountNumberLabel.contentHorizontalAlignment = .fill
+    accountNumberLabel.titleLabel?.font = UIFont(name: Constant.andaleMono, size: 11)
+    accountNumberLabel.titleLabel?.textAlignment = .left
     accountNumberLabel.underlinedLineColor = .mainBlueColor
 
     copiedToClipboardNotifier = UILabel(text: "CopiedToClipboard".localized())
-    copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
+    copiedToClipboardNotifier.font = UIFont(name: "Avenir-Black", size: 8)?.italic
     copiedToClipboardNotifier.textColor = .mainBlueColor
     copiedToClipboardNotifier.textAlignment = .right
     copiedToClipboardNotifier.isHidden = true
@@ -166,15 +175,24 @@ extension AccountViewController {
     })
 
     copiedToClipboardNotifier.snp.makeConstraints({ (make) in
-      make.top.equalTo(accountNumberLabel.snp.bottom).offset(10)
+      make.top.equalTo(accountNumberLabel.snp.bottom).offset(5)
       make.leading.trailing.equalToSuperview()
     })
 
     accountNumberDescription.snp.makeConstraints({ (make) in
-      make.top.equalTo(copiedToClipboardNotifier.snp.bottom).offset(5)
+      make.top.equalTo(copiedToClipboardNotifier.snp.bottom).offset(12)
       make.leading.trailing.bottom.equalToSuperview()
     })
 
     return accountNumberBox
+  }
+
+  fileprivate func stretchAttributedText(text: String, font: UIFont, width: CGFloat) -> NSMutableAttributedString {
+    let attrStr = NSMutableAttributedString(string: text)
+    let textWidth = text.size(withAttributes: [.font: font]).width
+    let letterSpacing = (width - textWidth) / CGFloat(text.count)
+    attrStr.addAttribute(NSAttributedString.Key.kern, value: letterSpacing, range: NSMakeRange(0, attrStr.length))
+
+    return attrStr
   }
 }

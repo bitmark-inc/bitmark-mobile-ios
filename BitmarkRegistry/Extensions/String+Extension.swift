@@ -26,3 +26,10 @@ extension String {
     return NSLocalizedString(self, tableName: tableName, value: "**\(self)**", comment: "")
   }
 }
+
+// MARK: - StringProtocol
+extension StringProtocol {
+  func nsRange(from range: Range<Index>) -> NSRange {
+    return .init(range, in: self)
+  }
+}

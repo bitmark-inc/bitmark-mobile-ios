@@ -17,10 +17,12 @@
 "loadRecoveryPhrase" = "Error happened while loading recovery phrase.";
 "loadTransaction" = "There was a problem to sync your lastest transactions.";
 "markReadForBitmark" = "Error happened while marking this bitmark as read.";
-"noCamera" = "The camera device cannot be opened because it is no longer available or because it is in use.";
+"noCamera_title" = "Enable Camera Access";
+"noCamera_message" = "To get started, allow Bitmark to access your camera.";
 "noReadyToDownload" = "Your bitmark isn't ready to download. Please try again later.";
 "ownershipClaim_errorRequest" = "There was an error while requesting to %@.";
-"permissionPhoto" = "Please allow access to your photos.";
+"permissionPhoto_title" = "Enable Photos Access";
+"permissionPhoto_message" = "To get started, allow Bitmark to access your photos.";
 "registerPropertyRights_duplicatedLabels" = "Duplicated labels!";
 "removeAccess" = "There was a problem from removing the access.";
 "syncBitmark" = "There was a problem to sync your lastest bitmarks.";

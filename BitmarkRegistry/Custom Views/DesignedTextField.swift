@@ -81,7 +81,7 @@ class DesignedTextField: UITextField {
   // MARK: - Setup Views
   fileprivate func setupViews() {
     addPaddingLeft(10.0)
-    font = UIFont(name: "Courier", size: 13)
+    font = UIFont(name: Constant.andaleMono, size: 13)
 
     bottomLine = UIView()
     bottomLine.backgroundColor = bottomLineColor

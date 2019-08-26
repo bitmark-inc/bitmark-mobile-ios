@@ -112,7 +112,7 @@ extension TouchAuthenticationViewController {
 
     mainView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-          .inset(UIEdgeInsets(top: 50, left: 30, bottom: 30, right: 0))
+          .inset(UIEdgeInsets(top: 50, left: 50, bottom: 30, right: 27))
     }
 
     touchFaceIdImageView.snp.makeConstraints { (make) in

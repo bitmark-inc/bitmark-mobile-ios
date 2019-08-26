@@ -45,30 +45,7 @@ class RegisterPropertyViewController: UIViewController, Stepper {
   }
 
   // MARK: - Handlers
-  // Show actionSheet Alert with option: Choose from Library
   @objc func tapPhotosToRegiter(_ sender: UIButton) {
-    let alertController = UIAlertController()
-    alertController.addAction(title: "registerProperty_chooseFromLibrary".localized(tableName: "Phrase"), handler: imagePickerHandler)
-    alertController.addAction(title: "Cancel".localized(), style: .cancel)
-    present(alertController, animated: true, completion: nil)
-  }
-
-  @objc func tapFilesToRegister(_ sender: UIButton) {
-    let browserAction = UIAlertAction(title: "", style: .default) { [weak self] in
-      self?.documentPickerHandler($0)
-    }
-    let browserButton = setupBrowserActionButton()
-    browserButton.addTarget(self, action: #selector(documentPickerHandler), for: .touchUpInside)
-
-    browserFileAlertController = UIAlertController()
-    browserFileAlertController.view.addSubview(browserButton)
-    browserFileAlertController.addAction(browserAction)
-    browserFileAlertController.addAction(title: "Cancel".localized(), style: .cancel)
-
-    present(browserFileAlertController, animated: true, completion: nil)
-  }
-
-  @objc func imagePickerHandler(_ sender: UIAlertAction) {
     askForPhotosPermission { [unowned self] (status) in
       if status == .authorized {
         let imagePickerController = UIImagePickerController()
@@ -77,13 +54,26 @@ class RegisterPropertyViewController: UIViewController, Stepper {
         imagePickerController.sourceType = .photoLibrary
         self.present(imagePickerController, animated: true, completion: nil)
       } else {
-        self.showErrorAlert(message: "permissionPhoto".localized(tableName: "Error"))
+        let alertController = UIAlertController(
+          title: "permissionPhoto_title".localized(tableName: "Error"),
+          message: "permissionPhoto_message".localized(tableName: "Error"),
+          preferredStyle: .alert
+        )
+        alertController.addAction(
+          title: "EnableAccess".localized(),
+          style: .default, handler: self.openAppSettings
+        )
+        alertController.show()
       }
     }
   }
 
-  @objc func documentPickerHandler(_ sender: Any) {
-    browserFileAlertController?.dismiss(animated: false, completion: nil)
+  @objc func openAppSettings(_ sender: UIAlertAction) {
+    guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+  }
+
+  @objc func tapFilesToRegister(_ sender: UIButton) {
     let documentPickerController = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
     documentPickerController.delegate = self
     present(documentPickerController, animated: true, completion: nil)
@@ -212,7 +202,7 @@ extension RegisterPropertyViewController {
 
   fileprivate func registerButton(by text: String, imageName: String) -> UIButton {
     let button = UIButton(type: .system)
-    button.backgroundColor = .aliceBlue
+    button.backgroundColor = .wildSand
     button.setTitle(text, for: .normal)
     button.setTitleColor(.mainBlueColor, for: .normal)
     button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 16)
@@ -244,22 +234,6 @@ extension RegisterPropertyViewController {
     }
 
     return button
-  }
-
-  fileprivate func setupBrowserActionButton() -> UIButton {
-    let browserTextLabel = UILabel(text: "Browse".localized())
-    browserTextLabel.font = UIFont(name: "Arial", size: 16)
-    let browserImage = UIImage(named: "browser-icon")
-
-    let browserButton = UIButton()
-    browserButton.frame = CGRect(x: 0, y: 16, width: view.frame.width - 35, height: 25)
-    browserButton.contentHorizontalAlignment = .leading
-    browserButton.setTitle("Browse".localized(), for: .normal)
-    browserButton.setTitleColor(.black, for: .normal)
-    browserButton.setImage(browserImage, for: .normal)
-    browserButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: browserButton.frame.width - 20, bottom: 0, right: 0)
-
-    return browserButton
   }
 
   fileprivate func setupDisabledScreen() {

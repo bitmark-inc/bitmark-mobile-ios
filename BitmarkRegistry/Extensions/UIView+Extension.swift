@@ -24,7 +24,7 @@ extension UIView {
 
       addSubview(underlinedLine)
       underlinedLine.snp.makeConstraints { (make) in
-        make.top.equalTo(snp.bottom).offset(5.0)
+        make.top.equalTo(snp.bottom).offset(0)
         make.leading.trailing.equalToSuperview()
         make.height.equalTo(1.0)
       }

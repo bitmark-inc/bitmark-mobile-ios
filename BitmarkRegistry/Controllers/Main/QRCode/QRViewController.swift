@@ -147,7 +147,7 @@ extension QRViewController {
 
   fileprivate func setupAccountNumberLabel() {
     accountNumberLabel = UILabel()
-    accountNumberLabel.font = UIFont(name: "Courier", size: 11)
+    accountNumberLabel.font = UIFont(name: Constant.andaleMono, size: 11)
     accountNumberLabel.textAlignment = .center
     accountNumberLabel.numberOfLines = 0
   }

@@ -47,6 +47,7 @@ class AppFlow: Flow {
   private func navigateToDashboardScreen() -> FlowContributors {
     let dashboardFlow = DashboardFlow()
     Flows.whenReady(flow1: dashboardFlow) { [unowned self] root in
+      self.rootViewController.isNavigationBarHidden = true
       self.rootViewController.setViewControllers([root], animated: true)
     }
 

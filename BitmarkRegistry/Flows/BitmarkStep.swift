@@ -23,6 +23,7 @@ enum BitmarkStep: Step {
   case onboardingIsComplete
 
   case dashboardIsRequired
+  case dashboardIsComplete
 
   // Bitmarks - Properties
   case listOfProperties

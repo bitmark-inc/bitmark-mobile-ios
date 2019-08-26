@@ -18,6 +18,7 @@ class PropertiesFlow: Flow {
   private lazy var rootViewController: UINavigationController = {
     let navigationController = UINavigationController()
     navigationController.navigationBar.shadowImage = UIImage()
+    navigationController.navigationBar.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 18, weight: .heavy)]
     return navigationController
   }()
 
@@ -53,6 +54,7 @@ class PropertiesFlow: Flow {
     case .viewMusicBitmarkDetails(let bitmarkR, let assetR):
       return navigateToMusicBitmarkDetails(bitmarkR: bitmarkR, assetR: assetR)
     case .viewMusicBitmarkDetailsIsComplete:
+      rootViewController.isNavigationBarHidden = false
       rootViewController.popViewController(animated: true)
       return .none
     case .viewRegistryBitmarkDetails(let bitmarkId):
@@ -67,8 +69,8 @@ class PropertiesFlow: Flow {
     self.rootViewController.pushViewController(viewController, animated: true)
 
     if let navigationItem = self.rootViewController.navigationBar.items?[0] {
-      let addBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: viewController, action: #selector(viewController.tapToAddProperty))
       let ownershipScanButton = UIBarButtonItem(image: UIImage(named: "qr-code-scan-icon"), style: .plain, target: viewController, action: #selector(viewController.tapToScanOwnershipCode))
+      let addBarButton = UIBarButtonItem(image: UIImage(named: "add-plus"), style: .plain, target: viewController, action: #selector(viewController.tapToAddProperty))
       navigationItem.title = "Properties".localized().localizedUppercase
       navigationItem.rightBarButtonItem = addBarButton
       navigationItem.leftBarButtonItem = ownershipScanButton
@@ -112,6 +114,8 @@ class PropertiesFlow: Flow {
     let qrScannerVC = QRScannerViewController()
     qrScannerVC.qrCodeScanType = .ownershipCode
     qrScannerVC.verificationLink = Global.verificationLink
+
+    qrScannerVC.hidesBottomBarWhenPushed = true
     self.rootViewController.pushViewController(qrScannerVC)
 
     return .one(flowContributor: .contribute(withNextPresentable: qrScannerVC, withNextStepper: qrScannerVC))
@@ -142,6 +146,7 @@ class PropertiesFlow: Flow {
 
     musicBitmarkDetailsVC.hidesBottomBarWhenPushed = true
     rootViewController.pushViewController(musicBitmarkDetailsVC)
+    rootViewController.isNavigationBarHidden = true
 
     return .one(flowContributor: .contribute(withNextPresentable: musicBitmarkDetailsVC, withNextStepper: musicBitmarkDetailsVC))
   }

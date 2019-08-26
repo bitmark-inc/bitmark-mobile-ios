@@ -21,6 +21,8 @@ class DashboardFlow: Flow {
     switch step {
     case .dashboardIsRequired:
       return navigateToDashboard()
+    case .dashboardIsComplete:
+      return .end(forwardToParentFlowWithStep: BitmarkStep.onboardingIsRequired)
     default:
       return .none
     }

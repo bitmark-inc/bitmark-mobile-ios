@@ -143,7 +143,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       metadataForm.labelTextField.isEnabled = false
       metadataForm.descriptionTextField.isEnabled = false
 
-      if metadataR.key == "source" {
+      if metadataR.key.caseInsensitiveCompare("source") == .orderedSame {
         assetTypeValue = metadataR.value
       }
     }
@@ -313,7 +313,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         } else {
           let assetName = self.propertyNameTextField.text!
           var metadata = self.extractMetadataFromForms()
-          metadata["source"] = self.assetTypeTextField.text!
+          metadata["SOURCE"] = self.assetTypeTextField.text!
 
           self.assetDataObservable.subscribe(onNext: { (assetData) in
             do {
@@ -799,7 +799,7 @@ extension RegisterPropertyRightsViewController {
 
   fileprivate func setupMetadataAddButton() {
     metadataAddButton = UIButton(type: .system)
-    metadataAddButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
+    metadataAddButton.titleLabel?.font = UIFont(name: Constant.andaleMono, size: 13)
     metadataAddButton.setImage(UIImage(named: "add_label"), for: .normal)
     metadataAddButton.setImage(UIImage(named: "add_label_disabled"), for: .disabled)
     metadataAddButton.setTitle("registerPropertyRights_addNewField".localized(tableName: "Phrase").localizedUppercase, for: .normal)
@@ -812,7 +812,7 @@ extension RegisterPropertyRightsViewController {
 
   fileprivate func setupMetadataEditModeButton() {
     metadataEditModeButton = UIButton()
-    metadataEditModeButton.titleLabel?.font = UIFont(name: "Courier", size: 13)
+    metadataEditModeButton.titleLabel?.font = UIFont(name: Constant.andaleMono, size: 13)
     metadataEditModeButton.setTitle("Edit".localized().localizedUppercase, for: .normal)
     metadataEditModeButton.setTitle("Done".localized().localizedUppercase, for: .selected)
     metadataEditModeButton.setTitleColor(.mainBlueColor, for: .normal)

@@ -89,6 +89,6 @@ class BoxTextField: UITextField {
     borderColor = .silver
     addPaddingLeft(10.0)
 
-    font = UIFont(name: "Courier", size: 13)
+    font = UIFont(name: Constant.andaleMono, size: 13)
   }
 }

@@ -90,7 +90,7 @@ extension RecoveryPhraseViewController {
     }
 
     recoveryPhraseCollectionView.snp.makeConstraints { (make) in
-      make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
+      make.top.equalTo(descriptionLabel.snp.bottom).offset(35)
       make.width.equalToSuperview().offset(-40)
       make.leading.trailing.bottom.equalToSuperview()
           .inset(UIEdgeInsets(top: 0, left: 20, bottom: 25, right: 20))

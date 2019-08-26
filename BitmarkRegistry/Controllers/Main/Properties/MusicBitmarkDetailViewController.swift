@@ -48,16 +48,6 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
     markRead()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = true
-  }
-
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-
   // MARK: - Load Data
   fileprivate func markRead() {
     do {
@@ -336,7 +326,7 @@ extension MusicBitmarkDetailViewController {
 
   fileprivate func infoLabel(text: String) -> UILabel {
     let label = UILabel(text: text)
-    label.font = UIFont(name: "Courier", size: 14)
+    label.font = UIFont(name: Constant.andaleMono, size: 14)
     label.textColor = .emperor
     return label
   }

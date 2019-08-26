@@ -59,14 +59,14 @@ class RecoveryPhraseCell: UICollectionViewCell {
     }
 
     phraseLabel.snp.makeConstraints { (make) in
-      make.leading.equalTo(numericOrderCover.snp.trailing).offset(7)
+      make.leading.equalTo(numericOrderCover.snp.trailing).offset(15)
       make.centerY.trailing.equalToSuperview()
     }
 
     addSubview(mainView)
     mainView.snp.makeConstraints { (make) in
       make.centerX.centerY.top.equalToSuperview()
-      make.width.greaterThanOrEqualTo(100)
+      make.width.equalToSuperview().offset(-35)
     }
   }
 }
