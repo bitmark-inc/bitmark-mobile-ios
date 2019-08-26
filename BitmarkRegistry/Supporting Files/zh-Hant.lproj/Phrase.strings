@@ -28,7 +28,6 @@
 "account_message" = "為了確保你的隱私，Bitmark系統將會給予你一個匿名帳戶號碼。\n你可以放心地將此公開帳號分享給他人，而不需要擔心身分的曝光。";
 
 "registerProperty_message" = "可登記的資產所有權包含數位藝術、照片、文字、數位內容、穿戴式裝置所收集的個人資料、電子合約等。\n在明確數位資產所有權後，您可以藉由系統發行定量的「Bitmark」，進而在數位世界中合理的轉移、授權您的數位資產，並於系統紀錄資產的走向。";
-"registerProperty_chooseFromLibrary" = "從相片庫中選擇";
 
 "registerPropertyRights_title" = "登記產權";
 "registerPropertyRights_assetFingerprintLabel" = "資產數位辨識碼";
