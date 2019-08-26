@@ -212,7 +212,7 @@ extension RegisterPropertyViewController {
 
   fileprivate func registerButton(by text: String, imageName: String) -> UIButton {
     let button = UIButton(type: .system)
-    button.backgroundColor = .aliceBlue
+    button.backgroundColor = .wildSand
     button.setTitle(text, for: .normal)
     button.setTitleColor(.mainBlueColor, for: .normal)
     button.titleLabel?.font = UIFont(name: "Avenir-Black", size: 16)

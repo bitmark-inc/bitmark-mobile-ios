@@ -65,7 +65,7 @@ class CommonUI {
   }
 
   static func errorFieldLabel(text: String = "") -> UILabel {
-    let label = UILabel(text: text.uppercased())
+    let label = UILabel(text: text)
     label.font = UIFont(name: "Avenir", size: 14)
     label.lineHeightMultiple(1.2)
     label.textColor = .mainRedColor

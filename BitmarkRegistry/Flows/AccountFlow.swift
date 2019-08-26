@@ -14,7 +14,12 @@ class AccountFlow: Flow {
   var root: Presentable {
     return self.rootViewController
   }
-  private let rootViewController = UINavigationController()
+  private lazy var rootViewController: UINavigationController = {
+    let navigationController = UINavigationController()
+    navigationController.navigationBar.shadowImage = UIImage()
+    navigationController.navigationBar.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 18, weight: .heavy)]
+    return navigationController
+  }()
 
   func navigate(to step: Step) -> FlowContributors {
     guard let step = step as? BitmarkStep else { return .none }

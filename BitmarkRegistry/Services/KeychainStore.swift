@@ -19,7 +19,7 @@ class KeychainStore {
   private static let seedValidDuration = 30 // minutes
   private static let keychain: Keychain = {
     return Keychain(service: Bundle.main.bundleIdentifier!)
-                    .authenticationPrompt("Your fingerprint signature is required.".localized())
+                    .authenticationPrompt("YourAuthorizationIsRequired".localized())
   }()
   private static let expiryTimeKey = "expiryTimeKey"
 

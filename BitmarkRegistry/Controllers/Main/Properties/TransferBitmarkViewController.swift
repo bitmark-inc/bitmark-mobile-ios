@@ -82,6 +82,8 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
     let qrScannerVC = QRScannerViewController()
     qrScannerVC.qrCodeScanType = .accountNumber
     qrScannerVC.delegate = self
+
+    qrScannerVC.hidesBottomBarWhenPushed = true
     navigationController?.pushViewController(qrScannerVC)
   }
 

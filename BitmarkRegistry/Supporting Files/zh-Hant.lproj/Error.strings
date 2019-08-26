@@ -17,10 +17,12 @@
 "loadRecoveryPhrase" = "載入復原碼時發生錯誤。";
 "loadTransaction" = "同步最新交易事項時發生錯誤。";
 "markReadForBitmark" = "標記bitmark已讀取時發生錯誤。";
-"noCamera" = "無法啟動相機。";
+"noCamera_title" = "開啟相機權限";
+"noCamera_message" = "如需繼續，允許Bitmark使用相機權限。";
 "noReadyToDownload" = "你的 bitmark 資產尚未準備好下載，請稍後再試。";
 "ownershipClaim_errorRequest" = "在索取%@時發生錯誤。";
-"permissionPhoto" = "請開啟相簿權限。";
+"permissionPhoto_title" = "開啟相簿權限";
+"permissionPhoto_message" = "如需繼續，允許Bitmark使用相簿權限。";
 "registerPropertyRights_duplicatedLabels" = "重複的標籤!";
 "removeAccess" = "登出時發生問題。";
 "syncBitmark" = "同步最新bitmarks時發生問題。";

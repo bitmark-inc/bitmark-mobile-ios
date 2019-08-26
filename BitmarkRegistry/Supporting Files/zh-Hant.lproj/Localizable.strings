@@ -25,6 +25,7 @@
 "Done" = "完成";
 "Download" = "下載";
 "Edit" = "編輯";
+"EnableAccess" = "開啟權限";
 "Error" = "發生錯誤";
 "Error!" = "發生錯誤!";
 "File" = "檔案";
@@ -79,4 +80,4 @@
 "Yes" = "確認";
 "You" = "你";
 "Yours" = "你的資產";
-"Your fingerprint signature is required." = "請提供你的指紋簽名。";
+"YourAuthorizationIsRequired" = "您的授權允許。";

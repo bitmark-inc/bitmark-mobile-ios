@@ -125,6 +125,7 @@ extension PropertiesViewController: QRCodeScannerDelegate {
     qrScannerVC.qrCodeScanType = .ownershipCode
     qrScannerVC.verificationLink = Global.verificationLink
     qrScannerVC.delegate = self
+    qrScannerVC.hidesBottomBarWhenPushed = true
     navigationController?.pushViewController(qrScannerVC)
   }
 
