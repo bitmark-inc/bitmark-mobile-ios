@@ -77,9 +77,23 @@ class RegisterPropertyViewController: UIViewController, Stepper {
         imagePickerController.sourceType = .photoLibrary
         self.present(imagePickerController, animated: true, completion: nil)
       } else {
-        self.showErrorAlert(message: "permissionPhoto".localized(tableName: "Error"))
+        let alertController = UIAlertController(
+          title: "permissionPhoto_title".localized(tableName: "Error"),
+          message: "permissionPhoto_message".localized(tableName: "Error"),
+          preferredStyle: .alert
+        )
+        alertController.addAction(
+          title: "EnableAccess".localized(),
+          style: .default, handler: self.openAppSettings
+        )
+        alertController.show()
       }
     }
+  }
+
+  @objc func openAppSettings(_ sender: UIAlertAction) {
+    guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 
   @objc func documentPickerHandler(_ sender: Any) {
