@@ -23,6 +23,9 @@ class AccountViewController: UIViewController, Stepper {
   var detailsButton: UIButton!
   var needHelpButton: UIButton!
   let accountNumberFont = UIFont(name: Constant.andaleMono, size: 11)!
+  lazy var currentAccountNumber: String = {
+    return Global.currentAccount?.getAccountNumber() ?? ""
+  }()
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -39,7 +42,7 @@ class AccountViewController: UIViewController, Stepper {
   // MARK: Data Handlers
   private func loadData() {
     let attributedTitleString = stretchAttributedText(
-      text: Global.currentAccount!.getAccountNumber(),
+      text: currentAccountNumber,
       font: accountNumberFont, width: view.width - 45
     )
     accountNumberLabel.setAttributedTitle(attributedTitleString, for: .normal)
@@ -48,13 +51,13 @@ class AccountViewController: UIViewController, Stepper {
 
   // MARK: - Handlers
   @objc func tapToCopyAccountNumber(_ sender: UIButton) {
-    UIPasteboard.general.string = accountNumberLabel.currentAttributedTitle?.string
+    UIPasteboard.general.string = currentAccountNumber
     copiedToClipboardNotifier.showIn(period: 1.2)
   }
 
   @objc func showReceiverQR(_ sender: UIButton) {
     let qrVC = QRViewController()
-    qrVC.accountNumber = accountNumberLabel.currentTitle
+    qrVC.accountNumber = currentAccountNumber
     presentPanModal(qrVC)
   }
 }
