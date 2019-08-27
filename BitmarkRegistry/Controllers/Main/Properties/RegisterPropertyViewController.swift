@@ -47,30 +47,13 @@ class RegisterPropertyViewController: UIViewController, Stepper {
   // MARK: - Handlers
   @objc func tapPhotosToRegiter(_ sender: UIButton) {
     askForPhotosPermission { [unowned self] (status) in
-      if status == .authorized {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.allowsEditing = false
-        imagePickerController.sourceType = .photoLibrary
-        self.present(imagePickerController, animated: true, completion: nil)
-      } else {
-        let alertController = UIAlertController(
-          title: "permissionPhoto_title".localized(tableName: "Error"),
-          message: "permissionPhoto_message".localized(tableName: "Error"),
-          preferredStyle: .alert
-        )
-        alertController.addAction(
-          title: "EnableAccess".localized(),
-          style: .default, handler: self.openAppSettings
-        )
-        alertController.show()
-      }
+      guard status == .authorized else { return }
+      let imagePickerController = UIImagePickerController()
+      imagePickerController.delegate = self
+      imagePickerController.allowsEditing = false
+      imagePickerController.sourceType = .photoLibrary
+      self.present(imagePickerController, animated: true, completion: nil)
     }
-  }
-
-  @objc func openAppSettings(_ sender: UIAlertAction) {
-    guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
-    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 
   @objc func tapFilesToRegister(_ sender: UIButton) {
