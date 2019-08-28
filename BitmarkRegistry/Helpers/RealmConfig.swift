@@ -40,13 +40,17 @@ enum RealmConfig {
   fileprivate func dbDirectoryURL() -> URL {
     let dbDirectory = URL(fileURLWithPath: "db", relativeTo: FileManager.sharedDirectoryURL ?? FileManager.documentDirectoryURL)
 
-    if !FileManager.default.fileExists(atPath: dbDirectory.path) {
-      do {
-        try FileManager.default.createDirectory(at: dbDirectory, withIntermediateDirectories: true)
-        try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.none], ofItemAtPath: dbDirectory.path)
-      } catch {
-        ErrorReporting.report(error: error)
+    do {
+      if KeychainStore.getEncryptedDBKeyFromKeychain() == nil {
+        try FileManager.default.removeItem(at: dbDirectory)
       }
+
+      if !FileManager.default.fileExists(atPath: dbDirectory.path) {
+          try FileManager.default.createDirectory(at: dbDirectory, withIntermediateDirectories: true)
+          try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.none], ofItemAtPath: dbDirectory.path)
+      }
+    } catch {
+      ErrorReporting.report(error: error)
     }
 
     return dbDirectory
