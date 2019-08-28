@@ -187,6 +187,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     guard let title = sender.title else { return }
     if title != "Cancel".localized() {
       assetTypeTextField.text = sender.title?.uppercased()
+      issueButton.isEnabled = validToIssue()
     } else if assetTypeTextField.isEmpty {
       assetTypeTextField.setStyle(state: .error)
     }
@@ -488,6 +489,7 @@ extension RegisterPropertyRightsViewController {
   func validToIssue() -> Bool {
     if assetRVariable.value == nil {
       return !propertyNameTextField.isEmpty &&
+             !assetTypeTextField.isEmpty &&
               errorForMetadata.text?.isEmpty ?? true &&
               validMetadata() &&
               confirmCheckBox.on &&
