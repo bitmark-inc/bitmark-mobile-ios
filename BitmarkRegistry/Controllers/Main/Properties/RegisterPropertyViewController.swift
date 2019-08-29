@@ -124,8 +124,25 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
       let fileCoordinator = NSFileCoordinator()
       var error: NSError?
       fileCoordinator.coordinate(readingItemAt: url, options: [], error: &error) { (newURL) in
-        self.assetFileName = newURL.lastPathComponent
-        self.assetURL = newURL
+        let filename = newURL.lastPathComponent
+        self.assetFileName = filename
+
+        // Fix bug "UIDocumentPickerViewController returns url to a file that does not exist"
+        // Reference: https://stackoverflow.com/questions/37109130/uidocumentpickerviewcontroller-returns-url-to-a-file-that-does-not-exist/48007752
+        var tempURL = URL(fileURLWithPath: NSTemporaryDirectory())
+        tempURL.appendPathComponent(filename)
+
+        do {
+          if FileManager.default.fileExists(atPath: tempURL.path) {
+            try FileManager.default.removeItem(at: tempURL)
+          }
+
+          try FileManager.default.moveItem(at: url, to: tempURL)
+          self.assetURL = tempURL
+        } catch {
+          ErrorReporting.report(error: error)
+        }
+
         self.performMoveToRegisterPropertyRights()
       }
     }
