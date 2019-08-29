@@ -177,6 +177,8 @@
 		E2C62559230A8EB200AE479B /* DashboardFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C62557230A8EB200AE479B /* DashboardFlow.swift */; };
 		E2C6255B230A958500AE479B /* PropertiesFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C6255A230A958500AE479B /* PropertiesFlow.swift */; };
 		E2C6255C230A958500AE479B /* PropertiesFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C6255A230A958500AE479B /* PropertiesFlow.swift */; };
+		E2C8205E2316895700463550 /* NotificationBanner+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8205D2316895700463550 /* NotificationBanner+Extension.swift */; };
+		E2C8205F2316895700463550 /* NotificationBanner+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8205D2316895700463550 /* NotificationBanner+Extension.swift */; };
 		E2C8BE5A23011038004962D3 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5923011038004962D3 /* Observable+Extension.swift */; };
 		E2C8BE5B23011038004962D3 /* Observable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5923011038004962D3 /* Observable+Extension.swift */; };
 		E2C8BE5D2301438B004962D3 /* AccountDependencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */; };
@@ -406,6 +408,7 @@
 		E2C62554230A8E0100AE479B /* OnboardingFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlow.swift; sourceTree = "<group>"; };
 		E2C62557230A8EB200AE479B /* DashboardFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardFlow.swift; sourceTree = "<group>"; };
 		E2C6255A230A958500AE479B /* PropertiesFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesFlow.swift; sourceTree = "<group>"; };
+		E2C8205D2316895700463550 /* NotificationBanner+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationBanner+Extension.swift"; sourceTree = "<group>"; };
 		E2C8BE5923011038004962D3 /* Observable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Extension.swift"; sourceTree = "<group>"; };
 		E2C8BE5C2301438B004962D3 /* AccountDependencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDependencyService.swift; sourceTree = "<group>"; };
 		E2CE153822F3EC2100964B56 /* GMStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMStepper.swift; sourceTree = "<group>"; };
@@ -795,6 +798,7 @@
 				5837C98C22D599C200DA270B /* URLRequest+JWT.swift */,
 				E26C196222E96B9E000B4524 /* SeedVersion+Extension.swift */,
 				E2C8BE5923011038004962D3 /* Observable+Extension.swift */,
+				E2C8205D2316895700463550 /* NotificationBanner+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -948,6 +952,9 @@
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 							com.apple.iCloud = {
 								enabled = 1;
 							};
@@ -957,6 +964,9 @@
 						CreatedOnToolsVersion = 10.2.1;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 							com.apple.iCloud = {
@@ -1195,6 +1205,7 @@
 				E2C8BE5B23011038004962D3 /* Observable+Extension.swift in Sources */,
 				E20472BC22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,
 				E26D78AE230AC9F10048E7DD /* AccountFlow.swift in Sources */,
+				E2C8205F2316895700463550 /* NotificationBanner+Extension.swift in Sources */,
 				E24CEC4A2305862500E8DC08 /* ClaimRequest.swift in Sources */,
 				E2ADFD1622BC6FCC00FC46D8 /* TransferBitmarkViewController.swift in Sources */,
 				E24D9C5222AE49430095E11D /* CommonUI.swift in Sources */,
@@ -1310,6 +1321,7 @@
 				E2C8BE5A23011038004962D3 /* Observable+Extension.swift in Sources */,
 				E2BEC94F22AF699D009F7DF5 /* TestPhraseOptionCell.swift in Sources */,
 				E26D78AD230AC9F10048E7DD /* AccountFlow.swift in Sources */,
+				E2C8205E2316895700463550 /* NotificationBanner+Extension.swift in Sources */,
 				E24CEC492305862500E8DC08 /* ClaimRequest.swift in Sources */,
 				E2E798BA229E189E00508B69 /* AppDelegate.swift in Sources */,
 				E20472BB22CEE44B0022C1D0 /* TransactionListCell.swift in Sources */,

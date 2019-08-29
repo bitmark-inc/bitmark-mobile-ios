@@ -13,7 +13,6 @@ import RxSwift
 import RxFlow
 import RxCocoa
 import Intercom
-import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -41,21 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     Flows.whenReady(flow1: appFlow) { (root) in
       window.rootViewController = root
     }
-
     self.coordinator.coordinate(flow: appFlow, with: AppStepper())
-
-    // Register APNS
-    UNUserNotificationCenter.current()
-      .requestAuthorization(options: [.alert, .sound, .badge])
-       { [weak self] (granted, error) in
-        if granted {
-          UNUserNotificationCenter.current().delegate = self
-        } else {
-          self?.registerAPNSSubject.onCompleted()
-        }
-       }
-    
-    UIApplication.shared.registerForRemoteNotifications()
 
     evaluatePolicyWhenUserSetEnable()
     initSentry()

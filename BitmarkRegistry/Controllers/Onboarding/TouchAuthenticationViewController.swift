@@ -93,7 +93,7 @@ extension TouchAuthenticationViewController {
     let mainView = UIStackView(
       arrangedSubviews: [titlePageLabel, descriptionLabel],
       axis: .vertical,
-      spacing: 50.0,
+      spacing: 30.0,
       alignment: .leading,
       distribution: .fill
     )
@@ -116,8 +116,7 @@ extension TouchAuthenticationViewController {
     }
 
     touchFaceIdImageView.snp.makeConstraints { (make) in
-      make.top.equalTo(mainView.snp.bottom)
-      make.centerX.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+      make.centerX.centerY.equalTo(view.safeAreaLayoutGuide)
       make.height.equalTo(view.snp.height).multipliedBy(0.4)
     }
 

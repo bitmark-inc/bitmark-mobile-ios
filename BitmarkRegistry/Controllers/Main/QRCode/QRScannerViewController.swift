@@ -109,11 +109,6 @@ class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsD
     alertController.show()
   }
 
-  @objc func openAppSettings(_ sender: UIAlertAction) {
-    guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
-    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-  }
-
   @objc func backNavigation(_ sender: UIAlertAction) {
     navigationController?.popViewController(animated: true)
   }

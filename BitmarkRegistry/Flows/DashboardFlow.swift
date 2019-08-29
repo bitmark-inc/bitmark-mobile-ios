@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UserNotifications
 import RxFlow
 
 class DashboardFlow: Flow {
@@ -60,6 +61,19 @@ class DashboardFlow: Flow {
       root3.tabBarItem = accountTabBarItem
 
       self.rootViewController.setViewControllers([root1, root2, root3], animated: false)
+      guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+
+      // Register APNS: when user access into Dashboard
+      UNUserNotificationCenter.current()
+        .requestAuthorization(options: [.alert, .sound, .badge]) {(granted, error) in
+          if granted {
+            UNUserNotificationCenter.current().delegate = appDelegate
+          } else {
+            appDelegate.registerAPNSSubject.onCompleted()
+          }
+      }
+
+      UIApplication.shared.registerForRemoteNotifications()
     }
 
     return .multiple(flowContributors: [

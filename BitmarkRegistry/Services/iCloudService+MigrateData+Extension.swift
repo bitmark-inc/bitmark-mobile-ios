@@ -31,18 +31,25 @@ extension iCloudService {
   func migrateDataFromOldVersion() throws {
     ErrorReporting.breadcrumbs(info: "migrateDataFromOldVersion", category: .MigrationData, traceLog: true)
 
-    guard let userStorage = FileManager.sharedDirectoryURL?.appendingPathComponent(user.getAccountNumber()) else { return }
+    let userAccountNumber = user.getAccountNumber()
+    guard let userStorage = FileManager.sharedDirectoryURL?.appendingPathComponent(userAccountNumber) else { return }
     let assetsFolderStorage = userStorage.appendingPathComponent("assets")
     guard FileManager.default.fileExists(atPath: assetsFolderStorage.path) else { return }
 
     var assetIdFolders = try ls(in: assetsFolderStorage, options: .skipsHiddenFiles)
     for assetIdFolder in assetIdFolders {
       let assetId = assetIdFolder.lastPathComponent
-      let downloadedFileFolder = assetIdFolder.appendingPathComponent("downloaded")
-      let downloadedFileURLs = try ls(in: downloadedFileFolder, options: .skipsHiddenFiles)
 
+      let downloadedFileFolder = assetIdFolder.appendingPathComponent("downloaded")
+      guard FileManager.default.fileExists(atPath: downloadedFileFolder.path) else {
+        ErrorReporting.breadcrumbs(info: "delete \(assetIdFolder) when it has downloaded folder.", category: .MigrationData, traceLog: true)
+        try FileManager.default.removeItem(at: assetIdFolder)
+        continue
+      }
+
+      let downloadedFileURLs = try ls(in: downloadedFileFolder, options: .skipsHiddenFiles)
       guard downloadedFileURLs.count > 0 else {
-        ErrorReporting.breadcrumbs(info: "delete \(downloadedFileFolder) when it has no files.", category: .MigrationData, traceLog: true)
+        ErrorReporting.breadcrumbs(info: "delete \(assetIdFolder) when it has no files.", category: .MigrationData, traceLog: true)
         try FileManager.default.removeItem(at: assetIdFolder)
         continue
       }
@@ -50,9 +57,9 @@ extension iCloudService {
       let downloadedFileURL = downloadedFileURLs[0]
       let filename = downloadedFileURL.lastPathComponent
 
-      let existingFileInIcloudURL = containerURL.appendingPathComponent("\(assetId)_\(filename)")
       ErrorReporting.breadcrumbs(info: "store \(filename) into storage", category: .MigrationData, traceLog: true)
-      if FileManager.default.fileExists(atPath: existingFileInIcloudURL.path) {
+      if let existingFileInIcloudURL = getExistingFileInIcloudURL(userAccountNumber, assetId, filename),
+         FileManager.default.fileExists(atPath: existingFileInIcloudURL.path) {
         let fileURL = parseAssetFileURL(filename)
         try FileManager.default.moveItem(at: existingFileInIcloudURL, to: fileURL)
       } else {
@@ -92,6 +99,12 @@ extension iCloudService {
 
     ErrorReporting.breadcrumbs(info: "remove \(documentsLocalContainer)", category: .MigrationData, traceLog: true)
     try FileManager.default.removeItem(at: documentsLocalContainer)
+  }
+
+  fileprivate func getExistingFileInIcloudURL(_ userAccountNumber: String, _ assetId: String, _ filename: String) -> URL? {
+    return icloudContainer?.appendingPathComponent(
+      "\(userAccountNumber)_assets_\(assetId.hexDecodedData.base58EncodedString)_\(filename)"
+    )
   }
 
   fileprivate func ls(in folderURL: URL, options: FileManager.DirectoryEnumerationOptions) throws -> [URL] {

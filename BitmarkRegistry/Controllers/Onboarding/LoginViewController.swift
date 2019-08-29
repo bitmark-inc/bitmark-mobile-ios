@@ -25,7 +25,7 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
     return _numericOrders!
   }
   override public var customFlowDirection: UICollectionView.ScrollDirection? { return .vertical }
-  var submitButton: SubmitButton!
+  var submitButton: UIButton!
   var submitButtonBottomConstraint: Constraint!
   var currentCell: TestRecoveryPhraseLoginCell?
   var descriptionLabel: UILabel!
@@ -128,6 +128,7 @@ extension LoginViewController: TestRecoverPhraseLoginDelegate {
 
   func editingTextfield(_ textfield: UITextField) {
     submitButton.isEnabled = validToSubmit()
+    submitButton.backgroundColor = submitButton.isEnabled ? .mainBlueColor : .dustyGray
     filterAutoCorrectWords(textfield.text!)
     adjustReturnKeyType(for: textfield)
   }
@@ -161,7 +162,12 @@ extension LoginViewController: TestRecoverPhraseLoginDelegate {
 
   @objc func pickAutoCorrectWord(_ sender: UIButton) {
     currentCell?.testPhraseTextField.text = sender.title(for: .normal)
-    goNextCell()
+
+    if validToSubmit() {
+      view.endEditing(true)
+    } else {
+      goNextCell()
+    }
   }
 
   fileprivate func adjustReturnKeyType(for testPhraseTextField: UITextField) {
@@ -281,7 +287,9 @@ extension LoginViewController {
     setupErrorResultView()
     errorResultView.isHidden = true
 
-    submitButton = SubmitButton(title: "Submit".localized().localizedUppercase)
+    submitButton = CommonUI.blueButton(title: "Submit".localized().localizedUppercase)
+    submitButton.isEnabled = false
+    submitButton.backgroundColor = .dustyGray
 
     changePhraseOptionsButton = UIButton(type: .system)
     changePhraseOptionsButton.setTitle(changeTo24phrases, for: .normal)

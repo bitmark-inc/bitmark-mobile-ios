@@ -73,8 +73,9 @@ extension UIViewController {
   }
 
   func showConfirmationAlert(message: String, handler: @escaping () -> Void) {
-    let alertController = UIAlertController(title: "", message: message, defaultActionButtonTitle: "No".localized())
-    alertController.addAction(title: "Yes".localized(), style: .default, isEnabled: true, handler: {_ in handler() })
+    let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
+    alertController.addAction(title: "No".localized(), style: .cancel, handler: nil)
+    alertController.addAction(title: "Yes".localized(), style: .default, handler: {_ in handler() })
     present(alertController, animated: true, completion: nil)
   }
 
@@ -106,13 +107,31 @@ extension UIViewController {
   // MARK: - Support Functions
   func askForPhotosPermission(handler: @escaping (PHAuthorizationStatus) -> Void ) {
     let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
-    if photoAuthorizationStatus == .notDetermined {
+
+    switch photoAuthorizationStatus {
+    case .notDetermined:
       PHPhotoLibrary.requestAuthorization { (newStatus) in
         DispatchQueue.main.async { handler(newStatus) }
       }
-    } else {
+    case .authorized:
       handler(photoAuthorizationStatus)
+    default:
+      let alertController = UIAlertController(
+        title: "permissionPhoto_title".localized(tableName: "Error"),
+        message: "permissionPhoto_message".localized(tableName: "Error"),
+        preferredStyle: .alert
+      )
+      alertController.addAction(
+        title: "EnableAccess".localized(),
+        style: .default, handler: openAppSettings
+      )
+      alertController.show()
     }
+  }
+
+  @objc func openAppSettings(_ sender: UIAlertAction) {
+    guard let url = URL.init(string: UIApplication.openSettingsURLString) else { return }
+    UIApplication.shared.open(url, options: [:], completionHandler: nil)
   }
 
   func requireAuthenticationForAction(_ disposeBag: DisposeBag, action: @escaping () -> Void) {
