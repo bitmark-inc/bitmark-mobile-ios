@@ -46,6 +46,7 @@ class AccountViewController: UIViewController, Stepper {
       font: accountNumberFont, width: view.width - 45
     )
     accountNumberLabel.setAttributedTitle(attributedTitleString, for: .normal)
+    accountNumberLabel.contentHorizontalAlignment = .leading
     accountNumberLabel.sizeToFit()
   }
 
@@ -151,7 +152,7 @@ extension AccountViewController {
     accountNumberLabel.underlinedLineColor = .mainBlueColor
 
     copiedToClipboardNotifier = UILabel(text: "CopiedToClipboard".localized())
-    copiedToClipboardNotifier.font = UIFont(name: "Avenir-Black", size: 8)?.italic
+    copiedToClipboardNotifier.font = UIFont(name: "Avenir-BlackOblique", size: 8)
     copiedToClipboardNotifier.textColor = .mainBlueColor
     copiedToClipboardNotifier.textAlignment = .right
     copiedToClipboardNotifier.isHidden = true
@@ -189,9 +190,11 @@ extension AccountViewController {
 
   fileprivate func stretchAttributedText(text: String, font: UIFont, width: CGFloat) -> NSMutableAttributedString {
     let attrStr = NSMutableAttributedString(string: text)
-    let textWidth = text.size(withAttributes: [.font: font]).width
+    let textWidth = text.size(withAttributes: [.font: font]).width + 12.0
     let letterSpacing = (width - textWidth) / CGFloat(text.count)
-    attrStr.addAttribute(NSAttributedString.Key.kern, value: letterSpacing, range: NSMakeRange(0, attrStr.length))
+    if letterSpacing > 0.0 {
+      attrStr.addAttribute(NSAttributedString.Key.kern, value: letterSpacing, range: NSMakeRange(0, attrStr.length))
+    }
 
     return attrStr
   }

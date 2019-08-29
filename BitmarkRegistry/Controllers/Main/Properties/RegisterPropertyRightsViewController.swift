@@ -60,31 +60,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     setupViews()
     setupEvents()
-
-    activityIndicator.startAnimating()
-    disabledScreen.isHidden = false
-
-    assetDataObservable = assetURLObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { try Data(contentsOf: $0) }
-      .share(replay: 1, scope: .forever)
-
-    assetFingerprintObservable = assetDataObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { AssetService.getFingerprintFrom($0) }
-      .share(replay: 1, scope: .forever)
-
-    assetFingerprintObservable
-      .bind(to: assetFingerprintLabel.rx.text)
-      .disposed(by: disposeBag)
-
-    assetFingerprintObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { AssetService.getAsset(from: $0) }
-      .bind(to: assetRVariable)
-      .disposed(by: disposeBag)
-
-    loadData()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +84,31 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     networkReachabilityManager.startListening()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    activityIndicator.startAnimating()
+    disabledScreen.isHidden = false
+
+    assetDataObservable = assetURLObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { try Data(contentsOf: $0) }
+      .share(replay: 1, scope: .forever)
+
+    assetFingerprintObservable = assetDataObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { AssetService.getFingerprintFrom($0) }
+      .share(replay: 1, scope: .forever)
+
+    assetFingerprintObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { AssetService.getAsset(from: $0) }
+      .bind(to: assetRVariable)
+      .disposed(by: disposeBag)
+
+    loadData()
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     removeNotificationsObserver()
@@ -118,7 +118,13 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   fileprivate func loadData() {
     assetFilenameLabel.text = assetFileName
 
-    assetRVariable.asObservable().skip(1).subscribe(onNext: { [weak self] (assetR) in
+    assetFingerprintObservable
+      .bind(to: assetFingerprintLabel.rx.text)
+      .disposed(by: disposeBag)
+
+    assetRVariable.asObservable().skip(1)
+      .observeOn(MainScheduler.instance)
+      .subscribe(onNext: { [weak self] (assetR) in
       guard let self = self else { return }
       if let assetR = assetR {
         self.loadAssetRData(assetR)
@@ -161,9 +167,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   fileprivate func setupDefaultForm() {
-    setDefaultMetadataFormState() // Add default Metadata
-    propertyNameTextField.becomeFirstResponder()
+    addMetadataForm(isDefault: true)
+    metadataAddButton.isHidden = true
+    metadataEditModeButton.isHidden = true
     scrollView.setContentOffset(CGPoint.zero, animated: false)
+    propertyNameTextField.becomeFirstResponder()
   }
 
   // MARK: - Handlers
@@ -206,7 +214,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
    1. disable `Add Label` & `Issue` button to require user fill into the incoming metadata form
    2. add new metadata form
    */
-  @objc func addMetadataForm(_ sender: UIButton) {
+  @objc func tapToAddMetadataForm(_ sender: UIButton) {
+    addMetadataForm()
+  }
+
+  fileprivate func addMetadataForm(isDefault: Bool = false) {
     metadataAddButton.isEnabled = false // 1
     issueButton.isEnabled = false
 
@@ -230,7 +242,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     view.endEditing(true)
 
-    if assetRVariable.value == nil {
+    if assetRVariable.value == nil && !isDefault {
       newMetadataForm.labelTextField.becomeFirstResponder()
 
       // adjust scroll to help user still able to click "Add new field" without needing scroll down
@@ -503,13 +515,6 @@ extension RegisterPropertyRightsViewController {
 
 // MARK: - Support Functions
 extension RegisterPropertyRightsViewController {
-  func setDefaultMetadataFormState() {
-    metadataAddButton.sendActions(for: .touchUpInside)
-
-    metadataAddButton.isHidden = true
-    metadataEditModeButton.isHidden = true
-  }
-
   func changeMetadataViewMode(isOnEdit: Bool) {
     metadataEditModeButton.isSelected = isOnEdit
     metadataForms.forEach { $0.isOnDeleteMode = isOnEdit }
@@ -534,7 +539,7 @@ extension RegisterPropertyRightsViewController {
     propertyNameTextField.addTarget(self, action: #selector(propertyNameFieldEditingChanged), for: .editingChanged)
     propertyNameTextField.addTarget(self, action: #selector(propertyNameFieldEditingChanged), for: .editingDidEnd)
 
-    metadataAddButton.addTarget(self, action: #selector(addMetadataForm), for: .touchUpInside)
+    metadataAddButton.addTarget(self, action: #selector(tapToAddMetadataForm), for: .touchUpInside)
     metadataEditModeButton.addTarget(self, action: #selector(setModeMetadataForm), for: .touchUpInside)
 
     confirmCheckBox.delegate = self

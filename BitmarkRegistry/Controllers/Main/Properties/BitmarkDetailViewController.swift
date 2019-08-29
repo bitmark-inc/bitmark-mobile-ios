@@ -411,7 +411,7 @@ extension BitmarkDetailViewController {
     copyIdButton = CommonUI.actionMenuButton(title: "CopyBitmarkId".localized().localizedUppercase)
 
     copiedToClipboardNotifier = UILabel(text: "CopiedToClipboard".localized())
-    copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
+    copiedToClipboardNotifier.font = UIFont(name: "Avenir-BlackOblique", size: 8)
     copiedToClipboardNotifier.textColor = .mainBlueColor
     copiedToClipboardNotifier.textAlignment = .right
     copiedToClipboardNotifier.isHidden = true

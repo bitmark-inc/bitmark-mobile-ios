@@ -18,7 +18,7 @@ class TransactionsFlow: Flow {
   private lazy var rootViewController: UINavigationController = {
     let navigationController = UINavigationController()
     navigationController.navigationBar.shadowImage = UIImage()
-    navigationController.navigationBar.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 18, weight: .heavy)]
+    navigationController.navigationBar.titleTextAttributes = [.font: UIFont(name: "Avenir-Black", size: 18)!]
     return navigationController
   }()
 
