@@ -21,6 +21,7 @@
 "Delete" = "確認";
 "Details" = "更多資訊";
 "Details »" = "更多資訊 »";
+"Discard" = "";
 "Done" = "完成";
 "Download" = "下載";
 "Edit" = "編輯";
@@ -61,6 +62,7 @@
 "Send" = "傳送";
 "Share" = "分享";
 "Skip" = "略過";
+"Stay" = "Stay";
 "Submit" = "發送";
 "Success!" = "成功！";
 "TermsOfService" = "服務條款";

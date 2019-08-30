@@ -21,6 +21,7 @@
 "Delete" = "Delete";
 "Details" = "Details";
 "Details »" = "Details »";
+"Discard" = "Discard";
 "Done" = "Done";
 "Download" = "Download";
 "Edit" = "Edit";
@@ -61,6 +62,7 @@
 "Send" = "Send";
 "Share" = "Share";
 "Skip" = "Skip";
+"Stay" = "Stay";
 "Submit" = "Submit";
 "Success!" = "Success!";
 "TermsOfService" = "Terms Of Service";

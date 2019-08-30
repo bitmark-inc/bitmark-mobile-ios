@@ -87,6 +87,10 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
+    let transparentNavBackButton = CommonUI.transparentNavBackButton()
+    transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
+    navigationController?.navigationBar.addSubview(transparentNavBackButton)
+
     activityIndicator.startAnimating()
     disabledScreen.isHidden = false
 
@@ -112,6 +116,25 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     removeNotificationsObserver()
+  }
+
+  @objc func tapBackNav(_ sender: UIBarButtonItem) {
+    let discardRegistrationConfirmation = UIAlertController(
+      title: "registerPropertyRights_discardConfirmationTitle".localized(tableName: "Phrase"),
+      message: "registerPropertyRights_discardConfirmationMessage".localized(tableName: "Phrase"),
+      preferredStyle: .alert
+    )
+    let discardAction = UIAlertAction(title: "Discard".localized(), style: .default) { [weak self] (_) in
+      self?.steps.accept(BitmarkStep.endCreatePropertyRights)
+      self?.navigationController?.navigationBar.removeSubviews()
+    }
+
+    let stayAction = UIAlertAction(title: "Stay".localized(), style: .default, handler: nil)
+
+    discardRegistrationConfirmation.addAction(discardAction)
+    discardRegistrationConfirmation.addAction(stayAction)
+    discardRegistrationConfirmation.preferredAction = stayAction
+    discardRegistrationConfirmation.show()
   }
 
   // MARK: - Load Data

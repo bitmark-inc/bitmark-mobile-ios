@@ -29,6 +29,7 @@ enum BitmarkStep: Step {
   case listOfProperties
   case createProperty
   case createPropertyRights(assetURL: URL, assetFilename: String)
+  case endCreatePropertyRights
   case viewPropertyDescriptionInfo
   case issueIsComplete
   case viewTransferBitmark(bitmarkId: String, assetR: AssetR)
