@@ -38,6 +38,9 @@ class PropertiesFlow: Flow {
       return navigateToCreatePropertyScreen()
     case .createPropertyRights(let assetURL, let assetFilename):
       return navigateToCreatePropertyRightsScreen(assetURL: assetURL, assetFilename: assetFilename)
+    case .endCreatePropertyRights:
+      rootViewController.popViewController(animated: true)
+      return .none
     case .viewPropertyDescriptionInfo:
       return navigateToViewPropertyDescriptionInfoScreen()
     case .viewTransferBitmark(let bitmarkId, let assetR):

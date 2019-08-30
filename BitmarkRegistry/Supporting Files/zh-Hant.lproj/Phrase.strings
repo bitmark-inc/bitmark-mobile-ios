@@ -46,6 +46,8 @@
 "registerPropertyRights_quantityLabel" = "發行 bitmarks 數量";
 "registerPropertyRights_rightsClaimTitle" = "產權主張";
 "registerPropertyRights_rightsClaimMessage" = "「本人在此聲明為此資產之擁有者，並且同意將資產所有權登記在Bitmark區塊鏈上面。」";
+"registerPropertyRights_discardConfirmationTitle" = "放棄註冊？";
+"registerPropertyRights_discardConfirmationMessage" = "如要離開，您將會遺失已填寫完的資訊。";
 
 "deleteBitmark_titleModal" = "請確認刪除此 bitmark";
 

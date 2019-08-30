@@ -121,12 +121,15 @@ class AccountFlow: Flow {
 
   fileprivate func setupNewBackButtonToRoot(in navigationItem: UINavigationItem) {
     rootViewController.isNavigationBarHidden = false
-    let newBackButton = UIBarButtonItem(image: UIImage(named: "Nav-Back")!, style: .plain, target: self, action: #selector(tapBackRootNav))
-    navigationItem.leftBarButtonItem = newBackButton
+
+    let transparentNavBackButton = CommonUI.transparentNavBackButton()
+    transparentNavBackButton.addTarget(self, action: #selector(tapBackRootNav), for: .touchUpInside)
+    rootViewController.navigationBar.addSubview(transparentNavBackButton)
   }
 
   @objc func tapBackRootNav(_ sender: UIBarButtonItem) {
     rootViewController.popToRootViewController(animated: true)
+    rootViewController.navigationBar.removeSubviews()
   }
 }
 

@@ -55,7 +55,12 @@ class KeychainStore {
         do {
           let seedData = try keychain.getData(bitmarkSeedCoreKey)
                           ?? keychain.getData(bitmarkSeedCoreWithoutAuthentication)
-          UserDefaults.standard.set(Calendar.current.date(byAdding: .minute, value: seedValidDuration, to: Date()), forKey: expiryTimeKey)
+          if seedData != nil {
+            UserDefaults.standard.set(Calendar.current.date(
+              byAdding: .minute, value: seedValidDuration, to: Date()),
+              forKey: expiryTimeKey
+            )
+          }
           single(.success(seedData))
         } catch {
           single(.error(error))

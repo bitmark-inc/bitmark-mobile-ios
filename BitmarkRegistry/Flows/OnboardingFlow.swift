@@ -82,12 +82,15 @@ class OnboardingFlow: Flow {
 
   fileprivate func setupNewBackButton(in navigationItem: UINavigationItem) {
     rootViewController.isNavigationBarHidden = false
-    let newBackButton = UIBarButtonItem(image: UIImage(named: "Nav-Back")!, style: .plain, target: self, action: #selector(tapBackNav))
-    navigationItem.leftBarButtonItem = newBackButton
+
+    let transparentNavBackButton = CommonUI.transparentNavBackButton()
+    transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
+    rootViewController.navigationBar.addSubview(transparentNavBackButton)
   }
 
   @objc func tapBackNav(_ sender: UIBarButtonItem) {
     rootViewController.popViewController(animated: true)
+    rootViewController.navigationBar.removeSubviews()
     rootViewController.setNavigationBarHidden(true, animated: false)
   }
 }

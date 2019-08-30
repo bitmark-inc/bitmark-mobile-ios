@@ -46,6 +46,8 @@
 "registerPropertyRights_quantityLabel" = "NUMBER OF BITMARKS TO ISSUE";
 "registerPropertyRights_rightsClaimTitle" = "RIGHTS CLAIM";
 "registerPropertyRights_rightsClaimMessage" = "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.\"";
+"registerPropertyRights_discardConfirmationTitle" = "Discard Registration?";
+"registerPropertyRights_discardConfirmationMessage" = "If you go back now, you will lose the registration information you've entered.";
 
 "deleteBitmark_titleModal" = "This bitmark will be deleted.";
 

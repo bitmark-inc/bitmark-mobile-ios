@@ -138,4 +138,11 @@ class CommonUI {
     sl.snp.makeConstraints { (make) in make.height.equalTo(1) }
     return sl
   }
+
+  static func transparentNavBackButton() -> UIButton {
+    let button = UIButton()
+    button.frame = CGRect(x: 0, y: 0, width: 50, height: 40)
+    button.backgroundColor = .clear
+    return button
+  }
 }
