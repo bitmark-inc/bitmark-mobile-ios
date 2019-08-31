@@ -23,6 +23,7 @@ class AccountService {
   }
 
   func existsCurrentAccount() -> Single<Bool> {
+    return Single<Bool>.just(false)
     guard UserSetting.shared.isUserLoggedIn() else {
       do {
         ErrorReporting.breadcrumbs(info: "Remove seed core from Keychain", category: .Keychain, traceLog: true)

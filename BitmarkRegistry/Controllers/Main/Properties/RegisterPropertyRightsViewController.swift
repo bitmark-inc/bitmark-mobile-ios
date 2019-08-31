@@ -49,6 +49,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var disabledScreen: UIView!
   var activityIndicator: UIActivityIndicatorView!
   var networkReachabilityManager = NetworkReachabilityManager()
+  let createdAssetPublishSubject = PublishSubject<String>()
   let disposeBag = DisposeBag()
 
   // MARK: - Init
@@ -340,41 +341,51 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   fileprivate func _issue() {
     view.endEditing(true)
 
+    guard let registrant = Global.currentAccount else { return }
     let quantity = Int(numberOfBitmarksTextField.value)
 
-    showIndicatorAlert(message: "sendingTransaction".localized(tableName: "Message")) { (selfAlert) in
-      do {
-        var assetId: String = ""
-        // *** Register Asset if asset has not existed; then issue ***
-        if let assetR = self.assetRVariable.value {
-          assetId = assetR.id
-          try AssetService.issueBitmarks(issuer: Global.currentAccount!, assetId: assetId, quantity: quantity)
-        } else {
-          let assetName = self.propertyNameTextField.text!
-          var metadata = self.extractMetadataFromForms()
-          metadata["SOURCE"] = self.assetTypeTextField.text!
-
-          self.assetDataObservable.subscribe(onNext: { (assetData) in
-            do {
-              let assetInfo = (
-                registrant: Global.currentAccount!,
-                assetName: assetName,
-                fingerprint: assetData,
-                metadata: metadata
-              )
-              assetId = try AssetService.registerProperty(assetInfo: assetInfo, quantity: quantity)
-            } catch {
-              ErrorReporting.report(error: error)
-            }
-          }, onError: { (error) in
-            ErrorReporting.report(error: error)
-          })
-          .disposed(by: self.disposeBag)
-        }
-
+    let issueAssetObservable = createdAssetPublishSubject.asObservable()
+      .do(onNext: { [weak self] (assetId) in
+        guard let self = self else { return }
         iCloudService.shared.localAssetWithFilenameData[assetId] = self.assetFileName
-        self.storeFileInAppStorage(of: assetId)
+        try self.storeFileInAppStorage(of: assetId)
+      })
+      .map { (assetId) -> Void in
+        try AssetService.issueBitmarks(issuer: registrant, assetId: assetId, quantity: quantity)
+      }
 
+      if let assetR = self.assetRVariable.value {
+        createdAssetPublishSubject.onNext(assetR.id)
+      } else {
+        let assetName = self.propertyNameTextField.text!
+        var metadata = self.extractMetadataFromForms()
+        metadata["SOURCE"] = self.assetTypeTextField.text!
+
+        assetDataObservable.bind(to: createdAssetPublishSubject)
+
+        self.assetDataObservable.subscribe(onNext: { (assetData) in
+          do {
+            let assetInfo = (
+              registrant: registrant,
+              assetName: assetName,
+              fingerprint: assetData,
+              metadata: metadata
+            )
+            let assetId = try AssetService.registerAsset(assetInfo: assetInfo)
+            single(.success(assetId))
+          } catch {
+            single(.error(error))
+          }
+        }, onError: { (error) in
+          ErrorReporting.report(error: error)
+        })
+        .disposed(by: self.disposeBag)
+      }
+      return Disposables.create()
+    }
+
+    showIndicatorAlert(message: "sendingTransaction".localized(tableName: "Message")) { (selfAlert) in
+      issueAssetObservable.subscribe(onNext: { (_) in
         selfAlert.dismiss(animated: true, completion: {
           Global.syncNewDataInStorage()
 
@@ -382,25 +393,22 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
             self?.steps.accept(BitmarkStep.issueIsComplete)
           }
         })
-      } catch {
+      }, onError: { (error) in
         selfAlert.dismiss(animated: true, completion: {
           self.showErrorAlert(message: error.localizedDescription)
           ErrorReporting.report(error: error)
         })
-      }
+      })
+      .disposed(by: self.disposeBag)
     }
   }
 
-  func storeFileInAppStorage(of assetId: String) {
+  func storeFileInAppStorage(of assetId: String) throws {
     guard let assetURL = assetURL, let assetFileName = assetFileName else { return }
     ErrorReporting.breadcrumbs(info: "Path: \(assetURL.path); Filename: \(assetFileName)", category: .StoreFile, traceLog: true)
     ErrorReporting.breadcrumbs(info: assetId, category: .StoreFile, traceLog: true)
 
-    do {
-      try iCloudService.shared.storeFile(fileURL: assetURL, filename: assetFileName, assetId: assetId)
-    } catch {
-      ErrorReporting.report(error: error)
-    }
+    try iCloudService.shared.storeFile(fileURL: assetURL, filename: assetFileName, assetId: assetId)
   }
 
   @objc func dismissKeyboard() {

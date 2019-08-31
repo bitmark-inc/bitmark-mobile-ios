@@ -32,6 +32,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // init BitmarkSDK environment & api_token
     BitmarkSDKService.setupConfig()
 
+    print("-----------------------LOG THUYEN_____________________")
+    BiometricAuth().authorizeAccess()
+      .observeOn(MainScheduler.instance)
+      .subscribe(onCompleted: {
+        print("t")
+      })
+      .disposed(by: disposeBag)
+
     IQKeyboardManager.shared.enable = true
     IQKeyboardManager.shared.shouldResignOnTouchOutside = true
     IQKeyboardManager.shared.enableAutoToolbar = false
