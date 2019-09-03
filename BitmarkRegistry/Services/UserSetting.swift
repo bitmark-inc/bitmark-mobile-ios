@@ -18,6 +18,10 @@ class UserSetting {
     return UserDefaults.standard.object(forKey: authenticationKey) != nil
   }
 
+  func logUserOut() {
+    UserDefaults.standard.removeObject(forKey: authenticationKey)
+  }
+
   // *** Touch Face Id Setting ***
   func setTouchFaceIdSetting(isEnabled: Bool) {
     UserDefaults.standard.set(isEnabled, forKey: authenticationKey)

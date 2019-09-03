@@ -14,3 +14,5 @@
 "successTransfer" = "Your rights to this property have been transferred.";
 "successDelete" = "Your rights to this property have been permanently removed from your account.";
 "ownershipClaim_sendAuthorization" = "Your authorization has been sent to %@.";
+"accountNotAccessible_title" = "Account not accessible";
+"accountNotAccessible_message" = "You have been logged out of your Bitmark account to protect your security because you removed your passcode.";

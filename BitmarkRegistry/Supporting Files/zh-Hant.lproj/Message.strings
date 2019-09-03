@@ -14,3 +14,5 @@
 "successTransfer" = "你的資產所有權已成功轉移。";
 "successDelete" = "你的資產所有權已從你的帳戶永久移除。";
 "ownershipClaim_sendAuthorization" = "您的授權已經傳送到%@。";
+"accountNotAccessible_title" = "Account not accessible";
+"accountNotAccessible_message" = "You have been logged out of your Bitmark account to protect your security because you removed your passcode.";

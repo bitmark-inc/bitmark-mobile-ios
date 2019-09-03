@@ -30,9 +30,20 @@ class OnboardingViewController: UIViewController, Stepper {
 
     setupViews()
     setupEvents()
+
+    showAccountNotAccessibleInCase()
   }
 
   // MARK: - Handlers
+  fileprivate func showAccountNotAccessibleInCase() {
+    guard UserSetting.shared.isUserLoggedIn() else { return }
+    let accountNotAccessibleAlert = UIAlertController(
+      title: "accountNotAccessible_title".localized(tableName: "Message"),
+      message: "accountNotAccessible_message".localized(tableName: "Message")
+    )
+    accountNotAccessibleAlert.show()
+  }
+
   @objc func createNewAccount(_ sender: UIButton) {
     activityIndicator.startAnimating()
     do {

@@ -38,6 +38,7 @@ class Global {
     TransactionStorage._shared = nil
     AccountDependencyService._shared = nil
     iCloudService._shared = nil
+    UserSetting.shared.logUserOut()
   }
 
   public static func syncNewDataInStorage() {
