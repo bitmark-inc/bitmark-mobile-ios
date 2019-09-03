@@ -54,18 +54,24 @@ class AppNavigationViewController: UIViewController, Stepper {
             self.steps.accept(BitmarkStep.onboardingIsRequired)
           }
         },
-        onError: { [weak self] (error) in
-          guard let self = self else { return }
-          let retryAuthenticationAlert = UIAlertController(
-            title: "Error".localized(),
-            message: "PleaseAuthorize".localized().localizedUppercase,
-            preferredStyle: .alert
-          )
-          retryAuthenticationAlert.addAction(title: "Retry".localized(), style: .default, handler: { [weak self] _ in self?.navigate() })
-          retryAuthenticationAlert.show()
+        onError: { [weak self] (_) in
+          self?.showAuthenticationRequiredAlert()
         }
       )
       .disposed(by: disposeBag)
+  }
+
+  func showAuthenticationRequiredAlert() {
+    let currentDeviceEvaluatePolicyType = BiometricAuth().currentDeviceEvaluatePolicyType()
+    let retryAuthenticationAlert = UIAlertController(
+      title: "\(currentDeviceEvaluatePolicyType)_required_title".localized(tableName: "Error"),
+      message: "\(currentDeviceEvaluatePolicyType)_required_message".localized(tableName: "Error"),
+      preferredStyle: .alert
+    )
+    retryAuthenticationAlert.addAction(title: "TryAgain".localized(), style: .default, handler: { [weak self] _ in
+      self?.navigate()
+    })
+    retryAuthenticationAlert.show()
   }
 }
 

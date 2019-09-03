@@ -29,3 +29,10 @@
 "syncTransaction" = "Error happened while loading transactions.";
 "unrecognizedQRCode_title" = "Unrecognized QR Code";
 "unrecognizedQRCode_message" = "Please scan the QR code again or contact the QR code provider if you’re still experiencing problems.";
+
+"touchID_required_title" = "Touch ID Required";
+"touchID_required_message" = "Touch ID has been enabled to secure this app.";
+"faceID_required_title" = "Face ID Required";
+"faceID_required_message" = "Face ID has been enabled to secure this app.";
+"passcode_required_title" = "Passcode Required";
+"passcode_required_message" = "Passcode has been enabled to secure this app.";

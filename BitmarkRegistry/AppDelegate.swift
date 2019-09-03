@@ -150,13 +150,23 @@ private extension AppDelegate {
     AccountService.shared.existsCurrentAccount()
       .subscribe(onSuccess: { (_) in
         AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
-      }, onError: { [weak self] (error) in
-        guard let self = self else { return }
-        self.retryAuthenticationAlert = UIAlertController(title: "Error".localized(), message: error.localizedDescription, preferredStyle: .alert)
-        self.retryAuthenticationAlert!.addAction(title: "Retry".localized(), style: .default, handler: { _ in self.evaluatePolicyWhenUserSetEnable() })
-        self.retryAuthenticationAlert!.show()
+      }, onError: { [weak self] (_) in
+        self?.showAuthenticationRequiredAlert()
       })
       .disposed(by: disposeBag)
+  }
+
+  func showAuthenticationRequiredAlert() {
+    let currentDeviceEvaluatePolicyType = BiometricAuth().currentDeviceEvaluatePolicyType()
+    self.retryAuthenticationAlert = UIAlertController(
+      title: "\(currentDeviceEvaluatePolicyType)_required_title".localized(tableName: "Error"),
+      message: "\(currentDeviceEvaluatePolicyType)_required_message".localized(tableName: "Error"),
+      preferredStyle: .alert
+    )
+    self.retryAuthenticationAlert!.addAction(title: "TryAgain".localized(), style: .default, handler: { [weak self] _ in
+      self?.evaluatePolicyWhenUserSetEnable()
+    })
+    self.retryAuthenticationAlert!.show()
   }
 
   func showAuthorizationRequiredAlert() {

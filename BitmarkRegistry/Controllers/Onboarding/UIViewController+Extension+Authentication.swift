@@ -29,10 +29,10 @@ extension UIViewController {
       return
     }
 
-    if currentDeviceEvaluatePolicyType == .biometry {
-      steps.accept(BitmarkStep.askingBiometricAuthentication)
-    } else {
+    if currentDeviceEvaluatePolicyType == .passcode {
       steps.accept(BitmarkStep.askingPasscodeAuthentication)
+    } else {
+      steps.accept(BitmarkStep.askingBiometricAuthentication)
     }
   }
 

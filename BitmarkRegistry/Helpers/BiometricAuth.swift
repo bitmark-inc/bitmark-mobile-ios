@@ -11,7 +11,8 @@ import LocalAuthentication
 import RxSwift
 
 enum LAType {
-  case biometry
+  case touchID
+  case faceID
   case passcode
   case none
 }
@@ -20,8 +21,12 @@ class BiometricAuth {
   let context = LAContext()
 
   func currentDeviceEvaluatePolicyType() -> LAType {
-    if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) { return .biometry }
-    if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)               { return .passcode }
+    if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+      return context.biometryType == .faceID ? .faceID : .touchID
+    }
+    if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
+      return .passcode
+    }
     return .none
   }
 

@@ -45,7 +45,7 @@ class OnboardingFlow: Flow {
   private func navigateToOnboardingScreen() -> FlowContributors {
     let onboardingVC = OnboardingViewController()
     rootViewController.isNavigationBarHidden = true
-    rootViewController.setViewControllers([onboardingVC], animated: true)
+    rootViewController.setViewControllers([onboardingVC], animated: false)
     rootViewController.navigationBar.removeSubviews()
     return .one(flowContributor: .contribute(withNextPresentable: onboardingVC,
                                              withNextStepper: onboardingVC))
