@@ -74,7 +74,7 @@ extension AppNavigationViewController {
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
-    let imageView = UIImageView(image: UIImage(named: "slogan"))
+    let imageView = UIImageView(image: UIImage(named: "bitmark-logo-launch"))
     imageView.contentMode = .scaleAspectFit
     view.addSubview(imageView)
 
