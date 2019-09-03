@@ -41,8 +41,7 @@ class AccountViewController: UIViewController, Stepper {
 
   // MARK: Data Handlers
   private func loadData() {
-    let attributedTitleString = stretchAttributedText(
-      text: currentAccountNumber,
+    let attributedTitleString = currentAccountNumber.stretchAttributedText(
       font: accountNumberFont, width: view.width - 45
     )
     accountNumberLabel.setAttributedTitle(attributedTitleString, for: .normal)
@@ -186,16 +185,5 @@ extension AccountViewController {
     })
 
     return accountNumberBox
-  }
-
-  fileprivate func stretchAttributedText(text: String, font: UIFont, width: CGFloat) -> NSMutableAttributedString {
-    let attrStr = NSMutableAttributedString(string: text)
-    let textWidth = text.size(withAttributes: [.font: font]).width + 12.0
-    let letterSpacing = (width - textWidth) / CGFloat(text.count)
-    if letterSpacing > 0.0 {
-      attrStr.addAttribute(NSAttributedString.Key.kern, value: letterSpacing, range: NSMakeRange(0, attrStr.length))
-    }
-
-    return attrStr
   }
 }

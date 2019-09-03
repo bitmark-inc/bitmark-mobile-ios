@@ -6,7 +6,7 @@
 //  Copyright © 2019 thuyentruong. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension String {
   func middleShorten(eachMaxChars: Int = 4) -> String {
@@ -17,6 +17,17 @@ extension String {
 
   func embedInApp() -> String {
     return self + "?env=app"
+  }
+
+  func stretchAttributedText(font: UIFont, width: CGFloat) -> NSMutableAttributedString {
+    let attrStr = NSMutableAttributedString(string: self)
+    let textWidth = self.size(withAttributes: [.font: font]).width + 12.0
+    let letterSpacing = (width - textWidth) / CGFloat(self.count)
+    if letterSpacing > 0.0 {
+      attrStr.addAttribute(NSAttributedString.Key.kern, value: letterSpacing, range: NSMakeRange(0, attrStr.length))
+    }
+
+    return attrStr
   }
 }
 

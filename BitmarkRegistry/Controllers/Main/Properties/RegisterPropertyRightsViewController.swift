@@ -700,7 +700,10 @@ extension RegisterPropertyRightsViewController {
 
   fileprivate func metadataView() -> UIView {
     // *** Setup subviews ***
-    let fieldLabel = CommonUI.inputFieldTitleLabel(text: "registerPropertyRights_propertyDescription".localized(tableName: "Phrase").localizedUppercase)
+    let fieldLabel = CommonUI.inputFieldTitleLabel(
+      text: "registerPropertyRights_propertyDescription".localized(tableName: "Phrase").localizedUppercase,
+      isOptional: true
+    )
 
     let fieldInfoLink = UIButton(type: .system)
     fieldInfoLink.contentHorizontalAlignment = .leading

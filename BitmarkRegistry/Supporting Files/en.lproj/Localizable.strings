@@ -31,6 +31,7 @@
 "File" = "File";
 "From" = "FROM";
 "Global" = "Global";
+"Incoming" = "Incoming";
 "Incoming..." = "Incoming...";
 "Issuance" = "Issuance";
 "Logout »" = "Log Out »";
@@ -51,9 +52,11 @@
 "Property" = "Property";
 "PropertyIssuance" = "Property Issuance";
 "Provenance" = "Provenance";
+"ReceiveProperty" = "Receive Property";
 "RecoveryPhrase" = "Recovery Phrase";
 "RecoveryPhraseSignOut" = "Recovery Phrase Sign-Out";
 "Register" = "Register";
+"Registering" = "Registering";
 "Registering..." = "Registering...";
 "Registry" = "Registry";
 "RemoveAccess" = "Remove Access";

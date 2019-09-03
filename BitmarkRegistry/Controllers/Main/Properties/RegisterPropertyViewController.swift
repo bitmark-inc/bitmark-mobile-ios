@@ -179,22 +179,12 @@ extension RegisterPropertyViewController {
       $0.snp.makeConstraints { $0.width.equalToSuperview() }
     })
 
-    descriptionLabel = CommonUI.descriptionLabel(text: "registerProperty_message".localized(tableName: "Phrase"))
-    descriptionLabel.lineHeightMultiple(1.2)
-
     // *** Setup UI in view ***
     view.addSubview(registerSelectionView)
-    view.addSubview(descriptionLabel)
 
     registerSelectionView.snp.makeConstraints { (make) in
       make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
       make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-    }
-
-    descriptionLabel.snp.makeConstraints { (make) in
-      make.top.equalTo(registerSelectionView.snp.bottom).offset(18)
-      make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-      make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
     }
 
     setupDisabledScreen()
