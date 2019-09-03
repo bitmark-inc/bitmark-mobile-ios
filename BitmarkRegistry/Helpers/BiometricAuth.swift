@@ -10,8 +10,20 @@ import Foundation
 import LocalAuthentication
 import RxSwift
 
+enum LAType {
+  case biometry
+  case passcode
+  case none
+}
+
 class BiometricAuth {
   let context = LAContext()
+
+  func currentDeviceEvaluatePolicyType() -> LAType {
+    if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) { return .biometry }
+    if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)               { return .passcode }
+    return .none
+  }
 
   func canEvaluatePolicy() -> Bool {
     return context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil)

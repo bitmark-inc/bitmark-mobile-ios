@@ -29,6 +29,7 @@ class KeychainStore {
     return Completable.create(subscribe: { (completion) -> Disposable in
       DispatchQueue.global().async {
         do {
+          try removeSeedCoreFromKeychain()
           if UserSetting.shared.getTouchFaceIdSetting() {
             try keychain.accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
               .set(seedCore, key: bitmarkSeedCoreKey)

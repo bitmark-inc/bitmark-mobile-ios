@@ -1,5 +1,5 @@
 //
-//  TouchAuthenticationViewController.swift
+//  BiometricAuthenticationViewController.swift
 //  BitmarkRegistry
 //
 //  Created by Macintosh on 6/21/19.
@@ -11,10 +11,10 @@ import RxSwift
 import RxFlow
 import RxCocoa
 
-class TouchAuthenticationViewController: UIViewController, Stepper {
-  var steps = PublishRelay<Step>()
+class BiometricAuthenticationViewController: UIViewController, Stepper {
 
   // MARK: - Properties
+  var steps = PublishRelay<Step>()
   var enableButton: UIButton!
   var skipButton: UIButton!
   let disposeBag = DisposeBag()
@@ -27,54 +27,28 @@ class TouchAuthenticationViewController: UIViewController, Stepper {
     setupEvents()
   }
 
-  @objc func enableTouchId(_ sender: UIButton) {
+  @objc func enableSecure(_ sender: UIButton) {
     UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
     requireAuthenticationForAction(disposeBag) { [weak self] in
-      self?.saveAccountAndProcess()
+      guard let self = self else { return }
+      self.saveAccountAndProcess(self.steps, self.disposeBag)
     }
   }
 
-  @objc func skipTouchId(_ sender: UIButton) {
-    showConfirmationAlert(message: "facetouch_id_skipConfirmMessage".localized(tableName: "Phrase")) {
+  @objc func skipSecure(_ sender: UIButton) {
+    showConfirmationAlert(message: "facetouchid_skipConfirmMessage".localized(tableName: "Phrase")) { [weak self] in
+      guard let self = self else { return }
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-      self.saveAccountAndProcess()
+      self.saveAccountAndProcess(self.steps, self.disposeBag)
     }
-  }
-
-  fileprivate func saveAccountAndProcess() {
-    guard let currentAccount = Global.currentAccount else { return }
-    KeychainStore.saveToKeychain(currentAccount.seed.core)
-      .observeOn(MainScheduler.instance)
-      .subscribe(
-        onCompleted: { [weak self] in
-          guard let self = self else { return }
-          do {
-            // setup realm db & icloud db
-            try RealmConfig.setupDBForCurrentAccount()
-            try iCloudService.shared.setupDataFile()
-            DispatchQueue.global(qos: .utility).async {
-              iCloudService.shared.migrateFileData()
-            }
-            AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
-
-            self.steps.accept(BitmarkStep.userIsLoggedIn)
-          } catch {
-            ErrorReporting.report(error: error)
-            self.navigationController?.viewControllers = [SuspendedViewController()]
-          }
-        },
-        onError: { [weak self] (_) in
-          self?.showErrorAlert(message: "keychainStore".localized(tableName: "Error"))
-        })
-      .disposed(by: self.disposeBag)
   }
 }
 
 // MARK: - Setup Views/Events
-extension TouchAuthenticationViewController {
+extension BiometricAuthenticationViewController {
   fileprivate func setupEvents() {
-    enableButton.addTarget(self, action: #selector(enableTouchId), for: .touchUpInside)
-    skipButton.addTarget(self, action: #selector(skipTouchId), for: .touchUpInside)
+    enableButton.addTarget(self, action: #selector(enableSecure), for: .touchUpInside)
+    skipButton.addTarget(self, action: #selector(skipSecure), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {
@@ -89,6 +63,15 @@ extension TouchAuthenticationViewController {
     let touchFaceIdImageView = UIImageView()
     touchFaceIdImageView.image = UIImage(named: "touch-face-id")
     touchFaceIdImageView.contentMode = .scaleAspectFit
+
+    let touchFaceIdImageViewCover = UIView()
+    touchFaceIdImageViewCover.addSubview(touchFaceIdImageView)
+    touchFaceIdImageView.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+      if view.width <= 320 {
+        make.height.equalTo(view.frame.height * 0.3)
+      }
+    }
 
     let mainView = UIStackView(
       arrangedSubviews: [titlePageLabel, descriptionLabel],
@@ -106,18 +89,22 @@ extension TouchAuthenticationViewController {
     )
 
     // *** Setup UI in view ***
-    view.addSubview(touchFaceIdImageView)
+    view.addSubview(touchFaceIdImageViewCover)
     view.addSubview(mainView)
     view.addSubview(buttonsGroupStackView)
 
+    let paddingTopContent: CGFloat = view.height > 667.0 ? 100 : 50 // iphone 7 Plus and above
+    let paddingContent: CGFloat = view.width <= 350 ? 30 : 50 // iphone 5S/SE and older
+
     mainView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-          .inset(UIEdgeInsets(top: 50, left: 50, bottom: 30, right: 27))
+          .inset(UIEdgeInsets(top: paddingTopContent, left: paddingContent, bottom: 30, right: paddingContent))
     }
 
-    touchFaceIdImageView.snp.makeConstraints { (make) in
-      make.centerX.centerY.equalTo(view.safeAreaLayoutGuide)
-      make.height.equalTo(view.snp.height).multipliedBy(0.4)
+    touchFaceIdImageViewCover.snp.makeConstraints { (make) in
+      make.top.equalTo(mainView.snp.bottom).offset(10)
+      make.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(buttonsGroupStackView.snp.top).offset(-10)
     }
 
     buttonsGroupStackView.snp.makeConstraints { (make) in

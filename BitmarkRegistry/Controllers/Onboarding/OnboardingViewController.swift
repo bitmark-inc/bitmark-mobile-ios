@@ -9,11 +9,13 @@
 import UIKit
 import SnapKit
 import SwifterSwift
+import RxSwift
 import RxFlow
 import RxCocoa
 
 class OnboardingViewController: UIViewController, Stepper {
   var steps = PublishRelay<Step>()
+  let disposeBag = DisposeBag()
 
   // MARK: - Properties
   var registerButton: UIButton!
@@ -45,7 +47,7 @@ class OnboardingViewController: UIViewController, Stepper {
           if let account = account {
             Global.currentAccount = account // track and store currentAccount
             UserSetting.shared.setAccountVersion(.v2)
-            self.steps.accept(BitmarkStep.askingTouchFaceIdAuthentication)
+            self.navigateNextOnboardingStep(self.steps, self.disposeBag)
           }
         }
       }

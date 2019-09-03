@@ -40,6 +40,10 @@
 		E23CB3142302E659007EF4BC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E23CB3162302E659007EF4BC /* Localizable.strings */; };
 		E23CB31F2302F84E007EF4BC /* Message.strings in Resources */ = {isa = PBXBuildFile; fileRef = E23CB3222302F84E007EF4BC /* Message.strings */; };
 		E23CB3202302F84E007EF4BC /* Message.strings in Resources */ = {isa = PBXBuildFile; fileRef = E23CB3222302F84E007EF4BC /* Message.strings */; };
+		E23FEE9A231E643F007DA128 /* UIViewController+Extension+Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23FEE99231E643F007DA128 /* UIViewController+Extension+Authentication.swift */; };
+		E23FEE9B231E643F007DA128 /* UIViewController+Extension+Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23FEE99231E643F007DA128 /* UIViewController+Extension+Authentication.swift */; };
+		E23FEE9D231E6583007DA128 /* PasscodeAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23FEE9C231E6583007DA128 /* PasscodeAuthenticationViewController.swift */; };
+		E23FEE9E231E6583007DA128 /* PasscodeAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23FEE9C231E6583007DA128 /* PasscodeAuthenticationViewController.swift */; };
 		E24B527822BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */; };
 		E24B527922BBB74D00E160E3 /* BitmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */; };
 		E24B527B22BBB7C600E160E3 /* SelfSizedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */; };
@@ -197,8 +201,8 @@
 		E2CEDC7E22BB94D800B5BBF9 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CEDC7B22BB94D800B5BBF9 /* String+Extension.swift */; };
 		E2CEDC7F22BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CEDC7C22BB94D800B5BBF9 /* FileManager+Extension.swift */; };
 		E2CEDC8022BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CEDC7C22BB94D800B5BBF9 /* FileManager+Extension.swift */; };
-		E2CF94CD22CB31E500B40C66 /* TouchAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */; };
-		E2CF94CE22CB31FE00B40C66 /* TouchAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */; };
+		E2CF94CD22CB31E500B40C66 /* BiometricAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CC22CB31E500B40C66 /* BiometricAuthenticationViewController.swift */; };
+		E2CF94CE22CB31FE00B40C66 /* BiometricAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CC22CB31E500B40C66 /* BiometricAuthenticationViewController.swift */; };
 		E2CF94D022CB323400B40C66 /* AccountKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */; };
 		E2CF94D122CB323800B40C66 /* AccountKeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */; };
 		E2D29F3B22EBE292006CADA1 /* BoxTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D29F3A22EBE292006CADA1 /* BoxTextField.swift */; };
@@ -279,6 +283,8 @@
 		E23CB3182302E696007EF4BC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E23CB3212302F84E007EF4BC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Message.strings; sourceTree = "<group>"; };
 		E23CB3232302F850007EF4BC /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Message.strings"; sourceTree = "<group>"; };
+		E23FEE99231E643F007DA128 /* UIViewController+Extension+Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension+Authentication.swift"; sourceTree = "<group>"; };
+		E23FEE9C231E6583007DA128 /* PasscodeAuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasscodeAuthenticationViewController.swift; sourceTree = "<group>"; };
 		E24B527722BBB74D00E160E3 /* BitmarkDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkDetailViewController.swift; sourceTree = "<group>"; };
 		E24B527A22BBB7C600E160E3 /* SelfSizedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfSizedTableView.swift; sourceTree = "<group>"; };
 		E24B527D22BBB8B400E160E3 /* TransactionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
@@ -418,7 +424,7 @@
 		E2CEDC7522BB93CB00B5BBF9 /* BitmarkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitmarkService.swift; sourceTree = "<group>"; };
 		E2CEDC7B22BB94D800B5BBF9 /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		E2CEDC7C22BB94D800B5BBF9 /* FileManager+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
-		E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TouchAuthenticationViewController.swift; path = BitmarkRegistry/Controllers/Onboarding/TouchAuthenticationViewController.swift; sourceTree = SOURCE_ROOT; };
+		E2CF94CC22CB31E500B40C66 /* BiometricAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BiometricAuthenticationViewController.swift; path = BitmarkRegistry/Controllers/Onboarding/BiometricAuthenticationViewController.swift; sourceTree = SOURCE_ROOT; };
 		E2CF94CF22CB323400B40C66 /* AccountKeyService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountKeyService.swift; sourceTree = "<group>"; };
 		E2D29F3A22EBE292006CADA1 /* BoxTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxTextField.swift; sourceTree = "<group>"; };
 		E2D4342622CC89EB006A8183 /* FileCourierService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCourierService.swift; sourceTree = "<group>"; };
@@ -874,7 +880,9 @@
 			children = (
 				E2C5DADD2302779600A71E59 /* AppNavigationViewController.swift */,
 				E2E798D3229E1EA300508B69 /* OnboardingViewController.swift */,
-				E2CF94CC22CB31E500B40C66 /* TouchAuthenticationViewController.swift */,
+				E23FEE99231E643F007DA128 /* UIViewController+Extension+Authentication.swift */,
+				E2CF94CC22CB31E500B40C66 /* BiometricAuthenticationViewController.swift */,
+				E23FEE9C231E6583007DA128 /* PasscodeAuthenticationViewController.swift */,
 				E2F08CE522C06EA400FFFCCE /* LoginViewController.swift */,
 			);
 			path = Onboarding;
@@ -1181,7 +1189,7 @@
 				E2F08CEA22C0739A00FFFCCE /* TestRecoveryPhraseLoginCell.swift in Sources */,
 				E2CEDC8022BB94D800B5BBF9 /* FileManager+Extension.swift in Sources */,
 				E24D795E22CA16CA00BC9912 /* BitmarkFileUtil.swift in Sources */,
-				E2CF94CE22CB31FE00B40C66 /* TouchAuthenticationViewController.swift in Sources */,
+				E2CF94CE22CB31FE00B40C66 /* BiometricAuthenticationViewController.swift in Sources */,
 				E2BEC95022AF986D009F7DF5 /* AccountViewController.swift in Sources */,
 				E2C62559230A8EB200AE479B /* DashboardFlow.swift in Sources */,
 				E28E3560230B8C010097DBFA /* AppDetailsFlow.swift in Sources */,
@@ -1195,6 +1203,7 @@
 				E29A73FD22AA49990052C716 /* Credential.swift in Sources */,
 				E2BEC95422AF9878009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E24B528222BBB8E600E160E3 /* MetadataDetailCell.swift in Sources */,
+				E23FEE9E231E6583007DA128 /* PasscodeAuthenticationViewController.swift in Sources */,
 				E29A73FE22AA49990052C716 /* AccountService.swift in Sources */,
 				E2F866B222D9CEB1002D7059 /* MetadataR.swift in Sources */,
 				E2F866AF22D9C0F2002D7059 /* AssetR.swift in Sources */,
@@ -1225,6 +1234,7 @@
 				E24B527F22BBB8B400E160E3 /* TransactionService.swift in Sources */,
 				58AB59FE2302644100FF31A3 /* ScreenRouteService.swift in Sources */,
 				E2F4893622BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
+				E23FEE9B231E643F007DA128 /* UIViewController+Extension+Authentication.swift in Sources */,
 				E25DF1DD22CB3F4700AC270E /* TransactionStorage.swift in Sources */,
 				E22CBF1B22D092C60024E5C3 /* TransactionDetailViewController.swift in Sources */,
 				E24D9C5322AE494C0095E11D /* UIColor+Extension.swift in Sources */,
@@ -1300,7 +1310,7 @@
 				E2BEC94922AF5C3F009F7DF5 /* TestRecoveryPhraseViewController.swift in Sources */,
 				E2C62558230A8EB200AE479B /* DashboardFlow.swift in Sources */,
 				E25DF1DC22CB3F4700AC270E /* TransactionStorage.swift in Sources */,
-				E2CF94CD22CB31E500B40C66 /* TouchAuthenticationViewController.swift in Sources */,
+				E2CF94CD22CB31E500B40C66 /* BiometricAuthenticationViewController.swift in Sources */,
 				E28E355F230B8C010097DBFA /* AppDetailsFlow.swift in Sources */,
 				E2BEC94B22AF5DC8009F7DF5 /* BaseRecoveryPhraseViewController.swift in Sources */,
 				E24D9C4C22ADFED80095E11D /* CommonUI.swift in Sources */,
@@ -1311,6 +1321,7 @@
 				E25DF1D822CB3F4700AC270E /* SyncStorageBase.swift in Sources */,
 				E2CF94D022CB323400B40C66 /* AccountKeyService.swift in Sources */,
 				E24D9C5C22AE581C0095E11D /* WarningRecoveryPhraseViewController.swift in Sources */,
+				E23FEE9D231E6583007DA128 /* PasscodeAuthenticationViewController.swift in Sources */,
 				E25DF1C322CB3C8600AC270E /* AssetEncryption.swift in Sources */,
 				E24B528122BBB8E600E160E3 /* MetadataDetailCell.swift in Sources */,
 				E2F866B122D9CEB1002D7059 /* MetadataR.swift in Sources */,
@@ -1341,6 +1352,7 @@
 				E2E067ED22DD6AEB00298C80 /* DesignedSegmentControl.swift in Sources */,
 				58AB59FD2302644100FF31A3 /* ScreenRouteService.swift in Sources */,
 				E2BEC96122AFC24F009F7DF5 /* Constant.swift in Sources */,
+				E23FEE9A231E643F007DA128 /* UIViewController+Extension+Authentication.swift in Sources */,
 				E24B527E22BBB8B400E160E3 /* TransactionService.swift in Sources */,
 				E2F4893522BFC1E00099DA83 /* WarningRemoveAccessViewController.swift in Sources */,
 				E205107922B0A09900475871 /* SubmitButton.swift in Sources */,

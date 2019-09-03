@@ -19,7 +19,11 @@
 "facetouchid_title" = "指紋或臉部辨識";
 "facetouchid_title_description" = "使用指紋或臉部辨識來加密與簽署你的數據資料。";
 "facetouchid_enableButton" = "開啟指紋或臉部辨識";
-"facetouch_id_skipConfirmMessage" = "你確定不使用指紋與臉部辨識來保護你的資產嗎？";
+"facetouchid_skipConfirmMessage" = "你確定不使用指紋與臉部辨識來保護你的資產嗎？";
+"facetouchid_passcode_title" = "PASSCODE";
+"facetouchid_passcode_title_description" = "Enable Touch/Face ID to secure access to your app. If you do not enable Touch/Face ID, anyone with access to your device can use the app to control your account and properties.\n\nFor security reason, if you enable Touch/Face ID and remove the passcode, you will be log out of Bitmark app.";
+"facetouchid_passcode_enableButton" = "ENABLE PASSCODE";
+"facetouchid_passcode_skipConfirmMessage" = "Are you sure you don’t want to protect your data with Passcode?";
 
 "properties_welcomeLabel" = "歡迎來到 BITMARK!";
 "properties_description" = "Bitmark 數位資產系統致力於確立世界上所有數位檔案的價值和其法律權利歸屬。我們的使命是明確定義並捍衛數位資產，進而讓數位資產創造經濟價值。\n\n現在就開始登記、追蹤與掌握你的數位資產所有權吧！";

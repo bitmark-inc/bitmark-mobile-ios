@@ -27,8 +27,10 @@ class OnboardingFlow: Flow {
       return navigateToOnboardingScreen()
     case .testLogin:
       return navigateToLoginScreen()
-    case .askingTouchFaceIdAuthentication:
-      return navigateToTouchAuthenticationScreen()
+    case .askingBiometricAuthentication:
+      return navigateToBiometricAuthenticationScreen()
+    case .askingPasscodeAuthentication:
+      return navigateToPasscodeAuthenticationScreen()
     case .viewTermsOfService:
       return navigateToViewTermsOfServiceScreen()
     case .viewPrivacyPolicy:
@@ -57,12 +59,20 @@ class OnboardingFlow: Flow {
                                              withNextStepper: loginVC))
   }
 
-  fileprivate func navigateToTouchAuthenticationScreen() -> FlowContributors {
-    let touchAuthenticationVC = TouchAuthenticationViewController()
-    rootViewController.pushViewController(touchAuthenticationVC, animated: false)
+  fileprivate func navigateToBiometricAuthenticationScreen() -> FlowContributors {
+    let biometricAuthenticationVC = BiometricAuthenticationViewController()
+    rootViewController.pushViewController(biometricAuthenticationVC, animated: false)
     rootViewController.isNavigationBarHidden = true
-    return .one(flowContributor: .contribute(withNextPresentable: touchAuthenticationVC,
-                                             withNextStepper: touchAuthenticationVC))
+    return .one(flowContributor: .contribute(withNextPresentable: biometricAuthenticationVC,
+                                             withNextStepper: biometricAuthenticationVC))
+  }
+
+  fileprivate func navigateToPasscodeAuthenticationScreen() -> FlowContributors {
+    let passcodeAuthenticationVC = PasscodeAuthenticationViewController()
+    rootViewController.pushViewController(passcodeAuthenticationVC, animated: false)
+    rootViewController.isNavigationBarHidden = true
+    return .one(flowContributor: .contribute(withNextPresentable: passcodeAuthenticationVC,
+                                             withNextStepper: passcodeAuthenticationVC))
   }
 
   fileprivate func navigateToViewTermsOfServiceScreen() -> FlowContributors {
