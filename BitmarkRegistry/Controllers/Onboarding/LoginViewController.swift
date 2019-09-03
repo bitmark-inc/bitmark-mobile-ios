@@ -32,7 +32,6 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
   var changePhraseOptionsButton: UIButton!
   // *** error result view ***
   let errorResultView = UIView()
-  var retryButton: UIButton!
   // *** custom input accessory view for testPhrase textfield ***
   var customInputAccessoryView: UIView!
   var autoCorrectStackView: UIStackView!
@@ -94,12 +93,6 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
     }
 
     steps.accept(BitmarkStep.askingTouchFaceIdAuthentication)
-  }
-
-  // clear text in all textfields and hide errorResultView
-  @objc func tapToRetry(_ sender: UIButton) {
-    clearForm()
-    displayErrorView(isHidden: true)
   }
 }
 
@@ -253,7 +246,6 @@ extension LoginViewController {
 
     changePhraseOptionsButton.addTarget(self, action: #selector(changePhraseOptions), for: .touchUpInside)
     submitButton.addTarget(self, action: #selector(tapToSubmit), for: .touchUpInside)
-    retryButton.addTarget(self, action: #selector(tapToRetry), for: .touchUpInside)
 
     prevButton.addTarget(self, action: #selector(goPrevCell), for: .touchUpInside)
     nextButton.addTarget(self, action: #selector(goNextCell), for: .touchUpInside)
@@ -310,7 +302,7 @@ extension LoginViewController {
 
     changePhraseOptionsButton.snp.makeConstraints { (make) in
       make.top.equalTo(mainScrollView.snp.bottom)
-      make.height.equalTo(100)
+      make.height.equalTo(120)
       make.leading.trailing.equalTo(view.safeAreaLayoutGuide)
       make.bottom.equalTo(submitButton.snp.top)
     }
@@ -337,6 +329,7 @@ extension LoginViewController {
 
     let message = UILabel(text: "signin_resultWrongMessage".localized(tableName: "Phrase"))
     message.font = viewFont
+    message.numberOfLines = 0
     message.textAlignment = .center
     message.textColor = .mainRedColor
 
@@ -354,18 +347,11 @@ extension LoginViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    retryButton = CommonUI.blueButton(title: "Retry".localized().localizedUppercase)
-
     errorResultView.addSubview(textView)
-    errorResultView.addSubview(retryButton)
 
     textView.snp.makeConstraints { (make) in
-      make.top.leading.trailing.equalToSuperview()
-          .inset(UIEdgeInsets(top: 25, left: 20, bottom: 20, right: 0))
-    }
-
-    retryButton.snp.makeConstraints { (make) in
-      make.leading.trailing.bottom.equalToSuperview()
+      make.edges.equalToSuperview()
+          .inset(UIEdgeInsets(top: 25, left: 35, bottom: 50, right: 35))
     }
   }
 

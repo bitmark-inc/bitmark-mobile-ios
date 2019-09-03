@@ -9,7 +9,7 @@
 "signin_title" = "RECOVERY PHRASE SIGN-IN";
 "signin_writeRecoveryPhraseContentMessage" = "Please type all %d words of your recovery phrase in the exact sequence below:";
 "signin_switchFormMessage" = "Are you using %d words of recovery phrase?\n Tap here to switch the form.";
-"signin_resultWrongMessage" = "Please try again!";
+"signin_resultWrongMessage" = "Please recheck your recovery phrase and tap to edit any incorrect words above.";
 "signin_resultWrong" = "Wrong Recovery Phrase!";
 
 "onboarding_title" = "BITMARK REGISTRY";

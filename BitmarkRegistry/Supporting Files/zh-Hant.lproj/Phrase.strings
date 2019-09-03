@@ -9,8 +9,8 @@
 "signin_title" = "帳戶恢復碼登入";
 "signin_writeRecoveryPhraseContentMessage" = "請依照以下順序輸入你的帳戶復原碼:";
 "signin_switchFormMessage" = "使用 %d 字元的帳戶恢復碼嗎?\n 請點選這裡更換表單。";
-"signin_resultWrongMessage" = "請再試一次!";
-"signin_resultWrong" = "錯誤的帳戶恢復碼";
+"signin_resultWrongMessage" = "請重新檢查您的帳戶復原碼，點擊上方的錯誤單字並進行修改。";
+"signin_resultWrong" = "錯誤的帳戶恢復碼!";
 
 "onboarding_title" = "BITMARK REGISTRY";
 "onboarding_title_description" = "守護您的數據與其他數位資產的合法權利。";
