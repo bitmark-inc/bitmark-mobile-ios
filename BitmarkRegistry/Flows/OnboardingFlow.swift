@@ -14,6 +14,7 @@ class OnboardingFlow: Flow {
     return self.rootViewController
   }
   var rootViewController: UINavigationController
+  let transparentNavBackButton = CommonUI.transparentNavBackButton()
 
   init(rootViewController: UINavigationController) {
     self.rootViewController = rootViewController
@@ -46,7 +47,7 @@ class OnboardingFlow: Flow {
     let onboardingVC = OnboardingViewController()
     rootViewController.isNavigationBarHidden = true
     rootViewController.setViewControllers([onboardingVC], animated: false)
-    rootViewController.navigationBar.removeSubviews()
+    transparentNavBackButton.removeFromSuperview()
     return .one(flowContributor: .contribute(withNextPresentable: onboardingVC,
                                              withNextStepper: onboardingVC))
   }
@@ -93,15 +94,13 @@ class OnboardingFlow: Flow {
 
   fileprivate func setupNewBackButton(in navigationItem: UINavigationItem) {
     rootViewController.isNavigationBarHidden = false
-
-    let transparentNavBackButton = CommonUI.transparentNavBackButton()
     transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
     rootViewController.navigationBar.addSubview(transparentNavBackButton)
   }
 
   @objc func tapBackNav(_ sender: UIBarButtonItem) {
     rootViewController.popViewController(animated: true)
-    rootViewController.navigationBar.removeSubviews()
+    transparentNavBackButton.removeFromSuperview()
     rootViewController.setNavigationBarHidden(true, animated: false)
   }
 }
