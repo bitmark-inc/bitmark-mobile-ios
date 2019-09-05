@@ -36,11 +36,8 @@ class BiometricAuthenticationViewController: UIViewController, Stepper {
   }
 
   @objc func skipSecure(_ sender: UIButton) {
-    showConfirmationAlert(message: "facetouchid_skipConfirmMessage".localized(tableName: "Phrase")) { [weak self] in
-      guard let self = self else { return }
-      UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-      self.saveAccountAndProcess(self.steps, self.disposeBag)
-    }
+    UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
+    self.saveAccountAndProcess(self.steps, self.disposeBag)
   }
 }
 
