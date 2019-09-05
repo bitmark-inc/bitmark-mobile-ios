@@ -56,11 +56,25 @@ class CommonUI {
     return label
   }
 
-  static func inputFieldTitleLabel(text: String) -> UILabel {
-    let label = UILabel(text: text.uppercased())
-    label.font = UIFont(name: "Avenir-Black", size: 14)
-    label.lineHeightMultiple(1.2)
-    label.numberOfLines = 0
+  static func inputFieldTitleLabel(text: String, isOptional: Bool = false) -> UILabel {
+    let attributes: [NSAttributedString.Key: Any] = [
+      .font: UIFont(name: "Avenir-Black", size: 16)!,
+      .foregroundColor: UIColor.black
+    ]
+
+    let optionalAttributes: [NSAttributedString.Key: Any] = [
+      .font: UIFont(name: "Avenir", size: 13)!,
+      .foregroundColor: UIColor.silver
+    ]
+
+    let title = isOptional ? (text + " (OPTIONAL)") : text
+    let attributedText = NSMutableAttributedString(string: title, attributes: attributes)
+    if isOptional {
+      attributedText.addAttributes(optionalAttributes, range: NSRange(location: text.count + 1, length: 10))
+    }
+
+    let label = UILabel()
+    label.attributedText = attributedText
     return label
   }
 
@@ -137,5 +151,12 @@ class CommonUI {
     sl.backgroundColor = .rockBlue
     sl.snp.makeConstraints { (make) in make.height.equalTo(1) }
     return sl
+  }
+
+  static func transparentNavBackButton() -> UIButton {
+    let button = UIButton()
+    button.frame = CGRect(x: 0, y: 0, width: 50, height: 40)
+    button.backgroundColor = .clear
+    return button
   }
 }

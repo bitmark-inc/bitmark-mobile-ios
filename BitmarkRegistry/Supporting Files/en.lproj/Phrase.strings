@@ -9,7 +9,7 @@
 "signin_title" = "RECOVERY PHRASE SIGN-IN";
 "signin_writeRecoveryPhraseContentMessage" = "Please type all %d words of your recovery phrase in the exact sequence below:";
 "signin_switchFormMessage" = "Are you using %d words of recovery phrase?\n Tap here to switch the form.";
-"signin_resultWrongMessage" = "Please try again!";
+"signin_resultWrongMessage" = "Please recheck your recovery phrase and tap to edit any incorrect words above.";
 "signin_resultWrong" = "Wrong Recovery Phrase!";
 
 "onboarding_title" = "BITMARK REGISTRY";
@@ -31,8 +31,6 @@
 "account_accountNumberLabel" = "YOUR BITMARK ACCOUNT NUMBER";
 "account_message" = "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public.\nYou can safely share it with others without compromising your security.";
 
-"registerProperty_message" = "To register your media and assets, first create an asset record.\nYou can then issue that asset and transfer it. All of this is recorded on the blockchain.";
-
 "registerPropertyRights_title" = "REGISTER PROPERTY RIGHTS";
 "registerPropertyRights_assetFingerprintLabel" = "ASSET FINGERPRINT";
 "registerPropertyRights_generatedFromLabel" = "GENERATED FROM";
@@ -46,6 +44,8 @@
 "registerPropertyRights_quantityLabel" = "NUMBER OF BITMARKS TO ISSUE";
 "registerPropertyRights_rightsClaimTitle" = "RIGHTS CLAIM";
 "registerPropertyRights_rightsClaimMessage" = "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.\"";
+"registerPropertyRights_discardConfirmationTitle" = "Discard Registration?";
+"registerPropertyRights_discardConfirmationMessage" = "If you go back now, you will lose the registration information you've entered.";
 
 "deleteBitmark_titleModal" = "This bitmark will be deleted.";
 

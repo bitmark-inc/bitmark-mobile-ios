@@ -134,14 +134,10 @@ class BitmarkDetailViewController: UIViewController, Stepper {
         switch changes {
         case .change(let properties):
           for property in properties {
-            if property.name == "createdAt" {
-              self.setupStyleBitmark()
-            }
-
-            if property.name == "confirmedAt" {
-              BitmarkStorage.shared().loadTxRs(for: self.bitmarkR, forceSync: true, completion: {_,_ in })
-              self.enableActionButtons()
-            }
+            guard property.name == "confirmedAt" else { continue }
+            self.setupStyleBitmark()
+            BitmarkStorage.shared().loadTxRs(for: self.bitmarkR, forceSync: true, completion: {_,_ in })
+            self.enableActionButtons()
           }
         case .error(let error):
           ErrorReporting.report(error: error)
@@ -307,12 +303,14 @@ extension BitmarkDetailViewController: UITableViewDelegate {
 // MARK: - Support Functions
 extension BitmarkDetailViewController {
   fileprivate func setupStyleBitmark() {
-    let isPending = bitmarkR.createdAt == nil
+    let isPending = bitmarkR.confirmedAt == nil
     let styledColor: UIColor = isPending ? .dustyGray : .black
 
     assetNameLabel.textColor = styledColor
 
+    pendingIssueDateLabel.text = statusInWord(status: bitmarkR.status)
     pendingIssueDateLabel.isHidden = !isPending
+
     prefixIssueDateLabel.isHidden = isPending
     issueDateLabel.text = isPending ? "" : CustomUserDisplay.date(bitmarkR.createdAt)
 
@@ -411,7 +409,7 @@ extension BitmarkDetailViewController {
     copyIdButton = CommonUI.actionMenuButton(title: "CopyBitmarkId".localized().localizedUppercase)
 
     copiedToClipboardNotifier = UILabel(text: "CopiedToClipboard".localized())
-    copiedToClipboardNotifier.font = UIFont(name: "Avenir", size: 8)?.italic
+    copiedToClipboardNotifier.font = UIFont(name: "Avenir-BlackOblique", size: 8)
     copiedToClipboardNotifier.textColor = .mainBlueColor
     copiedToClipboardNotifier.textAlignment = .right
     copiedToClipboardNotifier.isHidden = true
@@ -466,7 +464,7 @@ extension BitmarkDetailViewController {
     prefixIssueDateLabel = CommonUI.infoLabel(text: "bitmarkDetail_issuedOn".localized(tableName: "Phrase"))
     prefixIssueDateLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
-    pendingIssueDateLabel = CommonUI.infoLabel(text: "Pending".localized())
+    pendingIssueDateLabel = CommonUI.infoLabel()
     pendingIssueDateLabel.textColor = .dustyGray
 
     issueDateLabel = CommonUI.infoLabel()
@@ -498,7 +496,8 @@ extension BitmarkDetailViewController {
   }
 
   fileprivate func setupProvenanceView() -> UIView {
-    let provenanceTitle = CommonUI.inputFieldTitleLabel(text: "Provenance".localized().localizedUppercase)
+    let provenanceTitle = UILabel(text: "Provenance".localized().localizedUppercase)
+    provenanceTitle.font = UIFont(name: "Avenir-Black", size: 14)
 
     transactionTableView = UITableView()
     transactionTableView.separatorStyle = .none
@@ -552,5 +551,19 @@ extension BitmarkDetailViewController {
     }
 
     return view
+  }
+}
+
+// MARK: - Support Functions
+extension BitmarkDetailViewController {
+  fileprivate func statusInWord(status: String) -> String {
+    switch BitmarkStatus(rawValue: status)! {
+    case .issuing:
+      return "Registering".localized().localizedUppercase
+    case .transferring:
+      return "Incoming".localized().localizedUppercase
+    default:
+      return ""
+    }
   }
 }

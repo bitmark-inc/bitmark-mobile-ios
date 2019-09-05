@@ -18,7 +18,7 @@ class PropertiesFlow: Flow {
   private lazy var rootViewController: UINavigationController = {
     let navigationController = UINavigationController()
     navigationController.navigationBar.shadowImage = UIImage()
-    navigationController.navigationBar.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 18, weight: .heavy)]
+    navigationController.navigationBar.titleTextAttributes = [.font: UIFont(name: "Avenir-Black", size: 18)!]
     return navigationController
   }()
 
@@ -38,6 +38,9 @@ class PropertiesFlow: Flow {
       return navigateToCreatePropertyScreen()
     case .createPropertyRights(let assetURL, let assetFilename):
       return navigateToCreatePropertyRightsScreen(assetURL: assetURL, assetFilename: assetFilename)
+    case .endCreatePropertyRights:
+      rootViewController.popViewController(animated: true)
+      return .none
     case .viewPropertyDescriptionInfo:
       return navigateToViewPropertyDescriptionInfoScreen()
     case .viewTransferBitmark(let bitmarkId, let assetR):

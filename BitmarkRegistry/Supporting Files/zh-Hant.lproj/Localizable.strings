@@ -21,6 +21,7 @@
 "Delete" = "確認";
 "Details" = "更多資訊";
 "Details »" = "更多資訊 »";
+"Discard" = "放棄";
 "Done" = "完成";
 "Download" = "下載";
 "Edit" = "編輯";
@@ -30,6 +31,7 @@
 "File" = "檔案";
 "From" = "來自";
 "Global" = "全球資產";
+"Incoming" = "接收中";
 "Incoming..." = "接收中...";
 "Issuance" = "發行";
 "Logout »" = "登出 »";
@@ -50,9 +52,11 @@
 "Property" = "數位資產";
 "PropertyIssuance" = "資產發行紀錄";
 "Provenance" = "來源紀錄";
+"ReceiveProperty" = "收取資產";
 "RecoveryPhrase" = "帳戶復原碼";
 "RecoveryPhraseSignOut" = "登出帳戶復原碼";
 "Register" = "註冊資產";
+"Registering" = "登記中";
 "Registering..." = "登記中...";
 "Registry" = "登記";
 "RemoveAccess" = "移除授權";
@@ -61,6 +65,7 @@
 "Send" = "傳送";
 "Share" = "分享";
 "Skip" = "略過";
+"Stay" = "保留";
 "Submit" = "發送";
 "Success!" = "成功！";
 "TermsOfService" = "服務條款";

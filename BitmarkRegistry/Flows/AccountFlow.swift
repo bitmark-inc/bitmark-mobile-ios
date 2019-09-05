@@ -17,7 +17,7 @@ class AccountFlow: Flow {
   private lazy var rootViewController: UINavigationController = {
     let navigationController = UINavigationController()
     navigationController.navigationBar.shadowImage = UIImage()
-    navigationController.navigationBar.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 18, weight: .heavy)]
+    navigationController.navigationBar.titleTextAttributes = [.font: UIFont(name: "Avenir-Black", size: 18)!]
     return navigationController
   }()
 
@@ -82,6 +82,7 @@ class AccountFlow: Flow {
     testRecoveryPhraseVC.title = "TestRecoveryPhrase".localized().localizedUppercase
     testRecoveryPhraseVC.recoveryPhraseSource = .testRecoveryPhrase
     rootViewController.pushViewController(testRecoveryPhraseVC)
+    setupNewBackButtonToRoot(in: testRecoveryPhraseVC.navigationItem)
 
     return .one(flowContributor: .contribute(withNextPresentable: testRecoveryPhraseVC, withNextStepper: testRecoveryPhraseVC))
   }
@@ -108,6 +109,7 @@ class AccountFlow: Flow {
     testRecoveryPhraseVC.recoveryPhraseSource = .removeAccess
     rootViewController.pushViewController(testRecoveryPhraseVC)
 
+    setupNewBackButtonToRoot(in: testRecoveryPhraseVC.navigationItem)
     return .one(flowContributor: .contribute(withNextPresentable: testRecoveryPhraseVC, withNextStepper: testRecoveryPhraseVC))
   }
 
@@ -116,6 +118,19 @@ class AccountFlow: Flow {
     return .one(flowContributor: .contribute(withNextPresentable: appDetailsFlow,
                                              withNextStepper: OneStepper(withSingleStep: BitmarkStep.viewAppDetails)))
   }
+
+  fileprivate func setupNewBackButtonToRoot(in navigationItem: UINavigationItem) {
+    rootViewController.isNavigationBarHidden = false
+
+    let transparentNavBackButton = CommonUI.transparentNavBackButton()
+    transparentNavBackButton.addTarget(self, action: #selector(tapBackRootNav), for: .touchUpInside)
+    rootViewController.navigationBar.addSubview(transparentNavBackButton)
+  }
+
+  @objc func tapBackRootNav(_ sender: UIBarButtonItem) {
+    rootViewController.popToRootViewController(animated: true)
+    rootViewController.navigationBar.removeSubviews()
+  }
 }
 
 class AccountStepper: Stepper {
@@ -123,9 +138,5 @@ class AccountStepper: Stepper {
 
   var initialStep: Step {
     return BitmarkStep.viewAccountDetails
-  }
-
-  func gotoA() {
-    steps.accept(BitmarkStep.viewRecoveryPhrase)
   }
 }

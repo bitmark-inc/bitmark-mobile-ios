@@ -93,6 +93,14 @@ extension OnboardingViewController {
     introductionImageView.image = UIImage(named: "introduction")
     introductionImageView.contentMode = .scaleAspectFit
 
+    let introductionImageViewCover = UIView()
+    introductionImageViewCover.addSubview(introductionImageView)
+
+    introductionImageView.snp.makeConstraints { (make) in
+      make.centerX.centerY.equalToSuperview()
+      make.height.equalTo(view.frame.height * 0.3)
+    }
+
     let titleView = UIStackView(
       arrangedSubviews: [titlePageLabel, descriptionLabel],
       axis: .vertical,
@@ -109,7 +117,7 @@ extension OnboardingViewController {
     activityIndicator = CommonUI.appActivityIndicator()
 
     let contentView = UIView()
-    contentView.addSubview(introductionImageView)
+    contentView.addSubview(introductionImageViewCover)
     contentView.addSubview(titleView)
     contentView.addSubview(agreementTextView)
     contentView.addSubview(activityIndicator)
@@ -118,16 +126,16 @@ extension OnboardingViewController {
       make.top.leading.trailing.equalToSuperview()
     }
 
-    introductionImageView.snp.makeConstraints { (make) in
-      make.height.equalTo(view.frame.height * 0.33)
-      make.top.lessThanOrEqualTo(titleView.snp.bottom).offset(80)
-      make.centerX.leading.trailing.equalToSuperview()
+    introductionImageViewCover.snp.makeConstraints { (make) in
+      make.top.equalTo(titleView.snp.bottom).offset(10)
+      make.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(agreementTextView.snp.top).offset(-10)
     }
 
     agreementTextView.snp.makeConstraints { (make) in
-      make.top.greaterThanOrEqualTo(introductionImageView.snp.bottom).offset(25)
-      make.height.equalTo(75)
-      make.leading.trailing.bottom.equalToSuperview()
+      make.height.equalTo(45)
+      make.leading.trailing.equalToSuperview()
+      make.bottom.equalToSuperview().offset(-25)
     }
 
     activityIndicator.snp.makeConstraints { (make) in
@@ -147,9 +155,12 @@ extension OnboardingViewController {
     mainView.addSubview(contentView)
     mainView.addSubview(buttonsGroupStackView)
 
+    let paddingTopContent: CGFloat = view.height > 667.0 ? 100 : 50 // iphone 7 Plus and above
+    let paddingContent: CGFloat = view.width <= 350 ? 30 : 50 // iphone 5S/SE and older
+
     contentView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
-          .inset(UIEdgeInsets(top: 50, left: 50, bottom: 0, right: 50))
+          .inset(UIEdgeInsets(top: paddingTopContent, left: paddingContent, bottom: 0, right: paddingContent))
     }
 
     buttonsGroupStackView.snp.makeConstraints { (make) in

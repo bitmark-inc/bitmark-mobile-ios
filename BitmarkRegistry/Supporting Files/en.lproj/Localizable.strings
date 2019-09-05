@@ -21,6 +21,7 @@
 "Delete" = "Delete";
 "Details" = "Details";
 "Details »" = "Details »";
+"Discard" = "Discard";
 "Done" = "Done";
 "Download" = "Download";
 "Edit" = "Edit";
@@ -30,6 +31,7 @@
 "File" = "File";
 "From" = "FROM";
 "Global" = "Global";
+"Incoming" = "Incoming";
 "Incoming..." = "Incoming...";
 "Issuance" = "Issuance";
 "Logout »" = "Log Out »";
@@ -50,9 +52,11 @@
 "Property" = "Property";
 "PropertyIssuance" = "Property Issuance";
 "Provenance" = "Provenance";
+"ReceiveProperty" = "Receive Property";
 "RecoveryPhrase" = "Recovery Phrase";
 "RecoveryPhraseSignOut" = "Recovery Phrase Sign-Out";
 "Register" = "Register";
+"Registering" = "Registering";
 "Registering..." = "Registering...";
 "Registry" = "Registry";
 "RemoveAccess" = "Remove Access";
@@ -61,6 +65,7 @@
 "Send" = "Send";
 "Share" = "Share";
 "Skip" = "Skip";
+"Stay" = "Stay";
 "Submit" = "Submit";
 "Success!" = "Success!";
 "TermsOfService" = "Terms Of Service";

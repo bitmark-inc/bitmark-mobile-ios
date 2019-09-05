@@ -21,6 +21,7 @@ class QRViewController: UIViewController, PanModalPresentable {
   var qrImage: UIImageView!
   var accountNumberLabel: UILabel!
   var shareButton: UIButton!
+  let accountNumberFont = UIFont(name: Constant.andaleMono, size: 11)!
 
   // *** Override Properties in PanModal ***
   var panScrollable: UIScrollView? {
@@ -50,7 +51,9 @@ class QRViewController: UIViewController, PanModalPresentable {
   // MARK: - Data Handlers
   private func loadData() {
     qrImage.image = qrCode
-    accountNumberLabel.text = accountNumber
+    accountNumberLabel.attributedText = accountNumber.stretchAttributedText(
+      font: accountNumberFont, width: view.width - 45
+    )
   }
 
   // MARK: - Handlers
@@ -75,7 +78,7 @@ extension QRViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let title = CommonUI.pageTitleLabel(text: "BitmarkAccount".localized().localizedUppercase)
+    let title = CommonUI.pageTitleLabel(text: "ReceiveProperty".localized().localizedUppercase)
 
     closeButton = UIButton(type: .system, imageName: "close-icon-blue")
     closeButton.snp.makeConstraints { (make) in
@@ -147,7 +150,7 @@ extension QRViewController {
 
   fileprivate func setupAccountNumberLabel() {
     accountNumberLabel = UILabel()
-    accountNumberLabel.font = UIFont(name: Constant.andaleMono, size: 11)
+    accountNumberLabel.font = accountNumberFont
     accountNumberLabel.textAlignment = .center
     accountNumberLabel.numberOfLines = 0
   }
