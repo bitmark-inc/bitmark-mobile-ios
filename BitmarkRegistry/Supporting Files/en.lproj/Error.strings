@@ -24,8 +24,11 @@
 "permissionPhoto_title" = "Enable Photos Access";
 "permissionPhoto_message" = "To get started, allow Bitmark to access your photos.";
 "registerPropertyRights_duplicatedLabels" = "Duplicated labels!";
+"registerPropertyRights_unsuccessfully" = "Could not register property rights. Please try again later.";
 "removeAccess" = "There was a problem from removing the access.";
 "syncBitmark" = "There was a problem to sync your lastest bitmarks.";
 "syncTransaction" = "Error happened while loading transactions.";
+"transfer_requireFile" = "File download is required.";
+"transfer_unsuccessfully" = "Could not transfer Bitmark Certificate. Please try again later.";
 "unrecognizedQRCode_title" = "Unrecognized QR Code";
 "unrecognizedQRCode_message" = "Please scan the QR code again or contact the QR code provider if you’re still experiencing problems.";

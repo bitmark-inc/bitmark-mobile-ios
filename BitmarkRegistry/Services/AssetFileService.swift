@@ -39,7 +39,7 @@ class AssetFileService {
    if current user has already uploaded the file into fileCourier: => update access of the file (case 1)
    otherwise, upload new file into fileCourier (case 2)
    */
-  func transferFile(to receiverAccountNumber: String, assetFilename: String?) {
+  func transferFile(to receiverAccountNumber: String, assetFilename: String?) -> Completable {
     ErrorReporting.breadcrumbs(info: "sender: \(owner.getAccountNumber())", category: .TransferFile, traceLog: true)
     ErrorReporting.breadcrumbs(info: "receiver: \(receiverAccountNumber)", category: .TransferFile, traceLog: true)
     ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .TransferFile, traceLog: true)
@@ -47,70 +47,57 @@ class AssetFileService {
     let receiverPubKeyObservable = AccountKeyService.getEncryptionPublicKey(accountNumber: receiverAccountNumber)
     let checkFileExistenceObservable = FileCourierService.checkFileExistence(senderAccountNumber: owner.getAccountNumber(), assetId: assetId)
 
-    Observable.zip(receiverPubKeyObservable, checkFileExistenceObservable)
-      .subscribe(onNext: { [weak self] (receiverPubKey, currentSessionData) in
-        guard let self = self else { return }
+    return Observable.zip(receiverPubKeyObservable, checkFileExistenceObservable)
+      .flatMap({ [weak self] (receiverPubKey, currentSessionData) -> Completable in
+        guard let self = self else { return Completable.never() }
         if let currentSessionData = currentSessionData {  // case 1
-          self.updateAccessFile(receiverAccountNumber, receiverPubKey, with: currentSessionData)
+          return try self.updateAccessFile(receiverAccountNumber, receiverPubKey, with: currentSessionData)
         } else { // case 2
-          self.getDownloadedFileURL(assetFilename: assetFilename)
-            .subscribe(
-              onNext: { [weak self] (assetFileURL) in
-                self?.uploadFile(assetFileURL, receiverAccountNumber, receiverPubKey)
-              },
-              onError: { (error) in
-                ErrorReporting.report(error: error)
-              })
-            .disposed(by: self.bag)
+          return self.getDownloadedFileURL(assetFilename: assetFilename)
+            .flatMap({ [weak self] (assetFileURL) -> Completable in
+              guard let self = self else { return Completable.never() }
+              return try self.uploadFile(assetFileURL, receiverAccountNumber, receiverPubKey)
+            })
+            .asCompletable()
         }
-      }, onError: { (error) in
-        ErrorReporting.report(error: error)
       })
-    .disposed(by: bag)
+      .asCompletable()
   }
 
-  fileprivate func updateAccessFile(_ receiverAccountNumber: String, _ receiverPubKey: Data, with currentSessionData: SessionData) {
-    ErrorReporting.breadcrumbs(info: "updateAccessFile", category: .UpdateAccessFile, traceLog: true)
-    do {
-      let assetEncryption = try AssetEncryption(
-        from: currentSessionData,
-        receiverAccount: owner, senderEncryptionPublicKey: owner.publicKey
-      )
-      let receiverSessionData = try SessionData.createSessionData(
-        sender: owner,
-        sessionKey: assetEncryption.key, algorithm: currentSessionData.algorithm,
-        receiverPublicKey: receiverPubKey
-      )
+  fileprivate func updateAccessFile(_ receiverAccountNumber: String, _ receiverPubKey: Data, with currentSessionData: SessionData) throws -> Completable {
+    ErrorReporting.breadcrumbs(info: "get sessionData and updateAccessFile", category: .UpdateAccessFile, traceLog: true)
+    let assetEncryption = try AssetEncryption(
+      from: currentSessionData,
+      receiverAccount: owner, senderEncryptionPublicKey: owner.publicKey
+    )
+    let receiverSessionData = try SessionData.createSessionData(
+      sender: owner,
+      sessionKey: assetEncryption.key, algorithm: currentSessionData.algorithm,
+      receiverPublicKey: receiverPubKey
+    )
 
-      FileCourierService.updateAccessFile(
-        assetId: assetId,
-        sender: owner,
-        receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
-      )
-    } catch {
-      ErrorReporting.report(error: error)
-    }
+    return FileCourierService.updateAccessFile(
+      assetId: assetId,
+      sender: owner,
+      receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
+    )
   }
 
-  fileprivate func uploadFile(_ assetFileURL: URL, _ receiverAccountNumber: String, _ receiverPubKey: Data) {
-    ErrorReporting.breadcrumbs(info: "uploadFile", category: .UploadFile, traceLog: true)
-    do {
-      let assetFilename = assetFileURL.lastPathComponent
-      let encryptedFileURL = encryptedFolderURL.appendingPathComponent(assetFilename)
+  fileprivate func uploadFile(_ assetFileURL: URL, _ receiverAccountNumber: String, _ receiverPubKey: Data) throws -> Completable {
+    ErrorReporting.breadcrumbs(info: "encryptFile and uploadFile", category: .UploadFile, traceLog: true)
+    let assetFilename = assetFileURL.lastPathComponent
+    let encryptedFileURL = encryptedFolderURL.appendingPathComponent(assetFilename)
 
-      let (senderSessionData, receiverSessionData) = try BitmarkFileUtil.encryptFile(
-        fileURL: assetFileURL, destinationURL: encryptedFileURL,
-        sender: owner, receiverPublicKey: receiverPubKey
-      )
+    let (senderSessionData, receiverSessionData) = try BitmarkFileUtil.encryptFile(
+      fileURL: assetFileURL, destinationURL: encryptedFileURL,
+      sender: owner, receiverPublicKey: receiverPubKey
+    )
 
-      FileCourierService.uploadFile(
-        assetId: assetId, encryptedFileURL: encryptedFileURL,
-        sender: owner, senderSessionData: senderSessionData,
-        receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
-      )
-    } catch {
-      ErrorReporting.report(error: error)
-    }
+    return FileCourierService.uploadFile(
+      assetId: assetId, encryptedFileURL: encryptedFileURL,
+      sender: owner, senderSessionData: senderSessionData,
+      receiverAccountNumber: receiverAccountNumber, receiverSessionData: receiverSessionData
+    )
   }
 
   /**
@@ -125,20 +112,21 @@ class AssetFileService {
 
     if let assetFilename = assetFilename { // 1
       let assetFileURL = iCloudService.shared.parseAssetFileURL(assetFilename)
-      return Observable<URL>.create({ (observer) -> Disposable in
+      return Single<URL>.create { (single) -> Disposable in
         iCloudService.shared.newDownloadFileObservable
           .do(afterNext: { (fileURL) in
             guard fileURL == assetFileURL else { return }
             iCloudService.shared.saveDataRecord(assetId: self.assetId, filename: assetFilename)
           })
           .subscribe(
-            onNext: { observer.onNext($0) },
-            onError: { observer.onError($0) }
+            onNext: { single(.success($0)) },
+            onError: { single(.error($0)) }
           ).disposed(by: self.bag)
         iCloudService.shared.downloadFile(fileURL: assetFileURL)
 
         return Disposables.create()
-      })
+      }
+      .asObservable()
     } else {
       return iCloudService.shared.getFilenameFromiCloudObservable(assetId: assetId)
         .flatMap({ [weak self] (assetFilename) -> Observable<URL> in
@@ -172,36 +160,27 @@ class AssetFileService {
         )
       })
 
-    return Observable<URL>.create { (observer) -> Disposable in
-      Observable.zip(senderAccountnumberObservable, senderPublicKeyObservable, downloadedFileDataObservable)
-        .subscribe(
-          onNext: { [weak self] (senderAccountNumber, senderPublicKey, fileResponseData) in
-            guard let self = self else { return }
-            do {
-              let assetEncryption = try AssetEncryption(
-                from: fileResponseData.sessionData, receiverAccount: self.owner, senderEncryptionPublicKey: senderPublicKey)
-              let decryptedData = try assetEncryption.decryptData(fileResponseData.encryptedFileData)
-              let assetFilename = fileResponseData.filename
-              let downloadedFileURL = iCloudService.shared.parseAssetFileURL(assetFilename)
-              try decryptedData.write(to: downloadedFileURL)
-              iCloudService.shared.saveDataRecord(assetId: self.assetId, filename: assetFilename)
+    return Observable.zip(senderAccountnumberObservable, senderPublicKeyObservable, downloadedFileDataObservable)
+      .flatMap { [weak self] (senderAccountNumber, senderPublicKey, fileResponseData) -> Observable<URL> in
+        guard let self = self else { return Observable.empty() }
 
-              FileCourierService.deleteAccessFile(
-                assetId: self.assetId,
-                senderAccountNumber: senderAccountNumber, receiverAccountNumber: self.owner.getAccountNumber()
-              )
+        let assetEncryption = try AssetEncryption(
+          from: fileResponseData.sessionData, receiverAccount: self.owner, senderEncryptionPublicKey: senderPublicKey)
+        let decryptedData = try assetEncryption.decryptData(fileResponseData.encryptedFileData)
+        let assetFilename = fileResponseData.filename
+        let downloadedFileURL = iCloudService.shared.parseAssetFileURL(assetFilename)
+        try decryptedData.write(to: downloadedFileURL)
+        iCloudService.shared.saveDataRecord(assetId: self.assetId, filename: assetFilename)
 
-              observer.onNext(downloadedFileURL)
-            } catch {
-              ErrorReporting.report(error: error)
-              observer.onError(error)
-            }
-          }, onError: { error in
-            ErrorReporting.report(error: error)
-            observer.onError(error)
-        }).disposed(by: self.bag)
-      return Disposables.create()
-    }
+        FileCourierService.deleteAccessFile(
+          assetId: self.assetId,
+          senderAccountNumber: senderAccountNumber, receiverAccountNumber: self.owner.getAccountNumber()
+        )
+        .subscribe()
+        .disposed(by: self.bag)
+
+        return Observable.just(downloadedFileURL)
+      }
   }
 
   func getSenderAccountNumber(from downloadableFileIds: [String]) -> Observable<String> {

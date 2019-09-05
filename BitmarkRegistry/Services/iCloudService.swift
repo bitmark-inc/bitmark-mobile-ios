@@ -184,7 +184,7 @@ class iCloudService {
   func downloadFile(fileURL: URL) {
     currentFileURL = fileURL
     guard let isFileDownloaded = isFileDownloaded(fileURL: fileURL, documentQuery: &fileDocumentQuery) else {
-      Global.log.info("File \(fileURL) is not existed in icloud")
+      ErrorReporting.breadcrumbs(info: "File \(fileURL) is not existed in icloud", category: .StoreFile, traceLog: true)
       downloadFileSubject.onError(DownloadFileError.NotFound)
       downloadFileSubject.onCompleted()
       return
