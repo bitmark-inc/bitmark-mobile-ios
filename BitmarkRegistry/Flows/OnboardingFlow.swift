@@ -14,6 +14,7 @@ class OnboardingFlow: Flow {
     return self.rootViewController
   }
   var rootViewController: UINavigationController
+  let transparentNavBackButton = CommonUI.transparentNavBackButton()
 
   init(rootViewController: UINavigationController) {
     self.rootViewController = rootViewController
@@ -27,8 +28,10 @@ class OnboardingFlow: Flow {
       return navigateToOnboardingScreen()
     case .testLogin:
       return navigateToLoginScreen()
-    case .askingTouchFaceIdAuthentication:
-      return navigateToTouchAuthenticationScreen()
+    case .askingBiometricAuthentication:
+      return navigateToBiometricAuthenticationScreen()
+    case .askingPasscodeAuthentication:
+      return navigateToPasscodeAuthenticationScreen()
     case .viewTermsOfService:
       return navigateToViewTermsOfServiceScreen()
     case .viewPrivacyPolicy:
@@ -43,8 +46,8 @@ class OnboardingFlow: Flow {
   private func navigateToOnboardingScreen() -> FlowContributors {
     let onboardingVC = OnboardingViewController()
     rootViewController.isNavigationBarHidden = true
-    rootViewController.setViewControllers([onboardingVC], animated: true)
-    rootViewController.navigationBar.removeSubviews()
+    rootViewController.setViewControllers([onboardingVC], animated: false)
+    transparentNavBackButton.removeFromSuperview()
     return .one(flowContributor: .contribute(withNextPresentable: onboardingVC,
                                              withNextStepper: onboardingVC))
   }
@@ -57,12 +60,20 @@ class OnboardingFlow: Flow {
                                              withNextStepper: loginVC))
   }
 
-  fileprivate func navigateToTouchAuthenticationScreen() -> FlowContributors {
-    let touchAuthenticationVC = TouchAuthenticationViewController()
-    rootViewController.pushViewController(touchAuthenticationVC, animated: false)
+  fileprivate func navigateToBiometricAuthenticationScreen() -> FlowContributors {
+    let biometricAuthenticationVC = BiometricAuthenticationViewController()
+    rootViewController.pushViewController(biometricAuthenticationVC, animated: false)
     rootViewController.isNavigationBarHidden = true
-    return .one(flowContributor: .contribute(withNextPresentable: touchAuthenticationVC,
-                                             withNextStepper: touchAuthenticationVC))
+    return .one(flowContributor: .contribute(withNextPresentable: biometricAuthenticationVC,
+                                             withNextStepper: biometricAuthenticationVC))
+  }
+
+  fileprivate func navigateToPasscodeAuthenticationScreen() -> FlowContributors {
+    let passcodeAuthenticationVC = PasscodeAuthenticationViewController()
+    rootViewController.pushViewController(passcodeAuthenticationVC, animated: false)
+    rootViewController.isNavigationBarHidden = true
+    return .one(flowContributor: .contribute(withNextPresentable: passcodeAuthenticationVC,
+                                             withNextStepper: passcodeAuthenticationVC))
   }
 
   fileprivate func navigateToViewTermsOfServiceScreen() -> FlowContributors {
@@ -83,15 +94,13 @@ class OnboardingFlow: Flow {
 
   fileprivate func setupNewBackButton(in navigationItem: UINavigationItem) {
     rootViewController.isNavigationBarHidden = false
-
-    let transparentNavBackButton = CommonUI.transparentNavBackButton()
     transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
     rootViewController.navigationBar.addSubview(transparentNavBackButton)
   }
 
   @objc func tapBackNav(_ sender: UIBarButtonItem) {
     rootViewController.popViewController(animated: true)
-    rootViewController.navigationBar.removeSubviews()
+    transparentNavBackButton.removeFromSuperview()
     rootViewController.setNavigationBarHidden(true, animated: false)
   }
 }

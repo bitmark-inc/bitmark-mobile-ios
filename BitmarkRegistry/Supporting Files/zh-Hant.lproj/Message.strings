@@ -14,3 +14,5 @@
 "successTransfer" = "你的資產所有權已成功轉移。";
 "successDelete" = "你的資產所有權已從你的帳戶永久移除。";
 "ownershipClaim_sendAuthorization" = "您的授權已經傳送到%@。";
+"accountNotAccessible_title" = "無法進入帳戶";
+"accountNotAccessible_message" = "您已移除密碼設定，為了保護您的隱私，您已被登出Bitmark帳戶。";

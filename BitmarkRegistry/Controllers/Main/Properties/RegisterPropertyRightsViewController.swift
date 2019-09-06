@@ -48,6 +48,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var issueButtonBottomConstraint: Constraint!
   var disabledScreen: UIView!
   var activityIndicator: UIActivityIndicatorView!
+  let transparentNavBackButton = CommonUI.transparentNavBackButton()
   var networkReachabilityManager = NetworkReachabilityManager()
   let disposeBag = DisposeBag()
 
@@ -87,7 +88,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    let transparentNavBackButton = CommonUI.transparentNavBackButton()
     transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
     navigationController?.navigationBar.addSubview(transparentNavBackButton)
 
@@ -113,6 +113,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     loadData()
   }
 
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    transparentNavBackButton.removeFromSuperview()
+  }
+
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     removeNotificationsObserver()
@@ -126,7 +131,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     )
     let discardAction = UIAlertAction(title: "Discard".localized(), style: .default) { [weak self] (_) in
       self?.steps.accept(BitmarkStep.endCreatePropertyRights)
-      self?.navigationController?.navigationBar.removeSubviews()
     }
 
     let stayAction = UIAlertAction(title: "Stay".localized(), style: .default, handler: nil)

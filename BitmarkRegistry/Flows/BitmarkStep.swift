@@ -19,7 +19,8 @@ enum BitmarkStep: Step {
   case onboardingIsRequired
   case accountIsRequired
   case testLogin
-  case askingTouchFaceIdAuthentication
+  case askingBiometricAuthentication
+  case askingPasscodeAuthentication
   case onboardingIsComplete
 
   case dashboardIsRequired

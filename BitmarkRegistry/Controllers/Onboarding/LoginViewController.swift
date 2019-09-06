@@ -10,11 +10,13 @@ import UIKit
 import SnapKit
 import BitmarkSDK
 import IQKeyboardManagerSwift
+import RxSwift
 import RxFlow
 import RxCocoa
 
 class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
   var steps = PublishRelay<Step>()
+  let disposeBag = DisposeBag()
 
   // MARK: - Properties
   fileprivate var _numericOrders: [Int]?
@@ -92,7 +94,7 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
       return
     }
 
-    steps.accept(BitmarkStep.askingTouchFaceIdAuthentication)
+    navigateNextOnboardingStep(steps, disposeBag)
   }
 }
 

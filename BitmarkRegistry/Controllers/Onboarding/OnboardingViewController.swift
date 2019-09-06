@@ -9,11 +9,13 @@
 import UIKit
 import SnapKit
 import SwifterSwift
+import RxSwift
 import RxFlow
 import RxCocoa
 
 class OnboardingViewController: UIViewController, Stepper {
   var steps = PublishRelay<Step>()
+  let disposeBag = DisposeBag()
 
   // MARK: - Properties
   var registerButton: UIButton!
@@ -28,9 +30,20 @@ class OnboardingViewController: UIViewController, Stepper {
 
     setupViews()
     setupEvents()
+
+    showAccountNotAccessibleInCase()
   }
 
   // MARK: - Handlers
+  fileprivate func showAccountNotAccessibleInCase() {
+    guard UserSetting.shared.isUserLoggedIn() else { return }
+    let accountNotAccessibleAlert = UIAlertController(
+      title: "accountNotAccessible_title".localized(tableName: "Message"),
+      message: "accountNotAccessible_message".localized(tableName: "Message")
+    )
+    accountNotAccessibleAlert.show()
+  }
+
   @objc func createNewAccount(_ sender: UIButton) {
     activityIndicator.startAnimating()
     do {
@@ -45,7 +58,7 @@ class OnboardingViewController: UIViewController, Stepper {
           if let account = account {
             Global.currentAccount = account // track and store currentAccount
             UserSetting.shared.setAccountVersion(.v2)
-            self.steps.accept(BitmarkStep.askingTouchFaceIdAuthentication)
+            self.navigateNextOnboardingStep(self.steps, self.disposeBag)
           }
         }
       }

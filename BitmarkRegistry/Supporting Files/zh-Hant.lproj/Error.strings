@@ -29,3 +29,10 @@
 "syncTransaction" = "載入交易事項時發生錯誤。";
 "unrecognizedQRCode_title" = "無法辨識QR碼";
 "unrecognizedQRCode_message" = "請再次掃描QR碼，如需進一步協助請聯絡QR碼提供者。";
+
+"touchID_required_title" = "需要Touch ID";
+"touchID_required_message" = "Touch ID已被啟動來保護您的帳戶。";
+"faceID_required_title" = "需要Face ID";
+"faceID_required_message" = "Face ID已被啟動來保護您的帳戶。";
+"passcode_required_title" = "需要密碼";
+"passcode_required_message" = "密碼已被啟動來保護您的帳戶。";

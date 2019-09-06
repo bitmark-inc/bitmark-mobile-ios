@@ -20,6 +20,7 @@ class AccountFlow: Flow {
     navigationController.navigationBar.titleTextAttributes = [.font: UIFont(name: "Avenir-Black", size: 18)!]
     return navigationController
   }()
+  let transparentNavBackButton = CommonUI.transparentNavBackButton()
 
   func navigate(to step: Step) -> FlowContributors {
     guard let step = step as? BitmarkStep else { return .none }
@@ -121,15 +122,13 @@ class AccountFlow: Flow {
 
   fileprivate func setupNewBackButtonToRoot(in navigationItem: UINavigationItem) {
     rootViewController.isNavigationBarHidden = false
-
-    let transparentNavBackButton = CommonUI.transparentNavBackButton()
     transparentNavBackButton.addTarget(self, action: #selector(tapBackRootNav), for: .touchUpInside)
     rootViewController.navigationBar.addSubview(transparentNavBackButton)
   }
 
   @objc func tapBackRootNav(_ sender: UIBarButtonItem) {
     rootViewController.popToRootViewController(animated: true)
-    rootViewController.navigationBar.removeSubviews()
+    transparentNavBackButton.removeFromSuperview()
   }
 }
 
