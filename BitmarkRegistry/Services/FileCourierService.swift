@@ -29,14 +29,15 @@ class FileCourierService {
 
   static func uploadFile(assetId: String, encryptedFileURL: URL,
     sender: Account, senderSessionData: SessionData,
-    receiverAccountNumber: String, receiverSessionData: SessionData) {
+    receiverAccountNumber: String, receiverSessionData: SessionData) -> Completable {
 
-    guard let jwt = Global.currentJwt else { return }
-    let assetFilename = encryptedFileURL.lastPathComponent
+    ErrorReporting.breadcrumbs(info: "uploadFile", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "encryptedFileURL: \(encryptedFileURL)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(sender.getAccountNumber())", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .FileCourier, traceLog: true)
 
-    do {
-      let uploadURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + sender.getAccountNumber())!
-
+    let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + sender.getAccountNumber())
+    return request.flatMap { (uploadRequestURL) -> Completable in
       let access = "\(receiverAccountNumber):\(receiverSessionData.encryptedKey.hexEncodedString)"
       let parameters: [String: String] = [
         "data_key_alg": senderSessionData.algorithm,
@@ -45,34 +46,36 @@ class FileCourierService {
         "access": access
       ]
 
-      let headers = [
-        "Authorization": "Bearer " + jwt
-      ]
-
+      let assetFilename = encryptedFileURL.lastPathComponent
       let assetData = try Data(contentsOf: encryptedFileURL)
 
-      Alamofire.upload(multipartFormData: { (multipartFormData) in
-        for (key, value) in parameters {
-          multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
-        }
-
-        let mineType = getMineType(of: encryptedFileURL)
-        multipartFormData.append(assetData, withName: "file", fileName: assetFilename, mimeType: mineType)
-      }, usingThreshold: UInt64(), to: uploadURL, method: .post, headers: headers, encodingCompletion: { (result) in
-        switch result {
-        case .success(let upload, _, _):
-          upload.responseJSON { response in
-          if let error = response.error {
-            ErrorReporting.report(error: error)
+      return Completable.create(subscribe: { (completable) -> Disposable in
+        Alamofire.upload(multipartFormData: { (multipartFormData) in
+          for (key, value) in parameters {
+            multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
           }
-        }
-        case .failure(let error):
-          ErrorReporting.report(error: error)
-        }
+
+          let mineType = getMineType(of: encryptedFileURL)
+          multipartFormData.append(assetData, withName: "file", fileName: assetFilename, mimeType: mineType)
+        }, usingThreshold: UInt64(), to: uploadRequestURL.url!, method: .post, headers: uploadRequestURL.allHTTPHeaderFields, encodingCompletion: { (result) in
+          switch result {
+          case .success(let upload, _, _):
+            upload.responseJSON { response in
+              if let error = response.error {
+                completable(.error(error))
+              } else {
+                completable(.completed)
+              }
+            }
+          case .failure(let error):
+            completable(.error(error))
+          }
+        })
+
+        return Disposables.create()
       })
-    } catch {
-      ErrorReporting.report(error: error)
     }
+    .asCompletable()
   }
 
   static func getDownloadableAssets(receiver: Account) -> Observable<[String]> {
@@ -160,13 +163,13 @@ class FileCourierService {
 
     let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + senderAccountNumber)
     return request.flatMap { (checkFileExistenceRequest) -> Observable<SessionData?> in
-      return Observable<SessionData?>.create({ (observer) -> Disposable in
+      return Single<SessionData?>.create(subscribe: { (single) -> Disposable in
         var checkFileExistenceRequest = checkFileExistenceRequest
         checkFileExistenceRequest.httpMethod = "HEAD"
         let task = URLSession.shared.dataTask(with: checkFileExistenceRequest) { (_, response, error) in
           if let error = error {
             ErrorReporting.report(error: error)
-            observer.onNext(nil)
+            single(.success(nil))
             return
           }
 
@@ -174,65 +177,79 @@ class FileCourierService {
             let responseHeaders = httpResponse.allHeaderFields as? [String : String] else {
               let error = Global.appError(message: "Can not parse response in check File existence")
               ErrorReporting.report(error: error)
-              observer.onNext(nil)
+              single(.success(nil))
               return
           }
 
-          guard 200..<300 ~= httpResponse.statusCode else { observer.onNext(nil); return }
+          guard 200..<300 ~= httpResponse.statusCode else { single(.success(nil)); return }
 
           guard let encryptedKey = responseHeaders["Enc-Data-Key"],
             let algorithm = responseHeaders["Data-Key-Alg"] else {
               let error = Global.appError(message: "Header in check file existence response is incorrectly structured: \(responseHeaders)")
               ErrorReporting.report(error: error)
-              observer.onNext(nil)
+              single(.success(nil))
               return
           }
 
           let sessionData = SessionData(encryptedKey: encryptedKey.hexDecodedData, algorithm: algorithm)
-          observer.onNext(sessionData)
+          single(.success(sessionData))
         }
         task.resume()
 
         return Disposables.create {
           task.cancel()
         }
-      })
+      }).asObservable()
     }
   }
 
-  static func updateAccessFile(assetId: String, sender: Account, receiverAccountNumber: String, receiverSessionData: SessionData) {
-    guard let jwt = Global.currentJwt else { return }
-    let updateAccessURL = URL(string: Global.ServerURL.fileCourier + "/v2/access/" + assetId + "/" + sender.getAccountNumber())!
-    let access = "\(receiverAccountNumber):\(receiverSessionData.encryptedKey.hexEncodedString)"
-    let params = ["access": access]
-    let headers = ["Authorization": "Bearer " + jwt]
+  static func updateAccessFile(assetId: String, sender: Account, receiverAccountNumber: String, receiverSessionData: SessionData) -> Completable {
+    ErrorReporting.breadcrumbs(info: "updateAccessFile", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(sender.getAccountNumber())", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .FileCourier, traceLog: true)
 
-    let infoLog = "updateAccess in File for assetId: \(assetId); sender: \(sender.getAccountNumber()); receiver: \(receiverAccountNumber)"
-    ErrorReporting.breadcrumbs(info: infoLog, category: .FileCourier, traceLog: true)
+    let request = apiRequest(endpoint: "/v2/access/" + assetId + "/" + sender.getAccountNumber())
+    return request.flatMap({ (updateAccessURL) -> Completable in
+      let params = [
+        "access": "\(receiverAccountNumber):\(receiverSessionData.encryptedKey.hexEncodedString)"
+      ]
 
-    Alamofire.request(updateAccessURL, method: .put, parameters: params, encoding: URLEncoding.default, headers: headers)
-      .responseJSON { (response) in
-        if response.result.isFailure {
-          ErrorReporting.report(message: "Can not updateAccessFile")
-        }
-    }
+      let updateAccessURL = try RxAlamofire.urlRequest(.put, updateAccessURL.url!,
+         parameters: params, encoding: URLEncoding.default,
+         headers: updateAccessURL.allHTTPHeaderFields
+      )
+
+      return RxAlamofire.request(updateAccessURL)
+          .debug()
+          .validate()
+          .responseData()
+          .ignoreElements()
+    })
+    .asCompletable()
   }
 
-  static func deleteAccessFile(assetId: String, senderAccountNumber: String, receiverAccountNumber: String) {
-    guard let jwt = Global.currentJwt else { return }
-    let deleteAccessURL = URL(string: Global.ServerURL.fileCourier + "/v2/files/" + assetId + "/" + senderAccountNumber)!
-    let params = ["receiver": receiverAccountNumber]
-    let headers = ["Authorization": "Bearer " + jwt]
+  static func deleteAccessFile(assetId: String, senderAccountNumber: String, receiverAccountNumber: String) -> Completable {
+    ErrorReporting.breadcrumbs(info: "deleteAccessFile", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(senderAccountNumber)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .FileCourier, traceLog: true)
 
-    let infoLog = "deleteAccess in File for assetId: \(assetId); sender: \(senderAccountNumber); receiver: \(receiverAccountNumber)"
-    ErrorReporting.breadcrumbs(info: infoLog, category: .FileCourier, traceLog: true)
+    let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + senderAccountNumber)
+    return request.flatMap({ (deleteAccessURL) -> Completable in
+      let params = ["receiver": receiverAccountNumber]
+      let deleteAccessURL = try RxAlamofire.urlRequest(.delete, deleteAccessURL.url!,
+                                                       parameters: params, encoding: URLEncoding.default,
+                                                       headers: deleteAccessURL.allHTTPHeaderFields
+      )
 
-    Alamofire.request(deleteAccessURL, method: .delete, parameters: params, headers: headers)
-      .responseJSON { (response) in
-        if response.result.isFailure {
-          ErrorReporting.report(message: "Can not deleteAccessFile")
-        }
-    }
+      return RxAlamofire.request(deleteAccessURL)
+        .debug()
+        .validate()
+        .responseData()
+        .ignoreElements()
+    })
+    .asCompletable()
   }
 
   static fileprivate func isValidDownloadableInfo(_ info: String) -> Bool {

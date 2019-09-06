@@ -105,30 +105,35 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
       errorForInvalidAccountNumber.isHidden = false; return
     }
 
-    showIndicatorAlert(message: "transferringTransaction".localized(tableName: "Message")) { (selfAlert) in
-      do {
-        _ = try BitmarkService.directTransfer(
-          account: Global.currentAccount!,
-          bitmarkId: self.bitmarkId,
-          to: recipientAccountNumber
-        )
-
-        // upload transferred file into file courier server
-        self.assetFileService.transferFile(to: recipientAccountNumber, assetFilename: self.assetR.filename)
-
-        selfAlert.dismiss(animated: true, completion: {
-          Global.syncNewDataInStorage()
-
-          self.showQuickMessageAlert(message: "successTransfer".localized(tableName: "Message")) { [weak self] in
-            self?.steps.accept(BitmarkStep.transferBitmarkIsComplete)
-          }
+    showIndicatorAlert(message: "transferringTransaction".localized(tableName: "Message")) { [weak self] (selfAlert) in
+      guard let self = self else { return }
+      // upload transferred file into file courier server before transferring
+      self.assetFileService.transferFile(to: recipientAccountNumber, assetFilename: self.assetR.filename)
+        .do(onCompleted: {
+          _ = try BitmarkService.directTransfer(
+            account: Global.currentAccount!,
+            bitmarkId: self.bitmarkId,
+            to: recipientAccountNumber
+          )
         })
-      } catch {
-        selfAlert.dismiss(animated: true, completion: {
-          self.showErrorAlert(message: error.localizedDescription)
-          ErrorReporting.report(error: error)
+        .subscribe(onCompleted: {
+          selfAlert.dismiss(animated: true, completion: {
+            Global.syncNewDataInStorage()
+
+            self.showQuickMessageAlert(message: "successTransfer".localized(tableName: "Message")) { [weak self] in
+              self?.steps.accept(BitmarkStep.transferBitmarkIsComplete)
+            }
+          })
+        }, onError: { (error) in
+          selfAlert.dismiss(animated: true, completion: {
+            let localizedErrorMessage = (error as? DownloadFileError) == DownloadFileError.NotFound
+                  ? "transfer_requireFile"
+                  : "transfer_unsuccessfully"
+            self.showErrorAlert(message: localizedErrorMessage.localized(tableName: "Error"))
+            ErrorReporting.report(error: error)
+          })
         })
-      }
+      .disposed(by: self.disposeBag)
     }
   }
 
