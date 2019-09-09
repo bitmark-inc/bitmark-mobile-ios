@@ -22,6 +22,7 @@
 "noCamera_title" = "Enable Camera Access";
 "noCamera_message" = "To get started, allow Bitmark to access your camera.";
 "noReadyToDownload" = "Your bitmark isn't ready to download. Please try again later.";
+"notUploadiCloud" = "Not backed up to iCloud";
 "ownershipClaim_errorRequest" = "There was an error while requesting to %@.";
 "permissionPhoto_title" = "Enable Photos Access";
 "permissionPhoto_message" = "To get started, allow Bitmark to access your photos.";

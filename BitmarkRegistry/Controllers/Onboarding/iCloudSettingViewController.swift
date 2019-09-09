@@ -59,7 +59,7 @@ extension iCloudSettingViewController {
     let descriptionLabel = CommonUI.descriptionLabel(text: "storeiCloudDrive_title_description".localized(tableName: "Phrase"))
 
     let touchFaceIdImageView = UIImageView()
-    touchFaceIdImageView.image = UIImage(named: "touch-face-id")
+    touchFaceIdImageView.image = UIImage(named: "save-to-icloud-drive-thumb")
     touchFaceIdImageView.contentMode = .scaleAspectFit
 
     let touchFaceIdImageViewCover = UIView()
