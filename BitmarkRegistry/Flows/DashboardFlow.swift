@@ -55,6 +55,7 @@ class DashboardFlow: Flow {
         image: UIImage(named: "Account-inactive"),
         selectedImage: UIImage(named: "AccountSelected")
       )
+      self.setupBadgeForAccountTabBarItem(accountTabBarItem)
 
       root1.tabBarItem = propertiesTabBarItem
       root2.tabBarItem = transactionsTabBarItem
@@ -81,5 +82,13 @@ class DashboardFlow: Flow {
       .contribute(withNextPresentable: transactionsFlow, withNextStepper: OneStepper(withSingleStep: BitmarkStep.listOfTransactions)),
       .contribute(withNextPresentable: accountFlow, withNextStepper: OneStepper(withSingleStep: BitmarkStep.viewAccountDetails)),
     ])
+  }
+
+  func setupBadgeForAccountTabBarItem(_ accountTabBarItem: UITabBarItem) {
+    guard let currentAccountNumber = Global.currentAccount?.getAccountNumber(),
+          let isiCloudEnabled = KeychainStore.getiCloudSettingFromKeychain(currentAccountNumber) else { return }
+    accountTabBarItem.badgeValue = isiCloudEnabled ? nil : "●"
+    accountTabBarItem.badgeColor = .clear
+    accountTabBarItem.setBadgeTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], for: .normal)
   }
 }

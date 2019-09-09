@@ -19,6 +19,8 @@ class AccountViewController: UIViewController, Stepper {
   var qrShowButton: UIButton!
   var copiedToClipboardNotifier: UILabel!
   var writeDownRecoveryPhraseButton: UIButton!
+  var saveToiCloudDriveOption: UIView!
+  var saveToiCloudDriveButton: UIButton!
   var logoutButton: UIButton!
   var detailsButton: UIButton!
   var needHelpButton: UIButton!
@@ -60,6 +62,25 @@ class AccountViewController: UIViewController, Stepper {
     qrVC.accountNumber = currentAccountNumber
     presentPanModal(qrVC)
   }
+
+  @objc func saveToiCloudDrive(_ sender: UIButton) {
+    showIndicatorAlert(message: "Migrate Data") { (selfAlert) in
+      do {
+        try iCloudService.shared.migrateDataFromLocalToICloud()
+        self.navigationController?.tabBarItem.badgeValue = nil // remove badge in account tabbar
+        self.saveToiCloudDriveOption.isHidden = true
+        try KeychainStore.saveiCloudSetting(self.currentAccountNumber, isEnable: true)
+        selfAlert.dismiss(animated: true, completion: { [weak self] in
+          self?.showQuickMessageAlert(message: "migrateData_successfully", handler: {})
+        })
+      } catch {
+        ErrorReporting.report(error: error)
+        selfAlert.dismiss(animated: true, completion: { [weak self] in
+          self?.showErrorAlert(message: "registerPropertyRights_unsuccessfully".localized(tableName: "Error"))
+        })
+      }
+    }
+  }
 }
 
 // MARK: - setup Views/Events
@@ -71,6 +92,8 @@ extension AccountViewController {
     writeDownRecoveryPhraseButton.addAction(for: .touchUpInside, { [unowned self] in
       self.steps.accept(BitmarkStep.viewWarningWriteDownRecoveryPhrase)
     })
+
+    saveToiCloudDriveButton.addTarget(self, action: #selector(saveToiCloudDrive), for: .touchUpInside)
 
     logoutButton.addAction(for: .touchUpInside) { [unowned self] in
       self.steps.accept(BitmarkStep.viewWarningRemoveAccess)
@@ -92,11 +115,26 @@ extension AccountViewController {
     let accountNumberBox = setupAccountNumberBox()
 
     writeDownRecoveryPhraseButton = CommonUI.actionButton(title: "WriteDownRecoveryPhrase »".localized().localizedUppercase)
+
+    saveToiCloudDriveButton = CommonUI.actionButton(title: "SaveToiCloudDrive »".localized().localizedUppercase)
+    let exclamationIcon = UIImageView(image: UIImage(named: "exclamation-icon"))
+    exclamationIcon.contentMode = .scaleAspectFit
+    saveToiCloudDriveOption = UIView()
+    saveToiCloudDriveOption.addSubview(saveToiCloudDriveButton)
+    saveToiCloudDriveOption.addSubview(exclamationIcon)
+
+    saveToiCloudDriveButton.snp.makeConstraints { $0.top.leading.bottom.equalToSuperview() }
+    exclamationIcon.snp.makeConstraints { (make) in
+      make.leading.equalTo(saveToiCloudDriveButton.snp.trailing).offset(5)
+      make.top.bottom.equalToSuperview()
+    }
+
     logoutButton = CommonUI.actionButton(title: "Logout »".localized().localizedUppercase)
     detailsButton = CommonUI.actionButton(title: "Details »".localized().localizedUppercase)
     let buttonsGroupStackView = UIStackView(
       arrangedSubviews: [
           writeDownRecoveryPhraseButton,
+          saveToiCloudDriveOption,
           logoutButton,
           detailsButton
         ],
@@ -133,6 +171,10 @@ extension AccountViewController {
     mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)
                 .inset(UIEdgeInsets(top: 25, left: 20, bottom: 8, right: 20))
+    }
+
+    if let isiCloudSettingEnable = KeychainStore.getiCloudSettingFromKeychain(currentAccountNumber), isiCloudSettingEnable {
+      saveToiCloudDriveOption.isHidden = true
     }
   }
 

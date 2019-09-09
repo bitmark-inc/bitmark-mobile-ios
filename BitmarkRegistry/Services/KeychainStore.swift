@@ -96,8 +96,10 @@ class KeychainStore {
 
   // *** user's setting to save asset files to icloud drive or not
   static func saveiCloudSetting(_ accountNumber: String, isEnable: Bool) throws {
+    let key = iCloudSettingKey(accountNumber)
+    try keychain.remove(key)
     try keychain.accessibility(.afterFirstUnlock)
-                .set(String(isEnable), key: iCloudSettingKey(accountNumber))
+                .set(String(isEnable), key: key)
   }
 
   static func getiCloudSettingFromKeychain(_ accountNumber: String) -> Bool? {
