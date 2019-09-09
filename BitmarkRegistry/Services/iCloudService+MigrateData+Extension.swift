@@ -82,7 +82,7 @@ extension iCloudService {
   func migrateDataFromLocalToICloud() throws {
     ErrorReporting.breadcrumbs(info: "migrateDataFromLocalToICloud", category: .MigrationData, traceLog: true)
 
-    guard let _ = icloudContainer else { return }
+    guard let _ = iCloudContainer else { return }
     let documentsLocalContainer = localContainer.appendingPathComponent(user.getAccountNumber())
     guard FileManager.default.fileExists(atPath: documentsLocalContainer.path) else { return }
 
@@ -102,7 +102,7 @@ extension iCloudService {
   }
 
   fileprivate func getExistingFileInIcloudURL(_ userAccountNumber: String, _ assetId: String, _ filename: String) -> URL? {
-    return icloudContainer?.appendingPathComponent(
+    return iCloudContainer?.appendingPathComponent(
       "\(userAccountNumber)_assets_\(assetId.hexDecodedData.base58EncodedString)_\(filename)"
     )
   }

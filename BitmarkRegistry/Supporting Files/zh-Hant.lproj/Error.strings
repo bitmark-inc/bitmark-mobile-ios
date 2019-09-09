@@ -11,6 +11,8 @@
 "cannotNavigate" = "無法進入預期的視窗。 請更新應用程式，再試一次。";
 "createAccount" = "創建新帳戶時發生問題。";
 "fileSizeTooLarge" = "數位資產太大。數位資產不能超過100MB。";
+"iCloudDisabled_title" = "iCloud Drive Disabled";
+"iCloudDisabled_message" = "We cannot store the assets in your iCloud Drive. To protect your assets from loss and allow asset syncing across devices, we highly recommend to enable iCloud Drive.\nTap Settings > iCloud > iCloud Drive";
 "keychainStore" = "存取資料時發生問題。";
 "loadBitmark" = "載入bitmarks時發生錯誤。";
 "loadData" = "載入資料時發生錯誤。";

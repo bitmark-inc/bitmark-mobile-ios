@@ -25,7 +25,7 @@ class iCloudService {
   }
 
   var user: Account
-  lazy var icloudContainer: URL? = {
+  lazy var iCloudContainer: URL? = {
     return FileManager.default.url(forUbiquityContainerIdentifier: nil)?
                       .appendingPathComponent("Documents")
   }()
@@ -34,7 +34,24 @@ class iCloudService {
   }()
 
   lazy var containerURL: URL = {
-    let container: URL = (icloudContainer ?? localContainer).appendingPathComponent(user.getAccountNumber())
+    func defineContainer() -> URL {
+      guard let iCloudSetting = KeychainStore.getiCloudSettingFromKeychain(user.getAccountNumber()) else {
+        ErrorReporting.report(error: Global.appError(message: "missing flow: missing iCloud Setting in Keychain"))
+        return localContainer
+      }
+
+      if iCloudSetting {
+        guard let iCloudContainer = iCloudContainer else {
+          ErrorReporting.report(error: Global.appError(message: "missing flow: iCloud enable in Bitmark but disable"))
+          return localContainer
+        }
+        return iCloudContainer
+      } else {
+        return localContainer
+      }
+    }
+
+    let container = defineContainer().appendingPathComponent(user.getAccountNumber())
     try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true)
     Global.log.info("ContainerURL: \(container)")
     return container
@@ -58,6 +75,9 @@ class iCloudService {
   }
 
   // MARK: - Handlers
+  static func ableToConnectiCloud() -> Bool {
+    return FileManager.default.url(forUbiquityContainerIdentifier: nil) != nil
+  }
 
   // MARK - Sync Data File
   func setupDataFile() throws {

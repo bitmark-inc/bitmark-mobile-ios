@@ -1,8 +1,8 @@
 //
-//  BiometricAuthenticationViewController.swift
+//  iCloudDriveAuthenticationViewController.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 6/21/19.
+//  Created by Macintosh on 9/6/19.
 //  Copyright © 2019 thuyentruong. All rights reserved.
 //
 
@@ -11,7 +11,7 @@ import RxSwift
 import RxFlow
 import RxCocoa
 
-class BiometricAuthenticationViewController: UIViewController, Stepper {
+class iCloudSettingViewController: UIViewController, Stepper {
 
   // MARK: - Properties
   var steps = PublishRelay<Step>()
@@ -27,35 +27,36 @@ class BiometricAuthenticationViewController: UIViewController, Stepper {
     setupEvents()
   }
 
-  @objc func enableSecure(_ sender: UIButton) {
-    UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
-    requireAuthenticationForAction(disposeBag) { [weak self] in
-      guard let self = self else { return }
-      self.navigateNextOnboardingStepFromBiometricStep(self.steps, self.disposeBag)
+  @objc func enableiCloud(_ sender: UIButton) {
+    guard iCloudService.ableToConnectiCloud() else {
+      showiCloudDisabledAlert(okHandler: {})
+      return
     }
+    Global.iCloudEnable = true
+    saveAccountAndProcess(steps, disposeBag)
   }
 
-  @objc func skipSecure(_ sender: UIButton) {
-    UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-    navigateNextOnboardingStepFromBiometricStep(steps, disposeBag)
+  @objc func skipiCloud(_ sender: UIButton) {
+    Global.iCloudEnable = false
+    saveAccountAndProcess(steps, disposeBag)
   }
 }
 
 // MARK: - Setup Views/Events
-extension BiometricAuthenticationViewController {
+extension iCloudSettingViewController {
   fileprivate func setupEvents() {
-    enableButton.addTarget(self, action: #selector(enableSecure), for: .touchUpInside)
-    skipButton.addTarget(self, action: #selector(skipSecure), for: .touchUpInside)
+    enableButton.addTarget(self, action: #selector(enableiCloud), for: .touchUpInside)
+    skipButton.addTarget(self, action: #selector(skipiCloud), for: .touchUpInside)
   }
 
   fileprivate func setupViews() {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let titlePageLabel = CommonUI.pageTitleLabel(text: "facetouchid_title".localized(tableName: "Phrase").localizedUppercase)
+    let titlePageLabel = CommonUI.pageTitleLabel(text: "storeiCloudDrive_title".localized(tableName: "Phrase").localizedUppercase)
     titlePageLabel.textColor = .mainBlueColor
 
-    let descriptionLabel = CommonUI.descriptionLabel(text: "facetouchid_title_description".localized(tableName: "Phrase"))
+    let descriptionLabel = CommonUI.descriptionLabel(text: "storeiCloudDrive_title_description".localized(tableName: "Phrase"))
 
     let touchFaceIdImageView = UIImageView()
     touchFaceIdImageView.image = UIImage(named: "touch-face-id")
@@ -78,7 +79,7 @@ extension BiometricAuthenticationViewController {
       distribution: .fill
     )
 
-    enableButton = CommonUI.blueButton(title: "facetouchid_enableButton".localized(tableName: "Phrase"))
+    enableButton = CommonUI.blueButton(title: "Enable".localized().localizedUppercase)
     skipButton = CommonUI.lightButton(title: "Skip".localized().localizedUppercase)
     let buttonsGroupStackView = UIStackView(
       arrangedSubviews: [enableButton, skipButton],
@@ -95,7 +96,7 @@ extension BiometricAuthenticationViewController {
 
     mainView.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-          .inset(UIEdgeInsets(top: paddingTopContent, left: paddingContent, bottom: 30, right: paddingContent))
+        .inset(UIEdgeInsets(top: paddingTopContent, left: paddingContent, bottom: 30, right: paddingContent))
     }
 
     touchFaceIdImageViewCover.snp.makeConstraints { (make) in

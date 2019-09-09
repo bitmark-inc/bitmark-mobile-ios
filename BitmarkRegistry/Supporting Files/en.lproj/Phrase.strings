@@ -23,6 +23,9 @@
 "facetouchid_passcode_title_description" = "Enable Passcode to secure access to your app. If you do not enable Passcode, anyone with access to your device can use the app to control your account and properties.\n\nFor security reason, if you enable Passcode and remove the passcode, you will be log out of Bitmark app.";
 "facetouchid_passcode_enableButton" = "ENABLE PASSCODE";
 
+"storeiCloudDrive_title" = "SAVE TO ICLOUD DRIVE";
+"storeiCloudDrive_title_description" = "To protech your assets from loss";
+
 "properties_welcomeLabel" = "WELCOME TO BITMARK!";
 "properties_description" = "Bitmark is the property system for establishing value and legal control over the world’s data. Our mission is to define digital property, defend it, and make it economically divisible.\n\nRegister, track, and trade property rights for your digital assets.";
 "properties_createFirstProperty" = "CREATE FIRST PROPERTY";

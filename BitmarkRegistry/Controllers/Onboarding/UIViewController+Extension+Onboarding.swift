@@ -19,13 +19,12 @@ import RxCocoa
  */
 extension UIViewController {
 
-  func navigateNextOnboardingStep(_ steps: PublishRelay<Step>, _ disposeBag: DisposeBag) {
+  func navigateNextOnboardingStepFromOnboardingStep(_ steps: PublishRelay<Step>, _ disposeBag: DisposeBag) {
     let currentDeviceEvaluatePolicyType = BiometricAuth().currentDeviceEvaluatePolicyType()
 
     guard currentDeviceEvaluatePolicyType != .none else {
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-      saveAccountAndProcess(steps, disposeBag)
-      steps.accept(BitmarkStep.userIsLoggedIn)
+      navigateNextOnboardingStepFromBiometricStep(steps, disposeBag)
       return
     }
 
@@ -33,6 +32,17 @@ extension UIViewController {
       steps.accept(BitmarkStep.askingPasscodeAuthentication)
     } else {
       steps.accept(BitmarkStep.askingBiometricAuthentication)
+    }
+  }
+
+  func navigateNextOnboardingStepFromBiometricStep(_ steps: PublishRelay<Step>, _ disposeBag: DisposeBag) {
+    guard let currentAccount = Global.currentAccount else { return }
+
+    if let _ = KeychainStore.getiCloudSettingFromKeychain(currentAccount.getAccountNumber()) {
+      saveAccountAndProcess(steps, disposeBag)
+      steps.accept(BitmarkStep.userIsLoggedIn)
+    } else {
+      steps.accept(BitmarkStep.askingiCloudSetting)
     }
   }
 
@@ -46,6 +56,9 @@ extension UIViewController {
           do {
             // setup realm db & icloud db
             try RealmConfig.setupDBForCurrentAccount()
+            if let isiCloudEnable = Global.iCloudEnable {
+              try KeychainStore.saveiCloudSetting(currentAccount.getAccountNumber(), isEnable: isiCloudEnable)
+            }
             try iCloudService.shared.setupDataFile()
             DispatchQueue.global(qos: .utility).async {
               iCloudService.shared.migrateFileData()
@@ -62,5 +75,15 @@ extension UIViewController {
           self?.showErrorAlert(message: "keychainStore".localized(tableName: "Error"))
       })
       .disposed(by: disposeBag)
+  }
+
+  func showiCloudDisabledAlert(okHandler: @escaping () -> Void) {
+    let iCloudDisabledAlert = UIAlertController(
+      title: "iCloudDisabled_title".localized(tableName: "Error"),
+      message: "iCloudDisabled_message".localized(tableName: "Error"),
+      preferredStyle: .alert
+    )
+    iCloudDisabledAlert.addAction(title: "OK".localized(), style: .default, handler: { (_) in okHandler() })
+    iCloudDisabledAlert.show()
   }
 }

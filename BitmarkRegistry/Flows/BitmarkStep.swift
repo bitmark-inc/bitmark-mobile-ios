@@ -21,6 +21,7 @@ enum BitmarkStep: Step {
   case testLogin
   case askingBiometricAuthentication
   case askingPasscodeAuthentication
+  case askingiCloudSetting
   case onboardingIsComplete
 
   case dashboardIsRequired

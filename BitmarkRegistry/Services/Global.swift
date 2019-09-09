@@ -20,6 +20,7 @@ class Global {
     }
   }
   static var currentJwt: String?
+  static var iCloudEnable: Bool? // save to iCloud Drive setting - enable or skip
   static var apnsToken: String? // Push notification token
   static var verificationLink: String? // Chibitronics
   static var noInternetBanner: StatusBarNotificationBanner = {

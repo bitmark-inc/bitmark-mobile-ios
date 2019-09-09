@@ -32,6 +32,8 @@ class OnboardingFlow: Flow {
       return navigateToBiometricAuthenticationScreen()
     case .askingPasscodeAuthentication:
       return navigateToPasscodeAuthenticationScreen()
+    case .askingiCloudSetting:
+      return navigateToiCloudSettingScreen()
     case .viewTermsOfService:
       return navigateToViewTermsOfServiceScreen()
     case .viewPrivacyPolicy:
@@ -74,6 +76,14 @@ class OnboardingFlow: Flow {
     rootViewController.isNavigationBarHidden = true
     return .one(flowContributor: .contribute(withNextPresentable: passcodeAuthenticationVC,
                                              withNextStepper: passcodeAuthenticationVC))
+  }
+
+  fileprivate func navigateToiCloudSettingScreen() -> FlowContributors {
+    let iCloudDriveAuthenticationVC = iCloudSettingViewController()
+    rootViewController.pushViewController(iCloudDriveAuthenticationVC, animated: true)
+    rootViewController.isNavigationBarHidden = true
+    return .one(flowContributor: .contribute(withNextPresentable: iCloudDriveAuthenticationVC,
+                                             withNextStepper: iCloudDriveAuthenticationVC))
   }
 
   fileprivate func navigateToViewTermsOfServiceScreen() -> FlowContributors {
