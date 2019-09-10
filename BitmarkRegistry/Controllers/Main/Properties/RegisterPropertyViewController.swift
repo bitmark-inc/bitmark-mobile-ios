@@ -52,6 +52,7 @@ class RegisterPropertyViewController: UIViewController, Stepper {
       imagePickerController.delegate = self
       imagePickerController.allowsEditing = false
       imagePickerController.sourceType = .photoLibrary
+      imagePickerController.mediaTypes = ["public.image", "public.movie"]
       self.present(imagePickerController, animated: true, completion: nil)
     }
   }
@@ -70,7 +71,7 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
     disabledScreen.isHidden = false
 
     picker.dismiss(animated: true) { [weak self] in
-      guard let self = self, let assetURL = info[.imageURL] as? URL else { return }
+      guard let self = self, let assetURL = (info[.mediaURL] ?? info[.imageURL]) as? URL else { return }
       self.assetURL = assetURL
 
       // get image name
