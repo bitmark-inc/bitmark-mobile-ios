@@ -48,6 +48,10 @@ class AccountFlow: Flow {
       return navigateToTestRecoveryPhraseToRemoveAccessScreen()
     case .removeAccessIsComplete:
       return .end(forwardToParentFlowWithStep: BitmarkStep.dashboardIsComplete)
+    case .askingiCloudSetting:
+      return navigateToiCloudSettingScreen()
+    case .iCloudSettingIsComplete:
+      return .end(forwardToParentFlowWithStep: BitmarkStep.dashboardIsRequired)
     case .viewAppDetails:
       return navigateToAppDetailsFlow()
     default:
@@ -118,6 +122,16 @@ class AccountFlow: Flow {
     let appDetailsFlow = AppDetailsFlow(rootViewController: rootViewController)
     return .one(flowContributor: .contribute(withNextPresentable: appDetailsFlow,
                                              withNextStepper: OneStepper(withSingleStep: BitmarkStep.viewAppDetails)))
+  }
+
+  fileprivate func navigateToiCloudSettingScreen() -> FlowContributors {
+    let iCloudSettingVC = iCloudSettingViewController()
+    iCloudSettingVC.hidesBottomBarWhenPushed = true
+
+    rootViewController.pushViewController(iCloudSettingVC, animated: true)
+    rootViewController.isNavigationBarHidden = true
+    return .one(flowContributor: .contribute(withNextPresentable: iCloudSettingVC,
+                                             withNextStepper: iCloudSettingVC))
   }
 
   fileprivate func setupNewBackButtonToRoot(in navigationItem: UINavigationItem) {

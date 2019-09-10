@@ -32,13 +32,33 @@ class iCloudSettingViewController: UIViewController, Stepper {
       showiCloudDisabledAlert(okHandler: {})
       return
     }
-    Global.iCloudEnable = true
-    saveAccountAndProcess(steps, disposeBag)
+    setupiCloud(isEnabled: true)
   }
 
   @objc func skipiCloud(_ sender: UIButton) {
-    Global.iCloudEnable = false
-    saveAccountAndProcess(steps, disposeBag)
+    setupiCloud(isEnabled: false)
+  }
+
+  fileprivate func setupiCloud(isEnabled: Bool) {
+    Observable.just(Global.currentAccount)
+      .filterNil()
+      .map { $0.getAccountNumber() }
+      .do(onNext: { (accountNumber) in
+        try KeychainStore.saveiCloudSetting(accountNumber, isEnable: isEnabled)
+        try iCloudService.shared.setupDataFile()
+        DispatchQueue.global(qos: .utility).async {
+          iCloudService.shared.migrateFileData()
+        }
+      })
+      .subscribe(
+        onError: { [weak self] (error) in
+          ErrorReporting.report(error: error)
+          self?.steps.accept(BitmarkStep.appSuspension)
+        },
+        onCompleted: { [weak self] in
+          self?.steps.accept(BitmarkStep.iCloudSettingIsComplete)
+      })
+      .disposed(by: disposeBag)
   }
 }
 

@@ -11,8 +11,8 @@
 "cannotNavigate" = "無法進入預期的視窗。 請更新應用程式，再試一次。";
 "createAccount" = "創建新帳戶時發生問題。";
 "fileSizeTooLarge" = "數位資產太大。數位資產不能超過100MB。";
-"iCloudDisabled_title" = "iCloud Drive Disabled";
-"iCloudDisabled_message" = "We cannot store the assets in your iCloud Drive. To protect your assets from loss and allow asset syncing across devices, we highly recommend to enable iCloud Drive.\nTap Settings > iCloud > iCloud Drive";
+"iCloudDisabled_title" = "iCloud雲碟尚未開啟";
+"iCloudDisabled_message" = "我們無法將您的資產儲存至iCloud雲碟，為了保護您的資產免於遺失，並允許資產可以跨裝置同步，我們建議您開啟iCloud雲碟設定。\n按下 設定 > iCloud > iCloud雲碟";
 "keychainStore" = "存取資料時發生問題。";
 "loadBitmark" = "載入bitmarks時發生錯誤。";
 "loadData" = "載入資料時發生錯誤。";
@@ -22,7 +22,7 @@
 "noCamera_title" = "開啟相機權限";
 "noCamera_message" = "如需繼續，允許Bitmark使用相機權限。";
 "noReadyToDownload" = "你的 bitmark 資產尚未準備好下載，請稍後再試。";
-"notUploadiCloud" = "Not upload to icloud yet";
+"notUploadiCloud" = "尚未備份到iCloud";
 "ownershipClaim_errorRequest" = "在索取%@時發生錯誤。";
 "permissionPhoto_title" = "開啟相簿權限";
 "permissionPhoto_message" = "如需繼續，允許Bitmark使用相簿權限。";

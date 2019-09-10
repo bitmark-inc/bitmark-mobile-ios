@@ -32,6 +32,8 @@ class AppFlow: Flow {
       return navigateToDashboardScreen()
     case .onboardingIsRequired:
       return navigateToOnboardingScreen()
+    case .askingiCloudSetting:
+      return navigateToiCloudSettingScreen()
     default:
       return .none
     }
@@ -59,6 +61,12 @@ class AppFlow: Flow {
     let onboardingFlow = OnboardingFlow(rootViewController: rootViewController)
     return .one(flowContributor: .contribute(withNextPresentable: onboardingFlow,
                                              withNextStepper: OneStepper(withSingleStep: BitmarkStep.accountIsRequired)))
+  }
+
+  fileprivate func navigateToiCloudSettingScreen() -> FlowContributors {
+    let onboardingFlow = OnboardingFlow(rootViewController: rootViewController)
+    return .one(flowContributor: .contribute(withNextPresentable: onboardingFlow,
+                                             withNextStepper: OneStepper(withSingleStep: BitmarkStep.askingiCloudSetting)))
   }
 }
 

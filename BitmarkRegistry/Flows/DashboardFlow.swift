@@ -61,7 +61,7 @@ class DashboardFlow: Flow {
       root2.tabBarItem = transactionsTabBarItem
       root3.tabBarItem = accountTabBarItem
 
-      self.rootViewController.setViewControllers([root1, root2, root3], animated: false)
+      self.rootViewController.setViewControllers([root1, root2, root3], animated: true)
       guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
       // Register APNS: when user access into Dashboard

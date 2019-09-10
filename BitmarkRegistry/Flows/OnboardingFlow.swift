@@ -38,8 +38,12 @@ class OnboardingFlow: Flow {
       return navigateToViewTermsOfServiceScreen()
     case .viewPrivacyPolicy:
       return navigateToViewPrivacyPolicyScreen()
-    case .userIsLoggedIn:
+    case .iCloudSettingIsComplete:
+      return navigate(to: BitmarkStep.onboardingIsComplete)
+    case .onboardingIsComplete:
       return .end(forwardToParentFlowWithStep: BitmarkStep.dashboardIsRequired)
+    case .appSuspension:
+      return navigateToSuspendedScreen()
     default:
       return .none
     }
@@ -79,11 +83,11 @@ class OnboardingFlow: Flow {
   }
 
   fileprivate func navigateToiCloudSettingScreen() -> FlowContributors {
-    let iCloudDriveAuthenticationVC = iCloudSettingViewController()
-    rootViewController.pushViewController(iCloudDriveAuthenticationVC, animated: true)
+    let iCloudSettingVC = iCloudSettingViewController()
+    rootViewController.pushViewController(iCloudSettingVC, animated: true)
     rootViewController.isNavigationBarHidden = true
-    return .one(flowContributor: .contribute(withNextPresentable: iCloudDriveAuthenticationVC,
-                                             withNextStepper: iCloudDriveAuthenticationVC))
+    return .one(flowContributor: .contribute(withNextPresentable: iCloudSettingVC,
+                                             withNextStepper: iCloudSettingVC))
   }
 
   fileprivate func navigateToViewTermsOfServiceScreen() -> FlowContributors {
@@ -99,6 +103,12 @@ class OnboardingFlow: Flow {
     appDetailContentVC.appDetailContent = .privacyPolicy
     rootViewController.pushViewController(appDetailContentVC)
     setupNewBackButton(in: appDetailContentVC.navigationItem)
+    return .none
+  }
+
+  fileprivate func navigateToSuspendedScreen() -> FlowContributors {
+    let appSuspensionVC = SuspendedViewController()
+    rootViewController.viewControllers = [appSuspensionVC]
     return .none
   }
 

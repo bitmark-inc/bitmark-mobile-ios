@@ -13,8 +13,15 @@ extension iCloudService {
   func migrateFileData() {
     ErrorReporting.breadcrumbs(info: "Migrate File Data for \(user.getAccountNumber())", category: .MigrationData, traceLog: true)
     do {
+      guard let isiCloudEnabled = KeychainStore.getiCloudSettingFromKeychain(user.getAccountNumber()) else {
+        ErrorReporting.report(message: "missing flow: missing iCloud Setting in Keychain.")
+        return
+      }
+
       try migrateDataFromOldVersion()
-      try migrateDataFromLocalToICloud()
+      if isiCloudEnabled {
+        try migrateDataFromLocalToICloud()
+      }
       Global.log.info("Finish migrateFileData")
     } catch {
       ErrorReporting.report(error: error)

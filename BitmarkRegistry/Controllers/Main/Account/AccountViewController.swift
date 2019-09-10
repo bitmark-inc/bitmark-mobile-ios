@@ -64,22 +64,7 @@ class AccountViewController: UIViewController, Stepper {
   }
 
   @objc func saveToiCloudDrive(_ sender: UIButton) {
-    showIndicatorAlert(message: "Migrate Data") { (selfAlert) in
-      do {
-        try iCloudService.shared.migrateDataFromLocalToICloud()
-        self.navigationController?.tabBarItem.badgeValue = nil // remove badge in account tabbar
-        self.saveToiCloudDriveOption.isHidden = true
-        try KeychainStore.saveiCloudSetting(self.currentAccountNumber, isEnable: true)
-        selfAlert.dismiss(animated: true, completion: { [weak self] in
-          self?.showQuickMessageAlert(message: "migrateData_successfully", handler: {})
-        })
-      } catch {
-        ErrorReporting.report(error: error)
-        selfAlert.dismiss(animated: true, completion: { [weak self] in
-          self?.showErrorAlert(message: "registerPropertyRights_unsuccessfully".localized(tableName: "Error"))
-        })
-      }
-    }
+    steps.accept(BitmarkStep.askingiCloudSetting)
   }
 }
 

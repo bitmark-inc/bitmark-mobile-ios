@@ -31,13 +31,13 @@ class PasscodeAuthenticationViewController: UIViewController, Stepper {
     UserSetting.shared.setTouchFaceIdSetting(isEnabled: true)
     requireAuthenticationForAction(disposeBag) { [weak self] in
       guard let self = self else { return }
-      self.navigateNextOnboardingStepFromBiometricStep(self.steps, self.disposeBag)
+      self.saveAccountAndProcess(self.steps, self.disposeBag)
     }
   }
 
   @objc func skipSecure(_ sender: UIButton) {
     UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-    navigateNextOnboardingStepFromBiometricStep(steps, disposeBag)
+    saveAccountAndProcess(steps, disposeBag)
   }
 }
 

@@ -40,8 +40,8 @@ class AppNavigationViewController: UIViewController, Stepper {
     // - Request JWT, Intercom & APNS Handler
     sharedObservbale
       .filter { $0 == true }
-      .observeOn(MainScheduler.instance)
       .ignoreElements()
+      .observeOn(MainScheduler.instance)
       .subscribe(onCompleted: { [weak self] in
         guard let self = self else { return }
         guard let currentAccountNumber = Global.currentAccount?.getAccountNumber() else { return }
@@ -51,20 +51,21 @@ class AppNavigationViewController: UIViewController, Stepper {
         }
 
         self.checkiCloudConnectionWhenEnable(iCloudSetting)
-            .do(onCompleted: {
-              try RealmConfig.setupDBForCurrentAccount()
-              try iCloudService.shared.setupDataFile()
-              DispatchQueue.global(qos: .utility).async {
-                iCloudService.shared.migrateFileData()
-              }
-              AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
-            })
-            .subscribe(onCompleted: { [weak self] in
+          .do(onCompleted: {
+            try RealmConfig.setupDBForCurrentAccount()
+            try iCloudService.shared.setupDataFile()
+            DispatchQueue.global(qos: .utility).async {
+              iCloudService.shared.migrateFileData()
+            }
+            AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
+          })
+          .subscribe(
+            onCompleted: { [weak self] in
               self?.steps.accept(BitmarkStep.dashboardIsRequired)
             },
-           onError: { (error) in
-                ErrorReporting.report(error: error)
-                UIApplication.shared.keyWindow?.rootViewController = SuspendedViewController()
+            onError: { (error) in
+              ErrorReporting.report(error: error)
+              UIApplication.shared.keyWindow?.rootViewController = SuspendedViewController()
             })
           .disposed(by: self.disposeBag)
       })

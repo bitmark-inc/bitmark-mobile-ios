@@ -11,9 +11,7 @@ import RxFlow
 enum BitmarkStep: Step {
 
   case appNavigation
-
-  // Login/SignUp
-  case userIsLoggedIn
+  case appSuspension
 
   // Onboarding
   case onboardingIsRequired
@@ -22,6 +20,7 @@ enum BitmarkStep: Step {
   case askingBiometricAuthentication
   case askingPasscodeAuthentication
   case askingiCloudSetting
+  case iCloudSettingIsComplete
   case onboardingIsComplete
 
   case dashboardIsRequired

@@ -17,14 +17,14 @@
 "onboarding_termsPrivacyAgreement" = "開始下一步表示您同意 Bitmark %@ 和 %@ 。";
 
 "facetouchid_title" = "指紋或臉部辨識";
-"facetouchid_title_description" = "使用指紋或臉部辨識來加密與簽署你的數據資料。";
+"facetouchid_title_description" = "請開啟Touch/Face ID以確保存取應用程式的安全性，如果您沒有開啟Touch/Face ID，任何使用您裝置的人都能使用此應用程式來掌控您的帳戶和資產。\n\n出於安全考量，若您開啟Touch/Face ID並移除密碼，您的帳戶將會自動登出。";
 "facetouchid_enableButton" = "開啟指紋或臉部辨識";
-"facetouchid_passcode_title" = "PASSCODE";
-"facetouchid_passcode_title_description" = "Enable Touch/Face ID to secure access to your app. If you do not enable Touch/Face ID, anyone with access to your device can use the app to control your account and properties.\n\nFor security reason, if you enable Touch/Face ID and remove the passcode, you will be log out of Bitmark app.";
-"facetouchid_passcode_enableButton" = "ENABLE PASSCODE";
+"facetouchid_passcode_title" = "密碼";
+"facetouchid_passcode_title_description" = "請開啟密碼以確保存取應用程式的安全性，如果您沒有開啟密碼，任何使用您裝置的人都能使用此應用程式來掌控您的帳戶和資產。\n\n出於安全考量，若您開啟密碼並移除密碼，您的帳戶將會自動登出。";
+"facetouchid_passcode_enableButton" = "開啟密碼";
 
-"storeiCloudDrive_title" = "SAVE TO ICLOUD DRIVE";
-"storeiCloudDrive_title_description" = "To protech your assets from loss";
+"storeiCloudDrive_title" = "備份至iCloud";
+"storeiCloudDrive_title_description" = "請授權讓Bitmark應用程式可以備份資產至您的iCloud雲碟，以保護您的資產免受於遺失並允許資產可以跨裝置同步。\n\n在iCloud開始備份之前，請先確認您已開啟iCloud設定。";
 
 "properties_welcomeLabel" = "歡迎來到 BITMARK!";
 "properties_description" = "Bitmark 數位資產系統致力於確立世界上所有數位檔案的價值和其法律權利歸屬。我們的使命是明確定義並捍衛數位資產，進而讓數位資產創造經濟價值。\n\n現在就開始登記、追蹤與掌握你的數位資產所有權吧！";
