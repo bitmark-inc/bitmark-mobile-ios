@@ -13,14 +13,14 @@ extension iCloudService {
   func migrateFileData() {
     ErrorReporting.breadcrumbs(info: "Migrate File Data for \(user.getAccountNumber())", category: .MigrationData, traceLog: true)
     do {
-      guard let isiCloudEnabled = KeychainStore.getiCloudSettingFromKeychain(user.getAccountNumber()) else {
+      guard let isiCloudEnabled = Global.isiCloudEnabled else {
         ErrorReporting.report(message: "missing flow: missing iCloud Setting in Keychain.")
         return
       }
 
       try migrateDataFromOldVersion()
       if isiCloudEnabled {
-        try migrateDataFromLocalToICloud()
+        try migrateDataFromLocalToiCloud()
       }
       Global.log.info("Finish migrateFileData")
     } catch {
@@ -86,8 +86,8 @@ extension iCloudService {
   }
 
   // Move local storage into icloud storage in case user just logged in iCloud account.
-  func migrateDataFromLocalToICloud() throws {
-    ErrorReporting.breadcrumbs(info: "migrateDataFromLocalToICloud", category: .MigrationData, traceLog: true)
+  func migrateDataFromLocalToiCloud() throws {
+    ErrorReporting.breadcrumbs(info: "migrateDataFromLocalToiCloud", category: .MigrationData, traceLog: true)
 
     guard let _ = iCloudContainer else { return }
     let documentsLocalContainer = localContainer.appendingPathComponent(user.getAccountNumber())

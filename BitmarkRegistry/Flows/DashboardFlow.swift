@@ -61,7 +61,7 @@ class DashboardFlow: Flow {
       root2.tabBarItem = transactionsTabBarItem
       root3.tabBarItem = accountTabBarItem
 
-      self.rootViewController.setViewControllers([root1, root2, root3], animated: true)
+      self.rootViewController.setViewControllers([root1, root2, root3], animated: false)
       guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
       // Register APNS: when user access into Dashboard
@@ -85,8 +85,9 @@ class DashboardFlow: Flow {
   }
 
   func setupBadgeForAccountTabBarItem(_ accountTabBarItem: UITabBarItem) {
-    guard let currentAccountNumber = Global.currentAccount?.getAccountNumber(),
-          let isiCloudEnabled = KeychainStore.getiCloudSettingFromKeychain(currentAccountNumber) else { return }
+    guard let currentAccountNumber = Global.currentAccount?.getAccountNumber() else { return }
+    Global.isiCloudEnabled = KeychainStore.getiCloudSettingFromKeychain(currentAccountNumber)
+    guard let isiCloudEnabled = Global.isiCloudEnabled else { return }
     accountTabBarItem.badgeValue = isiCloudEnabled ? nil : "●"
     accountTabBarItem.badgeColor = .clear
     accountTabBarItem.setBadgeTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.red], for: .normal)

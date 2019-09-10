@@ -43,20 +43,16 @@ class AppNavigationViewController: UIViewController, Stepper {
       .ignoreElements()
       .observeOn(MainScheduler.instance)
       .subscribe(onCompleted: { [weak self] in
-        guard let self = self else { return }
-        guard let currentAccountNumber = Global.currentAccount?.getAccountNumber() else { return }
+        guard let self = self, let currentAccountNumber = Global.currentAccount?.getAccountNumber() else { return }
         guard let iCloudSetting = KeychainStore.getiCloudSettingFromKeychain(currentAccountNumber) else {
           self.steps.accept(BitmarkStep.askingiCloudSetting)
           return
         }
 
+        Global.isiCloudEnabled = iCloudSetting
         self.checkiCloudConnectionWhenEnable(iCloudSetting)
           .do(onCompleted: {
             try RealmConfig.setupDBForCurrentAccount()
-            try iCloudService.shared.setupDataFile()
-            DispatchQueue.global(qos: .utility).async {
-              iCloudService.shared.migrateFileData()
-            }
             AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
           })
           .subscribe(
@@ -71,14 +67,15 @@ class AppNavigationViewController: UIViewController, Stepper {
       })
       .disposed(by: disposeBag)
 
-    // in case existing account but can not access
+    // in case existing account in keychain but can not access
+    // show authentication required alert
     sharedObservbale
       .subscribe(onError: { [weak self] (_) in
         self?.showAuthenticationRequiredAlert()
       })
       .disposed(by: disposeBag)
 
-    // in case account is not existing; redirect to onboarding screen
+    // in case account's not existing; redirect to onboarding screen
     sharedObservbale
       .filter { $0 == false }
       .subscribe(onNext: { (_) in

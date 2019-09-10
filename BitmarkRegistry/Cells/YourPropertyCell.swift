@@ -18,7 +18,7 @@ class YourPropertyCell: UITableViewCell {
   let issuerLabel = UILabel()
   let thumbnailImageView = UIImageView()
   var notUploadiCloudView: UIView!
-  let disposeBag = DisposeBag()
+  fileprivate var disposeBag = DisposeBag()
 
   // MARK: - Init
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -28,6 +28,11 @@ class YourPropertyCell: UITableViewCell {
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    disposeBag = DisposeBag()
   }
 
   // MARK: - Handlers
@@ -42,12 +47,7 @@ class YourPropertyCell: UITableViewCell {
 
     guard let assetR = bitmarkR.assetR else { return }
     notUploadiCloudView.isHidden = false
-
-    if let _ = assetR.filename { 
-      loadUploadiCloudStatusObservable(assetR: assetR)
-    } else {
-      notUploadiCloudView.isHidden = true
-    }
+    loadUploadiCloudStatus(assetR: assetR)
 
     if assetR.isPochangMusic() {
       loadMusicThumbnail(assetId: assetR.id)
@@ -71,17 +71,31 @@ class YourPropertyCell: UITableViewCell {
       })
       .disposed(by: disposeBag)
   }
+  /**
+   1. when user skip to save to iCloud, hide the icon by default
+   2. when filename has not existed, hide the icon by default
+   3. subscribe observable to hide notUploadiCloudView when file's uploadeded to iCloud successfully
+   */
+  fileprivate func loadUploadiCloudStatus(assetR: AssetR) {
+    // 1
+    if let isiCloudEnabled = Global.isiCloudEnabled, !isiCloudEnabled {
+      notUploadiCloudView.isHidden = true
+    }
 
-  fileprivate func loadUploadiCloudStatusObservable(assetR: AssetR) {
-    guard let assetFilename = assetR.filename else { return }
+    // 2
+    guard let assetFilename = assetR.filename else {
+      notUploadiCloudView.isHidden = true
+      return
+    }
+
+    // 3
     iCloudService.shared.uploadedAssetFileSubject
       .filter { $0.contains(assetFilename) }
       .subscribe(onNext: { [weak notUploadiCloudView] (_) in
         notUploadiCloudView?.isHidden = true
       })
       .disposed(by: disposeBag)
-
-    iCloudService.shared.checkUploadiCloudStatus(assetId: assetR.id)
+    iCloudService.shared.checkUploadiCloudStatus(assetFilename)
   }
 }
 
@@ -129,20 +143,20 @@ extension YourPropertyCell {
     addSubview(notUploadiCloudView)
 
     stackView.snp.makeConstraints { (make) in
-      make.top.leading.trailing.equalToSuperview()
-          .inset(UIEdgeInsets(top: 18, left: 27, bottom: 18, right: 27))
+      make.top.leading.trailing.bottom.equalToSuperview()
+          .inset(UIEdgeInsets(top: 32, left: 27, bottom: 33, right: 27))
     }
 
     thumbnailImageView.snp.makeConstraints { (make) in
-      make.trailing.equalToSuperview().offset(-20)
-      make.centerY.equalToSuperview().offset(-15)
+      make.trailing.equalToSuperview().offset(-23)
+      make.centerY.equalToSuperview()
       make.width.height.equalTo(55)
     }
 
     notUploadiCloudView.snp.makeConstraints { (make) in
       make.top.equalTo(stackView.snp.bottom).offset(13)
       make.trailing.bottom.equalToSuperview()
-          .inset(UIEdgeInsets(top: 18, left: 27, bottom: 18, right: 27))
+          .inset(UIEdgeInsets(top: 18, left: 27, bottom: 6, right: 16))
     }
   }
 

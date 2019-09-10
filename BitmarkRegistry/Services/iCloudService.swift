@@ -34,30 +34,16 @@ class iCloudService {
     return FileManager.sharedDirectoryURL ?? FileManager.documentDirectoryURL
   }()
 
-  lazy var containerURL: URL = {
-    func defineContainer() -> URL {
-      guard let iCloudSetting = KeychainStore.getiCloudSettingFromKeychain(user.getAccountNumber()) else {
-        ErrorReporting.report(error: Global.appError(message: "missing flow: missing iCloud Setting in Keychain"))
-        return localContainer
-      }
-
-      if iCloudSetting {
-        guard let iCloudContainer = iCloudContainer else {
-          ErrorReporting.report(error: Global.appError(message: "missing flow: iCloud enable in Bitmark but disable"))
-          return localContainer
-        }
-        return iCloudContainer
-      } else {
-        return localContainer
-      }
-    }
-
+  var _containerURL: URL?
+  var containerURL: URL {
+    guard _containerURL == nil else { return _containerURL! }
     let container = defineContainer().appendingPathComponent(user.getAccountNumber())
     try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true)
     Global.log.info("ContainerURL: \(container)")
-    return container
-  }()
-  lazy var dataURL: URL = { getDataURL(containerURL) }()
+    _containerURL = container
+    return _containerURL!
+  }
+  var dataURL: URL { return getDataURL(containerURL) }
 
   var localAssetWithFilenameData: [String: String] = [:]
   var fileDocumentQuery: NSMetadataQuery?
@@ -73,6 +59,7 @@ class iCloudService {
   var currentFileURL: URL!
 
   // MARK: - Init
+  // setup upload metadata query to receive notification for upload data event when iCloud is app storage.
   init(user: Account) {
     self.user = user
 
@@ -133,23 +120,16 @@ class iCloudService {
   }
 
   // MARK: - Get FileURL
-  func checkUploadiCloudStatus(assetId: String) {
-    getFilenameFromiCloudObservable(assetId: assetId)
-      .subscribe(onNext: { [weak self] (filename) in
-        guard let self = self else { return }
-        guard let filename = filename else { return }
-        let assetFileURL = self.parseAssetFileURL(filename)
-        guard let isUploaded = self.isFileUploaded(fileURL: assetFileURL) else { return }
+  func checkUploadiCloudStatus(_ filename: String) {
+    let assetFileURL = parseAssetFileURL(filename)
+    guard let isUploaded = isFileUploaded(fileURL: assetFileURL), isUploaded else { return }
 
-        if isUploaded {
-          var uploadedFilenames = self.uploadedAssetFileSubject.value
-          uploadedFilenames.append(assetFileURL.lastPathComponent)
-          self.uploadedAssetFileSubject.accept(uploadedFilenames)
-        }
-      }, onError: { (error) in
-        ErrorReporting.report(error: error)
-      })
-    .disposed(by: bag)
+    var uploadedFilenames = uploadedAssetFileSubject.value
+    let assetFilename = assetFileURL.lastPathComponent
+    if !uploadedFilenames.contains(assetFilename) {
+      uploadedFilenames.append(assetFilename)
+    }
+    uploadedAssetFileSubject.accept(uploadedFilenames)
   }
 
   func parseAssetFileURL(_ filename: String) -> URL {
@@ -289,10 +269,13 @@ extension iCloudService {
     return progressValue >= 100.0
   }
 
+  // extracts filenames from all uploaded files
+  // but excludes filepath does not include current account number string - cause not in correct folder
   fileprivate func extractFilenames(query: NSMetadataQuery) -> [String] {
-    return (0..<query.resultCount).compactMap { (index) -> String in
+    return (0..<query.resultCount).compactMap { (index) -> String? in
       guard let item = query.result(at: index) as? NSMetadataItem,
-            let fileURL = item.value(forAttribute: NSMetadataItemURLKey) as? URL else { return "" }
+            let fileURL = item.value(forAttribute: NSMetadataItemURLKey) as? URL,
+            fileURL.absoluteString.contains(user.getAccountNumber()) else { return nil }
       return fileURL.lastPathComponent
     }
   }
@@ -371,6 +354,31 @@ extension iCloudService {
       ErrorReporting.report(error: error)
     }
     return false
+  }
+
+  /**
+   Define container / storage based on user setting
+   * in this step, conditions:
+     - Global.isiCloudEnabled should present
+     - if user enable iCloud, the app should have permission to access iCloud container
+    => so if conditions don't meet, reports error to sentry as missing flow and temporarily saves data in local container
+   */
+  fileprivate func defineContainer() -> URL {
+    guard let isiCloudEnabled = Global.isiCloudEnabled else {
+      ErrorReporting.report(error: Global.appError(message: "missing flow: missing iCloud Setting in Keychain"))
+      return localContainer
+    }
+
+    if isiCloudEnabled {
+      guard let iCloudContainer = iCloudContainer else {
+        ErrorReporting.report(error: Global.appError(message: "missing flow: iCloud enable in Bitmark but disable"))
+        return localContainer
+      }
+
+      return iCloudContainer
+    } else {
+      return localContainer
+    }
   }
 
   internal func getDataURL(_ containerURL: URL) -> URL {

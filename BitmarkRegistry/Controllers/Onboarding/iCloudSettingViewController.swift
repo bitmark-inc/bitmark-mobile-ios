@@ -45,10 +45,10 @@ class iCloudSettingViewController: UIViewController, Stepper {
       .map { $0.getAccountNumber() }
       .do(onNext: { (accountNumber) in
         try KeychainStore.saveiCloudSetting(accountNumber, isEnable: isEnabled)
+        Global.isiCloudEnabled = isEnabled
+        iCloudService.shared._containerURL = nil
         try iCloudService.shared.setupDataFile()
-        DispatchQueue.global(qos: .utility).async {
-          iCloudService.shared.migrateFileData()
-        }
+        iCloudService.shared.migrateFileData()
       })
       .subscribe(
         onError: { [weak self] (error) in
@@ -78,16 +78,16 @@ extension iCloudSettingViewController {
 
     let descriptionLabel = CommonUI.descriptionLabel(text: "storeiCloudDrive_title_description".localized(tableName: "Phrase"))
 
-    let touchFaceIdImageView = UIImageView()
-    touchFaceIdImageView.image = UIImage(named: "save-to-icloud-drive-thumb")
-    touchFaceIdImageView.contentMode = .scaleAspectFit
+    let iCloudDriveImageView = UIImageView()
+    iCloudDriveImageView.image = UIImage(named: "save-to-icloud-drive-thumb")
+    iCloudDriveImageView.contentMode = .scaleAspectFit
 
-    let touchFaceIdImageViewCover = UIView()
-    touchFaceIdImageViewCover.addSubview(touchFaceIdImageView)
-    touchFaceIdImageView.snp.makeConstraints { (make) in
+    let iCloudDriveImageViewCover = UIView()
+    iCloudDriveImageViewCover.addSubview(iCloudDriveImageView)
+    iCloudDriveImageView.snp.makeConstraints { (make) in
       make.centerX.centerY.equalToSuperview()
       if view.width <= 320 {
-        make.height.equalTo(view.frame.height * 0.3)
+        make.height.equalTo(view.frame.height * 0.13)
       }
     }
 
@@ -107,7 +107,7 @@ extension iCloudSettingViewController {
     )
 
     // *** Setup UI in view ***
-    view.addSubview(touchFaceIdImageViewCover)
+    view.addSubview(iCloudDriveImageViewCover)
     view.addSubview(mainView)
     view.addSubview(buttonsGroupStackView)
 
@@ -119,7 +119,7 @@ extension iCloudSettingViewController {
         .inset(UIEdgeInsets(top: paddingTopContent, left: paddingContent, bottom: 30, right: paddingContent))
     }
 
-    touchFaceIdImageViewCover.snp.makeConstraints { (make) in
+    iCloudDriveImageViewCover.snp.makeConstraints { (make) in
       make.top.equalTo(mainView.snp.bottom).offset(10)
       make.leading.trailing.equalToSuperview()
       make.bottom.equalTo(buttonsGroupStackView.snp.top).offset(-10)

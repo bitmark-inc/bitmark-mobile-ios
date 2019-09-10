@@ -19,9 +19,14 @@ enum BitmarkStep: Step {
   case testLogin
   case askingBiometricAuthentication
   case askingPasscodeAuthentication
-  case askingiCloudSetting
   case iCloudSettingIsComplete
   case onboardingIsComplete
+
+  // there are 3 cases lead to this step in the project
+  // 1. when user's already signed in but not yet set iCloud setting
+  // 2. in onboarding flow, when user sign up or login
+  // 3. in account Screen, user select option to back up to iCloud Drive
+  case askingiCloudSetting
 
   case dashboardIsRequired
   case dashboardIsComplete

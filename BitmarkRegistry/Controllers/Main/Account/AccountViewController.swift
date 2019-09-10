@@ -158,7 +158,7 @@ extension AccountViewController {
                 .inset(UIEdgeInsets(top: 25, left: 20, bottom: 8, right: 20))
     }
 
-    if let isiCloudSettingEnable = KeychainStore.getiCloudSettingFromKeychain(currentAccountNumber), isiCloudSettingEnable {
+    if let isiCloudEnabled = Global.isiCloudEnabled, isiCloudEnabled {
       saveToiCloudDriveOption.isHidden = true
     }
   }
