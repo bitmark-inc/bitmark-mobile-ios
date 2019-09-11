@@ -19,11 +19,13 @@ class RegisterPropertyViewController: UIViewController, Stepper {
   var assetURL: URL?
 
   var registerByPhotoButton: UIButton!
+  var registerByVideoButton: UIButton!
   var registerByFileButton: UIButton!
   var descriptionLabel: UILabel!
   var browserFileAlertController: UIAlertController!
   var disabledScreen: UIView!
   var activityIndicator: UIActivityIndicatorView!
+  var selectedMediaTypes: [String] = []
 
   // MARK: - Init
   override func viewDidLoad() {
@@ -46,13 +48,23 @@ class RegisterPropertyViewController: UIViewController, Stepper {
 
   // MARK: - Handlers
   @objc func tapPhotosToRegiter(_ sender: UIButton) {
+    tapLibraryToRegister(mediaTypes: ["public.image"])
+  }
+
+  @objc func tapVideoToRegister(_ sender: UIButton) {
+    tapLibraryToRegister(mediaTypes: ["public.movie"])
+  }
+
+  fileprivate func tapLibraryToRegister(mediaTypes: [String]) {
     askForPhotosPermission { [unowned self] (status) in
       guard status == .authorized else { return }
+      self.selectedMediaTypes = mediaTypes
+
       let imagePickerController = UIImagePickerController()
       imagePickerController.delegate = self
       imagePickerController.allowsEditing = false
       imagePickerController.sourceType = .photoLibrary
-      imagePickerController.mediaTypes = ["public.image", "public.movie"]
+      imagePickerController.mediaTypes = mediaTypes
       self.present(imagePickerController, animated: true, completion: nil)
     }
   }
@@ -66,9 +78,18 @@ class RegisterPropertyViewController: UIViewController, Stepper {
 
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+  func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    guard selectedMediaTypes.isNotEmpty else { return }
+    let photoLibraryTitle = selectedMediaTypes.contains("public.image")
+                                ? "Photos".localized()
+                                : "Videos".localized()
+    viewController.navigationItem.title = photoLibraryTitle
+  }
+
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
     activityIndicator.startAnimating()
     disabledScreen.isHidden = false
+    selectedMediaTypes = []
 
     picker.dismiss(animated: true) { [weak self] in
       guard let self = self, let assetURL = (info[.mediaURL] ?? info[.imageURL]) as? URL else { return }
@@ -159,6 +180,7 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
 extension RegisterPropertyViewController {
   fileprivate func setupEvents() {
     registerByPhotoButton.addTarget(self, action: #selector(tapPhotosToRegiter), for: .touchUpInside)
+    registerByVideoButton.addTarget(self, action: #selector(tapVideoToRegister), for: .touchUpInside)
     registerByFileButton.addTarget(self, action: #selector(tapFilesToRegister), for: .touchUpInside)
   }
 
@@ -166,11 +188,14 @@ extension RegisterPropertyViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    registerByPhotoButton = registerButton(by: "PhotoOrVideo".localized().localizedUppercase, imageName: "image-picker")
+    registerByPhotoButton = registerButton(by: "Photo".localized().localizedUppercase, imageName: "image-picker")
+    registerByVideoButton = registerButton(by: "Video".localized().localizedUppercase, imageName: "video-picker")
     registerByFileButton = registerButton(by: "File".localized().localizedUppercase, imageName: "file-picker")
 
     let registerSelectionView = UIStackView(
-      arrangedSubviews: [registerByPhotoButton, registerByFileButton],
+      arrangedSubviews: [
+        registerByPhotoButton, registerByVideoButton, registerByFileButton
+      ],
       axis: .vertical,
       spacing: 10.0,
       alignment: .leading,

@@ -50,6 +50,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var activityIndicator: UIActivityIndicatorView!
   let transparentNavBackButton = CommonUI.transparentNavBackButton()
   var networkReachabilityManager = NetworkReachabilityManager()
+  var didFirstAutoFocus: Bool = false
   let disposeBag = DisposeBag()
 
   // MARK: - Init
@@ -61,6 +62,27 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     setupViews()
     setupEvents()
+
+    activityIndicator.startAnimating()
+    disabledScreen.isHidden = false
+
+    assetDataObservable = assetURLObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { try Data(contentsOf: $0) }
+      .share(replay: 1, scope: .forever)
+
+    assetFingerprintObservable = assetDataObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { AssetService.getFingerprintFrom($0) }
+      .share(replay: 1, scope: .forever)
+
+    assetFingerprintObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .map { AssetService.getAsset(from: $0) }
+      .bind(to: assetRVariable)
+      .disposed(by: disposeBag)
+
+    loadData()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -91,26 +113,10 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
     navigationController?.navigationBar.addSubview(transparentNavBackButton)
 
-    activityIndicator.startAnimating()
-    disabledScreen.isHidden = false
-
-    assetDataObservable = assetURLObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { try Data(contentsOf: $0) }
-      .share(replay: 1, scope: .forever)
-
-    assetFingerprintObservable = assetDataObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { AssetService.getFingerprintFrom($0) }
-      .share(replay: 1, scope: .forever)
-
-    assetFingerprintObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { AssetService.getAsset(from: $0) }
-      .bind(to: assetRVariable)
-      .disposed(by: disposeBag)
-
-    loadData()
+    if !didFirstAutoFocus {
+      propertyNameTextField.becomeFirstResponder()
+      didFirstAutoFocus = true
+    }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -198,7 +204,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     metadataAddButton.isHidden = true
     metadataEditModeButton.isHidden = true
     scrollView.setContentOffset(CGPoint.zero, animated: false)
-    propertyNameTextField.becomeFirstResponder()
   }
 
   // MARK: - Handlers
@@ -226,9 +231,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     } else if assetTypeTextField.isEmpty {
       assetTypeTextField.setStyle(state: .error)
     }
-
-    guard let firstMetadataForm = metadataForms.first else { return }
-    firstMetadataForm.labelTextField.becomeFirstResponder()
   }
 
   // *** Metadata Form ***
@@ -281,7 +283,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   @objc func metadataFieldEditingDidBegin(_ tf: BoxTextField) {
     guard let currentMetadataForm = tf.parentView as? MetadataForm else { return }
-    if currentMetadataForm.isBeginningState() {
+    if currentMetadataForm.isBeginningState() || !currentMetadataForm.isDuplicated {
       currentMetadataForm.setStyle(state: .focus)
     }
     changeMetadataViewMode(isOnEdit: false)
@@ -318,6 +320,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     guard let currentMetadataForm = tf.parentView as? MetadataForm else { return }
     if currentMetadataForm.isBeginningState() {
       currentMetadataForm.setStyle(state: .default)
+    } else if !currentMetadataForm.isValid {
+      currentMetadataForm.setStyle(state: .error)
     }
   }
 
@@ -417,7 +421,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     if textField == propertyNameTextField {
       textField.endEditing(true)
-      showAssetTypePicker()
+
+      if assetTypeTextField.isEmpty {
+        showAssetTypePicker()
+      }
+
       return true
     }
 
