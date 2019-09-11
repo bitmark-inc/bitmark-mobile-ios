@@ -175,7 +175,7 @@ extension TransferBitmarkViewController {
     view.backgroundColor = .white
 
     // *** Setup subviews ***
-    let transferTitle = CommonUI.inputFieldTitleLabel(text: "transferBitmark_transferLabel".localized(tableName: "Phrase"))
+    let transferTitle = CommonUI.inputFieldTitleLabel(text: "transferBitmark_transferLabel".localized(tableName: "Phrase").localizedUppercase)
     scanQRButton = UIButton(type: .system, imageName: "qr-code-scan-icon")
     scanQRButton.snp.makeConstraints { (make) in
       make.width.height.equalTo(19)

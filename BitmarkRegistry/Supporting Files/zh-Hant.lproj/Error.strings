@@ -10,6 +10,7 @@
 "accessRequired" = "如要繼續，請登入或創建新的Bitmark帳戶。";
 "cannotNavigate" = "無法進入預期的視窗。 請更新應用程式，再試一次。";
 "createAccount" = "創建新帳戶時發生問題。";
+"deleteBitmark_unsuccessfully" = "無法刪除Bitmark憑證，請稍後再試。";
 "fileSizeTooLarge" = "數位資產太大。數位資產不能超過100MB。";
 "iCloudDisabled_title" = "iCloud雲碟尚未開啟";
 "iCloudDisabled_message" = "我們無法將您的資產儲存至iCloud雲碟，為了保護您的資產免於遺失，並允許資產可以跨裝置同步，我們建議您開啟iCloud雲碟設定。\n按下 設定 > iCloud > iCloud雲碟";

@@ -46,16 +46,16 @@
 "registerPropertyRights_propertyDescription" = "PROPERTY DESCRIPTION";
 "registerPropertyRights_whatIsPropertyDescription? >>" = "What is property description? >>";
 "registerPropertyRights_addNewField" = "ADD NEW FIELD";
-"registerPropertyRights_quantityLabel" = "NUMBER OF BITMARKS TO ISSUE";
+"registerPropertyRights_quantityLabel" = "NUMBER OF BITMARK CERTIFICATES";
 "registerPropertyRights_rightsClaimTitle" = "RIGHTS CLAIM";
 "registerPropertyRights_rightsClaimMessage" = "\"I hereby claim that I am the legal owner of this asset and want these properties rights to be irrevocably issued and recorded on the Bitmark blockchain.\"";
 "registerPropertyRights_discardConfirmationTitle" = "Discard Registration?";
 "registerPropertyRights_discardConfirmationMessage" = "If you go back now, you will lose the registration information you've entered.";
 
-"deleteBitmark_titleModal" = "This bitmark will be deleted.";
+"deleteBitmark_titleModal" = "This Bitmark Certificate will be deleted.";
 
 "bitmarkDetail_issuedOn" = "ISSUED ON";
-"transferBitmark_transferLabel" = "TRANSFER BITMARK";
+"transferBitmark_transferLabel" = "Transfer Bitmark Certificate";
 "transferBitmark_recipientBitmarkAccountNumber" = "RECIPIENT BITMARK ACCOUNT NUMBER";
 "transferBitmark_invalidBitmarkAccountNumber" = "Invalid bitmark account number!";
 "transferBitmark_description" = "Enter the Bitmark account number to which you would like to send ownership of this property.";
@@ -64,7 +64,7 @@
 "warningRecoveryPhrase_Description" = "Your recovery phrase is the only way to restore your Bitmark account if your phone is lost, stolen, broken, or upgraded.\n\nWe will show you a list of words to write down on a piece of paper and keep safe.\n\nMake sure you are in a private location before writing down your recovery phrase.";
 
 "warningRemoveAccess_Title" = "REMOVE ACCESS";
-"warningRemoveAccess_Description" = "Your recovery phrase is the only way to access your Bitmark account after signing out. If you have not already written down your recovery phrase, you must do so now or you will be permanently lose access to your account and lose ownership of all your digital properties.\n\nYour recovery phrase is a list of words to write on a piece of paper and keep safe. Make sure you are in a private location when you write it down.\n\nThis will completely remove access to your account on this device. Regular data bitmarking and data donations will be paused until you sign back in with your recovery phrase.";
+"warningRemoveAccess_Description" = "Your recovery phrase is the only way to access your Bitmark account after signing out. If you have not already written down your recovery phrase, you must do so now or you will be permanently lose access to your account and lose ownership of all your digital properties.\n\nYour recovery phrase is a list of words to write on a piece of paper and keep safe. Make sure you are in a private location when you write it down.";
 
 "recoveryPhrases_Description" = "Please write down your recovery phrase in the exact sequence below:";
 "testRecoveryPhrases_Description" = "Tap the words to put them in the correct order for your recovery phrase:";

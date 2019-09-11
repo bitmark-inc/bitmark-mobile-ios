@@ -46,16 +46,16 @@
 "registerPropertyRights_propertyDescription" = "資產描述";
 "registerPropertyRights_whatIsPropertyDescription? >>" = "資產描述是什麼? >>";
 "registerPropertyRights_addNewField" = "新增欄位";
-"registerPropertyRights_quantityLabel" = "發行 bitmarks 數量";
+"registerPropertyRights_quantityLabel" = "發行Bitmark憑證數量";
 "registerPropertyRights_rightsClaimTitle" = "產權主張";
 "registerPropertyRights_rightsClaimMessage" = "「本人在此聲明為此資產之擁有者，並且同意將資產所有權登記在Bitmark區塊鏈上面。」";
 "registerPropertyRights_discardConfirmationTitle" = "放棄註冊？";
 "registerPropertyRights_discardConfirmationMessage" = "如要離開，您將會遺失已填寫完的資訊。";
 
-"deleteBitmark_titleModal" = "請確認刪除此 bitmark";
+"deleteBitmark_titleModal" = "請確認刪除此Bitmark憑證。";
 
 "bitmarkDetail_issuedOn" = "發行於";
-"transferBitmark_transferLabel" = "轉移 Bitmark 數位資產所有權";
+"transferBitmark_transferLabel" = "轉移Bitmark憑證";
 "transferBitmark_recipientBitmarkAccountNumber" = "資產接受對象的 Bitmark 帳戶號碼";
 "transferBitmark_invalidBitmarkAccountNumber" = "錯誤的 Bitmark 帳戶號碼！";
 "transferBitmark_description" = "請在上方輸入對方完整的 Bitmark 帳戶號碼（帳戶號碼可以於個人帳戶中點擊分享）。請注意，動作確認後對方將會收到此數位資產的所有權與資產檔案。";

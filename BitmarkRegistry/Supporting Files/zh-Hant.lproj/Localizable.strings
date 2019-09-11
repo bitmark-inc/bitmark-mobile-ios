@@ -7,10 +7,9 @@
 */
 
 "AccessExistingAccount" = "登入";
-"Account" = "帳戶";
+"Account" = "個人帳戶";
 "Authorize" = "授权";
 "Authorized!" = "已授權!";
-"BitmarkAccount" = "Bitmark 帳戶";
 "Cancel" = "取消";
 "Close" = "關閉";
 "ClaimRequest" = "索取";
