@@ -22,6 +22,7 @@ class Global {
   static var currentJwt: String?
   static var apnsToken: String? // Push notification token
   static var verificationLink: String? // Chibitronics
+  static var isiCloudEnabled: Bool?
   static var noInternetBanner: StatusBarNotificationBanner = {
     let statusBarNotificationBanner = StatusBarNotificationBanner(
       title: "NoInternetConnection".localized(),
@@ -34,6 +35,7 @@ class Global {
   public static func clearData() {
     currentAccount = nil
     currentJwt = nil
+    isiCloudEnabled = nil
     BitmarkStorage._shared = nil
     TransactionStorage._shared = nil
     AccountDependencyService._shared = nil

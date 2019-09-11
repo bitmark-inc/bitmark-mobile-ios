@@ -37,7 +37,7 @@ class PasscodeAuthenticationViewController: UIViewController, Stepper {
 
   @objc func skipSecure(_ sender: UIButton) {
     UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
-    self.saveAccountAndProcess(self.steps, self.disposeBag)
+    saveAccountAndProcess(steps, disposeBag)
   }
 }
 

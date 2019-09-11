@@ -42,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     self.coordinator.coordinate(flow: appFlow, with: AppStepper())
 
-    evaluatePolicyWhenUserSetEnable()
     initSentry()
     Global.log.logAppDetails()
     

@@ -10,6 +10,7 @@ import Foundation
 import BitmarkSDK
 import RealmSwift
 import RxSwift
+import RxCocoa
 
 enum DownloadFileError: Error {
   case NotFound
@@ -25,7 +26,7 @@ class iCloudService {
   }
 
   var user: Account
-  lazy var icloudContainer: URL? = {
+  lazy var iCloudContainer: URL? = {
     return FileManager.default.url(forUbiquityContainerIdentifier: nil)?
                       .appendingPathComponent("Documents")
   }()
@@ -33,18 +34,23 @@ class iCloudService {
     return FileManager.sharedDirectoryURL ?? FileManager.documentDirectoryURL
   }()
 
-  lazy var containerURL: URL = {
-    let container: URL = (icloudContainer ?? localContainer).appendingPathComponent(user.getAccountNumber())
+  var _containerURL: URL?
+  var containerURL: URL {
+    guard _containerURL == nil else { return _containerURL! }
+    let container = defineContainer().appendingPathComponent(user.getAccountNumber())
     try? FileManager.default.createDirectory(at: container, withIntermediateDirectories: true)
     Global.log.info("ContainerURL: \(container)")
-    return container
-  }()
-  lazy var dataURL: URL = { getDataURL(containerURL) }()
+    _containerURL = container
+    return _containerURL!
+  }
+  var dataURL: URL { return getDataURL(containerURL) }
 
   var localAssetWithFilenameData: [String: String] = [:]
   var fileDocumentQuery: NSMetadataQuery?
+  var fileDocumentUploadQuery: NSMetadataQuery!
   var serialSyncQueue: DispatchQueue = DispatchQueue(label: "com.bitmark.registry.iCloudQueue")
   var downloadFileSubject = PublishSubject<URL>()
+  var uploadedAssetFileSubject = BehaviorRelay<[String]>(value: [])
   var newDownloadFileObservable: Observable<URL> {
     downloadFileSubject = PublishSubject<URL>()
     return downloadFileSubject.asObservable()
@@ -53,11 +59,17 @@ class iCloudService {
   var currentFileURL: URL!
 
   // MARK: - Init
+  // setup upload metadata query to receive notification for upload data event when iCloud is app storage.
   init(user: Account) {
     self.user = user
+
+    setupUploadMetadataQuery()
   }
 
   // MARK: - Handlers
+  static func ableToConnectiCloud() -> Bool {
+    return FileManager.default.url(forUbiquityContainerIdentifier: nil) != nil
+  }
 
   // MARK - Sync Data File
   func setupDataFile() throws {
@@ -108,24 +120,37 @@ class iCloudService {
   }
 
   // MARK: - Get FileURL
+  func checkUploadiCloudStatus(_ filename: String) {
+    let assetFileURL = parseAssetFileURL(filename)
+    guard let isUploaded = isFileUploaded(fileURL: assetFileURL), isUploaded else { return }
+
+    var uploadedFilenames = uploadedAssetFileSubject.value
+    let assetFilename = assetFileURL.lastPathComponent
+    if !uploadedFilenames.contains(assetFilename) {
+      uploadedFilenames.append(assetFilename)
+    }
+    uploadedAssetFileSubject.accept(uploadedFilenames)
+  }
+
   func parseAssetFileURL(_ filename: String) -> URL {
     return containerURL.appendingPathComponent(filename)
   }
 
   func getFilenameFromiCloudObservable(assetId: String) -> Observable<String?> {
-    return Observable<String?>.create({ (observer) -> Disposable in
+    return Single<String?>.create(subscribe: { (single) -> Disposable in
       self.newDownloadFileObservable
         .subscribe(
           onNext: { [weak self] (fileURL) in
             guard fileURL == self?.dataURL else { return }
-            observer.onNext(self?.getAssetFilename(with: assetId))
+            single(.success(self?.getAssetFilename(with: assetId)))
           },
-          onError: { observer.onError($0) }
+          onError: { single(.error($0)) }
         )
         .disposed(by: self.bag)
       iCloudService.shared.downloadDataFile()
       return Disposables.create()
     })
+    .asObservable()
   }
 
   func getAssetFilename(with assetId: String) -> String? {
@@ -214,6 +239,16 @@ class iCloudService {
     downloadFileSubject.onNext(currentFileURL)
     downloadFileSubject.onCompleted()
   }
+
+  @objc func updateUploadedFiles(notification: NSNotification) {
+    guard let query = notification.object as? NSMetadataQuery else { return }
+    query.disableUpdates()
+    defer {
+      query.enableUpdates()
+    }
+
+    uploadedAssetFileSubject.accept(extractFilenames(query: query))
+  }
 }
 
 // MARK: - Support Functions
@@ -232,6 +267,17 @@ extension iCloudService {
     let progress = item.value(forAttribute: NSMetadataUbiquitousItemPercentDownloadedKey)
     guard let progressValue = progress.value as? Double else { return false }
     return progressValue >= 100.0
+  }
+
+  // extracts filenames from all uploaded files
+  // but excludes filepath does not include current account number string - cause not in correct folder
+  fileprivate func extractFilenames(query: NSMetadataQuery) -> [String] {
+    return (0..<query.resultCount).compactMap { (index) -> String? in
+      guard let item = query.result(at: index) as? NSMetadataItem,
+            let fileURL = item.value(forAttribute: NSMetadataItemURLKey) as? URL,
+            fileURL.absoluteString.contains(user.getAccountNumber()) else { return nil }
+      return fileURL.lastPathComponent
+    }
   }
 
   /**
@@ -270,6 +316,34 @@ extension iCloudService {
     return false
   }
 
+  fileprivate func setupUploadMetadataQuery() {
+    fileDocumentUploadQuery = NSMetadataQuery()
+    fileDocumentUploadQuery.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+    fileDocumentUploadQuery.valueListAttributes = [NSMetadataUbiquitousItemPercentUploadedKey]
+    fileDocumentUploadQuery.predicate = NSPredicate(format: "%K > 0", argumentArray: [NSMetadataUbiquitousItemPercentUploadedKey])
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(updateUploadedFiles),
+      name: NSNotification.Name.NSMetadataQueryDidUpdate,
+      object: fileDocumentUploadQuery
+    )
+    fileDocumentUploadQuery.start()
+  }
+
+  fileprivate func isFileUploaded(fileURL: URL) -> Bool? {
+    guard FileManager.default.fileExists(atPath: fileURL.path) else { return nil }
+
+    do {
+      let attributes = try fileURL.resourceValues(forKeys: [URLResourceKey.ubiquitousItemIsUploadedKey])
+      guard let isUploaded = attributes.allValues[.ubiquitousItemIsUploadedKey] as? Bool else { return nil }
+      return isUploaded
+    } catch {
+      ErrorReporting.report(error: error)
+    }
+    return false
+  }
+
   fileprivate func fileExists(fileURL: URL) -> Bool {
     if FileManager.default.fileExists(atPath: fileURL.path) { return true }
 
@@ -280,6 +354,31 @@ extension iCloudService {
       ErrorReporting.report(error: error)
     }
     return false
+  }
+
+  /**
+   Define container / storage based on user setting
+   * in this step, conditions:
+     - Global.isiCloudEnabled should present
+     - if user enable iCloud, the app should have permission to access iCloud container
+    => so if conditions don't meet, reports error to sentry as missing flow and temporarily saves data in local container
+   */
+  fileprivate func defineContainer() -> URL {
+    guard let isiCloudEnabled = Global.isiCloudEnabled else {
+      ErrorReporting.report(error: Global.appError(message: "missing flow: missing iCloud Setting in Keychain"))
+      return localContainer
+    }
+
+    if isiCloudEnabled {
+      guard let iCloudContainer = iCloudContainer else {
+        ErrorReporting.report(error: Global.appError(message: "missing flow: iCloud enable in Bitmark but disable"))
+        return localContainer
+      }
+
+      return iCloudContainer
+    } else {
+      return localContainer
+    }
   }
 
   internal func getDataURL(_ containerURL: URL) -> URL {

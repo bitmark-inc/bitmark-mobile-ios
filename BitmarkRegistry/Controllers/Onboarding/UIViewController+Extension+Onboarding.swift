@@ -19,13 +19,12 @@ import RxCocoa
  */
 extension UIViewController {
 
-  func navigateNextOnboardingStep(_ steps: PublishRelay<Step>, _ disposeBag: DisposeBag) {
+  func navigateNextOnboardingStepFromOnboardingStep(_ steps: PublishRelay<Step>, _ disposeBag: DisposeBag) {
     let currentDeviceEvaluatePolicyType = BiometricAuth().currentDeviceEvaluatePolicyType()
 
     guard currentDeviceEvaluatePolicyType != .none else {
       UserSetting.shared.setTouchFaceIdSetting(isEnabled: false)
       saveAccountAndProcess(steps, disposeBag)
-      steps.accept(BitmarkStep.userIsLoggedIn)
       return
     }
 
@@ -46,21 +45,36 @@ extension UIViewController {
           do {
             // setup realm db & icloud db
             try RealmConfig.setupDBForCurrentAccount()
-            try iCloudService.shared.setupDataFile()
-            DispatchQueue.global(qos: .utility).async {
-              iCloudService.shared.migrateFileData()
-            }
             AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
-
-            steps.accept(BitmarkStep.userIsLoggedIn)
+            self.navigateNextOnboardingStepFromBiometricStep(steps, disposeBag)
           } catch {
             ErrorReporting.report(error: error)
-            self.navigationController?.viewControllers = [SuspendedViewController()]
+            steps.accept(BitmarkStep.appSuspension)
           }
         },
         onError: { [weak self] (_) in
           self?.showErrorAlert(message: "keychainStore".localized(tableName: "Error"))
       })
       .disposed(by: disposeBag)
+  }
+
+  fileprivate func navigateNextOnboardingStepFromBiometricStep(_ steps: PublishRelay<Step>, _ disposeBag: DisposeBag) {
+    guard let currentAccount = Global.currentAccount else { return }
+
+    if let _ = KeychainStore.getiCloudSettingFromKeychain(currentAccount.getAccountNumber()) {
+      steps.accept(BitmarkStep.onboardingIsComplete)
+    } else {
+      steps.accept(BitmarkStep.askingiCloudSetting)
+    }
+  }
+
+  func showiCloudDisabledAlert(okHandler: @escaping () -> Void) {
+    let iCloudDisabledAlert = UIAlertController(
+      title: "iCloudDisabled_title".localized(tableName: "Error"),
+      message: "iCloudDisabled_message".localized(tableName: "Error"),
+      preferredStyle: .alert
+    )
+    iCloudDisabledAlert.addAction(title: "OK".localized(), style: .default, handler: { (_) in okHandler() })
+    iCloudDisabledAlert.show()
   }
 }

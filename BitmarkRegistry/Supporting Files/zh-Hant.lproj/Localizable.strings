@@ -25,6 +25,7 @@
 "Done" = "完成";
 "Download" = "下載";
 "Edit" = "編輯";
+"Enable" = "Enable";
 "EnableAccess" = "開啟權限";
 "Error" = "發生錯誤";
 "Error!" = "發生錯誤!";
@@ -61,6 +62,7 @@
 "Registry" = "登記";
 "RemoveAccess" = "移除授權";
 "Retry" = "再試一次";
+"SaveToiCloudDrive »" = "備份至iCloud »";
 "ScanQRCode" = "掃描QR碼";
 "Send" = "傳送";
 "Share" = "分享";

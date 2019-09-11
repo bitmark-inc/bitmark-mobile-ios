@@ -16,6 +16,10 @@ class KeychainStore {
   private static let bitmarkSeedCoreKey = "bitmark_core"
   private static let bitmarkSeedCoreWithoutAuthentication = "bitmark_core_no_authentication" // migrating for old-version app
   private static let bitmarkEncryptedDBKey = "bitmark_encrypted_db_key"
+  private static func iCloudSettingKey(_ accountNumber: String) -> String {
+    return "icloud_setting_\(accountNumber)"
+  }
+
   private static let seedValidDuration = 30 // minutes
   private static let keychain: Keychain = {
     return Keychain(service: Bundle.main.bundleIdentifier!)
@@ -85,6 +89,22 @@ class KeychainStore {
   static func getEncryptedDBKeyFromKeychain() -> Data? {
     do {
       return try keychain.getData(bitmarkEncryptedDBKey)
+    } catch {
+      return nil
+    }
+  }
+
+  // *** user's setting to save asset files to icloud drive or not
+  static func saveiCloudSetting(_ accountNumber: String, isEnable: Bool) throws {
+    let key = iCloudSettingKey(accountNumber)
+    try keychain.remove(key)
+    try keychain.accessibility(.afterFirstUnlock)
+                .set(String(isEnable), key: key)
+  }
+
+  static func getiCloudSettingFromKeychain(_ accountNumber: String) -> Bool? {
+    do {
+      return Bool(try keychain.getString(iCloudSettingKey(accountNumber)) ?? "")
     } catch {
       return nil
     }

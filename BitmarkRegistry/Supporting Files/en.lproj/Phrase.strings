@@ -17,11 +17,14 @@
 "onboarding_termsPrivacyAgreement" = "By continuing, you agree to the Bitmark %@ and %@.";
 
 "facetouchid_title" = "TOUCH/FACE ID";
-"facetouchid_title_description" = "Enable Touch/Face ID to secure access to your app. If you do not enable Touch/Face ID, anyone with access to your device can use the app to control your account and properties.\n\nFor security reason, if you enable Touch/Face ID and remove the passcode, you will be log out of Bitmark app.";
+"facetouchid_title_description" = "Enable Touch/Face ID to secure access to your account. If you do not enable Touch/Face ID, anyone with access to your device can use the app to control your account and properties.\n\nFor security reasons, if you enable Touch/Face ID and remove your passcode, you will be signed out of the Bitmark app.";
 "facetouchid_enableButton" = "ENABLE TOUCH/FACE ID";
 "facetouchid_passcode_title" = "PASSCODE";
 "facetouchid_passcode_title_description" = "Enable Passcode to secure access to your app. If you do not enable Passcode, anyone with access to your device can use the app to control your account and properties.\n\nFor security reason, if you enable Passcode and remove the passcode, you will be log out of Bitmark app.";
 "facetouchid_passcode_enableButton" = "ENABLE PASSCODE";
+
+"storeiCloudDrive_title" = "BACK UP TO ICLOUD DRIVE";
+"storeiCloudDrive_title_description" = "To protect your assets from loss and allow asset syncing across devices, please enable the Bitmark app to back up your assets to your iCloud Drive account.\n\nPlease first make sure iCloud Drive has been turned on for your device before enabling iCloud Drive backup.";
 
 "properties_welcomeLabel" = "WELCOME TO BITMARK!";
 "properties_description" = "Bitmark is the property system for establishing value and legal control over the world’s data. Our mission is to define digital property, defend it, and make it economically divisible.\n\nRegister, track, and trade property rights for your digital assets.";

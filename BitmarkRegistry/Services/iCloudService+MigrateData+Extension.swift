@@ -13,8 +13,15 @@ extension iCloudService {
   func migrateFileData() {
     ErrorReporting.breadcrumbs(info: "Migrate File Data for \(user.getAccountNumber())", category: .MigrationData, traceLog: true)
     do {
+      guard let isiCloudEnabled = Global.isiCloudEnabled else {
+        ErrorReporting.report(message: "missing flow: missing iCloud Setting in Keychain.")
+        return
+      }
+
       try migrateDataFromOldVersion()
-      try migrateDataFromLocalToICloud()
+      if isiCloudEnabled {
+        try migrateDataFromLocalToiCloud()
+      }
       Global.log.info("Finish migrateFileData")
     } catch {
       ErrorReporting.report(error: error)
@@ -79,10 +86,10 @@ extension iCloudService {
   }
 
   // Move local storage into icloud storage in case user just logged in iCloud account.
-  func migrateDataFromLocalToICloud() throws {
-    ErrorReporting.breadcrumbs(info: "migrateDataFromLocalToICloud", category: .MigrationData, traceLog: true)
+  func migrateDataFromLocalToiCloud() throws {
+    ErrorReporting.breadcrumbs(info: "migrateDataFromLocalToiCloud", category: .MigrationData, traceLog: true)
 
-    guard let _ = icloudContainer else { return }
+    guard let _ = iCloudContainer else { return }
     let documentsLocalContainer = localContainer.appendingPathComponent(user.getAccountNumber())
     guard FileManager.default.fileExists(atPath: documentsLocalContainer.path) else { return }
 
@@ -102,7 +109,7 @@ extension iCloudService {
   }
 
   fileprivate func getExistingFileInIcloudURL(_ userAccountNumber: String, _ assetId: String, _ filename: String) -> URL? {
-    return icloudContainer?.appendingPathComponent(
+    return iCloudContainer?.appendingPathComponent(
       "\(userAccountNumber)_assets_\(assetId.hexDecodedData.base58EncodedString)_\(filename)"
     )
   }

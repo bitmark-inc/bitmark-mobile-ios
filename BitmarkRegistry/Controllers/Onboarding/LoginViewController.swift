@@ -94,7 +94,7 @@ class LoginViewController: BaseRecoveryPhraseViewController, Stepper {
       return
     }
 
-    navigateNextOnboardingStep(steps, disposeBag)
+    navigateNextOnboardingStepFromOnboardingStep(steps, disposeBag)
   }
 }
 

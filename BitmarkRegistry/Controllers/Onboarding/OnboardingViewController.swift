@@ -58,7 +58,7 @@ class OnboardingViewController: UIViewController, Stepper {
           if let account = account {
             Global.currentAccount = account // track and store currentAccount
             UserSetting.shared.setAccountVersion(.v2)
-            self.navigateNextOnboardingStep(self.steps, self.disposeBag)
+            self.navigateNextOnboardingStepFromOnboardingStep(self.steps, self.disposeBag)
           }
         }
       }

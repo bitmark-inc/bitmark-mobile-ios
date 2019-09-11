@@ -25,6 +25,7 @@
 "Done" = "Done";
 "Download" = "Download";
 "Edit" = "Edit";
+"Enable" = "Enable";
 "EnableAccess" = "Enable Access";
 "Error" = "Error";
 "Error!" = "Error!";
@@ -61,6 +62,7 @@
 "Registry" = "Registry";
 "RemoveAccess" = "Remove Access";
 "Retry" = "Retry";
+"SaveToiCloudDrive »" = "Back up to icloud drive »";
 "ScanQRCode" = "Scan QR Code";
 "Send" = "Send";
 "Share" = "Share";

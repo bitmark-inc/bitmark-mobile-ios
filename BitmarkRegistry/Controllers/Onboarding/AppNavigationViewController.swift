@@ -32,33 +32,82 @@ class AppNavigationViewController: UIViewController, Stepper {
   // MARK: - Handlers
   // Redirect Screen for new user / existing user
   func navigate() {
-    AccountService.shared.existsCurrentAccount()
+    let sharedObservbale = AccountService.shared.existsCurrentAccount().asObservable().share()
+
+    // in case account is existing:
+    // - check iCloud connection when enable
+    // - setup Realm DB
+    // - Request JWT, Intercom & APNS Handler
+    sharedObservbale
+      .filter { $0 == true }
+      .ignoreElements()
       .observeOn(MainScheduler.instance)
-      .subscribe(
-        onSuccess: { (isAccountExisted) in
-          if isAccountExisted {
-            // setup realm db & icloud
-            do {
-              try RealmConfig.setupDBForCurrentAccount()
-              try iCloudService.shared.setupDataFile()
-              DispatchQueue.global(qos: .utility).async {
-                iCloudService.shared.migrateFileData()
-              }
-              AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
-            } catch {
+      .subscribe(onCompleted: { [weak self] in
+        guard let self = self, let currentAccountNumber = Global.currentAccount?.getAccountNumber() else { return }
+        guard let iCloudSetting = KeychainStore.getiCloudSettingFromKeychain(currentAccountNumber) else {
+          self.steps.accept(BitmarkStep.askingiCloudSetting)
+          return
+        }
+
+        Global.isiCloudEnabled = iCloudSetting
+        self.checkiCloudConnectionWhenEnable(iCloudSetting)
+          .do(onCompleted: {
+            try RealmConfig.setupDBForCurrentAccount()
+            AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
+          })
+          .subscribe(
+            onCompleted: { [weak self] in
+              self?.steps.accept(BitmarkStep.dashboardIsRequired)
+            },
+            onError: { (error) in
               ErrorReporting.report(error: error)
               UIApplication.shared.keyWindow?.rootViewController = SuspendedViewController()
-            }
-            self.steps.accept(BitmarkStep.dashboardIsRequired)
-          } else {
-            self.steps.accept(BitmarkStep.onboardingIsRequired)
-          }
-        },
-        onError: { [weak self] (_) in
-          self?.showAuthenticationRequiredAlert()
-        }
-      )
+            })
+          .disposed(by: self.disposeBag)
+      })
       .disposed(by: disposeBag)
+
+    // in case existing account in keychain but can not access
+    // show authentication required alert
+    sharedObservbale
+      .subscribe(onError: { [weak self] (_) in
+        self?.showAuthenticationRequiredAlert()
+      })
+      .disposed(by: disposeBag)
+
+    // in case account's not existing; redirect to onboarding screen
+    sharedObservbale
+      .filter { $0 == false }
+      .subscribe(onNext: { (_) in
+        self.steps.accept(BitmarkStep.onboardingIsRequired)
+      })
+      .disposed(by: disposeBag)
+  }
+
+  func checkiCloudConnectionWhenEnable(_ isiCloudSettingEnable: Bool) -> Completable {
+    return Completable.create(subscribe: { (completable) -> Disposable in
+      let disposable = Disposables.create()
+
+      guard isiCloudSettingEnable else {
+        completable(.completed)
+        return disposable
+      }
+
+      if !iCloudService.ableToConnectiCloud() {
+        self.showiCloudDisabledAlert(okHandler: { [weak self] in
+          guard let self = self else { return }
+          self.checkiCloudConnectionWhenEnable(true)
+            .subscribe(onCompleted: {
+              completable(.completed)
+            })
+            .disposed(by: self.disposeBag)
+        })
+      } else {
+        completable(.completed)
+      }
+
+      return disposable
+    })
   }
 
   func showAuthenticationRequiredAlert() {
