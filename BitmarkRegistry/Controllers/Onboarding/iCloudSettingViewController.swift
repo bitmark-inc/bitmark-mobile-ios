@@ -40,25 +40,18 @@ class iCloudSettingViewController: UIViewController, Stepper {
   }
 
   fileprivate func setupiCloud(isEnabled: Bool) {
-    Observable.just(Global.currentAccount)
-      .filterNil()
-      .map { $0.getAccountNumber() }
-      .do(onNext: { (accountNumber) in
-        try KeychainStore.saveiCloudSetting(accountNumber, isEnable: isEnabled)
-        Global.isiCloudEnabled = isEnabled
-        iCloudService.shared._containerURL = nil
-        try iCloudService.shared.setupDataFile()
-        iCloudService.shared.migrateFileData()
-      })
-      .subscribe(
-        onError: { [weak self] (error) in
-          ErrorReporting.report(error: error)
-          self?.steps.accept(BitmarkStep.appSuspension)
-        },
-        onCompleted: { [weak self] in
-          self?.steps.accept(BitmarkStep.iCloudSettingIsComplete)
-      })
-      .disposed(by: disposeBag)
+    guard let currentAcccountNumber = Global.currentAccount?.getAccountNumber() else { return }
+    do {
+      try KeychainStore.saveiCloudSetting(currentAcccountNumber, isEnable: isEnabled)
+      Global.isiCloudEnabled = isEnabled
+      iCloudService.shared._containerURL = nil
+      try iCloudService.shared.setupDataFile()
+      iCloudService.shared.migrateFileData()
+      steps.accept(BitmarkStep.iCloudSettingIsComplete)
+    } catch {
+      ErrorReporting.report(error: error)
+      steps.accept(BitmarkStep.appSuspension)
+    }
   }
 }
 
