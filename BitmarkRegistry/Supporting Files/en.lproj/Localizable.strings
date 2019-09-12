@@ -10,7 +10,6 @@
 "Account" = "Account";
 "Authorize" = "Authorize";
 "Authorized!" = "Authorized!";
-"BitmarkAccount" = "Bitmark Account";
 "Cancel" = "Cancel";
 "Close" = "Close";
 "ClaimRequest" = "Claim Request";
@@ -45,7 +44,7 @@
 "Pending" = "Pending";
 "Pending..." = "Pending...";
 "Photo" = "Photo";
-"PhotoOrVideo" = "Photo Or Video";
+"Photos" = "Photos";
 "PleaseAuthorize" = "Please Authorize";
 "PleaseTryAgain!" = "Please try again!";
 "PrivacyPolicy" = "Privacy Policy";
@@ -81,6 +80,7 @@
 "Version:" = "Version:";
 "VersionApp" = "Version ";
 "Video" = "Video";
+"Videos" = "Videos";
 "Warning!" = "Warning!";
 "WriteDownRecoveryPhrase" = "Write Down Recovery Phrase";
 "WriteDownRecoveryPhrase »" = "Write Down Recovery Phrase »";

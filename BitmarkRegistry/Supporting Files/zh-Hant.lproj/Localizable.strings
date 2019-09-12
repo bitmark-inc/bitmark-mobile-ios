@@ -7,10 +7,9 @@
 */
 
 "AccessExistingAccount" = "登入";
-"Account" = "帳戶";
+"Account" = "個人帳戶";
 "Authorize" = "授权";
 "Authorized!" = "已授權!";
-"BitmarkAccount" = "Bitmark 帳戶";
 "Cancel" = "取消";
 "Close" = "關閉";
 "ClaimRequest" = "索取";
@@ -45,7 +44,7 @@
 "Pending" = "傳輸中";
 "Pending..." = "傳輸中...";
 "Photo" = "照片";
-"PhotoOrVideo" = "照片 或 影片";
+"Photos" = "照片";
 "PleaseAuthorize" = "請授權登入";
 "PleaseTryAgain!" = "請再試一次!";
 "PrivacyPolicy" = "隱私政策";
@@ -81,6 +80,7 @@
 "Version:" = "版本：";
 "VersionApp" = "版本 ";
 "Video" = "影片";
+"Videos" = "影片";
 "Warning!" = "警告提示!";
 "WriteDownRecoveryPhrase" = "抄寫帳戶復原碼";
 "WriteDownRecoveryPhrase »" = "抄寫帳戶復原碼 »";

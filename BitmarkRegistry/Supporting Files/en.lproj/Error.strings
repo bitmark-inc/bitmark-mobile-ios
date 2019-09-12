@@ -10,6 +10,7 @@
 "accessRequired" = "Please sign in or create your Bitmark account to proceed.";
 "cannotNavigate" = "Cannot go to expected screen. Please try again with new app update.";
 "createAccount" = "The app encountered a problem while creating your account.";
+"deleteBitmark_unsuccessfully" = "Could not delete Bitmark Certificate. Please try again later.";
 "fileSizeTooLarge" = "This asset size is too large. The maximum asset size is 100MB.";
 "iCloudDisabled_title" = "iCloud Drive Disabled";
 "iCloudDisabled_message" = "We cannot store the assets in your iCloud Drive. To protect your assets from loss and allow asset syncing across devices, we highly recommend to enable iCloud Drive.\nTap Settings > iCloud > iCloud Drive";

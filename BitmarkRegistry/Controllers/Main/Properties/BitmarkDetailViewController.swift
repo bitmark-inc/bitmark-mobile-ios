@@ -249,7 +249,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
         })
       } catch {
         selfAlert.dismiss(animated: true, completion: {
-          self.showErrorAlert(message: error.localizedDescription)
+          self.showErrorAlert(message: "deleteBitmark_unsuccessfully".localized(tableName: "Error"))
           ErrorReporting.report(error: error)
         })
       }
