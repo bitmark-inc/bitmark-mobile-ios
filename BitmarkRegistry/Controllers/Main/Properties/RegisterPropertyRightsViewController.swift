@@ -124,10 +124,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     transparentNavBackButton.removeFromSuperview()
-  }
-
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
     removeNotificationsObserver()
     networkReachabilityManager?.stopListening()
   }
@@ -272,7 +268,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     metadataStackView.addArrangedSubview(newMetadataForm)
     metadataForms.append(newMetadataForm)
 
-    view.endEditing(true)
     if assetRVariable.value == nil && !isDefault {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
         newMetadataForm.labelTextField.becomeFirstResponder()
