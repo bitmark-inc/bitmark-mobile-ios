@@ -67,6 +67,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     removeNotificationsObserver()
+    networkReachabilityManager?.stopListening()
   }
 
   // MARK: - Handlers
