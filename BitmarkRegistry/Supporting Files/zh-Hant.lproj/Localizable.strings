@@ -17,7 +17,7 @@
 "CopyBitmarkId" = "複製識別碼";
 "CreateNewAccount" = "創建新帳戶";
 "dAgo" = "%d天前";
-"Delete" = "確認";
+"Delete" = "刪除";
 "Details" = "更多資訊";
 "Details »" = "更多資訊 »";
 "Discard" = "放棄";
@@ -62,7 +62,7 @@
 "RemoveAccess" = "移除授權";
 "Retry" = "再試一次";
 "SaveToiCloudDrive »" = "備份至iCloud »";
-"ScanQRCode" = "掃描QR碼";
+"ScanQRCode" = "掃描 QR 碼";
 "Send" = "傳送";
 "Share" = "分享";
 "Skip" = "略過";

@@ -35,6 +35,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var propertyNameTextField: DesignedTextField!
   var assetTypeTextField: BoxTextField!
   var downArrowAssetTypeSelection: UIButton!
+  var metadataFormsView: UIView!
   var metadataForms = [MetadataForm]()
   var metadataStackView: UIStackView!
   var metadataSettingButtons: UIStackView!
@@ -48,6 +49,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var issueButtonBottomConstraint: Constraint!
   var disabledScreen: UIView!
   var activityIndicator: UIActivityIndicatorView!
+  var issueButtonMaxX: CGFloat?
   let transparentNavBackButton = CommonUI.transparentNavBackButton()
   var networkReachabilityManager = NetworkReachabilityManager()
   var didFirstAutoFocus: Bool = false
@@ -122,11 +124,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     transparentNavBackButton.removeFromSuperview()
-  }
-
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
     removeNotificationsObserver()
+    networkReachabilityManager?.stopListening()
   }
 
   @objc func tapBackNav(_ sender: UIBarButtonItem) {
@@ -269,24 +268,33 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     metadataStackView.addArrangedSubview(newMetadataForm)
     metadataForms.append(newMetadataForm)
 
-    view.endEditing(true)
-
     if assetRVariable.value == nil && !isDefault {
-      newMetadataForm.labelTextField.becomeFirstResponder()
-
-      // adjust scroll to help user still able to click "Add new field" without needing scroll down
-      var scrollContentOffset = scrollView.contentOffset
-      scrollContentOffset.y += 85.0
-      scrollView.setContentOffset(scrollContentOffset, animated: true)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        newMetadataForm.labelTextField.becomeFirstResponder()
+      }
     }
   }
 
+  let metadataFormsViewMinX: CGFloat = 57
+  let metadataFormsViewDistanceWithIssueButton: CGFloat = 195
   @objc func metadataFieldEditingDidBegin(_ tf: BoxTextField) {
     guard let currentMetadataForm = tf.parentView as? MetadataForm else { return }
     if currentMetadataForm.isBeginningState() || !currentMetadataForm.isDuplicated {
       currentMetadataForm.setStyle(state: .focus)
     }
     changeMetadataViewMode(isOnEdit: false)
+
+    // adjust scroll to help user still able to click "Add new field" without needing scroll down
+    guard let issueButtonMaxX = issueButtonMaxX else { return }
+
+    var scrollContentOffset = scrollView.contentOffset
+    scrollContentOffset.y = metadataFormsView.frame.origin.y + metadataFormsViewMinX
+                            + currentMetadataForm.frame.origin.y
+                            - (issueButtonMaxX - metadataFormsViewDistanceWithIssueButton)
+
+    UIView.animate(withDuration: 0.25, animations: {
+      self.scrollView.setContentOffset(scrollContentOffset, animated: false)
+    })
   }
 
   @objc func metadataFieldEditingChanged(_ tf: BoxTextField) {
@@ -340,37 +348,39 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   @objc func tapToIssue(_ button: UIButton) {
+    view.endEditing(true)
     requireAuthenticationForAction(disposeBag) { [weak self] in
       self?._issue()
     }
   }
 
   fileprivate func _issue() {
-    view.endEditing(true)
-
     guard let registrant = Global.currentAccount else { return }
     let quantity = Int(numberOfBitmarksTextField.value)
 
-    showIndicatorAlert(message: "sendingTransaction".localized(tableName: "Message")) { (selfAlert) in
-      self.createAssetObservable(registrant)
-        .do(onNext: { [weak self] (assetId) in
-          guard let self = self else { return }
-          iCloudService.shared.localAssetWithFilenameData[assetId] = self.assetFileName
-          try self.storeFileInAppStorage(of: assetId)
-        })
-        .map { (assetId) -> Void in
-          try AssetService.issueBitmarks(issuer: registrant, assetId: assetId, quantity: quantity)
-        }
-        .subscribe(
-          onNext: { (_) in
-            selfAlert.dismiss(animated: true, completion: {
-              Global.syncNewDataInStorage()
+    // TODO: Issue: keyboard keeps shows when the alert's showed
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
+      self?.showIndicatorAlert(message: "sendingTransaction".localized(tableName: "Message")) { [weak self] (selfAlert) in
+        guard let self = self else { return }
+        self.createAssetObservable(registrant)
+          .do(onNext: { [weak self] (assetId) in
+            guard let self = self else { return }
+            iCloudService.shared.localAssetWithFilenameData[assetId] = self.assetFileName
+            try self.storeFileInAppStorage(of: assetId)
+          })
+          .map { (assetId) -> Void in
+            try AssetService.issueBitmarks(issuer: registrant, assetId: assetId, quantity: quantity)
+          }
+          .subscribe(
+            onNext: { (_) in
+              selfAlert.dismiss(animated: true, completion: {
+                Global.syncNewDataInStorage()
 
-              self.showQuickMessageAlert(message: "successIssue".localized(tableName: "Message")) { [weak self] in
-                self?.steps.accept(BitmarkStep.issueIsComplete)
-              }
-            })
-          },
+                self.showQuickMessageAlert(message: "successIssue".localized(tableName: "Message")) { [weak self] in
+                  self?.steps.accept(BitmarkStep.issueIsComplete)
+                }
+              })
+            },
           onError: { (error) in
             selfAlert.dismiss(animated: true, completion: {
               self.showErrorAlert(message: "registerPropertyRights_unsuccessfully".localized(tableName: "Error"))
@@ -378,6 +388,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
             })
           })
         .disposed(by: self.disposeBag)
+      }
     }
   }
 
@@ -739,12 +750,12 @@ extension RegisterPropertyRightsViewController {
     let metadataForms = UIStackView(arrangedSubviews: [metadataStackView, metadataSettingButtons], axis: .vertical, spacing: 7)
 
     // *** Setup view ***
-    let view = UIView()
-    view.addSubview(fieldLabel)
-    view.addSubview(fieldInfoLink)
-    view.addSubview(separateLine)
-    view.addSubview(metadataForms)
-    view.addSubview(errorForMetadataStackView)
+    metadataFormsView = UIView()
+    metadataFormsView.addSubview(fieldLabel)
+    metadataFormsView.addSubview(fieldInfoLink)
+    metadataFormsView.addSubview(separateLine)
+    metadataFormsView.addSubview(metadataForms)
+    metadataFormsView.addSubview(errorForMetadataStackView)
 
     fieldLabel.snp.makeConstraints { (make) in
       make.top.leading.trailing.equalToSuperview()
@@ -772,7 +783,7 @@ extension RegisterPropertyRightsViewController {
       make.leading.trailing.bottom.equalToSuperview()
     }
 
-    return view
+    return metadataFormsView
   }
 
   fileprivate func numberOfBitmarksView() -> UIView {
@@ -892,6 +903,10 @@ extension RegisterPropertyRightsViewController {
 
     issueButtonBottomConstraint.update(offset: -keyboardSize.height + view.safeAreaInsets.bottom)
     view.layoutIfNeeded()
+
+    if issueButtonMaxX == nil {
+      issueButtonMaxX = issueButton.frame.origin.y
+    }
   }
 
   @objc func keyboardWillBeHide(notification: Notification) {

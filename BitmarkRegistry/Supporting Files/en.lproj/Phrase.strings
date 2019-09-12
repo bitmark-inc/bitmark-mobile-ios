@@ -34,7 +34,7 @@
 "transactions_noTxHistoryMessage" = "Your transaction history will be available here.";
 
 "account_accountNumberLabel" = "YOUR BITMARK ACCOUNT NUMBER";
-"account_message" = "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public.\nYou can safely share it with others without compromising your security.";
+"account_message" = "To protect your privacy, you are identified in the Bitmark system by a pseudonymous account number. This number is public. You can safely share it with others without compromising your security.";
 
 "registerPropertyRights_title" = "REGISTER PROPERTY RIGHTS";
 "registerPropertyRights_assetFingerprintLabel" = "ASSET FINGERPRINT";

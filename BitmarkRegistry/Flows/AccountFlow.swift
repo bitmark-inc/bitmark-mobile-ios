@@ -79,6 +79,7 @@ class AccountFlow: Flow {
     recoveryPhraseVC.recoveryPhraseSource = .testRecoveryPhrase
     rootViewController.pushViewController(recoveryPhraseVC)
 
+    setupNewBackButtonToRoot(in: recoveryPhraseVC.navigationItem)
     return .one(flowContributor: .contribute(withNextPresentable: recoveryPhraseVC, withNextStepper: recoveryPhraseVC))
   }
 
@@ -105,6 +106,7 @@ class AccountFlow: Flow {
     recoveryPhraseVC.title = "WriteDownRecoveryPhrase".localized().localizedUppercase
     rootViewController.pushViewController(recoveryPhraseVC)
 
+    setupNewBackButtonToRoot(in: recoveryPhraseVC.navigationItem)
     return .one(flowContributor: .contribute(withNextPresentable: recoveryPhraseVC, withNextStepper: recoveryPhraseVC))
   }
 
