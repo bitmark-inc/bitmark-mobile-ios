@@ -129,6 +129,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     removeNotificationsObserver()
+    networkReachabilityManager?.stopListening()
   }
 
   @objc func tapBackNav(_ sender: UIBarButtonItem) {
@@ -352,37 +353,39 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   @objc func tapToIssue(_ button: UIButton) {
+    view.endEditing(true)
     requireAuthenticationForAction(disposeBag) { [weak self] in
       self?._issue()
     }
   }
 
   fileprivate func _issue() {
-    view.endEditing(true)
-
     guard let registrant = Global.currentAccount else { return }
     let quantity = Int(numberOfBitmarksTextField.value)
 
-    showIndicatorAlert(message: "sendingTransaction".localized(tableName: "Message")) { (selfAlert) in
-      self.createAssetObservable(registrant)
-        .do(onNext: { [weak self] (assetId) in
-          guard let self = self else { return }
-          iCloudService.shared.localAssetWithFilenameData[assetId] = self.assetFileName
-          try self.storeFileInAppStorage(of: assetId)
-        })
-        .map { (assetId) -> Void in
-          try AssetService.issueBitmarks(issuer: registrant, assetId: assetId, quantity: quantity)
-        }
-        .subscribe(
-          onNext: { (_) in
-            selfAlert.dismiss(animated: true, completion: {
-              Global.syncNewDataInStorage()
+    // TODO: Issue: keyboard keeps shows when the alert's showed
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
+      self?.showIndicatorAlert(message: "sendingTransaction".localized(tableName: "Message")) { [weak self] (selfAlert) in
+        guard let self = self else { return }
+        self.createAssetObservable(registrant)
+          .do(onNext: { [weak self] (assetId) in
+            guard let self = self else { return }
+            iCloudService.shared.localAssetWithFilenameData[assetId] = self.assetFileName
+            try self.storeFileInAppStorage(of: assetId)
+          })
+          .map { (assetId) -> Void in
+            try AssetService.issueBitmarks(issuer: registrant, assetId: assetId, quantity: quantity)
+          }
+          .subscribe(
+            onNext: { (_) in
+              selfAlert.dismiss(animated: true, completion: {
+                Global.syncNewDataInStorage()
 
-              self.showQuickMessageAlert(message: "successIssue".localized(tableName: "Message")) { [weak self] in
-                self?.steps.accept(BitmarkStep.issueIsComplete)
-              }
-            })
-          },
+                self.showQuickMessageAlert(message: "successIssue".localized(tableName: "Message")) { [weak self] in
+                  self?.steps.accept(BitmarkStep.issueIsComplete)
+                }
+              })
+            },
           onError: { (error) in
             selfAlert.dismiss(animated: true, completion: {
               self.showErrorAlert(message: "registerPropertyRights_unsuccessfully".localized(tableName: "Error"))
@@ -390,6 +393,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
             })
           })
         .disposed(by: self.disposeBag)
+      }
     }
   }
 
