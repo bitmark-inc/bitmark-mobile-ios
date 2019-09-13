@@ -37,6 +37,9 @@ class AssetService {
 
   typealias AssetInfo = (registrant: Account, assetName: String, fingerprint: Data, metadata: [String: String])
   static func registerAsset(assetInfo: AssetInfo) throws -> String {
+    ErrorReporting.breadcrumbs(info: "register asset", category: .bitmark)
+    defer { ErrorReporting.breadcrumbs(info: "finished registering asset", category: .bitmark) }
+
     var assetParams = try Asset.newRegistrationParams(name: assetInfo.assetName, metadata: assetInfo.metadata)
     try assetParams.setFingerprint(fromData: assetInfo.fingerprint)
     try assetParams.sign(assetInfo.registrant)
@@ -44,6 +47,9 @@ class AssetService {
   }
 
   static func issueBitmarks(issuer: Account, assetId: String, quantity: Int) throws {
+    ErrorReporting.breadcrumbs(info: "issue bitmark", category: .bitmark)
+    defer { ErrorReporting.breadcrumbs(info: "finished issuing bitmark", category: .bitmark) }
+
     var issueParams = try Bitmark.newIssuanceParams(assetID: assetId, quantity: quantity)
     try issueParams.sign(issuer)
     _ = try Bitmark.issue(issueParams)

@@ -180,6 +180,7 @@ private extension AppDelegate {
   func initSentry() {
     do {
       Client.shared = try Client(dsn: "https://92d49f612d5f4cd89427cef0cd39794f@sentry.io/1494841")
+      Client.shared?.environment = Bundle.main.bundleIdentifier
       Client.shared?.trackMemoryPressureAsEvent()
       try Client.shared?.startCrashHandler()
     } catch {
