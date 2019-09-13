@@ -24,7 +24,7 @@ class TransactionService {
                                  .pending(true)
 
     let (txs, _, blocks) = try Transaction.list(params: txQuery)
-    return (txs , blocks ?? [Block]())
+    return (txs, blocks ?? [Block]())
   }
 
   static func listAllTransactions(ownerNumber: String, at fromOffset: Int64, direction: QueryDirection)  throws -> TransactionWithRelation {

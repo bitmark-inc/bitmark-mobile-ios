@@ -38,7 +38,7 @@ enum AssetType: String {
   }
 
   static func get(from assetR: AssetR) -> AssetType {
-    if assetR.metadata.count > 0,
+    if !assetR.metadata.isEmpty,
        let sourceMetadata = assetR.metadata.first(where: { $0.key.caseInsensitiveCompare("source") == .orderedSame }),
        let assetType = AssetType.get(fromSource: sourceMetadata.value) {
       return assetType

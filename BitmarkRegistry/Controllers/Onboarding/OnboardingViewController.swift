@@ -71,7 +71,7 @@ class OnboardingViewController: UIViewController, Stepper {
 
 extension OnboardingViewController: UITextViewDelegate {
   func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-    guard let _ = URL.scheme, let host = URL.host, let agreementLink = AppDetailContent(rawValue: host) else { return false }
+    guard URL.scheme != nil, let host = URL.host, let agreementLink = AppDetailContent(rawValue: host) else { return false }
 
     switch agreementLink {
     case .termsOfService:

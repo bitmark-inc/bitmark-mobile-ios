@@ -12,7 +12,7 @@ import RxAlamofire
 
 // Reference: http://www.ccheptea.com/2019-03-25-handling-rest-errors-with-rxswift/
 extension Observable where Element == (HTTPURLResponse, Data) {
-  func expectingObject<T : Decodable>(ofType type: T.Type) -> Observable<T> {
+  func expectingObject<T: Decodable>(ofType type: T.Type) -> Observable<T> {
     return self.flatMap { (httpURLResponse, data) -> Observable<T> in
       switch httpURLResponse.statusCode {
       case 200..<300:

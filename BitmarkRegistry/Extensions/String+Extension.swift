@@ -24,7 +24,7 @@ extension String {
     let textWidth = self.size(withAttributes: [.font: font]).width + 12.0
     let letterSpacing = (width - textWidth) / CGFloat(self.count)
     if letterSpacing > 0.0 {
-      attrStr.addAttribute(NSAttributedString.Key.kern, value: letterSpacing, range: NSMakeRange(0, attrStr.length))
+      attrStr.addAttribute(.kern, value: letterSpacing, range: NSMakeRange(0, attrStr.length))
     }
 
     return attrStr

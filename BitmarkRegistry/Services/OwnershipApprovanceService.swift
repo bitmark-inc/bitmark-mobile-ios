@@ -49,11 +49,9 @@ class OwnershipApprovanceService {
     let message = "Verify|\(code)"
     let signature = try account.sign(message: message.data(using: .utf8)!)
 
-    let infoLog = "requestAuthorization for account: \(account.getAccountNumber()); code: \(code)"
-    ErrorReporting.breadcrumbs(info: infoLog, category: .OwnershipApprovance)
-    Global.log.info(infoLog)
+    ErrorReporting.breadcrumbs(info: "requesting Authorization", category: .ownershipApprovance)
 
-    let params: [String : String] = [
+    let params: [String: String] = [
       "bitmark_account": account.getAccountNumber(),
       "code": code,
       "signature": signature.hexEncodedString
@@ -68,7 +66,7 @@ class OwnershipApprovanceService {
     ]
     request.httpBody = jsonData
 
-    URLSession.shared.dataTask(with: request) { (data, response, error) in
+    URLSession.shared.dataTask(with: request) { (_, _, error) in
       if let error = error {
         completion(error)
         return

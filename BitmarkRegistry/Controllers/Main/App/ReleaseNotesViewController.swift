@@ -111,7 +111,7 @@ extension ReleaseNotesViewController {
 
     // *** Setup UI in view ***
     view.addSubview(mainView)
-    view.addSubview(separateLine) 
+    view.addSubview(separateLine)
 
     mainView.snp.makeConstraints { (make) in
       make.edges.equalTo(view.safeAreaLayoutGuide)

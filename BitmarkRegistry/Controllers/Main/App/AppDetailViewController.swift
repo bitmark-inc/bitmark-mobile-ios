@@ -61,7 +61,6 @@ class AppDetailViewController: UIViewController, Stepper {
   }
 }
 
-
 // MARK: - Setup Views/Events
 extension AppDetailViewController {
   fileprivate func setupEvents() {

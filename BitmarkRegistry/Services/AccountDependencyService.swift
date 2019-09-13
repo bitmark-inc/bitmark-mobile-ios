@@ -137,8 +137,7 @@ extension AccountDependencyService {
   func registerIntercom() -> Observable<String> {
     Intercom.logout()
     let intercomUserId = account.getAccountNumber().intercomUserId()
-    ErrorReporting.breadcrumbs(info: intercomUserId, category: .Intercom)
-    Global.log.info("Registering user intercom with intercomUserId: \(intercomUserId)")
+    ErrorReporting.breadcrumbs(info: "Registering user with intercomUserId: \(intercomUserId)", category: .intercom)
 
     return Observable.create { (observer) -> Disposable in
       Intercom.registerUser(withUserId: intercomUserId)

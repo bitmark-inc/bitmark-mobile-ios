@@ -1,4 +1,4 @@
- //
+//
 //  MusicBitmarkDetailViewController.swift
 //  BitmarkRegistry
 //
@@ -66,7 +66,7 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
     activityIndicator.startAnimating()
     let assetId = assetR.id
 
-    if let _ = bitmarkR.confirmedAt {
+    if bitmarkR.confirmedAt != nil {
       authenticatingTransferBtn.isHidden = true
     } else {
       viewBitmarkOptionsBtn.isHidden = true
@@ -108,7 +108,7 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
   }
 
   @objc func tapToPlayOnStreamingPlatform(_ sender: UIAlertAction) {
-    guard let playLink = assetR.metadata.first(where: { $0.key == "playlink"} )?.value,
+    guard let playLink = assetR.metadata.first(where: { $0.key == "playlink" })?.value,
           let playLinkURL = URL(string: playLink) else { return }
     UIApplication.shared.open(playLinkURL)
   }

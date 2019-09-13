@@ -40,9 +40,9 @@ class AssetFileService {
    otherwise, upload new file into fileCourier (case 2)
    */
   func transferFile(to receiverAccountNumber: String, assetFilename: String?) -> Completable {
-    ErrorReporting.breadcrumbs(info: "sender: \(owner.getAccountNumber())", category: .TransferFile, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "receiver: \(receiverAccountNumber)", category: .TransferFile, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .TransferFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "sender: \(owner.getAccountNumber())", category: .transferFile)
+    ErrorReporting.breadcrumbs(info: "receiver: \(receiverAccountNumber)", category: .transferFile)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .transferFile)
 
     let receiverPubKeyObservable = AccountKeyService.getEncryptionPublicKey(accountNumber: receiverAccountNumber)
     let checkFileExistenceObservable = FileCourierService.checkFileExistence(senderAccountNumber: owner.getAccountNumber(), assetId: assetId)
@@ -65,7 +65,8 @@ class AssetFileService {
   }
 
   fileprivate func updateAccessFile(_ receiverAccountNumber: String, _ receiverPubKey: Data, with currentSessionData: SessionData) throws -> Completable {
-    ErrorReporting.breadcrumbs(info: "get sessionData and updateAccessFile", category: .UpdateAccessFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "get sessionData and updateAccessFile", category: .updateAccessFile)
+
     let assetEncryption = try AssetEncryption(
       from: currentSessionData,
       receiverAccount: owner, senderEncryptionPublicKey: owner.publicKey
@@ -84,7 +85,8 @@ class AssetFileService {
   }
 
   fileprivate func uploadFile(_ assetFileURL: URL, _ receiverAccountNumber: String, _ receiverPubKey: Data) throws -> Completable {
-    ErrorReporting.breadcrumbs(info: "encryptFile and uploadFile", category: .UploadFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "encryptFile and uploadFile", category: .uploadFile)
+
     let assetFilename = assetFileURL.lastPathComponent
     let encryptedFileURL = encryptedFolderURL.appendingPathComponent(assetFilename)
 
@@ -108,7 +110,7 @@ class AssetFileService {
    - otherwise, download file from file courier and return (3)
    */
   func getDownloadedFileURL(assetFilename: String?) -> Observable<URL> {
-    ErrorReporting.breadcrumbs(info: "getDownloadedFileURL", category: .DownloadFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "getDownloadedFileURL", category: .downloadFile)
 
     if let assetFilename = assetFilename { // 1
       let assetFileURL = iCloudService.shared.parseAssetFileURL(assetFilename)
@@ -140,7 +142,7 @@ class AssetFileService {
 
   typealias ResponseData = (sessionData: SessionData, filename: String, encryptedFileData: Data)
   func downloadFileFromFileCourier() -> Observable<URL> {
-    ErrorReporting.breadcrumbs(info: "downloadFileFromFileCourier", category: .DownloadFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "downloadFileFromFileCourier", category: .downloadFile)
 
     let senderAccountnumberObservable = FileCourierService.getDownloadableAssets(receiver: self.owner)
       .flatMap { self.getSenderAccountNumber(from: $0) }
@@ -184,7 +186,7 @@ class AssetFileService {
   }
 
   func getSenderAccountNumber(from downloadableFileIds: [String]) -> Observable<String> {
-    ErrorReporting.breadcrumbs(info: "getSenderAccountNumber from downloadableFileIds: \(downloadableFileIds)", category: .DownloadFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "getSenderAccountNumber from downloadableFileIds: \(downloadableFileIds)", category: .downloadFile)
 
     if !downloadableFileIds.isEmpty,
       let downloadableFileInfo = downloadableFileIds.first(where: { $0.contains(self.assetId) }),

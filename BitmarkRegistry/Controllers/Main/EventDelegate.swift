@@ -29,7 +29,7 @@ extension EventDelegate {
         self?.syncUpdatedRecords()
       }
 
-      try eventSubscription.listenTxPending{ [weak self] (_) in
+      try eventSubscription.listenTxPending { [weak self] (_) in
         self?.syncUpdatedRecords()
       }
     } catch {

@@ -11,7 +11,7 @@ import BitmarkSDK
 import RealmSwift
 
 class AssetR: Object {
-  
+
   // MARK: - Properties
   @objc dynamic var id: String = ""
   @objc dynamic var name: String = ""
@@ -19,7 +19,7 @@ class AssetR: Object {
   @objc dynamic var registrant: String = ""
   @objc dynamic var status: String = ""
   @objc dynamic var offset: Int64 = 0
-  @objc dynamic var createdAt: Date? = nil
+  @objc dynamic var createdAt: Date?
   @objc dynamic var filename: String?
   @objc dynamic var assetType: String?
   let metadata = List<MetadataR>()

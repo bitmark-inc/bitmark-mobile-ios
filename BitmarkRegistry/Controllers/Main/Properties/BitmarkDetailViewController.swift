@@ -136,7 +136,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
           for property in properties {
             guard property.name == "confirmedAt" else { continue }
             self.setupStyleBitmark()
-            BitmarkStorage.shared().loadTxRs(for: self.bitmarkR, forceSync: true, completion: {_,_ in })
+            BitmarkStorage.shared().loadTxRs(for: self.bitmarkR, forceSync: true, completion: {_, _ in })
             self.enableActionButtons()
           }
         case .error(let error):

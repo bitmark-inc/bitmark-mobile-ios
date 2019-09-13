@@ -64,8 +64,8 @@ class SyncStorageBase<Item> {
     fatalError("syncData has not been implemented")
   }
 
-  typealias throwsFunction = () throws -> Void
-  func asyncUpdateInSerialQueue(completion: ((_ inner: throwsFunction) -> Void)?) {
+  typealias ThrowsFunction = () throws -> Void
+  func asyncUpdateInSerialQueue(completion: ((_ inner: ThrowsFunction) -> Void)?) {
     serialSyncQueue.async { [weak self] in
       do {
         DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }

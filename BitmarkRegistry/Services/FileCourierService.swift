@@ -31,10 +31,10 @@ class FileCourierService {
     sender: Account, senderSessionData: SessionData,
     receiverAccountNumber: String, receiverSessionData: SessionData) -> Completable {
 
-    ErrorReporting.breadcrumbs(info: "uploadFile", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "encryptedFileURL: \(encryptedFileURL)", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(sender.getAccountNumber())", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "uploadFile", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "encryptedFileURL: \(encryptedFileURL)", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(sender.getAccountNumber())", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .fileCourier)
 
     let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + sender.getAccountNumber())
     return request.flatMap { (uploadRequestURL) -> Completable in
@@ -64,6 +64,7 @@ class FileCourierService {
               if let error = response.error {
                 completable(.error(error))
               } else {
+                ErrorReporting.breadcrumbs(info: "finished update file into fileCourier", category: .uploadFile)
                 completable(.completed)
               }
             }
@@ -79,7 +80,7 @@ class FileCourierService {
   }
 
   static func getDownloadableAssets(receiver: Account) -> Observable<[String]> {
-    ErrorReporting.breadcrumbs(info: "getDownloadableAssets for receiver: \(receiver.getAccountNumber())", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "getDownloadableAssets for receiver: \(receiver.getAccountNumber())", category: .fileCourier)
 
     return Observable.just(receiver.getAccountNumber())
       .flatMap { apiRequest(endpoint: "/v2/files?receiver=" + $0) }
@@ -87,7 +88,7 @@ class FileCourierService {
         RxAlamofire.request(request)
           .debug()
           .responseData()
-          .expectingObject(ofType: [String : [String]].self)
+          .expectingObject(ofType: [String: [String]].self)
           .map { $0["file_ids"] ?? [] }
           .flatMap({ (downloadableFileInfos) -> Observable<[String]> in
             for info in downloadableFileInfos {
@@ -104,9 +105,9 @@ class FileCourierService {
 
   typealias ResponseData = (sessionData: SessionData, filename: String, encryptedFileData: Data)
   static func downloadFile(assetId: String, receiver: Account, senderAccountNumber: String, senderPublicKey: Data) -> Observable<ResponseData> {
-    ErrorReporting.breadcrumbs(info: "downloadFile", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "receiver: \(receiver.getAccountNumber())", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "downloadFile", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "receiver: \(receiver.getAccountNumber())", category: .fileCourier)
 
     let endpoint = "/v2/files/" + assetId + "/" + senderAccountNumber + "?receiver=" + receiver.getAccountNumber()
     let request = apiRequest(endpoint: endpoint)
@@ -157,9 +158,9 @@ class FileCourierService {
   }
 
   static func checkFileExistence(senderAccountNumber: AccountNumber, assetId: String) -> Observable<SessionData?> {
-    ErrorReporting.breadcrumbs(info: "checkFileExistence", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(senderAccountNumber)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "checkFileExistence", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(senderAccountNumber)", category: .fileCourier)
 
     let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + senderAccountNumber)
     return request.flatMap { (checkFileExistenceRequest) -> Observable<SessionData?> in
@@ -174,7 +175,7 @@ class FileCourierService {
           }
 
           guard let httpResponse = response as? HTTPURLResponse,
-            let responseHeaders = httpResponse.allHeaderFields as? [String : String] else {
+            let responseHeaders = httpResponse.allHeaderFields as? [String: String] else {
               let error = Global.appError(message: "Can not parse response in check File existence")
               ErrorReporting.report(error: error)
               single(.success(nil))
@@ -204,10 +205,10 @@ class FileCourierService {
   }
 
   static func updateAccessFile(assetId: String, sender: Account, receiverAccountNumber: String, receiverSessionData: SessionData) -> Completable {
-    ErrorReporting.breadcrumbs(info: "updateAccessFile", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(sender.getAccountNumber())", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "updateAccessFile", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(sender.getAccountNumber())", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .fileCourier)
 
     let request = apiRequest(endpoint: "/v2/access/" + assetId + "/" + sender.getAccountNumber())
     return request.flatMap({ (updateAccessURL) -> Completable in
@@ -230,10 +231,10 @@ class FileCourierService {
   }
 
   static func deleteAccessFile(assetId: String, senderAccountNumber: String, receiverAccountNumber: String) -> Completable {
-    ErrorReporting.breadcrumbs(info: "deleteAccessFile", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(senderAccountNumber)", category: .FileCourier, traceLog: true)
-    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .FileCourier, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "deleteAccessFile", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "senderAccountNumber: \(senderAccountNumber)", category: .fileCourier)
+    ErrorReporting.breadcrumbs(info: "receiverAccountNumber: \(receiverAccountNumber)", category: .fileCourier)
 
     let request = apiRequest(endpoint: "/v2/files/" + assetId + "/" + senderAccountNumber)
     return request.flatMap({ (deleteAccessURL) -> Completable in

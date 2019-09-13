@@ -87,13 +87,13 @@ class PropertiesViewController: UIViewController, Stepper {
 
       switch changes {
       case .update(_, _, let insertions, _):
-        if insertions.count > 0 { iCloudService.shared.syncDataFromiCloud() }
+        if !insertions.isEmpty { iCloudService.shared.syncDataFromiCloud() }
       default:
         break
       }
 
       self.setupUnreadBadge()
-      self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
+      self.emptyViewInYoursTab.isHidden = !self.bitmarkRs.isEmpty
       self.segmentControl.setBadge(self.bitmarkRs.count, forSegmentAt: 0)
     })
   }
