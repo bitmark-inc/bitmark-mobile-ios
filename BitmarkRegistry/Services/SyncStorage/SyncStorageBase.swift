@@ -46,7 +46,7 @@ class SyncStorageBase<Item> {
    */
   func firstLoad(handler: @escaping (Error?) -> Void) throws {
     if getLatestOffset() == nil {
-      asyncUpdateInSerialQueue() { (executeSyncResult) in
+      asyncUpdateInSerialQueue { (executeSyncResult) in
         do {
           try executeSyncResult()
           DispatchQueue.main.async { handler(nil) }

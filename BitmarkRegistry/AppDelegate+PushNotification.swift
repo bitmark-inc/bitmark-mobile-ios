@@ -22,7 +22,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
     self.handleNotificationInfo(userInfo, withCompletionHandler: completionHandler)
   }
-  
+
   func userNotificationCenter(_ center: UNUserNotificationCenter,
            willPresent notification: UNNotification,
            withCompletionHandler completionHandler:

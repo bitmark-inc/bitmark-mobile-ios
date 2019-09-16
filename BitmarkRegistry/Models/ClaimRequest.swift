@@ -10,7 +10,7 @@ import Foundation
 
 struct ClaimRequests: Codable {
   let claim_requests: [ClaimRequest]
-  let my_submitted_claim_requests : [ClaimRequest]
+  let my_submitted_claim_requests: [ClaimRequest]
 }
 
 struct ClaimRequest: Codable {

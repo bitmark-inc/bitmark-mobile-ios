@@ -170,7 +170,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: EventDelegate
 extension PropertiesViewController: EventDelegate {
   @objc func syncUpdatedRecords() {
-    BitmarkStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
+    BitmarkStorage.shared().asyncUpdateInSerialQueue { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }

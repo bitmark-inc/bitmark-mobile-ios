@@ -100,7 +100,7 @@ extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate
 // MARK: EventDelegate
 extension TransactionsViewController: EventDelegate {
   @objc func syncUpdatedRecords() {
-    TransactionStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
+    TransactionStorage.shared().asyncUpdateInSerialQueue { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }
