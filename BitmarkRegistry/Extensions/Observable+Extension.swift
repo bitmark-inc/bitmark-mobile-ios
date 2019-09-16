@@ -16,13 +16,20 @@ extension Observable where Element == (HTTPURLResponse, Data) {
     return self.flatMap { (httpURLResponse, data) -> Observable<T> in
       switch httpURLResponse.statusCode {
       case 200..<300:
-        let object = try JSONDecoder().decode(type, from: data)
-        return Observable<T>.just(object)
+        do {
+          let object = try JSONDecoder().decode(type, from: data)
+          return Observable<T>.just(object)
+        } catch {
+          ErrorReporting.breadcrumbs(info: "type: \(type)", category: .warningError)
+          ErrorReporting.breadcrumbs(info: "data: \(data.hexEncodedString)", category: .warningError)
+          throw error
+        }
       default:
         do {
           let data = try JSONDecoder().decode(ApiError.self, from: data)
           return Observable<T>.error(data)
         } catch {
+          ErrorReporting.breadcrumbs(info: "Api Error - data: \(data.hexEncodedString)", category: .warningError)
           return Observable<T>.error(ApiError(message: "Server Error."))
         }
       }
