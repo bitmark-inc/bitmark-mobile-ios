@@ -61,6 +61,12 @@ class DashboardFlow: Flow {
       root3.tabBarItem = accountTabBarItem
 
       self.rootViewController.setViewControllers([root1, root2, root3], animated: false)
+
+      // Remove top line from tabBar
+      self.rootViewController.tabBar.shadowImage = UIImage()
+      self.rootViewController.tabBar.backgroundImage = UIImage()
+      self.rootViewController.tabBar.backgroundColor = .wildSand
+
       guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
       // Register APNS: when user access into Dashboard
