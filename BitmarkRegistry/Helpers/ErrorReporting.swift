@@ -50,7 +50,7 @@ struct ErrorReporting {
   }
 
   // Log info to sentry
-  public static func breadcrumbs(info msg: String, category: ReportCategory, traceLog: Bool = false) {
+  public static func breadcrumbs(info msg: String, category: ReportCategory, traceLog: Bool = true) {
     let breadcrumb = Breadcrumb(level: .info, category: category.rawValue)
     breadcrumb.message = msg
     Client.shared?.breadcrumbs.add(breadcrumb)

@@ -14,10 +14,10 @@
 		<string>https://key.test.bitmarkaccountassets.com</string>
 		<key>MOBILE_SERVER_URL</key>
 		<string>https://bm.test.bitmark.com</string>
-		<key>REGISTRY_SERVER_URL</key>
-		<string>https://registry.test.bitmark.com</string>
 		<key>PROFILES_SERVER_URL</key>
 		<string>https://profiles.test.bitmark.com</string>
+		<key>REGISTRY_SERVER_URL</key>
+		<string>https://registry.test.bitmark.com</string>
 		<key>ZERO_ADDRESS</key>
 		<string>dw9MQXcC5rJZb3QE1nz86PiQAheMP1dx9M3dr52tT8NNs14m33</string>
 		<key>INTERCOM_APP_KEY</key>
@@ -57,7 +57,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>71</string>
+	<string>114</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -78,6 +78,10 @@
 			<string>One</string>
 		</dict>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>andale_mono.ttf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -87,8 +91,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -96,10 +98,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>andale_mono.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -68,8 +68,7 @@ class AccountDependencyService {
       return
     }
 
-    ErrorReporting.breadcrumbs(info: token, category: .APNS)
-    Global.log.info("Registering user notification with token: \(token)")
+    ErrorReporting.breadcrumbs(info: "Deregistering user notification with token: \(token)", category: .APNS)
 
     do {
       var request = try URLRequest(url: URL(string: "\(Global.ServerURL.mobile)/api/push_uuids/\(token)")!, method: .delete)
@@ -149,8 +148,7 @@ extension AccountDependencyService {
 
   // Register push notification service with device token to server
   func registerAPNS(token: String, intercomUserId: String) -> Observable<Void> {
-    ErrorReporting.breadcrumbs(info: token, category: .APNS)
-    Global.log.info("Registering user notification with token: \(token)")
+    ErrorReporting.breadcrumbs(info: "Registering user notification with token: \(token)", category: .APNS)
 
     return Observable<URLRequest>.create { (observer) -> Disposable in
       do {
@@ -177,6 +175,6 @@ extension AccountDependencyService {
 
 extension AccountNumber {
   func intercomUserId() -> String {
-    return self.hexDecodedData.sha3(length: 256).hexEncodedString
+    return "Bitmark_ios_" + self.hexDecodedData.sha3(length: 256).hexEncodedString
   }
 }
