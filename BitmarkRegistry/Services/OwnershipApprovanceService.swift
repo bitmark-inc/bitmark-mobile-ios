@@ -2,8 +2,8 @@
 //  ChibitronicsService.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 8/1/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Created by Thuyen Truong on 8/1/19.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //
 
 import Foundation

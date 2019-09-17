@@ -2,8 +2,8 @@
   InfoPlist.strings
   BitmarkRegistry
 
-  Created by Macintosh on 8/20/19.
-  Copyright © 2019 thuyentruong. All rights reserved.
+  Created by Thuyen Truong on 8/20/19.
+  Copyright © 2019 Bitmark Inc. All rights reserved.
 */
 
 NSPhotoLibraryUsageDescription = "Bitmark 想要取用您的照片，進而讓您登記這些照片。";

@@ -2,8 +2,8 @@
 //  UIButton+AddTargetClosure+Extension.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 6/10/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Created by Thuyen Truong on 6/10/19.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //  Reference: https://stackoverflow.com/questions/25919472/adding-a-closure-as-target-to-a-uibutton
 //
 

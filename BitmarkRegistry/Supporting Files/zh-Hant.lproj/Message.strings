@@ -2,8 +2,8 @@
   Message.strings
   BitmarkRegistry
 
-  Created by Macintosh on 8/13/19.
-  Copyright © 2019 thuyentruong. All rights reserved.
+  Created by Thuyen Truong on 8/13/19.
+  Copyright © 2019 Bitmark Inc. All rights reserved.
 */
 
 "sendingTransaction" = "你的所有權正在Bitmark數位資產系統登記中...";

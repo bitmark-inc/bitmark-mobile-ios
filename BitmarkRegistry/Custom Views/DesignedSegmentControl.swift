@@ -2,8 +2,8 @@
 //  DesignedSegmentControl.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 7/16/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Created by Thuyen Truong on 7/16/19.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //  Reference: https://medium.com/@pleelaprasad/creating-a-custom-segmented-control-in-swift-10fede366da1
 //
 

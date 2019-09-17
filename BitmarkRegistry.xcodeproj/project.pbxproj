@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -957,7 +957,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1030;
-				ORGANIZATIONNAME = thuyentruong;
+				ORGANIZATIONNAME = "Bitmark Inc.";
 				TargetAttributes = {
 					E29A73F622AA49990052C716 = {
 						SystemCapabilities = {
@@ -989,7 +989,7 @@
 				};
 			};
 			buildConfigurationList = E2E798B1229E189E00508B69 /* Build configuration list for PBXProject "BitmarkRegistry" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 11.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (

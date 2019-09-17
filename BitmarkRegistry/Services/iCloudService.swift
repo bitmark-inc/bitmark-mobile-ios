@@ -2,8 +2,8 @@
 //  iCloudService.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 8/5/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Created by Thuyen Truong on 8/5/19.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //
 
 import Foundation
@@ -156,7 +156,7 @@ class iCloudService {
   func getAssetFilename(with assetId: String) -> String? {
     if let filename = iCloudService.shared.localAssetWithFilenameData[assetId] { return filename }
     do {
-      var assetWithFilenameData = try getAssetWithFilenameData()
+      let assetWithFilenameData = try getAssetWithFilenameData()
       return assetWithFilenameData[assetId]
     } catch {
       ErrorReporting.report(error: error)

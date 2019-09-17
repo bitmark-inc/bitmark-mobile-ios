@@ -2,8 +2,8 @@
 //  FileCourierService.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 7/3/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Created by Thuyen Truong on 7/3/19.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //
 
 import Foundation

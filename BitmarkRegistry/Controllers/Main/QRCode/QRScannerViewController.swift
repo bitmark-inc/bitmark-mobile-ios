@@ -2,8 +2,8 @@
 //  QRScannerViewController.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 6/18/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Created by Thuyen Truong on 6/18/19.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //  Reference: https://medium.com/appcoda-tutorials/how-to-build-qr-code-scanner-app-in-swift-b5532406dd6b
 //
 
