@@ -1,0 +1,90 @@
+/* 
+  Localizable.strings
+  Bitmark
+
+  Created by Thuyen Truong on 8/13/19.
+  Copyright © 2019 Bitmark Inc. All rights reserved.
+*/
+
+"AccessExistingAccount" = "Access Existing Account";
+"Account" = "Account";
+"Authorize" = "Authorize";
+"Authorized!" = "Authorized!";
+"Cancel" = "Cancel";
+"Close" = "Close";
+"ClaimRequest" = "Claim Request";
+"CopiedToClipboard" = "Copied to clipboard!";
+"CopyBitmarkId" = "Copy ID";
+"CreateNewAccount" = "Create New Account";
+"dAgo" = "%dd ago";
+"Delete" = "Delete";
+"Details" = "Details";
+"Details »" = "Details »";
+"Discard" = "Discard";
+"Done" = "Done";
+"Download" = "Download";
+"Edit" = "Edit";
+"Enable" = "Enable";
+"EnableAccess" = "Enable Access";
+"Error" = "Error";
+"Error!" = "Error!";
+"File" = "File";
+"From" = "FROM";
+"Global" = "Global";
+"Incoming" = "Incoming";
+"Incoming..." = "Incoming...";
+"Issuance" = "Issuance";
+"Logout »" = "Log Out »";
+"NeedHelp?" = "Need Help?";
+"No" = "No";
+"NoInternetConnection" = "No Internet Connection";
+"OK" = "OK";
+"Owner" = "Owner";
+"P2P_TRANSFER" = "P2P Transfer";
+"Pending" = "Pending";
+"Pending..." = "Pending...";
+"Photo" = "Photo";
+"Photos" = "Photos";
+"PleaseAuthorize" = "Please Authorize";
+"PleaseTryAgain!" = "Please try again!";
+"PrivacyPolicy" = "Privacy Policy";
+"Properties" = "Properties";
+"Property" = "Property";
+"PropertyIssuance" = "Property Issuance";
+"Provenance" = "Provenance";
+"ReceiveProperty" = "Receive Property";
+"RecoveryPhrase" = "Recovery Phrase";
+"RecoveryPhraseSignOut" = "Recovery Phrase Sign-Out";
+"Register" = "Register";
+"Registering" = "Registering";
+"Registering..." = "Registering...";
+"Registry" = "Registry";
+"RemoveAccess" = "Remove Access";
+"Retry" = "Retry";
+"SaveToiCloudDrive »" = "Back up to icloud drive »";
+"ScanQRCode" = "Scan QR Code";
+"Send" = "Send";
+"Share" = "Share";
+"Skip" = "Skip";
+"Stay" = "Stay";
+"Submit" = "Submit";
+"Success!" = "Success!";
+"TermsOfService" = "Terms Of Service";
+"TestRecoveryPhrase" = "Test Recovery Phrase";
+"Timestamp" = "Timestamp";
+"To" = "To";
+"Transactions" = "Transactions";
+"Transfer" = "Transfer";
+"TryAgain" = "Try Again";
+"Type" = "Type";
+"Version:" = "Version:";
+"VersionApp" = "Version ";
+"Video" = "Video";
+"Videos" = "Videos";
+"Warning!" = "Warning!";
+"WriteDownRecoveryPhrase" = "Write Down Recovery Phrase";
+"WriteDownRecoveryPhrase »" = "Write Down Recovery Phrase »";
+"Yes" = "Yes";
+"You" = "You";
+"Yours" = "Yours";
+"YourAuthorizationIsRequired" = "Your authorization is required.";
