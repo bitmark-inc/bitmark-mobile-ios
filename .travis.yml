@@ -2,10 +2,10 @@ osx_image: xcode11
 language: swift
 env:
   global:
-    - WORKSPACE=BitmarkRegistry.xcworkspace
+    - WORKSPACE=Bitmark.xcworkspace
   matrix:
-    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry"      LINTONLY="NO"
-    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="BitmarkRegistry Dev"  LINTONLY="NO"
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="Bitmark"      LINTONLY="NO"
+    - DESTINATION="platform=iOS Simulator,OS=12.2,name=iPhone X"    SCHEME="Bitmark Dev"  LINTONLY="NO"
     - LINTONLY="YES"
 cache:
   bundler: true

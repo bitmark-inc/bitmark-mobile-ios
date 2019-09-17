@@ -1,0 +1,90 @@
+/* 
+  Localizable.strings
+  Bitmark
+
+  Created by Thuyen Truong on 8/13/19.
+  Copyright © 2019 Bitmark Inc. All rights reserved.
+*/
+
+"AccessExistingAccount" = "登入";
+"Account" = "個人帳戶";
+"Authorize" = "授权";
+"Authorized!" = "已授權!";
+"Cancel" = "取消";
+"Close" = "關閉";
+"ClaimRequest" = "索取";
+"CopiedToClipboard" = "已複製到剪貼簿！";
+"CopyBitmarkId" = "複製識別碼";
+"CreateNewAccount" = "創建新帳戶";
+"dAgo" = "%d天前";
+"Delete" = "刪除";
+"Details" = "更多資訊";
+"Details »" = "更多資訊 »";
+"Discard" = "放棄";
+"Done" = "完成";
+"Download" = "下載";
+"Edit" = "編輯";
+"Enable" = "Enable";
+"EnableAccess" = "開啟權限";
+"Error" = "發生錯誤";
+"Error!" = "發生錯誤!";
+"File" = "檔案";
+"From" = "來自";
+"Global" = "全球資產";
+"Incoming" = "接收中";
+"Incoming..." = "接收中...";
+"Issuance" = "發行";
+"Logout »" = "登出 »";
+"NeedHelp?" = "需要幫忙？";
+"No" = "取消";
+"NoInternetConnection" = "無網路連線";
+"OK" = "確認";
+"Owner" = "所有人";
+"P2P_TRANSFER" = "轉移";
+"Pending" = "傳輸中";
+"Pending..." = "傳輸中...";
+"Photo" = "照片";
+"Photos" = "照片";
+"PleaseAuthorize" = "請授權登入";
+"PleaseTryAgain!" = "請再試一次!";
+"PrivacyPolicy" = "隱私政策";
+"Properties" = "數位資產";
+"Property" = "數位資產";
+"PropertyIssuance" = "資產發行紀錄";
+"Provenance" = "來源紀錄";
+"ReceiveProperty" = "收取資產";
+"RecoveryPhrase" = "帳戶復原碼";
+"RecoveryPhraseSignOut" = "登出帳戶復原碼";
+"Register" = "註冊資產";
+"Registering" = "登記中";
+"Registering..." = "登記中...";
+"Registry" = "登記";
+"RemoveAccess" = "移除授權";
+"Retry" = "再試一次";
+"SaveToiCloudDrive »" = "備份至iCloud »";
+"ScanQRCode" = "掃描 QR 碼";
+"Send" = "傳送";
+"Share" = "分享";
+"Skip" = "略過";
+"Stay" = "保留";
+"Submit" = "發送";
+"Success!" = "成功！";
+"TermsOfService" = "服務條款";
+"TestRecoveryPhrase" = "測試帳戶復原碼";
+"Timestamp" = "時間戳記";
+"To" = "給";
+"Transactions" = "交易事項";
+"Transfer" = "轉移";
+"TryAgain" = "再試一次";
+"Type" = "種類";
+"Version:" = "版本：";
+"VersionApp" = "版本 ";
+"Video" = "影片";
+"Videos" = "影片";
+"Warning!" = "警告提示!";
+"WriteDownRecoveryPhrase" = "抄寫帳戶復原碼";
+"WriteDownRecoveryPhrase »" = "抄寫帳戶復原碼 »";
+"Yes" = "確認";
+"You" = "你";
+"Yours" = "你的資產";
+"YourAuthorizationIsRequired" = "您的授權允許。";
