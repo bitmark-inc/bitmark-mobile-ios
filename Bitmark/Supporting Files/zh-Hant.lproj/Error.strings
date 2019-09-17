@@ -28,7 +28,7 @@
 "permissionPhoto_title" = "開啟相簿權限";
 "permissionPhoto_message" = "如需繼續，允許Bitmark使用相簿權限。";
 "registerPropertyRights_duplicatedLabels" = "重複的標籤!";
-"registerPropertyRights_unsuccessfully" = "無法登記產，請稍後再試。";
+"registerPropertyRights_unsuccessfully" = "無法登記產權，請稍後再試。";
 "removeAccess" = "登出時發生問題。";
 "syncBitmark" = "同步最新bitmarks時發生問題。";
 "syncTransaction" = "載入交易事項時發生錯誤。";

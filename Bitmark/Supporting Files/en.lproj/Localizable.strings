@@ -39,6 +39,7 @@
 "No" = "No";
 "NoInternetConnection" = "No Internet Connection";
 "OK" = "OK";
+"Optional" = "Optional";
 "Owner" = "Owner";
 "P2P_TRANSFER" = "P2P Transfer";
 "Pending" = "Pending";

@@ -67,10 +67,11 @@ class CommonUI {
       .foregroundColor: UIColor.silver
     ]
 
-    let title = isOptional ? (text + " (OPTIONAL)") : text
+    let optionalPhrase = " (\("Optional".localized().localizedUppercase))"
+    let title = isOptional ? (text + optionalPhrase) : text
     let attributedText = NSMutableAttributedString(string: title, attributes: attributes)
     if isOptional {
-      attributedText.addAttributes(optionalAttributes, range: NSRange(location: text.count + 1, length: 10))
+      attributedText.addAttributes(optionalAttributes, range: NSRange(location: text.count, length: optionalPhrase.count))
     }
 
     let label = UILabel()

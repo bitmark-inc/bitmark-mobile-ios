@@ -22,11 +22,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // MARK: - Properties
   var assetFileName: String!
   var assetURL: URL!
-  lazy var assetURLObservable: Observable<URL> = {
-    return Observable.just(assetURL!)
-  }()
 
-  var assetDataObservable: Observable<Data>!
   var assetFingerprintObservable: Observable<String>!
   var assetRVariable = BehaviorRelay<AssetR?>(value: nil)
   var scrollView: UIScrollView!
@@ -65,21 +61,17 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     setupViews()
     setupEvents()
 
+    guard let assetURL = assetURL else { return }
+
     activityIndicator.startAnimating()
     disabledScreen.isHidden = false
 
-    assetDataObservable = assetURLObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { try Data(contentsOf: $0) }
-      .share(replay: 1, scope: .forever)
-
-    assetFingerprintObservable = assetDataObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { AssetService.getFingerprintFrom($0) }
+    assetFingerprintObservable = Observable.just(assetURL)
+      .subscribeOn(MainScheduler.asyncInstance)
+      .map { try FileUtil.computeFingerprint(url: $0) }
       .share(replay: 1, scope: .forever)
 
     assetFingerprintObservable
-      .observeOn(MainScheduler.asyncInstance)
       .map { AssetService.getAsset(from: $0) }
       .bind(to: assetRVariable)
       .disposed(by: disposeBag)
@@ -371,6 +363,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           .map { (assetId) -> Void in
             try AssetService.issueBitmarks(issuer: registrant, assetId: assetId, quantity: quantity)
           }
+          .observeOn(MainScheduler.instance)
           .subscribe(
             onNext: { (_) in
               selfAlert.dismiss(animated: true, completion: {
@@ -400,11 +393,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       var metadata = extractMetadataFromForms()
       metadata["SOURCE"] = assetTypeTextField.text!
 
-      return assetDataObservable.flatMap { (assetData) -> Observable<String> in
+      return assetFingerprintObservable.flatMap { (assetFingerprint) -> Observable<String> in
         let assetInfo = (
           registrant: registrant,
           assetName: assetName,
-          fingerprint: assetData,
+          fingerprint: assetFingerprint,
           metadata: metadata
         )
         let assetId = try AssetService.registerAsset(assetInfo: assetInfo)
