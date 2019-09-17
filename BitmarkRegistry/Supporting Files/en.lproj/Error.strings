@@ -2,8 +2,8 @@
   Error.strings
   BitmarkRegistry
 
-  Created by Macintosh on 8/14/19.
-  Copyright © 2019 thuyentruong. All rights reserved.
+  Created by Thuyen Truong on 8/14/19.
+  Copyright © 2019 Bitmark Inc. All rights reserved.
 */
 
 "accessFile" = "There was a problem to access your selected file.";

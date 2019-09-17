@@ -2,8 +2,8 @@
 //  ReleaseNotesViewController.swift
 //  BitmarkRegistry
 //
-//  Created by Macintosh on 7/30/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Created by Thuyen Truong on 7/30/19.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //  Reference: https://www.oodlestechnologies.com/blogs/Get-installation-Date-and-Version-of-the-App-In-Swift-3/
 //
 

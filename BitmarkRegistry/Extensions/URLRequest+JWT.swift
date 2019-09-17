@@ -3,7 +3,7 @@
 //  BitmarkRegistry
 //
 //  Created by Anh Nguyen on 7/10/19.
-//  Copyright © 2019 thuyentruong. All rights reserved.
+//  Copyright © 2019 Bitmark Inc. All rights reserved.
 //
 
 import Foundation
