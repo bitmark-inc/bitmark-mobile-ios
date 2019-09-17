@@ -1,4 +1,4 @@
-osx_image: xcode10.2
+osx_image: xcode11
 language: swift
 env:
   global:
@@ -20,7 +20,7 @@ before_install:
   - gem install cocoapods
 
 install:
-  - pod install --repo-update
+  - pod update --repo-update
   - gem install xcpretty-travis-formatter
 
 script:

@@ -20,8 +20,8 @@ class BitmarkR: Object {
   @objc dynamic var owner: String = ""
   @objc dynamic var status: String = ""
   @objc dynamic var offset: Int64 = 0
-  @objc dynamic var createdAt: Date? = nil
-  @objc dynamic var confirmedAt: Date? = nil
+  @objc dynamic var createdAt: Date?
+  @objc dynamic var confirmedAt: Date?
   @objc dynamic var read: Bool = false
 
   override static func primaryKey() -> String? {

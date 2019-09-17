@@ -61,9 +61,9 @@ class TransactionsViewController: UIViewController, Stepper {
 
         self.setupRealmObserverForLoadingTransactions()
       }
-    } catch let e {
+    } catch {
       showErrorAlert(message: "loadTransaction".localized(tableName: "Error"))
-      ErrorReporting.report(error: e)
+      ErrorReporting.report(error: error)
     }
   }
 
@@ -71,7 +71,7 @@ class TransactionsViewController: UIViewController, Stepper {
     self.realmToken = self.transactionRs.observe({ [weak self] (changes) in
       guard let self = self else { return }
       self.txsTableView.apply(changes: changes)
-      self.emptyView.isHidden = self.transactionRs.count > 0
+      self.emptyView.isHidden = !self.transactionRs.isEmpty
     })
   }
 }
@@ -100,7 +100,7 @@ extension TransactionsViewController: UITableViewDataSource, UITableViewDelegate
 // MARK: EventDelegate
 extension TransactionsViewController: EventDelegate {
   @objc func syncUpdatedRecords() {
-    TransactionStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
+    TransactionStorage.shared().asyncUpdateInSerialQueue { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }

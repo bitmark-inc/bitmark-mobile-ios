@@ -17,7 +17,7 @@ class AccountKeyService {
   static let apiServerURL = Credential.valueForKey(keyName: Constant.InfoKey.apiServerURL)
 
   static func registerEncryptionPublicKey(account: Account, completion: @escaping (Error?) -> Void) {
-    ErrorReporting.breadcrumbs(info: "registerEncryptionPublicKey - user: \(account.getAccountNumber())", category: .KeyAccountAsset, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "registerEncryptionPublicKey - user: \(account.getAccountNumber())", category: .accountKey)
 
     do {
       let encryptionPublicKey = account.encryptionKey.publicKey
@@ -47,7 +47,7 @@ class AccountKeyService {
   }
 
   static func getEncryptionPublicKey(accountNumber: String) -> Observable<Data> {
-    ErrorReporting.breadcrumbs(info: "getEncryptionPublicKey - user: \(accountNumber)", category: .KeyAccountAsset, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "getEncryptionPublicKey - user: \(accountNumber)", category: .accountKey)
 
     let url = URL(string: Global.ServerURL.keyAccountAsset + "/" + accountNumber)!
     var request = URLRequest(url: url)

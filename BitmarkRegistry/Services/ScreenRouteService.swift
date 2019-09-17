@@ -17,13 +17,13 @@ import RxCocoa
  This serves for deep link and notification purpose.
  */
 class ScreenRouteService {
-  
+
   // Return true if successful landing
   typealias RouteCompletionHandler = (Bool) -> Void
-  
+
   // Route to bitmark detail screen
   static func routeToBitmarkDetail(bitmarkID: String, completionHandler: RouteCompletionHandler?) {
-    guard Global.currentAccount != nil, let _ = routeToPropertiesVC() else {
+    guard Global.currentAccount != nil, routeToPropertiesVC() != nil else {
       completionHandler?(false)
       return
     }
@@ -39,8 +39,8 @@ class ScreenRouteService {
 
       PropertiesStepper.shared.goToBitmarkDetailsScreen(bitmarkR: bitmarkR, assetR: assetR)
       completionHandler?(true)
-    } catch let e {
-      ErrorReporting.report(error: e)
+    } catch {
+      ErrorReporting.report(error: error)
       completionHandler?(false)
     }
   }

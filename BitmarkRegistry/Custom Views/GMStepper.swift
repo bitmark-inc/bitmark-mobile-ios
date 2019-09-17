@@ -17,7 +17,7 @@ import UIKit
 @IBDesignable public class GMStepper: UIControl {
 
   /// Current value of the stepper. Defaults to 0.
-  @objc @IBInspectable public var value: Double = 0 {
+  @IBInspectable public var value: Double = 0 {
     didSet {
       value = min(maximumValue, max(minimumValue, value))
 
@@ -33,62 +33,60 @@ import UIKit
     let isInteger = Decimal(value).exponent >= 0
 
     // If we have items, we will display them as steps
-    if isInteger && stepValue == 1.0 && items.count > 0 {
+    if isInteger && stepValue == 1.0 && !items.isEmpty {
       return items[Int(value)]
-    }
-    else {
+    } else {
       return formatter.string(from: NSNumber(value: value))
     }
   }
 
-
   /// Minimum value. Must be less than maximumValue. Defaults to 0.
-  @objc @IBInspectable public var minimumValue: Double = 0 {
+  @IBInspectable public var minimumValue: Double = 0 {
     didSet {
       value = min(maximumValue, max(minimumValue, value))
     }
   }
 
   /// Maximum value. Must be more than minimumValue. Defaults to 100.
-  @objc @IBInspectable public var maximumValue: Double = 100 {
+  @IBInspectable public var maximumValue: Double = 100 {
     didSet {
       value = min(maximumValue, max(minimumValue, value))
     }
   }
 
   /// Step/Increment value as in UIStepper. Defaults to 1.
-  @objc @IBInspectable public var stepValue: Double = 1 {
+  @IBInspectable public var stepValue: Double = 1 {
     didSet {
       setupNumberFormatter()
     }
   }
 
   /// The same as UIStepper's autorepeat. If true, holding on the buttons or keeping the pan gesture alters the value repeatedly. Defaults to true.
-  @objc @IBInspectable public var autorepeat: Bool = true
+  @IBInspectable public var autorepeat: Bool = true
 
   /// If the value is integer, it is shown without floating point.
-  @objc @IBInspectable public var showIntegerIfDoubleIsInteger: Bool = true {
+  @IBInspectable public var showIntegerIfDoubleIsInteger: Bool = true {
     didSet {
       setupNumberFormatter()
     }
   }
 
   /// Text on the left button. Be sure that it fits in the button. Defaults to "−".
-  @objc @IBInspectable public var leftButtonText: String = "−" {
+  @IBInspectable public var leftButtonText: String = "−" {
     didSet {
       leftButton.setTitle(leftButtonText, for: .normal)
     }
   }
 
   /// Text on the right button. Be sure that it fits in the button. Defaults to "+".
-  @objc @IBInspectable public var rightButtonText: String = "+" {
+  @IBInspectable public var rightButtonText: String = "+" {
     didSet {
       rightButton.setTitle(rightButtonText, for: .normal)
     }
   }
 
   /// Text color of the buttons. Defaults to white.
-  @objc @IBInspectable public var buttonsTextColor: UIColor = .azureRadiance {
+  @IBInspectable public var buttonsTextColor: UIColor = .azureRadiance {
     didSet {
       for button in [leftButton, rightButton] {
         button.setTitleColor(buttonsTextColor, for: .normal)
@@ -96,7 +94,7 @@ import UIKit
     }
   }
 
-  @objc @IBInspectable public var boxBorderColor: UIColor = .mainBlueColor {
+  @IBInspectable public var boxBorderColor: UIColor = .mainBlueColor {
     didSet {
       for button in [leftButton, rightButton] {
         button.borderColor = boxBorderColor
@@ -108,7 +106,7 @@ import UIKit
   let boxBorderWidth: CGFloat = 1.0
 
   /// Background color of the buttons. Defaults to dark blue.
-  @objc @IBInspectable public var buttonsBackgroundColor: UIColor = .white {
+  @IBInspectable public var buttonsBackgroundColor: UIColor = .white {
     didSet {
       for button in [leftButton, rightButton] {
         button.backgroundColor = buttonsBackgroundColor
@@ -127,14 +125,14 @@ import UIKit
   }
 
   /// Text color of the middle label. Defaults to white.
-  @objc @IBInspectable public var labelTextColor: UIColor = UIColor.black {
+  @IBInspectable public var labelTextColor: UIColor = UIColor.black {
     didSet {
       textfield.textColor = labelTextColor
     }
   }
 
   /// Text color of the middle label. Defaults to lighter blue.
-  @objc @IBInspectable public var labelBackgroundColor: UIColor = .white {
+  @IBInspectable public var labelBackgroundColor: UIColor = .white {
     didSet {
       textfield.backgroundColor = labelBackgroundColor
     }
@@ -147,7 +145,7 @@ import UIKit
     }
   }
   /// Corner radius of the middle label. Defaults to 0.
-  @objc @IBInspectable public var labelCornerRadius: CGFloat = 0 {
+  @IBInspectable public var labelCornerRadius: CGFloat = 0 {
     didSet {
       textfield.layer.cornerRadius = labelCornerRadius
 
@@ -155,7 +153,7 @@ import UIKit
   }
 
   /// Percentage of the middle label's width. Must be between 0 and 1. Defaults to 0.5. Be sure that it is wide enough to show the value.
-  @objc @IBInspectable public var labelWidthWeight: CGFloat = 0.5 {
+  @IBInspectable public var labelWidthWeight: CGFloat = 0.5 {
     didSet {
       labelWidthWeight = min(1, max(0, labelWidthWeight))
       setNeedsLayout()
@@ -163,7 +161,7 @@ import UIKit
   }
 
   /// Color of the flashing animation on the buttons in case the value hit the limit.
-  @objc @IBInspectable public var limitHitAnimationColor: UIColor = UIColor(red:0.26, green:0.6, blue:0.87, alpha:1)
+  @IBInspectable public var limitHitAnimationColor: UIColor = UIColor(red: 0.26, green: 0.6, blue: 0.87, alpha: 1)
 
   /// Formatter for displaying the current value
   let formatter = NumberFormatter()
@@ -236,16 +234,16 @@ import UIKit
   var labelMinimumCenterX: CGFloat!
 
   enum LabelPanState {
-    case Stable, HitRightEdge, HitLeftEdge
+    case stable, hitRightEdge, hitLeftEdge
   }
-  var panState = LabelPanState.Stable
+  var panState = LabelPanState.stable
 
   enum StepperState {
-    case Stable, ShouldIncrease, ShouldDecrease
+    case stable, shouldIncrease, shouldDecrease
   }
-  var stepperState = StepperState.Stable {
+  var stepperState = StepperState.stable {
     didSet {
-      if stepperState != .Stable {
+      if stepperState != .stable {
         updateValue()
         if autorepeat {
           scheduleTimer()
@@ -254,8 +252,7 @@ import UIKit
     }
   }
 
-
-  @objc public var items : [String] = [] {
+  @objc public var items: [String] = [] {
     didSet {
       textfield.text = formattedValue
     }
@@ -331,13 +328,12 @@ import UIKit
   }
 
   func updateValue() {
-    if stepperState == .ShouldIncrease {
+    if stepperState == .shouldIncrease {
       value += stepValue
-    } else if stepperState == .ShouldDecrease {
+    } else if stepperState == .shouldDecrease {
       value -= stepValue
     }
   }
-
 
   deinit {
     resetTimer()
@@ -369,22 +365,22 @@ extension GMStepper {
       // When the label hits the edges, increase/decrease value and change button backgrounds
       if textfield.center.x == labelMaximumCenterX {
         // If not hit the right edge before, increase the value and start the timer. If already hit the edge, do nothing. Timer will handle it.
-        if panState != .HitRightEdge {
-          stepperState = .ShouldIncrease
-          panState = .HitRightEdge
+        if panState != .hitRightEdge {
+          stepperState = .shouldIncrease
+          panState = .hitRightEdge
         }
 
         animateLimitHitIfNeeded()
       } else if textfield.center.x == labelMinimumCenterX {
-        if panState != .HitLeftEdge {
-          stepperState = .ShouldDecrease
-          panState = .HitLeftEdge
+        if panState != .hitLeftEdge {
+          stepperState = .shouldDecrease
+          panState = .hitLeftEdge
         }
 
         animateLimitHitIfNeeded()
       } else {
-        panState = .Stable
-        stepperState = .Stable
+        panState = .stable
+        stepperState = .stable
         resetTimer()
 
         self.rightButton.backgroundColor = self.buttonsBackgroundColor
@@ -398,8 +394,8 @@ extension GMStepper {
   }
 
   @objc func reset() {
-    panState = .Stable
-    stepperState = .Stable
+    panState = .stable
+    stepperState = .stable
     resetTimer()
 
     leftButton.isEnabled = true
@@ -424,7 +420,7 @@ extension GMStepper {
     if value == minimumValue {
       animateLimitHitIfNeeded()
     } else {
-      stepperState = .ShouldDecrease
+      stepperState = .shouldDecrease
       animateSlideLeft()
     }
 
@@ -438,7 +434,7 @@ extension GMStepper {
     if value == maximumValue {
       animateLimitHitIfNeeded()
     } else {
-      stepperState = .ShouldIncrease
+      stepperState = .shouldIncrease
       animateSlideRight()
     }
   }
@@ -491,7 +487,7 @@ extension GMStepper {
     }
   }
 
-  func animateLimitHitForButton(button: UIButton){
+  func animateLimitHitForButton(button: UIButton) {
     UIView.animate(withDuration: limitHitAnimationDuration) {
       button.backgroundColor = self.limitHitAnimationColor
     }
@@ -521,10 +517,8 @@ extension GMStepper {
   }
 }
 
-
 extension Decimal {
   var significantFractionalDecimalDigits: Int {
     return max(-exponent, 0)
   }
 }
-

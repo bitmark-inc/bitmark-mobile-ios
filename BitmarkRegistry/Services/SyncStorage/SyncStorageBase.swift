@@ -46,7 +46,7 @@ class SyncStorageBase<Item> {
    */
   func firstLoad(handler: @escaping (Error?) -> Void) throws {
     if getLatestOffset() == nil {
-      asyncUpdateInSerialQueue() { (executeSyncResult) in
+      asyncUpdateInSerialQueue { (executeSyncResult) in
         do {
           try executeSyncResult()
           DispatchQueue.main.async { handler(nil) }
@@ -64,8 +64,8 @@ class SyncStorageBase<Item> {
     fatalError("syncData has not been implemented")
   }
 
-  typealias throwsFunction = () throws -> Void
-  func asyncUpdateInSerialQueue(completion: ((_ inner: throwsFunction) -> Void)?) {
+  typealias ThrowsFunction = () throws -> Void
+  func asyncUpdateInSerialQueue(completion: ((_ inner: ThrowsFunction) -> Void)?) {
     serialSyncQueue.async { [weak self] in
       do {
         DispatchQueue.main.async { UIApplication.shared.isNetworkActivityIndicatorVisible = true }

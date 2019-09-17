@@ -87,13 +87,13 @@ class PropertiesViewController: UIViewController, Stepper {
 
       switch changes {
       case .update(_, _, let insertions, _):
-        if insertions.count > 0 { iCloudService.shared.syncDataFromiCloud() }
+        if !insertions.isEmpty { iCloudService.shared.syncDataFromiCloud() }
       default:
         break
       }
 
       self.setupUnreadBadge()
-      self.emptyViewInYoursTab.isHidden = self.bitmarkRs.count > 0
+      self.emptyViewInYoursTab.isHidden = !self.bitmarkRs.isEmpty
       self.segmentControl.setBadge(self.bitmarkRs.count, forSegmentAt: 0)
     })
   }
@@ -170,7 +170,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
 // MARK: EventDelegate
 extension PropertiesViewController: EventDelegate {
   @objc func syncUpdatedRecords() {
-    BitmarkStorage.shared().asyncUpdateInSerialQueue() { [weak self] (_) in
+    BitmarkStorage.shared().asyncUpdateInSerialQueue { [weak self] (_) in
       DispatchQueue.main.async {
         self?.refreshControl.endRefreshing()
       }

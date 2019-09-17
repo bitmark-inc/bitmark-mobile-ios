@@ -77,5 +77,3 @@ class AppStepper: Stepper {
     return BitmarkStep.appNavigation
   }
 }
-
-

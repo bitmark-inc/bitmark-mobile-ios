@@ -10,7 +10,7 @@ import UIKit
 import BitmarkSDK
 import IQKeyboardManagerSwift
 
-protocol TestRecoverPhraseLoginDelegate {
+protocol TestRecoverPhraseLoginDelegate: class {
   var currentCell: TestRecoveryPhraseLoginCell? { get set }
   func beginEditingTextfield(_ textfield: UITextField)
   func editingTextfield(_ textfield: UITextField)
@@ -20,7 +20,7 @@ protocol TestRecoverPhraseLoginDelegate {
 class TestRecoveryPhraseLoginCell: UICollectionViewCell, UITextFieldDelegate {
 
   // MARK: - Properties
-  var delegate: TestRecoverPhraseLoginDelegate?
+  weak var delegate: TestRecoverPhraseLoginDelegate?
   var numericOrderLabel: UILabel!
   var testPhraseTextField: UITextField!
 

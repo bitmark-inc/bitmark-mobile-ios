@@ -61,10 +61,10 @@ extension UIViewController {
   fileprivate func navigateNextOnboardingStepFromBiometricStep(_ steps: PublishRelay<Step>, _ disposeBag: DisposeBag) {
     guard let currentAccount = Global.currentAccount else { return }
 
-    if let _ = KeychainStore.getiCloudSettingFromKeychain(currentAccount.getAccountNumber()) {
-      steps.accept(BitmarkStep.onboardingIsComplete)
-    } else {
+    if KeychainStore.getiCloudSettingFromKeychain(currentAccount.getAccountNumber()) == nil {
       steps.accept(BitmarkStep.askingiCloudSetting)
+    } else {
+      steps.accept(BitmarkStep.onboardingIsComplete)
     }
   }
 

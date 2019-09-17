@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     initSentry()
     Global.log.logAppDetails()
-    
+
     // Check if launched from notification
     let notificationOption = launchOptions?[.remoteNotification]
 
@@ -95,8 +95,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication,
                    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
     var token = ""
-    for i in 0..<deviceToken.count {
-      token += String(format: "%02.2hhx", arguments: [deviceToken[i]])
+    for index in 0..<deviceToken.count {
+      token += String(format: "%02.2hhx", arguments: [deviceToken[index]])
     }
 
     registerAPNSSubject.onNext(token)
@@ -110,8 +110,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     registerAPNSSubject.onCompleted()
   }
 
-  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    guard let _ = url.scheme, let host = url.host else { return false }
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    guard url.scheme != nil, let host = url.host else { return false }
 
     switch host {
     case "authorization":
@@ -126,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
     default:
       return false
-    } 
+    }
 
     return true
   }
@@ -180,6 +180,7 @@ private extension AppDelegate {
   func initSentry() {
     do {
       Client.shared = try Client(dsn: "https://92d49f612d5f4cd89427cef0cd39794f@sentry.io/1494841")
+      Client.shared?.environment = Bundle.main.bundleIdentifier
       Client.shared?.trackMemoryPressureAsEvent()
       try Client.shared?.startCrashHandler()
     } catch {

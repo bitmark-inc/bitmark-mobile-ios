@@ -213,7 +213,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     downArrowAssetTypeSelection.isSelected = true
     let alertController = UIAlertController()
     [
-      "Photo".localized(), "Video".localized(),"File".localized()
+      "Photo".localized(), "Video".localized(), "File".localized()
     ].forEach { (assetType) in
       alertController.addAction(title: assetType, handler: selectAssetType)
     }
@@ -415,8 +415,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   func storeFileInAppStorage(of assetId: String) throws {
     guard let assetURL = assetURL, let assetFileName = assetFileName else { return }
-    ErrorReporting.breadcrumbs(info: "Path: \(assetURL.path); Filename: \(assetFileName)", category: .StoreFile, traceLog: true)
-    ErrorReporting.breadcrumbs(info: assetId, category: .StoreFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "Path: \(assetURL.path); Filename: \(assetFileName)", category: .storeFile)
+    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .storeFile)
 
     try iCloudService.shared.storeFile(fileURL: assetURL, filename: assetFileName, assetId: assetId)
   }

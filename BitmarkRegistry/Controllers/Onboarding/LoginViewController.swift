@@ -147,9 +147,6 @@ extension LoginViewController: TestRecoverPhraseLoginDelegate {
   }
 
   fileprivate func gotoCell(row: Int) {
-    if let _ = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: row, section: 0)) {
-      view.endEditing(true)
-    }
     guard let nextCell = recoveryPhraseCollectionView.cellForItem(at: IndexPath(row: row, section: 0)) as? TestRecoveryPhraseLoginCell else { return }
     nextCell.testPhraseTextField.becomeFirstResponder()
     nextCell.testPhraseTextField.sendActions(for: .editingDidBegin)

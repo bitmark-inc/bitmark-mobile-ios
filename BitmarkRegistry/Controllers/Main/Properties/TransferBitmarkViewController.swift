@@ -127,7 +127,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
           })
         }, onError: { (error) in
           selfAlert.dismiss(animated: true, completion: {
-            let localizedErrorMessage = (error as? DownloadFileError) == DownloadFileError.NotFound
+            let localizedErrorMessage = (error as? DownloadFileError) == DownloadFileError.notFound
                   ? "transfer_requireFile"
                   : "transfer_unsuccessfully"
             self.showErrorAlert(message: localizedErrorMessage.localized(tableName: "Error"))

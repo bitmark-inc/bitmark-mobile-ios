@@ -35,8 +35,7 @@ class DashboardFlow: Flow {
     let transactionsFlow = TransactionsFlow()
     let accountFlow = AccountFlow()
 
-    Flows.whenReady(flow1: propertiesFlow, flow2: transactionsFlow, flow3: accountFlow) { [unowned self]
-      (root1: UINavigationController, root2: UINavigationController, root3: UINavigationController) in
+    Flows.whenReady(flow1: propertiesFlow, flow2: transactionsFlow, flow3: accountFlow) { [unowned self] (root1: UINavigationController, root2: UINavigationController, root3: UINavigationController) in
 
       let propertiesTabBarItem = UITabBarItem(
         title: "Properties".localized(),
@@ -62,11 +61,17 @@ class DashboardFlow: Flow {
       root3.tabBarItem = accountTabBarItem
 
       self.rootViewController.setViewControllers([root1, root2, root3], animated: false)
+
+      // Remove top line from tabBar
+      self.rootViewController.tabBar.shadowImage = UIImage()
+      self.rootViewController.tabBar.backgroundImage = UIImage()
+      self.rootViewController.tabBar.backgroundColor = .wildSand
+
       guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 
       // Register APNS: when user access into Dashboard
       UNUserNotificationCenter.current()
-        .requestAuthorization(options: [.alert, .sound, .badge]) {(granted, error) in
+        .requestAuthorization(options: [.alert, .sound, .badge]) {(granted, _) in
           if granted {
             UNUserNotificationCenter.current().delegate = appDelegate
           } else {
@@ -80,7 +85,7 @@ class DashboardFlow: Flow {
     return .multiple(flowContributors: [
       .contribute(withNextPresentable: propertiesFlow, withNextStepper: propertiesStepper),
       .contribute(withNextPresentable: transactionsFlow, withNextStepper: OneStepper(withSingleStep: BitmarkStep.listOfTransactions)),
-      .contribute(withNextPresentable: accountFlow, withNextStepper: OneStepper(withSingleStep: BitmarkStep.viewAccountDetails)),
+      .contribute(withNextPresentable: accountFlow, withNextStepper: OneStepper(withSingleStep: BitmarkStep.viewAccountDetails))
     ])
   }
 

@@ -32,7 +32,7 @@ class BitmarkStorage: SyncStorageBase<Bitmark> {
   }
 
   func hasUnread() -> Bool {
-    return (try? ownerRealm().objects(BitmarkR.self).filter("read == false").count > 0) ?? false
+    return (try? !ownerRealm().objects(BitmarkR.self).filter("read == false").isEmpty) ?? false
   }
 
   override func syncData() throws {

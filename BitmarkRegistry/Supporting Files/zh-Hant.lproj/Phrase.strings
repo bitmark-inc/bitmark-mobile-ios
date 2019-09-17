@@ -75,7 +75,7 @@
 "appDetails_shareThisApp" = "分享這個應用程式";
 "appDetails_releaseNotes" = "版本歷史紀錄";
 "appDetails_versionApp" = "版本 %@";
-"appDetails_supportMessage" = "我們重視所有使用者的體驗，如果在使用過程中有遇到任何的問題或者有建議想對我們說，請傳送電子郵件至";
+"appDetails_supportMessage" = "我們很重視您的回饋意見，如果您有任何想法或建議，進而優化我們的app，請發送電子郵件至";
 
 "propertyDescriptionInfo_title" = "資產描述是什麼?";
 "propertyDescriptionInfo_message" = "資產描述是由KEY 和VALUE組成，它能在數位系統內有效地儲存並分類您的數據。在看不到數據本身的情況下，讓任何人能夠交易和辨識出自己想要的數據，進而使數據在經濟上產生價值。\n\n資產描述將永久記錄在Bitmark區塊鏈中，無法再做修改或刪除。\n\n以下是一位記者檔案的資產描述範例：";

@@ -13,7 +13,7 @@ import RxSwift
 import RxCocoa
 
 enum DownloadFileError: Error {
-  case NotFound
+  case notFound
 }
 
 class iCloudService {
@@ -71,18 +71,19 @@ class iCloudService {
     return FileManager.default.url(forUbiquityContainerIdentifier: nil) != nil
   }
 
-  // MARK - Sync Data File
+  // MARK: - Sync Data File
   func setupDataFile() throws {
     guard !fileExists(fileURL: dataURL) else { return }
-    ErrorReporting.breadcrumbs(info: "createDataFile", category: .StoreData, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "createDataFile", category: .storeData)
     let emptyAssetWithFilenameData: [String: String] = [:]
     let data = try JSONEncoder().encode(emptyAssetWithFilenameData)
     try data.write(to: dataURL, options: [.atomic])
-    ErrorReporting.breadcrumbs(info: "Finished to createDataFile", category: .StoreData, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "Finished to createDataFile", category: .storeData)
   }
 
   func syncDataFromiCloud() {
-    ErrorReporting.breadcrumbs(info: "syncDataFromiCloud", category: .StoreData, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "syncDataFromiCloud", category: .storeData)
+
     DispatchQueue.global().async { [weak self] in
       guard let self = self else { return }
       self.newDownloadFileObservable
@@ -96,7 +97,8 @@ class iCloudService {
   }
 
   func updateAssetInfoFromData() {
-    ErrorReporting.breadcrumbs(info: "updateAssetInfoFromData", category: .StoreData, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "updateAssetInfoFromData", category: .storeData)
+
     do {
       guard let userRealm = try RealmConfig.currentRealm() else { return }
 
@@ -108,7 +110,7 @@ class iCloudService {
           assetR.assetType = AssetType.get(from: assetR).rawValue
         }
       }
-      ErrorReporting.breadcrumbs(info: "Finish updateAssetInfoFromData", category: .StoreData, traceLog: true)
+      ErrorReporting.breadcrumbs(info: "Finish updateAssetInfoFromData", category: .storeData)
     } catch {
       Global.log.error(error)
       ErrorReporting.report(error: error)
@@ -172,7 +174,7 @@ class iCloudService {
 
   func moveFileToAppStorage(fileURL: URL, filename: String) throws {
     let destinationURL = containerURL.appendingPathComponent(filename)
-    ErrorReporting.breadcrumbs(info: "moveFileToAppStorage: \(destinationURL.path)", category: .StoreFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "moveFileToAppStorage: \(destinationURL.path)", category: .storeFile)
 
     guard !fileExists(fileURL: destinationURL) else { return }
     try FileManager.default.copyItem(at: fileURL, to: destinationURL)
@@ -189,7 +191,7 @@ class iCloudService {
   }
 
   func saveAssetInfoIntoData(assetId: String, filename: String) {
-    ErrorReporting.breadcrumbs(info: "saveAssetInfoIntoData", category: .StoreFile, traceLog: true)
+    ErrorReporting.breadcrumbs(info: "saveAssetInfoIntoData", category: .storeFile)
     serialSyncQueue.sync {
       do {
         var assetWithFilenameData = try getAssetWithFilenameData()
@@ -209,8 +211,8 @@ class iCloudService {
   func downloadFile(fileURL: URL) {
     currentFileURL = fileURL
     guard let isFileDownloaded = isFileDownloaded(fileURL: fileURL, documentQuery: &fileDocumentQuery) else {
-      ErrorReporting.breadcrumbs(info: "File \(fileURL) is not existed in icloud", category: .StoreFile, traceLog: true)
-      downloadFileSubject.onError(DownloadFileError.NotFound)
+      ErrorReporting.breadcrumbs(info: "File \(fileURL) is not existed in icloud", category: .storeFile)
+      downloadFileSubject.onError(DownloadFileError.notFound)
       downloadFileSubject.onCompleted()
       return
     }
@@ -257,7 +259,7 @@ extension iCloudService {
     let dataURL = dataURL ?? self.dataURL
     guard fileExists(fileURL: dataURL) else { return [:] }
     let data = try Data(contentsOf: dataURL)
-    return try JSONDecoder().decode([String : String].self, from: data)
+    return try JSONDecoder().decode([String: String].self, from: data)
   }
 
   fileprivate func isValidPercent(query: NSMetadataQuery, startQuery: NSMetadataQuery) -> Bool {
