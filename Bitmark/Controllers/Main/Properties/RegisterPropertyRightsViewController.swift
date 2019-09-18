@@ -67,15 +67,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     disabledScreen.isHidden = false
 
     assetFingerprintObservable = Observable.just(assetURL)
-      .subscribeOn(MainScheduler.asyncInstance)
+      .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
       .map { try FileUtil.computeFingerprint(url: $0) }
       .share(replay: 1, scope: .forever)
 
-    assetFingerprintObservable
-      .map { AssetService.getAsset(from: $0) }
-      .bind(to: assetRVariable)
-      .disposed(by: disposeBag)
-
+    getAssetRFromFingerprint()
     loadData()
   }
 
@@ -107,10 +103,14 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
     navigationController?.navigationBar.addSubview(transparentNavBackButton)
 
-    if !didFirstAutoFocus {
-      propertyNameTextField.becomeFirstResponder()
-      didFirstAutoFocus = true
-    }
+    assetRVariable.asObservable()
+      .observeOn(MainScheduler.instance)
+      .subscribe(onNext: { [weak self] (assetR) in
+        guard let self = self, assetR == nil, !self.didFirstAutoFocus else { return }
+        self.propertyNameTextField.becomeFirstResponder()
+        self.didFirstAutoFocus = true
+      })
+      .disposed(by: disposeBag)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -121,6 +121,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   @objc func tapBackNav(_ sender: UIBarButtonItem) {
+    view.endEditing(true)
     let discardRegistrationConfirmation = UIAlertController(
       title: "registerPropertyRights_discardConfirmationTitle".localized(tableName: "Phrase"),
       message: "registerPropertyRights_discardConfirmationMessage".localized(tableName: "Phrase"),
@@ -139,6 +140,34 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   // MARK: - Load Data
+
+  /**
+   compute assetId from asset fingerprint; then check if asset with assetId has existed
+      - check in Realm DB first: query in Main Thread cause Realm - Object is thread-contained
+      - if asset has not existed in DB, check in server
+   */
+  fileprivate func getAssetRFromFingerprint() {
+    assetFingerprintObservable
+      .map({ (fingerprint) -> String? in
+        RegistrationParams.computeAssetId(fingerprint: fingerprint)
+      })
+      .map({ (assetId) -> AssetR? in
+        guard let assetId = assetId else { return nil }
+        var assetRFromDB: AssetR?
+
+        DispatchQueue.main.sync {
+          do {
+            assetRFromDB = try AssetR.get(assetId)
+          } catch {
+            ErrorReporting.report(error: error)
+          }
+        }
+        return assetRFromDB ?? AssetService.getAsset(assetId)
+      })
+      .bind(to: assetRVariable)
+      .disposed(by: disposeBag)
+  }
+
   fileprivate func loadData() {
     assetFilenameLabel.text = assetFileName
 
@@ -201,6 +230,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // *** Asset Type ***
   @objc func showAssetTypePicker() {
     guard assetRVariable.value == nil else { return }
+    view.endEditing(true)
     assetTypeTextField.setPlaceHolderTextColor(.mainBlueColor)
     downArrowAssetTypeSelection.isSelected = true
     let alertController = UIAlertController()

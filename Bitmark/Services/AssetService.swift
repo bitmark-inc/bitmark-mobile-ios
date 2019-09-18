@@ -11,18 +11,7 @@ import BitmarkSDK
 
 class AssetService {
 
-  static func getAsset(from fingerprint: String) -> AssetR? {
-    guard let assetId = RegistrationParams.computeAssetId(fingerprint: fingerprint) else { return nil }
-
-    do {
-      let userRealm = try RealmConfig.currentRealm()
-      if let assetR = userRealm?.object(ofType: AssetR.self, forPrimaryKey: assetId) {
-        return assetR
-      }
-    } catch {
-      ErrorReporting.report(error: error)
-    }
-
+  static func getAsset(_ assetId: String) -> AssetR? {
     do {
       let asset = try Asset.get(assetID: assetId)
       return AssetR(asset: asset)
