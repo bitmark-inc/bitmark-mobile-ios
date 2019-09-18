@@ -24,7 +24,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var assetURL: URL!
 
   var assetFingerprintObservable: Observable<String>!
-  var assetRVariable = BehaviorRelay<AssetR?>(value: nil)
+  var assetRObservable = ReplaySubject<AssetR?>.create(bufferSize: 1)
+  var existedAssetId: String?
   var scrollView: UIScrollView!
   var assetFingerprintLabel: UILabel!
   var assetFilenameLabel: UILabel!
@@ -104,7 +105,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
     navigationController?.navigationBar.addSubview(transparentNavBackButton)
 
-    assetRVariable.asObservable()
+    guard !didFirstAutoFocus else { return }
+    assetRObservable
       .observeOn(MainScheduler.instance)
       .subscribe(onNext: { [weak self] (assetR) in
         guard let self = self, assetR == nil, !self.didFirstAutoFocus else { return }
@@ -156,6 +158,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         guard let assetId = assetId else { return nil }
         var assetRFromDB: AssetR?
 
+        // get assetR from Realm
         DispatchQueue.main.sync {
           do {
             assetRFromDB = try AssetR.get(assetId)
@@ -163,9 +166,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
             ErrorReporting.report(error: error)
           }
         }
+
+        // if assetR in Realm has not existed in DB, check in server
         return assetRFromDB ?? AssetService.getAsset(assetId)
       })
-      .bind(to: assetRVariable)
+      .bind(to: assetRObservable)
       .disposed(by: disposeBag)
   }
 
@@ -176,10 +181,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       .bind(to: assetFingerprintLabel.rx.text)
       .disposed(by: disposeBag)
 
-    assetRVariable.asObservable().skip(1)
+    assetRObservable
       .observeOn(MainScheduler.instance)
       .subscribe(onNext: { [weak self] (assetR) in
       guard let self = self else { return }
+      self.existedAssetId = assetR?.id
       if let assetR = assetR {
         self.loadAssetRData(assetR)
       } else {
@@ -230,7 +236,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // MARK: - Handlers
   // *** Asset Type ***
   @objc func showAssetTypePicker() {
-    guard assetRVariable.value == nil else { return }
     view.endEditing(true)
     assetTypeTextField.setPlaceHolderTextColor(.mainBlueColor)
     downArrowAssetTypeSelection.isSelected = true
@@ -291,10 +296,9 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     metadataStackView.addArrangedSubview(newMetadataForm)
     metadataForms.append(newMetadataForm)
 
-    if assetRVariable.value == nil && !isDefault {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        newMetadataForm.labelTextField.becomeFirstResponder()
-      }
+    guard existedAssetId == nil, !isDefault else { return }
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      newMetadataForm.labelTextField.becomeFirstResponder()
     }
   }
 
@@ -417,8 +421,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   func createAssetObservable(_ registrant: Account) -> Observable<String> {
-    if let assetR = assetRVariable.value {
-      return Observable.just(assetR.id)
+    if let existedAssetId = existedAssetId {
+      return Observable.just(existedAssetId)
     } else {
       let assetName = propertyNameTextField.text!
       var metadata = extractMetadataFromForms()
@@ -568,7 +572,7 @@ extension RegisterPropertyRightsViewController {
   }
 
   func validToIssue() -> Bool {
-    if assetRVariable.value == nil {
+    if existedAssetId == nil {
       return !propertyNameTextField.isEmpty &&
              !assetTypeTextField.isEmpty &&
               errorForMetadata.text?.isEmpty ?? true &&
