@@ -144,32 +144,31 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   // MARK: - Load Data
 
-  /**
-   compute assetId from asset fingerprint; then check if asset with assetId has existed
-      - check in Realm DB first: query in Main Thread cause Realm - Object is thread-contained
-      - if asset has not existed in DB, check in server
-   */
+  // compute assetId from asset fingerprint; then check if asset with assetId has existed
   fileprivate func getAssetRFromFingerprint() {
-    assetFingerprintObservable
-      .map({ (fingerprint) -> String? in
-        RegistrationParams.computeAssetId(fingerprint: fingerprint)
-      })
-      .map({ (assetId) -> AssetR? in
-        guard let assetId = assetId else { return nil }
-        var assetRFromDB: AssetR?
+    let assetIdObservable = assetFingerprintObservable
+      .map { RegistrationParams.computeAssetId(fingerprint: $0) }
+      .errorOnNil()
 
-        // get assetR from Realm
-        DispatchQueue.main.sync {
-          do {
-            assetRFromDB = try AssetR.get(assetId)
-          } catch {
-            ErrorReporting.report(error: error)
-          }
+    let assetRFromServerObservable = assetIdObservable
+      .observeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+      .map { (assetId) -> Asset? in
+        AssetService.getAsset(assetId)
+      }
+      .map { (asset) -> AssetR? in
+        guard let asset = asset else { return nil }
+        return AssetR(asset: asset)
+      }
+
+    assetIdObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .flatMap { (assetId) -> Observable<AssetR?> in
+        guard let assetR = try AssetR.get(assetId) else {
+          return Observable.empty()
         }
-
-        // if assetR in Realm has not existed in DB, check in server
-        return assetRFromDB ?? AssetService.getAsset(assetId)
-      })
+        return Observable.just(assetR)
+      }
+      .ifEmpty(switchTo: assetRFromServerObservable) // if asset has not existed in DB, check in server
       .bind(to: assetRObservable)
       .disposed(by: disposeBag)
   }

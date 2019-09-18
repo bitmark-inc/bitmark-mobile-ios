@@ -11,10 +11,9 @@ import BitmarkSDK
 
 class AssetService {
 
-  static func getAsset(_ assetId: String) -> AssetR? {
+  static func getAsset(_ assetId: String) -> Asset? {
     do {
-      let asset = try Asset.get(assetID: assetId)
-      return AssetR(asset: asset)
+      return try Asset.get(assetID: assetId)
     } catch {
       return nil
     }
