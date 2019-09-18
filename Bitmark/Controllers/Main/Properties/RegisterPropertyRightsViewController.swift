@@ -40,6 +40,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var errorForMetadata: UILabel!
   var numberOfBitmarksBox: UIView!
   var numberOfBitmarksTextField: GMStepper!
+  var rightsClaimContentView: UIStackView!
   var confirmCheckBox: BEMCheckBox!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
@@ -645,7 +646,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     let inputFields = [
-      propertyNameTextField, assetTypeTextField, metadataStackView, numberOfBitmarksBox
+      propertyNameTextField, assetTypeTextField, metadataStackView, numberOfBitmarksBox, rightsClaimContentView
     ]
     inputFields.forEach({ (inputField) in
       inputField?.snp.makeConstraints { $0.width.equalTo(mainView) }
@@ -852,15 +853,18 @@ extension RegisterPropertyRightsViewController {
 
     let confirmCheckboxView = UIView()
     confirmCheckboxView.addSubview(confirmCheckBox)
-    confirmCheckBox.snp.makeConstraints({ $0.top.equalToSuperview().offset(5) })
+    confirmCheckBox.snp.makeConstraints { (make) in
+      make.top.equalToSuperview().offset(5)
+      make.leading.equalToSuperview()
+    }
 
     let description = CommonUI.descriptionLabel(text: "registerPropertyRights_rightsClaimMessage".localized(tableName: "Phrase"))
 
-    let confirmView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
+    rightsClaimContentView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
     confirmCheckboxView.snp.makeConstraints({ $0.width.equalTo(19) })
     description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28) })
 
-    return UIStackView(arrangedSubviews: [fieldLabel, confirmView], axis: .vertical, spacing: 10)
+    return UIStackView(arrangedSubviews: [fieldLabel, rightsClaimContentView], axis: .vertical, spacing: 10)
   }
 
   fileprivate func setupDisabledScreen() {

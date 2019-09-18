@@ -184,6 +184,9 @@ extension AccountViewController {
     copiedToClipboardNotifier.isHidden = true
 
     let accountNumberDescription = CommonUI.descriptionLabel(text: "account_message".localized(tableName: "Phrase"))
+    if view.height <= 568 { // adjust fit for iphone 4-inch
+      accountNumberDescription.font = UIFont(name: "Avenir", size: 14)
+    }
     accountNumberDescription.lineHeightMultiple(1.2)
 
     let accountNumberBox = UIView()
