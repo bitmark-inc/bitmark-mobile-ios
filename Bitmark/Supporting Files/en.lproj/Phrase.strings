@@ -12,8 +12,8 @@
 "signin_resultWrongMessage" = "Please recheck your recovery phrase and tap to edit any incorrect words above.";
 "signin_resultWrong" = "Wrong Recovery Phrase!";
 
-"onboarding_title" = "BITMARK REGISTRY";
-"onboarding_title_description" = "Protect the legal rights to your data and other digital assets.";
+"onboarding_title" = "Take control of your data";
+"onboarding_title_description" = "Register digital property rights to your data so that only you control who accesses it.";
 "onboarding_termsPrivacyAgreement" = "By continuing, you agree to the Bitmark %@ and %@.";
 
 "facetouchid_title" = "TOUCH/FACE ID";
