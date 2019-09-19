@@ -347,15 +347,23 @@ extension iCloudService {
   }
 
   fileprivate func fileExists(fileURL: URL) -> Bool {
-    if FileManager.default.fileExists(atPath: fileURL.path) { return true }
-
-    do {
-      let attributes = try fileURL.resourceValues(forKeys: [URLResourceKey.ubiquitousItemDownloadingStatusKey])
-      return (attributes.allValues[URLResourceKey.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus) != nil
-    } catch {
-      ErrorReporting.report(error: error)
+    guard let isiCloudEnabled = Global.isiCloudEnabled else {
+      ErrorReporting.report(error: Global.appError(message: "missing flow: missing iCloud Setting in Keychain"))
+      return false
     }
-    return false
+
+    if isiCloudEnabled {
+      if FileManager.default.fileExists(atPath: fileURL.path) { return true }
+      do {
+        let attributes = try fileURL.resourceValues(forKeys: [URLResourceKey.ubiquitousItemDownloadingStatusKey])
+        return (attributes.allValues[URLResourceKey.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus) != nil
+      } catch {
+        ErrorReporting.report(error: error)
+      }
+      return false
+    } else {
+      return FileManager.default.fileExists(atPath: fileURL.path)
+    }
   }
 
   /**

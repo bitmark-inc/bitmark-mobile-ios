@@ -24,7 +24,7 @@
 "Done" = "完成";
 "Download" = "下載";
 "Edit" = "編輯";
-"Enable" = "Enable";
+"Enable" = "開啟";
 "EnableAccess" = "開啟權限";
 "Error" = "發生錯誤";
 "Error!" = "發生錯誤!";
@@ -39,6 +39,7 @@
 "No" = "取消";
 "NoInternetConnection" = "無網路連線";
 "OK" = "確認";
+"Optional" = "非必要";
 "Owner" = "所有人";
 "P2P_TRANSFER" = "轉移";
 "Pending" = "傳輸中";

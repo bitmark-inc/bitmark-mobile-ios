@@ -52,6 +52,11 @@ class AssetR: Object {
 
 // MARK: - Data Handlers
 extension AssetR {
+  static func get(_ assetId: String) throws -> AssetR? {
+    let userRealm = try RealmConfig.currentRealm()
+    return userRealm?.object(ofType: AssetR.self, forPrimaryKey: assetId)
+  }
+
   func updateAssetFileInfo(_ assetFilePath: String) {
     guard let currentAccount = Global.currentAccount else { return }
     do {

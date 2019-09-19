@@ -22,13 +22,10 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // MARK: - Properties
   var assetFileName: String!
   var assetURL: URL!
-  lazy var assetURLObservable: Observable<URL> = {
-    return Observable.just(assetURL!)
-  }()
 
-  var assetDataObservable: Observable<Data>!
   var assetFingerprintObservable: Observable<String>!
-  var assetRVariable = BehaviorRelay<AssetR?>(value: nil)
+  var assetRObservable = ReplaySubject<AssetR?>.create(bufferSize: 1)
+  var existedAssetId: String?
   var scrollView: UIScrollView!
   var assetFingerprintLabel: UILabel!
   var assetFilenameLabel: UILabel!
@@ -44,6 +41,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   var errorForMetadata: UILabel!
   var numberOfBitmarksBox: UIView!
   var numberOfBitmarksTextField: GMStepper!
+  var rightsClaimContentView: UIStackView!
   var confirmCheckBox: BEMCheckBox!
   var issueButton: UIButton!
   var issueButtonBottomConstraint: Constraint!
@@ -65,25 +63,17 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     setupViews()
     setupEvents()
 
+    guard let assetURL = assetURL else { return }
+
     activityIndicator.startAnimating()
     disabledScreen.isHidden = false
 
-    assetDataObservable = assetURLObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { try Data(contentsOf: $0) }
+    assetFingerprintObservable = Observable.just(assetURL)
+      .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+      .map { try FileUtil.computeFingerprint(url: $0) }
       .share(replay: 1, scope: .forever)
 
-    assetFingerprintObservable = assetDataObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { AssetService.getFingerprintFrom($0) }
-      .share(replay: 1, scope: .forever)
-
-    assetFingerprintObservable
-      .observeOn(MainScheduler.asyncInstance)
-      .map { AssetService.getAsset(from: $0) }
-      .bind(to: assetRVariable)
-      .disposed(by: disposeBag)
-
+    getAssetRFromFingerprint()
     loadData()
   }
 
@@ -115,10 +105,15 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     transparentNavBackButton.addTarget(self, action: #selector(tapBackNav), for: .touchUpInside)
     navigationController?.navigationBar.addSubview(transparentNavBackButton)
 
-    if !didFirstAutoFocus {
-      propertyNameTextField.becomeFirstResponder()
-      didFirstAutoFocus = true
-    }
+    guard !didFirstAutoFocus else { return }
+    assetRObservable
+      .observeOn(MainScheduler.instance)
+      .subscribe(onNext: { [weak self] (assetR) in
+        guard let self = self, assetR == nil, !self.didFirstAutoFocus else { return }
+        self.propertyNameTextField.becomeFirstResponder()
+        self.didFirstAutoFocus = true
+      })
+      .disposed(by: disposeBag)
   }
 
   override func viewWillDisappear(_ animated: Bool) {
@@ -129,6 +124,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   @objc func tapBackNav(_ sender: UIBarButtonItem) {
+    view.endEditing(true)
     let discardRegistrationConfirmation = UIAlertController(
       title: "registerPropertyRights_discardConfirmationTitle".localized(tableName: "Phrase"),
       message: "registerPropertyRights_discardConfirmationMessage".localized(tableName: "Phrase"),
@@ -147,6 +143,36 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   // MARK: - Load Data
+
+  // compute assetId from asset fingerprint; then check if asset with assetId has existed
+  fileprivate func getAssetRFromFingerprint() {
+    let assetIdObservable = assetFingerprintObservable
+      .map { RegistrationParams.computeAssetId(fingerprint: $0) }
+      .errorOnNil()
+
+    let assetRFromServerObservable = assetIdObservable
+      .observeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+      .map { (assetId) -> Asset? in
+        AssetService.getAsset(assetId)
+      }
+      .map { (asset) -> AssetR? in
+        guard let asset = asset else { return nil }
+        return AssetR(asset: asset)
+      }
+
+    assetIdObservable
+      .observeOn(MainScheduler.asyncInstance)
+      .flatMap { (assetId) -> Observable<AssetR?> in
+        guard let assetR = try AssetR.get(assetId) else {
+          return Observable.empty()
+        }
+        return Observable.just(assetR)
+      }
+      .ifEmpty(switchTo: assetRFromServerObservable) // if asset has not existed in DB, check in server
+      .bind(to: assetRObservable)
+      .disposed(by: disposeBag)
+  }
+
   fileprivate func loadData() {
     assetFilenameLabel.text = assetFileName
 
@@ -154,10 +180,11 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
       .bind(to: assetFingerprintLabel.rx.text)
       .disposed(by: disposeBag)
 
-    assetRVariable.asObservable().skip(1)
+    assetRObservable
       .observeOn(MainScheduler.instance)
       .subscribe(onNext: { [weak self] (assetR) in
       guard let self = self else { return }
+      self.existedAssetId = assetR?.id
       if let assetR = assetR {
         self.loadAssetRData(assetR)
       } else {
@@ -208,7 +235,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   // MARK: - Handlers
   // *** Asset Type ***
   @objc func showAssetTypePicker() {
-    guard assetRVariable.value == nil else { return }
+    view.endEditing(true)
     assetTypeTextField.setPlaceHolderTextColor(.mainBlueColor)
     downArrowAssetTypeSelection.isSelected = true
     let alertController = UIAlertController()
@@ -268,10 +295,9 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
     metadataStackView.addArrangedSubview(newMetadataForm)
     metadataForms.append(newMetadataForm)
 
-    if assetRVariable.value == nil && !isDefault {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        newMetadataForm.labelTextField.becomeFirstResponder()
-      }
+    guard existedAssetId == nil, !isDefault else { return }
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      newMetadataForm.labelTextField.becomeFirstResponder()
     }
   }
 
@@ -371,6 +397,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           .map { (assetId) -> Void in
             try AssetService.issueBitmarks(issuer: registrant, assetId: assetId, quantity: quantity)
           }
+          .observeOn(MainScheduler.instance)
           .subscribe(
             onNext: { (_) in
               selfAlert.dismiss(animated: true, completion: {
@@ -393,18 +420,18 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
   }
 
   func createAssetObservable(_ registrant: Account) -> Observable<String> {
-    if let assetR = assetRVariable.value {
-      return Observable.just(assetR.id)
+    if let existedAssetId = existedAssetId {
+      return Observable.just(existedAssetId)
     } else {
       let assetName = propertyNameTextField.text!
       var metadata = extractMetadataFromForms()
       metadata["SOURCE"] = assetTypeTextField.text!
 
-      return assetDataObservable.flatMap { (assetData) -> Observable<String> in
+      return assetFingerprintObservable.flatMap { (assetFingerprint) -> Observable<String> in
         let assetInfo = (
           registrant: registrant,
           assetName: assetName,
-          fingerprint: assetData,
+          fingerprint: assetFingerprint,
           metadata: metadata
         )
         let assetId = try AssetService.registerAsset(assetInfo: assetInfo)
@@ -544,7 +571,7 @@ extension RegisterPropertyRightsViewController {
   }
 
   func validToIssue() -> Bool {
-    if assetRVariable.value == nil {
+    if existedAssetId == nil {
       return !propertyNameTextField.isEmpty &&
              !assetTypeTextField.isEmpty &&
               errorForMetadata.text?.isEmpty ?? true &&
@@ -622,7 +649,7 @@ extension RegisterPropertyRightsViewController {
     }
 
     let inputFields = [
-      propertyNameTextField, assetTypeTextField, metadataStackView, numberOfBitmarksBox
+      propertyNameTextField, assetTypeTextField, metadataStackView, numberOfBitmarksBox, rightsClaimContentView
     ]
     inputFields.forEach({ (inputField) in
       inputField?.snp.makeConstraints { $0.width.equalTo(mainView) }
@@ -829,15 +856,18 @@ extension RegisterPropertyRightsViewController {
 
     let confirmCheckboxView = UIView()
     confirmCheckboxView.addSubview(confirmCheckBox)
-    confirmCheckBox.snp.makeConstraints({ $0.top.equalToSuperview().offset(5) })
+    confirmCheckBox.snp.makeConstraints { (make) in
+      make.top.equalToSuperview().offset(5)
+      make.leading.equalToSuperview()
+    }
 
     let description = CommonUI.descriptionLabel(text: "registerPropertyRights_rightsClaimMessage".localized(tableName: "Phrase"))
 
-    let confirmView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
+    rightsClaimContentView = UIStackView(arrangedSubviews: [confirmCheckboxView, description], axis: .horizontal, spacing: 5, alignment: .fill, distribution: .fillProportionally)
     confirmCheckboxView.snp.makeConstraints({ $0.width.equalTo(19) })
     description.snp.makeConstraints({ $0.width.equalToSuperview().offset(-28) })
 
-    return UIStackView(arrangedSubviews: [fieldLabel, confirmView], axis: .vertical, spacing: 10)
+    return UIStackView(arrangedSubviews: [fieldLabel, rightsClaimContentView], axis: .vertical, spacing: 10)
   }
 
   fileprivate func setupDisabledScreen() {
