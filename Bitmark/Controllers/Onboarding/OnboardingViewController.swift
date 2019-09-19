@@ -100,6 +100,8 @@ extension OnboardingViewController {
 
     // *** Setup subviews ***
     let titlePageLabel = CommonUI.pageTitleLabel(text: "onboarding_title".localized(tableName: "Phrase").localizedUppercase)
+    titlePageLabel.adjustsFontSizeToFitWidth = true
+    titlePageLabel.numberOfLines = 1
     titlePageLabel.textColor = .mainBlueColor
 
     let descriptionLabel = CommonUI.descriptionLabel(text: "onboarding_title_description".localized(tableName: "Phrase"))
@@ -113,7 +115,7 @@ extension OnboardingViewController {
 
     introductionImageView.snp.makeConstraints { (make) in
       make.centerX.centerY.equalToSuperview()
-      make.height.equalTo(view.frame.height * 0.3)
+      make.height.equalTo(view.frame.height * 0.28)
     }
 
     let titleView = UIStackView(
