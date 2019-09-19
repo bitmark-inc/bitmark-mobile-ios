@@ -150,9 +150,9 @@ extension OnboardingViewController {
     }
 
     agreementTextView.snp.makeConstraints { (make) in
-      make.height.equalTo(45)
+      make.height.equalTo(60)
       make.leading.trailing.equalToSuperview()
-      make.bottom.equalToSuperview().offset(-25)
+      make.bottom.equalToSuperview().offset(-10)
     }
 
     activityIndicator.snp.makeConstraints { (make) in

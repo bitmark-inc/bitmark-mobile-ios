@@ -106,7 +106,7 @@ extension AppDetailViewController {
     shareThisAppLink = CommonUI.linkButton(title: "appDetails_shareThisApp".localized(tableName: "Phrase").localizedUppercase)
 
     let bottomStackView = UIStackView(
-      arrangedSubviews: [whatNewLink, CommonUI.linkSeparateLine(), appStoreReviewLink, CommonUI.linkSeparateLine(), shareThisAppLink],
+      arrangedSubviews: [CommonUI.linkSeparateLine(), whatNewLink, CommonUI.linkSeparateLine(), appStoreReviewLink, CommonUI.linkSeparateLine(), shareThisAppLink],
       axis: .vertical,
       spacing: 8
     )

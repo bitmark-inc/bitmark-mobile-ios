@@ -142,11 +142,11 @@ class FileCourierService {
               encryptedFileData: encryptedData
             )
 
-            return observer.onNext(responseData)
+            observer.onNext(responseData)
+            observer.onCompleted()
           } catch {
-            return observer.onError(error)
+            observer.onError(error)
           }
-
         }
         task.resume()
 
