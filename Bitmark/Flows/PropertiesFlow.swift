@@ -57,7 +57,6 @@ class PropertiesFlow: Flow {
     case .viewMusicBitmarkDetails(let bitmarkR, let assetR):
       return navigateToMusicBitmarkDetails(bitmarkR: bitmarkR, assetR: assetR)
     case .viewMusicBitmarkDetailsIsComplete:
-      rootViewController.isNavigationBarHidden = false
       rootViewController.popViewController(animated: true)
       return .none
     case .viewRegistryBitmarkDetails(let bitmarkId):
@@ -108,8 +107,8 @@ class PropertiesFlow: Flow {
     let transferBitmarkVC = TransferBitmarkViewController()
     transferBitmarkVC.assetR = assetR
     transferBitmarkVC.bitmarkId = bitmarkId
-    self.rootViewController.pushViewController(transferBitmarkVC)
 
+    rootViewController.pushViewController(transferBitmarkVC)
     return .one(flowContributor: .contribute(withNextPresentable: transferBitmarkVC, withNextStepper: transferBitmarkVC))
   }
 
@@ -149,7 +148,6 @@ class PropertiesFlow: Flow {
 
     musicBitmarkDetailsVC.hidesBottomBarWhenPushed = true
     rootViewController.pushViewController(musicBitmarkDetailsVC)
-    rootViewController.isNavigationBarHidden = true
 
     return .one(flowContributor: .contribute(withNextPresentable: musicBitmarkDetailsVC, withNextStepper: musicBitmarkDetailsVC))
   }
@@ -157,7 +155,8 @@ class PropertiesFlow: Flow {
   fileprivate func navigateToRegistryBitmarkDetailsScreen(bitmarkId: String) -> FlowContributors {
     let registryDetailVC = RegistryDetailViewController()
     registryDetailVC.query = "/bitmark/" + bitmarkId
-    self.rootViewController.pushViewController(registryDetailVC)
+
+    rootViewController.pushViewController(registryDetailVC)
     return .none
   }
 }
