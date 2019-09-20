@@ -151,7 +151,7 @@ extension QRScannerViewController {
         DispatchQueue.main.sync {
 
           if let error = error {
-            ErrorReporting.report(error: error)
+            Global.log.error(error)
             self.showErrorAlert(
               title: "Error".localized(),
               message: String(format: "ownershipClaim_errorRequest".localized(tableName: "Error"), urlHost)
@@ -169,7 +169,7 @@ extension QRScannerViewController {
         }
       }
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
       self.showErrorAlert(
         title: "Error".localized(),
         message: String(format: "ownershipClaim_errorRequest".localized(tableName: "Error"), urlHost)

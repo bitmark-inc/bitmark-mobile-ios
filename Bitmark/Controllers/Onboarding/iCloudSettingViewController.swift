@@ -49,7 +49,7 @@ class iCloudSettingViewController: UIViewController, Stepper {
       iCloudService.shared.migrateFileData()
       steps.accept(BitmarkStep.iCloudSettingIsComplete)
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
       steps.accept(BitmarkStep.appSuspension)
     }
   }

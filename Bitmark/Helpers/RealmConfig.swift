@@ -20,7 +20,7 @@ enum RealmConfig {
   static func currentRealm() throws -> Realm? {
     guard let accountNumber = Global.currentAccount?.getAccountNumber() else { return nil }
     let userConfiguration = try RealmConfig.user(accountNumber).configuration()
-    Global.log.info("UserRealm: \(userConfiguration)")
+    Global.log.debug("UserRealm: \(userConfiguration)")
     return try Realm(configuration: userConfiguration)
   }
 
@@ -38,7 +38,7 @@ enum RealmConfig {
   }
 
   fileprivate func dbDirectoryURL() -> URL {
-    ErrorReporting.breadcrumbs(info: "get db Directory URL", category: .dbData)
+    Global.log.info("get db Directory URL")
     let dbDirectory = URL(fileURLWithPath: "db", relativeTo: FileManager.sharedDirectoryURL ?? FileManager.documentDirectoryURL)
 
     do {
@@ -51,10 +51,10 @@ enum RealmConfig {
         try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.none], ofItemAtPath: dbDirectory.path)
       }
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
 
-    ErrorReporting.breadcrumbs(info: "get db Directory URL successfully", category: .dbData)
+    Global.log.info("get db Directory URL successfully")
     return dbDirectory
   }
 

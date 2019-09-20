@@ -23,7 +23,7 @@ extension UITableView {
     case .update(_, let deletions, let insertions, let updates):
       applyChanges(deletions: deletions, insertions: insertions, updates: updates)
     case .error(let error):
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 

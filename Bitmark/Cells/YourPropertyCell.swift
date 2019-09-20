@@ -67,7 +67,7 @@ class YourPropertyCell: UITableViewCell {
         self?.thumbnailImageView.image = image
         }, onError: { (error) in
           Global.log.error(error)
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
       })
       .disposed(by: disposeBag)
   }

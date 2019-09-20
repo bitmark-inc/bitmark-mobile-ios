@@ -20,8 +20,8 @@ extension Observable where Element == (HTTPURLResponse, Data) {
           let object = try JSONDecoder().decode(type, from: data)
           return Observable<T>.just(object)
         } catch {
-          ErrorReporting.breadcrumbs(info: "type: \(type)", category: .warningError)
-          ErrorReporting.breadcrumbs(info: "data: \(data.hexEncodedString)", category: .warningError)
+          Global.log.info("type(\(type)")
+          Global.log.info("data(\(data.hexEncodedString)")
           throw error
         }
       default:
@@ -29,7 +29,7 @@ extension Observable where Element == (HTTPURLResponse, Data) {
           let data = try JSONDecoder().decode(ApiError.self, from: data)
           return Observable<T>.error(data)
         } catch {
-          ErrorReporting.breadcrumbs(info: "Api Error - data: \(data.hexEncodedString)", category: .warningError)
+          Global.log.info("Api Error - data(\(data.hexEncodedString)")
           return Observable<T>.error(ApiError(message: "Server Error."))
         }
       }

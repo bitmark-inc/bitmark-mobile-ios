@@ -45,7 +45,7 @@ class OnboardingViewController: UIViewController, Stepper {
   }
 
   @objc func createNewAccount(_ sender: UIButton) {
-    ErrorReporting.breadcrumbs(info: "creates new account", category: .account)
+    Global.log.info("creates new account")
     activityIndicator.startAnimating()
     do {
       try AccountService.createNewAccount { [weak self] (account, error) in
@@ -60,13 +60,13 @@ class OnboardingViewController: UIViewController, Stepper {
             Global.currentAccount = account // track and store currentAccount
             UserSetting.shared.setAccountVersion(.v2)
             self.navigateNextOnboardingStepFromOnboardingStep(self.steps, self.disposeBag)
-            ErrorReporting.breadcrumbs(info: "finished creating new account", category: .account)
+            Global.log.info("finished creating new account")
           }
         }
       }
     } catch {
       showErrorAlert(message: "createAccount".localized(tableName: "Error"))
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 }

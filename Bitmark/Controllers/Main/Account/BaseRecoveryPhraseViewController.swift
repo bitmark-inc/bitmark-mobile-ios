@@ -35,7 +35,7 @@ class BaseRecoveryPhraseViewController: UIViewController {
       numberOfPhrases = phrases.count
     } catch {
       showErrorAlert(message: "loadRecoveryPhrase".localized(tableName: "Error"))
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 

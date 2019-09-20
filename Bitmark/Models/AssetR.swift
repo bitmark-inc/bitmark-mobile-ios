@@ -68,7 +68,7 @@ extension AssetR {
         self.assetType = AssetType.get(from: self).rawValue
       }
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 

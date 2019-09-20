@@ -9,6 +9,7 @@
 import Foundation
 import BitmarkSDK
 import XCGLogger
+import Sentry
 import RxSwift
 import NotificationBannerSwift
 
@@ -91,7 +92,25 @@ class Global {
 
     // Add the destination to the logger
     log.add(destination: fileDestination)
-
+    
+    if var sentryClient = try? Client(dsn: Credential.valueForKey(keyName: "SENTRY_DSN")) {
+      // Create sentry destination
+      sentryClient.environment = Bundle.main.bundleIdentifier
+      Client.shared = sentryClient
+      
+      let sentryDestination = SentryDestination(sentryClient: sentryClient,
+                                                queue: DispatchQueue(label: "com.bitmark.ios.sentry", qos: .background))
+      sentryDestination.outputLevel = .info
+      sentryDestination.showLogIdentifier = false
+      sentryDestination.showFunctionName = true
+      sentryDestination.showThreadName = true
+      sentryDestination.showLevel = true
+      sentryDestination.showFileName = true
+      sentryDestination.showLineNumber = true
+      sentryDestination.showDate = true
+      log.add(destination: sentryDestination)
+    }
+    
     return log
   }()
 

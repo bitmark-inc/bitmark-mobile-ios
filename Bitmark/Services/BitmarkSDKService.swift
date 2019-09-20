@@ -32,14 +32,14 @@ class BitmarkSDKServiceLogger: SDKLogger {
     Global.log.logln(message,
                      level: sdkToAppLogLevel(level),
                      functionName: "",
-                     fileName: "",
+                     fileName: "BitmarkSDK",
                      lineNumber: 0,
-                     userInfo: ["Source": "BitmarkSDK"])
+                     userInfo: [:])
 
     if level == .error {
-      ErrorReporting.breadcrumbs(info: message, category: .warningError)
+      Global.log.warning(message)
     } else {
-      ErrorReporting.breadcrumbs(info: message, category: .bitmarkSDK)
+      Global.log.info(message)
     }
   }
 

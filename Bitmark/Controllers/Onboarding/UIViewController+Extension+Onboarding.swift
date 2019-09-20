@@ -48,7 +48,7 @@ extension UIViewController {
             AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
             self.navigateNextOnboardingStepFromBiometricStep(steps, disposeBag)
           } catch {
-            ErrorReporting.report(error: error)
+            Global.log.error(error)
             steps.accept(BitmarkStep.appSuspension)
           }
         },

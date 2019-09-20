@@ -80,10 +80,10 @@ class TransactionStorage: SyncStorageBase<Transaction> {
         do {
           try self.storeData(in: try self.ownerRealm(), claimRequests: claimRequests)
         } catch {
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
         }
       }, onError: {
-        ErrorReporting.report(error: $0)
+        Global.log.error($0)
       })
       .disposed(by: disposeBag)
   }

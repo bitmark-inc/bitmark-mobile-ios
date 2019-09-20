@@ -8,6 +8,7 @@
 
 import Foundation
 import Sentry
+import XCGLogger
 
 // Send error report to Sentry
 struct ErrorReporting {
@@ -64,4 +65,61 @@ enum ReportCategory: String {
   case storeFile, migrationData, transferFile, updateAccessFile, uploadFile, downloadFile, storeData
   case keychain, warningError, dbData
   case account, accountKey, bitmark
+}
+
+open class SentryDestination: BaseDestination {
+  private let client: Client
+  private let logQueue: DispatchQueue?
+  
+  public init(sentryClient: Client, queue: DispatchQueue? = nil) {
+    self.client = sentryClient
+    self.logQueue = queue
+    super.init()
+  }
+  
+  open override func output(logDetails: LogDetails, message: String) {
+    let outputClosure = { [weak self] in
+      guard let self = self,
+      self.isEnabledFor(level: logDetails.level) else { return }
+        
+      var sentryLevel: SentrySeverity
+      switch logDetails.level {
+      case .debug:
+        sentryLevel = .debug
+      case .info:
+        sentryLevel = .info
+      case .warning:
+        sentryLevel = .warning
+      case .severe:
+        sentryLevel = .fatal
+      case .error:
+        sentryLevel = .error
+      default:
+        return
+      }
+      
+      let filename = logDetails.fileName.deletingPathExtension.lastPathComponent
+        
+      if sentryLevel == .error || sentryLevel == .fatal || sentryLevel == .warning {
+        let errorEvent = Event(level: sentryLevel)
+        errorEvent.message = logDetails.message
+        errorEvent.tags = ["filename": filename,
+                           "function": logDetails.functionName]
+        errorEvent.extra = logDetails.userInfo
+        self.client.appendStacktrace(to: errorEvent)
+        self.client.send(event: errorEvent, completion: nil)
+      } else {
+        let breadcrumb = Breadcrumb(level: sentryLevel, category: filename)
+        breadcrumb.message = "[\(logDetails.functionName):\(logDetails.lineNumber)] \(logDetails.message)"
+        breadcrumb.data = logDetails.userInfo
+        self.client.breadcrumbs.add(breadcrumb)
+      }
+    }
+
+    if let logQueue = logQueue {
+      logQueue.async(execute: outputClosure)
+    } else {
+      outputClosure()
+    }
+  }
 }

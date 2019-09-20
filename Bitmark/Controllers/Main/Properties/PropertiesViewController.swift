@@ -58,7 +58,7 @@ class PropertiesViewController: UIViewController, Stepper {
 
         if let error = error {
           self.showErrorAlert(message: "syncBitmark".localized(tableName: "Error"))
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
           return
         }
 
@@ -68,7 +68,7 @@ class PropertiesViewController: UIViewController, Stepper {
           self.bitmarkRs = try BitmarkStorage.shared().getData()
         } catch {
           self.showErrorAlert(message: "loadBitmark".localized(tableName: "Error"))
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
           return
         }
 
@@ -76,7 +76,7 @@ class PropertiesViewController: UIViewController, Stepper {
       }
     } catch {
       showErrorAlert(message: "loadBitmark".localized(tableName: "Error"))
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 
@@ -153,7 +153,7 @@ extension PropertiesViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let bitmarkR = bitmarkRs[indexPath.row]
     guard let assetR = bitmarkR.assetR else {
-      ErrorReporting.report(message: "Missing assetId for bitmark with id " + bitmarkR.id)
+      Global.log.warning("Missing assetId for bitmark with id " + bitmarkR.id)
       showErrorAlert(message: "loadData".localized(tableName: "Error"))
       return
     }

@@ -53,7 +53,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
       // Detect current screen
       ScreenRouteService.routeToBitmarkDetail(bitmarkID: bitmarkId, completionHandler: nil)
     default:
-      ErrorReporting.report(message: "Unhandled notification: " + notificationName)
+      Global.log.warning("Unhandled notification: " + notificationName)
       return
     }
   }

@@ -74,15 +74,15 @@ class iCloudService {
   // MARK: - Sync Data File
   func setupDataFile() throws {
     guard !fileExists(fileURL: dataURL) else { return }
-    ErrorReporting.breadcrumbs(info: "createDataFile", category: .storeData)
+    Global.log.info("createDataFile")
     let emptyAssetWithFilenameData: [String: String] = [:]
     let data = try JSONEncoder().encode(emptyAssetWithFilenameData)
     try data.write(to: dataURL, options: [.atomic])
-    ErrorReporting.breadcrumbs(info: "Finished to createDataFile", category: .storeData)
+    Global.log.info("Finished to createDataFile")
   }
 
   func syncDataFromiCloud() {
-    ErrorReporting.breadcrumbs(info: "syncDataFromiCloud", category: .storeData)
+    Global.log.info("syncDataFromiCloud")
 
     DispatchQueue.global().async { [weak self] in
       guard let self = self else { return }
@@ -97,7 +97,7 @@ class iCloudService {
   }
 
   func updateAssetInfoFromData() {
-    ErrorReporting.breadcrumbs(info: "updateAssetInfoFromData", category: .storeData)
+    Global.log.info("updateAssetInfoFromData")
 
     do {
       guard let userRealm = try RealmConfig.currentRealm() else { return }
@@ -110,10 +110,10 @@ class iCloudService {
           assetR.assetType = AssetType.get(from: assetR).rawValue
         }
       }
-      ErrorReporting.breadcrumbs(info: "Finish updateAssetInfoFromData", category: .storeData)
+      Global.log.info("Finish updateAssetInfoFromData")
     } catch {
       Global.log.error(error)
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 
@@ -161,7 +161,7 @@ class iCloudService {
       let assetWithFilenameData = try getAssetWithFilenameData()
       return assetWithFilenameData[assetId]
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
       return nil
     }
   }
@@ -174,7 +174,7 @@ class iCloudService {
 
   func moveFileToAppStorage(fileURL: URL, filename: String) throws {
     let destinationURL = containerURL.appendingPathComponent(filename)
-    ErrorReporting.breadcrumbs(info: "moveFileToAppStorage: \(destinationURL.path)", category: .storeFile)
+    Global.log.info("moveFileToAppStorage(\(destinationURL.path)")
 
     guard !fileExists(fileURL: destinationURL) else { return }
     try FileManager.default.copyItem(at: fileURL, to: destinationURL)
@@ -191,7 +191,7 @@ class iCloudService {
   }
 
   func saveAssetInfoIntoData(assetId: String, filename: String) {
-    ErrorReporting.breadcrumbs(info: "saveAssetInfoIntoData", category: .storeFile)
+    Global.log.info("saveAssetInfoIntoData")
     serialSyncQueue.sync {
       do {
         var assetWithFilenameData = try getAssetWithFilenameData()
@@ -202,7 +202,7 @@ class iCloudService {
 
         try data.write(to: dataURL, options: [.atomic])
       } catch {
-        ErrorReporting.report(error: error)
+        Global.log.error(error)
       }
     }
   }
@@ -211,7 +211,7 @@ class iCloudService {
   func downloadFile(fileURL: URL) {
     currentFileURL = fileURL
     guard let isFileDownloaded = isFileDownloaded(fileURL: fileURL, documentQuery: &fileDocumentQuery) else {
-      ErrorReporting.breadcrumbs(info: "File \(fileURL) is not existed in icloud", category: .storeFile)
+      Global.log.info("File \(fileURL) is not existed in icloud")
       downloadFileSubject.onError(DownloadFileError.notFound)
       downloadFileSubject.onCompleted()
       return
@@ -310,10 +310,10 @@ extension iCloudService {
         documentQuery.valueListAttributes = [NSMetadataUbiquitousItemPercentDownloadedKey]
         documentQuery.predicate = NSPredicate(format: "%K > 0", argumentArray: [NSMetadataUbiquitousItemPercentDownloadedKey])
       default:
-        ErrorReporting.report(message: "Unspecify status - \(status)")
+        Global.log.warning("Unspecify status - \(status)")
       }
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
     return false
   }
@@ -341,14 +341,14 @@ extension iCloudService {
       guard let isUploaded = attributes.allValues[.ubiquitousItemIsUploadedKey] as? Bool else { return nil }
       return isUploaded
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
     return false
   }
 
   fileprivate func fileExists(fileURL: URL) -> Bool {
     guard let isiCloudEnabled = Global.isiCloudEnabled else {
-      ErrorReporting.report(error: Global.appError(message: "missing flow: missing iCloud Setting in Keychain"))
+      Global.log.error("missing flow: missing iCloud Setting in Keychain")
       return false
     }
 
@@ -358,7 +358,7 @@ extension iCloudService {
         let attributes = try fileURL.resourceValues(forKeys: [URLResourceKey.ubiquitousItemDownloadingStatusKey])
         return (attributes.allValues[URLResourceKey.ubiquitousItemDownloadingStatusKey] as? URLUbiquitousItemDownloadingStatus) != nil
       } catch {
-        ErrorReporting.report(error: error)
+        Global.log.error(error)
       }
       return false
     } else {
@@ -375,13 +375,13 @@ extension iCloudService {
    */
   fileprivate func defineContainer() -> URL {
     guard let isiCloudEnabled = Global.isiCloudEnabled else {
-      ErrorReporting.report(error: Global.appError(message: "missing flow: missing iCloud Setting in Keychain"))
+      Global.log.error("missing flow: missing iCloud Setting in Keychain")
       return localContainer
     }
 
     if isiCloudEnabled {
       guard let iCloudContainer = iCloudContainer else {
-        ErrorReporting.report(error: Global.appError(message: "missing flow: iCloud enable in Bitmark but disable"))
+        Global.log.error("missing flow: iCloud enable in Bitmark but disable")
         return localContainer
       }
 

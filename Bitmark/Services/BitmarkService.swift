@@ -24,8 +24,8 @@ class BitmarkService {
   }
 
   static func directTransfer(account: Account, bitmarkId: String, to receiverAccountNumber: String) throws -> String {
-    ErrorReporting.breadcrumbs(info: "direct transfer bitmark", category: .bitmark)
-    defer { ErrorReporting.breadcrumbs(info: "finished direct transferring bitmark", category: .bitmark) }
+    Global.log.info("direct transfer bitmark")
+    defer { Global.log.info("finished direct transferring bitmark") }
 
     var transferParams = try Bitmark.newTransferParams(to: receiverAccountNumber)
     try transferParams.from(bitmarkID: bitmarkId)

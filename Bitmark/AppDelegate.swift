@@ -42,7 +42,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     self.coordinator.coordinate(flow: appFlow, with: AppStepper())
 
-    initSentry()
+    do {
+      Client.shared?.trackMemoryPressureAsEvent()
+      try Client.shared?.startCrashHandler()
+    } catch let error {
+      Global.log.error(error)
+    }
+    
     Global.log.logAppDetails()
 
     // Check if launched from notification
@@ -174,17 +180,5 @@ private extension AppDelegate {
       message: "accessRequired".localized(tableName: "Error"),
       defaultActionButtonTitle: "OK".localized()
     ).show()
-  }
-
-  // Create a Sentry client and start crash handler
-  func initSentry() {
-    do {
-      Client.shared = try Client(dsn: "https://92d49f612d5f4cd89427cef0cd39794f@sentry.io/1494841")
-      Client.shared?.environment = Bundle.main.bundleIdentifier
-      Client.shared?.trackMemoryPressureAsEvent()
-      try Client.shared?.startCrashHandler()
-    } catch {
-      Global.log.error(error)
-    }
   }
 }

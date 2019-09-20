@@ -47,7 +47,7 @@ class TransactionsViewController: UIViewController, Stepper {
 
         if let error = error {
           self.showErrorAlert(message: "syncTransaction".localized(tableName: "Error"))
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
           return
         }
 
@@ -55,7 +55,7 @@ class TransactionsViewController: UIViewController, Stepper {
           self.transactionRs = try TransactionStorage.shared().getData()
         } catch {
           self.showErrorAlert(message: "loadTransaction".localized(tableName: "Error"))
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
           return
         }
 
@@ -63,7 +63,7 @@ class TransactionsViewController: UIViewController, Stepper {
       }
     } catch {
       showErrorAlert(message: "loadTransaction".localized(tableName: "Error"))
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 

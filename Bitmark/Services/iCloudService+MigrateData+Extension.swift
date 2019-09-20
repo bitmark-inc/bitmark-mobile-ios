@@ -11,10 +11,10 @@ import Foundation
 extension iCloudService {
 
   func migrateFileData() {
-    ErrorReporting.breadcrumbs(info: "Migrate File Data for \(user.getAccountNumber())", category: .migrationData)
+    Global.log.info("Migrate File Data for \(user.getAccountNumber())")
     do {
       guard let isiCloudEnabled = Global.isiCloudEnabled else {
-        ErrorReporting.report(message: "missing flow: missing iCloud Setting in Keychain.")
+        Global.log.warning("missing flow: missing iCloud Setting in Keychain.")
         return
       }
 
@@ -24,7 +24,7 @@ extension iCloudService {
       }
       Global.log.info("Finish migrateFileData")
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 
@@ -36,7 +36,7 @@ extension iCloudService {
    Remove assets folder when there are no local files.
    */
   func migrateDataFromOldVersion() throws {
-    ErrorReporting.breadcrumbs(info: "migrateDataFromOldVersion", category: .migrationData)
+    Global.log.info("migrateDataFromOldVersion")
 
     let userAccountNumber = user.getAccountNumber()
     guard let userStorage = FileManager.sharedDirectoryURL?.appendingPathComponent(userAccountNumber) else { return }
@@ -49,14 +49,14 @@ extension iCloudService {
 
       let downloadedFileFolder = assetIdFolder.appendingPathComponent("downloaded")
       guard FileManager.default.fileExists(atPath: downloadedFileFolder.path) else {
-        ErrorReporting.breadcrumbs(info: "delete \(assetIdFolder) when it has downloaded folder.", category: .migrationData)
+        Global.log.info("delete \(assetIdFolder) when it has downloaded folder.")
         try FileManager.default.removeItem(at: assetIdFolder)
         continue
       }
 
       let downloadedFileURLs = try ls(in: downloadedFileFolder, options: .skipsHiddenFiles)
       guard !downloadedFileURLs.isEmpty else {
-        ErrorReporting.breadcrumbs(info: "delete \(assetIdFolder) when it has no files.", category: .migrationData)
+        Global.log.info("delete \(assetIdFolder) when it has no files.")
         try FileManager.default.removeItem(at: assetIdFolder)
         continue
       }
@@ -64,7 +64,7 @@ extension iCloudService {
       let downloadedFileURL = downloadedFileURLs[0]
       let filename = downloadedFileURL.lastPathComponent
 
-      ErrorReporting.breadcrumbs(info: "store \(filename) into storage", category: .migrationData)
+      Global.log.info("store \(filename) into storage")
       if let existingFileInIcloudURL = getExistingFileInIcloudURL(userAccountNumber, assetId, filename),
          FileManager.default.fileExists(atPath: existingFileInIcloudURL.path) {
         let fileURL = parseAssetFileURL(filename)
@@ -74,20 +74,20 @@ extension iCloudService {
       }
       saveDataRecord(assetId: assetId, filename: filename)
 
-      ErrorReporting.breadcrumbs(info: "remove \(assetIdFolder)", category: .migrationData)
+      Global.log.info("remove \(assetIdFolder)")
       try FileManager.default.removeItem(at: assetIdFolder)
     }
 
     assetIdFolders = try ls(in: assetsFolderStorage, options: .skipsHiddenFiles)
     if assetIdFolders.isEmpty {
-      ErrorReporting.breadcrumbs(info: "remove \(assetsFolderStorage)", category: .migrationData)
+      Global.log.info("remove \(assetsFolderStorage)")
       try FileManager.default.removeItem(at: assetsFolderStorage)
     }
   }
 
   // Move local storage into icloud storage in case user just logged in iCloud account.
   func migrateDataFromLocalToiCloud() throws {
-    ErrorReporting.breadcrumbs(info: "migrateDataFromLocalToiCloud", category: .migrationData)
+    Global.log.info("migrateDataFromLocalToiCloud")
 
     guard iCloudContainer != nil else { return }
     let documentsLocalContainer = localContainer.appendingPathComponent(user.getAccountNumber())
@@ -98,14 +98,14 @@ extension iCloudService {
 
     for (assetId, filename) in assetWithFilenameData {
       let localFileURL = documentsLocalContainer.appendingPathComponent(filename)
-      ErrorReporting.breadcrumbs(info: "store \(filename) into icloud", category: .migrationData)
+      Global.log.info("store \(filename) into icloud")
 
       guard FileManager.default.fileExists(atPath: localFileURL.path) else { continue }
       try storeFile(fileURL: localFileURL, filename: filename, assetId: assetId)
       try FileManager.default.removeItem(at: localFileURL)
     }
 
-    ErrorReporting.breadcrumbs(info: "remove \(documentsLocalContainer)", category: .migrationData)
+    Global.log.info("remove \(documentsLocalContainer)")
     try FileManager.default.removeItem(at: documentsLocalContainer)
   }
 

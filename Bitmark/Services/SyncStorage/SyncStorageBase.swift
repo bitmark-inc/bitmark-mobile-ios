@@ -75,7 +75,7 @@ class SyncStorageBase<Item> {
         try self?.syncData()
         completion?({})
       } catch {
-        ErrorReporting.report(error: error)
+        Global.log.error(error)
         completion?({ throw error })
       }
     }
