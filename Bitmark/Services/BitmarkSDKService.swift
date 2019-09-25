@@ -29,30 +29,6 @@ class BitmarkSDKService {
 
 class BitmarkSDKServiceLogger: SDKLogger {
   func log(level: SDKLogLevel, message: String) {
-    Global.log.logln(message,
-                     level: sdkToAppLogLevel(level),
-                     functionName: "",
-                     fileName: "BitmarkSDK",
-                     lineNumber: 0,
-                     userInfo: [:])
-
-    if level == .error {
-      Global.log.warning(message)
-    } else {
-      Global.log.info(message)
-    }
-  }
-
-  private func sdkToAppLogLevel(_ sdkLevel: SDKLogLevel) -> XCGLogger.Level {
-    switch sdkLevel {
-    case .debug:
-      return .debug
-    case .info:
-      return .info
-    case .warn:
-      return .warning
-    case .error:
-      return .error
-    }
+    Global.log.info(message)
   }
 }
