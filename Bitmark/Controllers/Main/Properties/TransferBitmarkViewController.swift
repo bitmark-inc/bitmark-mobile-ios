@@ -131,7 +131,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
                   ? "transfer_requireFile"
                   : "transfer_unsuccessfully"
             self.showErrorAlert(message: localizedErrorMessage.localized(tableName: "Error"))
-            ErrorReporting.report(error: error)
+            Global.log.error(error)
           })
         })
       .disposed(by: self.disposeBag)

@@ -25,10 +25,10 @@ class AccountService {
   func existsCurrentAccount() -> Single<Bool> {
     guard UserSetting.shared.isUserLoggedIn() else {
       do {
-        ErrorReporting.breadcrumbs(info: "Remove seed core from Keychain", category: .keychain)
+        Global.log.info("Remove seed core from Keychain")
         try KeychainStore.removeSeedCoreFromKeychain()
       } catch {
-        ErrorReporting.report(error: error)
+        Global.log.error(error)
       }
       return Single<Bool>.just(false)
     }
@@ -41,7 +41,7 @@ class AccountService {
             let seed = try Seed.fromCore(seedCore, version: accountVersion)
             return try Account(seed: seed)
           } catch {
-            ErrorReporting.report(error: error)
+            Global.log.error(error)
           }
         }
         return nil

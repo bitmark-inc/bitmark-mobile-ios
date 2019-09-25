@@ -4,6 +4,8 @@
 <dict>
 	<key>AppCredentials</key>
 	<dict>
+		<key>SENTRY_DSN</key>
+		<string>https://92d49f612d5f4cd89427cef0cd39794f@sentry.io/1494841</string>
 		<key>API_SERVER_URL</key>
 		<string>https://api.test.bitmark.com</string>
 		<key>BITMARK_API_TOKEN</key>

@@ -411,7 +411,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
           onError: { (error) in
             selfAlert.dismiss(animated: true, completion: {
               self.showErrorAlert(message: "registerPropertyRights_unsuccessfully".localized(tableName: "Error"))
-              ErrorReporting.report(error: error)
+              Global.log.error(error)
             })
           })
         .disposed(by: self.disposeBag)
@@ -442,8 +442,8 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
   func storeFileInAppStorage(of assetId: String) throws {
     guard let assetURL = assetURL, let assetFileName = assetFileName else { return }
-    ErrorReporting.breadcrumbs(info: "Path: \(assetURL.path); Filename: \(assetFileName)", category: .storeFile)
-    ErrorReporting.breadcrumbs(info: "assetId: \(assetId)", category: .storeFile)
+    Global.log.info("Path: \(assetURL.path); Filename(\(assetFileName)")
+    Global.log.info("assetId(\(assetId)")
 
     try iCloudService.shared.storeFile(fileURL: assetURL, filename: assetFileName, assetId: assetId)
   }

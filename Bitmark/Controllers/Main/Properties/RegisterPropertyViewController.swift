@@ -122,7 +122,7 @@ extension RegisterPropertyViewController: UIImagePickerControllerDelegate, UINav
       guard let fileSizeinB = fileAttributes[FileAttributeKey.size] as? NSNumber else { return false }
       return (fileSizeinB.uint64Value / 1024 / 1024) <= 100 // limit 100MB
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
       return false
     }
   }
@@ -162,7 +162,7 @@ extension RegisterPropertyViewController: UIDocumentPickerDelegate {
           try FileManager.default.moveItem(at: url, to: tempURL)
           self.assetURL = tempURL
         } catch {
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
         }
 
         self.performMoveToRegisterPropertyRights()

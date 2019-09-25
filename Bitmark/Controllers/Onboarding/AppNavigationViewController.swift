@@ -60,7 +60,7 @@ class AppNavigationViewController: UIViewController, Stepper {
               self?.steps.accept(BitmarkStep.dashboardIsRequired)
             },
             onError: { (error) in
-              ErrorReporting.report(error: error)
+              Global.log.error(error)
               UIApplication.shared.keyWindow?.rootViewController = SuspendedViewController()
             })
           .disposed(by: self.disposeBag)

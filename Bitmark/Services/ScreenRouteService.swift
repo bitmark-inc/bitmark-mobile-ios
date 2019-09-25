@@ -40,7 +40,7 @@ class ScreenRouteService {
       PropertiesStepper.shared.goToBitmarkDetailsScreen(bitmarkR: bitmarkR, assetR: assetR)
       completionHandler?(true)
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
       completionHandler?(false)
     }
   }

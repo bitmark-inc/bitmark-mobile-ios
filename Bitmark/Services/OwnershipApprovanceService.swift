@@ -49,7 +49,7 @@ class OwnershipApprovanceService {
     let message = "Verify|\(code)"
     let signature = try account.sign(message: message.data(using: .utf8)!)
 
-    ErrorReporting.breadcrumbs(info: "requesting Authorization", category: .ownershipApprovance)
+    Global.log.info("requesting Authorization")
 
     let params: [String: String] = [
       "bitmark_account": account.getAccountNumber(),

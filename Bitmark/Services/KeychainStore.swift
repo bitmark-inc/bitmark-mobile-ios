@@ -30,7 +30,7 @@ class KeychainStore {
   // MARK: - Handlers
   // *** seed Core ***
   static func saveToKeychain(_ seedCore: Data) -> Completable {
-    ErrorReporting.breadcrumbs(info: "save SeedCore into keychain", category: .keychain)
+    Global.log.info("save SeedCore into keychain")
 
     return Completable.create(subscribe: { (completion) -> Disposable in
       DispatchQueue.global().async {
@@ -42,7 +42,7 @@ class KeychainStore {
           } else {
             try keychain.set(seedCore, key: bitmarkSeedCoreKey)
           }
-          ErrorReporting.breadcrumbs(info: "finished saving SeedCore into keychain", category: .keychain)
+          Global.log.info("finished saving SeedCore into keychain")
           completion(.completed)
         } catch {
           completion(.error(error))
@@ -53,15 +53,15 @@ class KeychainStore {
   }
 
   static func removeSeedCoreFromKeychain() throws {
-    ErrorReporting.breadcrumbs(info: "remove SeedCore from keychain", category: .keychain)
-    defer { ErrorReporting.breadcrumbs(info: "finished removing SeedCore into keychain", category: .keychain) }
+    Global.log.info("remove SeedCore from keychain")
+    defer { Global.log.info("finished removing SeedCore into keychain") }
 
     try keychain.remove(bitmarkSeedCoreKey)
     try keychain.remove(bitmarkSeedCoreWithoutAuthentication)
   }
 
   static func getSeedDataFromKeychain() -> Single<Data?> {
-    ErrorReporting.breadcrumbs(info: "get SeedCore from keychain", category: .keychain)
+    Global.log.info("get SeedCore from keychain")
 
     return Single<Data?>.create(subscribe: { (single) -> Disposable in
       DispatchQueue.global().async {
@@ -74,7 +74,7 @@ class KeychainStore {
               forKey: expiryTimeKey
             )
           }
-          ErrorReporting.breadcrumbs(info: "finished getting SeedCore from keychain", category: .keychain)
+          Global.log.info("finished getting SeedCore from keychain")
           single(.success(seedData))
         } catch {
           single(.error(error))
@@ -91,8 +91,8 @@ class KeychainStore {
 
   // *** Encrypted db key ***
   static func saveEncryptedDBKeyToKeychain(_ encryptedKey: Data) throws {
-    ErrorReporting.breadcrumbs(info: "save EncryptedDBKey into keychain", category: .keychain)
-    defer { ErrorReporting.breadcrumbs(info: "finished saving EncryptedDBKey into keychain", category: .keychain) }
+    Global.log.info("save EncryptedDBKey into keychain")
+    defer { Global.log.info("finished saving EncryptedDBKey into keychain") }
 
     try keychain.accessibility(Accessibility.afterFirstUnlock)
                 .set(encryptedKey, key: bitmarkEncryptedDBKey)
@@ -108,8 +108,8 @@ class KeychainStore {
 
   // *** user's setting to save asset files to icloud drive or not
   static func saveiCloudSetting(_ accountNumber: String, isEnable: Bool) throws {
-    ErrorReporting.breadcrumbs(info: "save iCloudSetting into keychain", category: .keychain)
-    defer { ErrorReporting.breadcrumbs(info: "finished saving iCloudSetting into keychain", category: .keychain) }
+    Global.log.info("save iCloudSetting into keychain")
+    defer { Global.log.info("finished saving iCloudSetting into keychain") }
 
     let key = iCloudSettingKey(accountNumber)
     try keychain.remove(key)

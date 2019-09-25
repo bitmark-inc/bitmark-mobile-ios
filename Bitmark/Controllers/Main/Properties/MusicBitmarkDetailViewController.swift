@@ -63,7 +63,7 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
     do {
       try BitmarkStorage.shared().markRead(for: bitmarkR)
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 
@@ -96,7 +96,7 @@ class MusicBitmarkDetailViewController: UIViewController, Stepper {
           },
         onError: { (error) in
           Global.log.error(error)
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
         })
       .disposed(by: disposeBag)
   }

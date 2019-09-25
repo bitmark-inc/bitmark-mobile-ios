@@ -77,7 +77,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
     do {
       try BitmarkStorage.shared().markRead(for: bitmarkR)
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 
@@ -112,7 +112,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
         self.transactionIndicator.stopAnimating()
         if let error = error {
           self.showErrorAlert(message: error.localizedDescription)
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
           return
         }
 
@@ -140,9 +140,9 @@ class BitmarkDetailViewController: UIViewController, Stepper {
             self.enableActionButtons()
           }
         case .error(let error):
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
         case .deleted:
-          ErrorReporting.report(message: "the bitmark object is deleted.")
+          Global.log.warning("the bitmark object is deleted.")
         }
       })
     }
@@ -156,9 +156,9 @@ class BitmarkDetailViewController: UIViewController, Stepper {
           }
         }
       case .error(let error):
-        ErrorReporting.report(error: error)
+        Global.log.error(error)
       case .deleted:
-        ErrorReporting.report(message: "the asset object is deleted.")
+        Global.log.warning("the asset object is deleted.")
       }
     }
   }
@@ -250,7 +250,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
       } catch {
         selfAlert.dismiss(animated: true, completion: {
           self.showErrorAlert(message: "deleteBitmark_unsuccessfully".localized(tableName: "Error"))
-          ErrorReporting.report(error: error)
+          Global.log.error(error)
         })
       }
     }

@@ -33,7 +33,7 @@ extension EventDelegate {
         self?.syncUpdatedRecords()
       }
     } catch {
-      ErrorReporting.report(error: error)
+      Global.log.error(error)
     }
   }
 }
