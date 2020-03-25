@@ -22,7 +22,7 @@ class BitmarkSDKService {
   static let apiToken = Credential.valueForKey(keyName: "BITMARK_API_TOKEN")
 
   static func setupConfig() {
-    let config = SDKConfig(apiToken: apiToken, network: networkMode, urlSession: URLSession.shared, logger: BitmarkSDKServiceLogger())
+    let config = SDKConfig(apiToken: "", network: networkMode, urlSession: URLSession.shared, logger: BitmarkSDKServiceLogger())
     BitmarkSDK.initialize(config: config)
   }
 }

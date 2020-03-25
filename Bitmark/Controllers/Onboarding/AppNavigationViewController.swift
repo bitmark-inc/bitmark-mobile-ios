@@ -51,9 +51,10 @@ class AppNavigationViewController: UIViewController, Stepper {
 
         Global.isiCloudEnabled = iCloudSetting
         self.checkiCloudConnectionWhenEnable(iCloudSetting)
-          .do(onCompleted: {
+          .andThen(Completable.deferred {
             try RealmConfig.setupDBForCurrentAccount()
             AccountDependencyService.shared.requestJWTAndIntercomAndAPNSHandler()
+            return AccountDependencyService.shared.requestJWT().ignoreElements()
           })
           .subscribe(
             onCompleted: { [weak self] in

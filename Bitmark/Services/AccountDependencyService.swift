@@ -89,7 +89,7 @@ class AccountDependencyService {
 extension AccountDependencyService {
   // request jwt from mobile_server;
   // for now, just report error to developers; without bothering user
-  fileprivate func requestJWT() -> Observable<Void> {
+  func requestJWT() -> Observable<Void> {
     return createJWTRequestURL()
       .flatMap { (request) -> Observable<Void> in
         return RxAlamofire.requestJSON(request)
@@ -98,7 +98,10 @@ extension AccountDependencyService {
             return Observable<String?>.of((data as? [String: String])?["jwt_token"])
           }
           .errorOnNil()
-          .map { Global.currentJwt = $0 }
+          .map {
+            Global.currentJwt = $0
+            BitmarkSDK.setAPIToken($0)
+          }
       }
   }
 

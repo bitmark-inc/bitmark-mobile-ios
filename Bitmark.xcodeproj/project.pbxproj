@@ -392,7 +392,7 @@
 		E296D5D8230045C300E7DFB8 /* iCloudService+MigrateData+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "iCloudService+MigrateData+Extension.swift"; sourceTree = "<group>"; };
 		E297F30222DB34C000BB79F7 /* RealmConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConfig.swift; sourceTree = "<group>"; };
 		E29A740E22AA49990052C716 /* Bitmark Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bitmark Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Dev-Info.plist"; path = "Dev-Info.plist"; sourceTree = "<absolute>"; };
+		E29A740F22AA49990052C716 /* Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Dev-Info.plist"; sourceTree = "<absolute>"; };
 		E29CE44922F03C1400C50CF4 /* ReleaseNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReleaseNotes.md; sourceTree = "<group>"; };
 		E29CE44C22F0408D00C50CF4 /* ReleaseNotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseNotesViewController.swift; sourceTree = "<group>"; };
 		E2ADFD1422BC6FCC00FC46D8 /* TransferBitmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferBitmarkViewController.swift; sourceTree = "<group>"; };
@@ -1481,7 +1481,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEVELOPMENT";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Bitmark App Test Development";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Test Development";
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/Bitmark/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
