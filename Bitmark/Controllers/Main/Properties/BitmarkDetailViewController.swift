@@ -190,6 +190,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
 
     showIndicatorAlert(message: "preparingToExport".localized(tableName: "Message")) { (selfAlert) in
       self.assetFileService.getDownloadedFileURL(assetFilename: self.assetR.filename)
+        .observeOn(MainScheduler.instance)
         .subscribe(
           onNext: { (downloadedFileURL) in
             selfAlert.dismiss(animated: true, completion: { [weak self] in
