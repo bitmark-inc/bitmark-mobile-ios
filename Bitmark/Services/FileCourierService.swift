@@ -138,7 +138,7 @@ class FileCourierService {
 
             let responseData = (
               sessionData: sessionData,
-              filename: filename,
+              filename: filename.urlDecoded,
               encryptedFileData: encryptedData
             )
 
