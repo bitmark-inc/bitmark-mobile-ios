@@ -50,7 +50,7 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
 
     // *** setup network reachability handlers ****
     guard let networkReachabilityManager = networkReachabilityManager else { return }
-    networkReachabilityManager.listener = { [weak self] status in
+    networkReachabilityManager.startListening { [weak self] status in
       guard let self = self else { return }
       switch status {
       case .reachable:
@@ -61,7 +61,6 @@ class TransferBitmarkViewController: UIViewController, UITextFieldDelegate, Step
         self.transferButton.isEnabled = false
       }
     }
-    networkReachabilityManager.startListening()
   }
 
   override func viewWillDisappear(_ animated: Bool) {

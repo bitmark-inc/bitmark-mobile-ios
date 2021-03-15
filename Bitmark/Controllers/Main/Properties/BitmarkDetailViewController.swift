@@ -133,7 +133,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
       bitmarkNotificationToken = bitmarkR.observe({ [unowned self] (changes) in
         switch changes {
         case .change(let properties):
-          for property in properties {
+          for property in properties.1 {
             guard property.name == "confirmedAt" else { continue }
             self.setupStyleBitmark()
             BitmarkStorage.shared().loadTxRs(for: self.bitmarkR, forceSync: true, completion: {_, _ in })
@@ -150,7 +150,7 @@ class BitmarkDetailViewController: UIViewController, Stepper {
     assetNotificationToken = assetR.observe { [unowned self] (changes) in
       switch changes {
       case .change(let properties):
-        for property in properties {
+        for property in properties.1 {
           if property.name == "assetType", let assetType = property.newValue as? String {
             self.thumbnailImageView.image = AssetType(rawValue: assetType)?.thumbnailImage()
           }

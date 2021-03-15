@@ -29,7 +29,7 @@ class DesignedWebView: UIView {
   var forwardButton: UIButton!
   var activityIndicator: UIActivityIndicatorView!
   var didLoadWebview: Bool = false
-  var networkReachabilityManager = NetworkReachabilityManager()
+  var networkReachabilityManager = Alamofire.NetworkReachabilityManager()
 
   // MARK: - Init
   init(urlString: String, hasNavigation: Bool = true) {
@@ -49,7 +49,7 @@ class DesignedWebView: UIView {
     guard let networkReachabilityManager = networkReachabilityManager else { return }
     guard networkReachabilityManager.isReachable else {
       Global.showNoInternetBanner()
-      networkReachabilityManager.listener = { [weak self] status in
+      networkReachabilityManager.startListening { [weak self] status in
         switch status {
         case .reachable:
           Global.hideNoInternetBanner()
@@ -58,7 +58,6 @@ class DesignedWebView: UIView {
           Global.showNoInternetBanner()
         }
       }
-      networkReachabilityManager.startListening()
       return
     }
 

@@ -50,28 +50,14 @@ class FileCourierService {
       let assetData = try Data(contentsOf: encryptedFileURL)
 
       return Completable.create(subscribe: { (completable) -> Disposable in
-        Alamofire.upload(multipartFormData: { (multipartFormData) in
+        AF.upload(multipartFormData: { (multipartFormData) in
           for (key, value) in parameters {
             multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
           }
 
           let mineType = getMineType(of: encryptedFileURL)
           multipartFormData.append(assetData, withName: "file", fileName: assetFilename, mimeType: mineType)
-        }, usingThreshold: UInt64(), to: uploadRequestURL.url!, method: .post, headers: uploadRequestURL.allHTTPHeaderFields, encodingCompletion: { (result) in
-          switch result {
-          case .success(let upload, _, _):
-            upload.responseJSON { response in
-              if let error = response.error {
-                completable(.error(error))
-              } else {
-                Global.log.info("finished update file into fileCourier")
-                completable(.completed)
-              }
-            }
-          case .failure(let error):
-            completable(.error(error))
-          }
-        })
+        }, to: uploadRequestURL.url!, method: .post, headers: uploadRequestURL.headers).resume()
 
         return Disposables.create()
       })
@@ -218,7 +204,7 @@ class FileCourierService {
 
       let updateAccessURL = try RxAlamofire.urlRequest(.put, updateAccessURL.url!,
          parameters: params, encoding: URLEncoding.default,
-         headers: updateAccessURL.allHTTPHeaderFields
+         headers: updateAccessURL.headers
       )
 
       return RxAlamofire.request(updateAccessURL)
@@ -241,7 +227,7 @@ class FileCourierService {
       let params = ["receiver": receiverAccountNumber]
       let deleteAccessURL = try RxAlamofire.urlRequest(.delete, deleteAccessURL.url!,
                                                        parameters: params, encoding: URLEncoding.default,
-                                                       headers: deleteAccessURL.allHTTPHeaderFields
+                                                       headers: deleteAccessURL.headers
       )
 
       return RxAlamofire.request(deleteAccessURL)

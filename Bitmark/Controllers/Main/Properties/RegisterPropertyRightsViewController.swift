@@ -85,7 +85,7 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
 
     // *** setup network reachability handlers ****
     guard let networkReachabilityManager = networkReachabilityManager else { return }
-    networkReachabilityManager.listener = { [weak self] status in
+    networkReachabilityManager.startListening { [weak self] status in
       guard let self = self else { return }
       switch status {
       case .reachable:
@@ -96,7 +96,6 @@ class RegisterPropertyRightsViewController: UIViewController, UITextFieldDelegat
         self.issueButton.isEnabled = false
       }
     }
-    networkReachabilityManager.startListening()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -852,7 +851,7 @@ extension RegisterPropertyRightsViewController {
     confirmCheckBox.onFillColor = .mainBlueColor
     confirmCheckBox.onTintColor = .mainBlueColor
     confirmCheckBox.animationDuration = 0.2
-    confirmCheckBox.cornerRadius = 0
+    confirmCheckBox.layer.cornerRadius = 0
 
     let confirmCheckboxView = UIView()
     confirmCheckboxView.addSubview(confirmCheckBox)

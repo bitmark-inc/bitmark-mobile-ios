@@ -47,7 +47,7 @@ class ReleaseNotesViewController: UIViewController, Stepper {
         updatedDateLabel.text = String(format: "dAgo".localized(), durationInDays.day!)
     }
 
-    Alamofire.request(releaseNotesPath).responseString { (response) in
+    AF.request(releaseNotesPath).responseString { (response) in
       if let data = response.data, let utf8Data = String(data: data, encoding: .utf8) {
         self.releaseNotesContent.text = utf8Data
       }

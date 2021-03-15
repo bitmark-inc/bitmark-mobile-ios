@@ -74,7 +74,7 @@ class AccountDependencyService {
       var request = try URLRequest(url: URL(string: "\(Global.ServerURL.mobile)/api/push_uuids/\(token)")!, method: .delete)
       try request.attachAuth()
 
-      Alamofire.request(request).response { (result) in
+      AF.request(request).response { (result) in
         if let resp = result.response,
           resp.statusCode >= 300 {
           Global.log.error("Cannot deregister notification")

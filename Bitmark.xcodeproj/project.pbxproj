@@ -918,7 +918,6 @@
 				E29A740322AA49990052C716 /* Frameworks */,
 				E29A740522AA49990052C716 /* Resources */,
 				499B4B2A1B96D8C5E5BA824D /* [CP] Embed Pods Frameworks */,
-				7E24D10F3A76385459DBB688 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -938,7 +937,6 @@
 				E2E798B3229E189E00508B69 /* Frameworks */,
 				E2E798B4229E189E00508B69 /* Resources */,
 				EDD5BAEA078E856E14AF90C8 /* [CP] Embed Pods Frameworks */,
-				7C3E2FE75EBF30D90ACF3A53 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1105,40 +1103,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bitmark Dev/Pods-Bitmark Dev-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7C3E2FE75EBF30D90ACF3A53 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Bitmark/Pods-Bitmark-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Bitmark/Pods-Bitmark-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bitmark/Pods-Bitmark-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		7E24D10F3A76385459DBB688 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Bitmark Dev/Pods-Bitmark Dev-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Bitmark Dev/Pods-Bitmark Dev-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bitmark Dev/Pods-Bitmark Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EDD5BAEA078E856E14AF90C8 /* [CP] Embed Pods Frameworks */ = {
