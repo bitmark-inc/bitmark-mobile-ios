@@ -48,21 +48,17 @@ class FileCourierService {
 
       let assetFilename = encryptedFileURL.lastPathComponent
       let assetData = try Data(contentsOf: encryptedFileURL)
-
-      return Completable.create(subscribe: { (completable) -> Disposable in
-        AF.upload(multipartFormData: { (multipartFormData) in
+    
+        return RxAlamofire.upload(multipartFormData: { (multipartFormData) in
           for (key, value) in parameters {
             multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
           }
 
           let mineType = getMineType(of: encryptedFileURL)
           multipartFormData.append(assetData, withName: "file", fileName: assetFilename, mimeType: mineType)
-        }, to: uploadRequestURL.url!, method: .post, headers: uploadRequestURL.headers).resume()
-
-        return Disposables.create()
-      })
-    }
-    .asCompletable()
+        }, to: uploadRequestURL.url!, method: .post, headers: uploadRequestURL.headers)
+        .map { $0.upload }.ignoreElements()
+    }.asCompletable()
   }
 
   static func getDownloadableAssets(receiver: Account) -> Observable<[String]> {
