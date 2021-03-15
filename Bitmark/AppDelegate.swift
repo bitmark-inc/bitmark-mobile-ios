@@ -12,7 +12,6 @@ import Sentry
 import RxSwift
 import RxFlow
 import RxCocoa
-import Intercom
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -58,11 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       let aps = notification["aps"] as? [String: AnyObject] {
       Global.log.debug(aps)
     }
-
-    // setup intercom
-    let intercomApiKey = Credential.valueForKey(keyName: Constant.InfoKey.intercomAppKey)
-    let intercomApiId = Credential.valueForKey(keyName: Constant.InfoKey.intercomAppId)
-    Intercom.setApiKey(intercomApiKey, forAppId: intercomApiId)
 
     return true
   }

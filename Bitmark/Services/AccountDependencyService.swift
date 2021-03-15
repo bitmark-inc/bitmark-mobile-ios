@@ -12,7 +12,6 @@ import RxSwift
 import RxAlamofire
 import RxOptional
 import Alamofire
-import Intercom
 
 // Register Account with dependency services: JWT, Intercom, APNS
 class AccountDependencyService {
@@ -42,11 +41,10 @@ class AccountDependencyService {
       guard let self = self else { return }
       guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
       Observable.zip(self.requestJWT(),
-                     self.registerIntercom(),
                      appDelegate.registerAPNSSubject.asObservable())
-        .flatMap { (_, intercomUserId, token) -> Observable<Void> in
+        .flatMap { (_, token) -> Observable<Void> in
           Global.apnsToken = token
-          return self.registerAPNS(token: token, intercomUserId: intercomUserId)
+          return self.registerAPNS(token: token)
         }
         .subscribeOn(SerialDispatchQueueScheduler(qos: .background))
         .subscribe(
@@ -62,7 +60,6 @@ class AccountDependencyService {
 
   // Remove APNS token from server
   func deregisterIntercomAndAPNS() {
-    Intercom.logout()
     guard let token = Global.apnsToken else {
       Global.log.error("No APNS token")
       return
@@ -136,29 +133,15 @@ extension AccountDependencyService {
       }.errorOnNil()
   }
 
-  func registerIntercom() -> Observable<String> {
-    Intercom.logout()
-    let intercomUserId = account.getAccountNumber().intercomUserId()
-    Global.log.info("Registering user with intercomUserId(\(intercomUserId)")
-
-    return Observable.create { (observer) -> Disposable in
-      Intercom.registerUser(withUserId: intercomUserId)
-      observer.onNext(intercomUserId)
-      observer.onCompleted()
-      return Disposables.create()
-    }
-  }
-
   // Register push notification service with device token to server
-  func registerAPNS(token: String, intercomUserId: String) -> Observable<Void> {
+  func registerAPNS(token: String) -> Observable<Void> {
     Global.log.info("Registering user notification with token(\(token)")
 
     return Observable<URLRequest>.create { (observer) -> Disposable in
       do {
         var request = try URLRequest(url: URL(string: "\(Global.ServerURL.mobile)/api/push_uuids")!, method: .post)
         try request.attachAuth()
-        request.httpBody = try JSONEncoder().encode(["intercom_user_id": intercomUserId,
-                                                     "token": token,
+        request.httpBody = try JSONEncoder().encode(["token": token,
                                                      "platform": "ios",
                                                      "client": "registry"])
         observer.onNext(request)

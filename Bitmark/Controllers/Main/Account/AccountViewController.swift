@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Intercom
+import MessageUI
 import RxFlow
 import RxCocoa
 
@@ -88,8 +88,21 @@ extension AccountViewController {
       self.steps.accept(BitmarkStep.viewAppDetails)
     }
 
-    needHelpButton.addAction(for: .touchUpInside) {
-      Intercom.presentMessenger()
+    needHelpButton.addAction(for: .touchUpInside) { [weak self] in
+        let destEmail = "support@bitmark.com"
+        if MFMailComposeViewController.canSendMail() {
+            let composeVC = MFMailComposeViewController()
+            composeVC.mailComposeDelegate = self
+             
+            // Configure the fields of the interface.
+            composeVC.setToRecipients([destEmail])
+            composeVC.setSubject("Need help from the Bitmark app!")
+            
+            // Present the view controller modally.
+            self?.present(composeVC, animated: true, completion: nil)
+        } else {
+            UIApplication.shared.open(URL(string: "mailto:\(destEmail)")!, options: [:], completionHandler: nil)
+        }
     }
   }
 
@@ -216,4 +229,12 @@ extension AccountViewController {
 
     return accountNumberBox
   }
+}
+
+extension AccountViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController,
+                               didFinishWith result: MFMailComposeResult,
+                               error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
 }
