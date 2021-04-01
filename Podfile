@@ -24,7 +24,7 @@ def sharedPods
   pod 'RxOptional'
   
   # error reporting
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '4.3.1'
+  pod 'Sentry'
   
   # custom logger
   pod 'XCGLogger', '~> 7.0.0'

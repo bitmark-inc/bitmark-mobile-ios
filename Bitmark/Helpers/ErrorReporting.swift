@@ -17,20 +17,9 @@ struct ErrorReporting {
   // Set nil to remove user from current session
   public static func setUser(bitmarkAccountNumber: String?) {
     if let userId = bitmarkAccountNumber {
-      Client.shared?.user = User(userId: userId)
+        SentrySDK.setUser(User(userId: userId))
     } else {
-      Client.shared?.user = nil
-    }
-  }
-
-  // Set current env information
-  public static func setEnv() {
-    if let bundlename = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String {
-      Client.shared?.environment = bundlename == "com.bitmark.registry" ? "production" : "test"
-    }
-
-    if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-      Client.shared?.dist = appVersion
+        SentrySDK.setUser(nil)
     }
   }
 }
@@ -43,11 +32,9 @@ enum ReportCategory: String {
 }
 
 open class SentryDestination: BaseDestination {
-  private let client: Client
   private let logQueue: DispatchQueue?
   
-  public init(sentryClient: Client, queue: DispatchQueue? = nil) {
-    self.client = sentryClient
+  public init(queue: DispatchQueue? = nil) {
     self.logQueue = queue
     super.init()
   }
@@ -57,7 +44,7 @@ open class SentryDestination: BaseDestination {
       guard let self = self,
       self.isEnabledFor(level: logDetails.level) else { return }
         
-      var sentryLevel: SentrySeverity
+      var sentryLevel: SentryLevel
       switch logDetails.level {
       case .debug:
         sentryLevel = .debug
@@ -66,7 +53,7 @@ open class SentryDestination: BaseDestination {
       case .warning:
         sentryLevel = .warning
       case .severe:
-        sentryLevel = .fatal
+        sentryLevel = .warning
       case .error:
         sentryLevel = .error
       default:
@@ -77,17 +64,16 @@ open class SentryDestination: BaseDestination {
         
       if sentryLevel == .error || sentryLevel == .fatal || sentryLevel == .warning {
         let errorEvent = Event(level: sentryLevel)
-        errorEvent.message = logDetails.message
+        errorEvent.message = SentryMessage(formatted: logDetails.message)
         errorEvent.tags = ["filename": filename,
                            "function": logDetails.functionName]
         errorEvent.extra = logDetails.userInfo
-        self.client.appendStacktrace(to: errorEvent)
-        self.client.send(event: errorEvent, completion: nil)
+        SentrySDK.capture(event: errorEvent)
       } else {
         let breadcrumb = Breadcrumb(level: sentryLevel, category: filename)
         breadcrumb.message = "[\(logDetails.functionName):\(logDetails.lineNumber)] \(logDetails.message)"
         breadcrumb.data = logDetails.userInfo
-        self.client.breadcrumbs.add(breadcrumb)
+        SentrySDK.addBreadcrumb(crumb: breadcrumb)
       }
     }
 

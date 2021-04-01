@@ -41,12 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     self.coordinator.coordinate(flow: appFlow, with: AppStepper())
 
-    do {
-      Client.shared?.trackMemoryPressureAsEvent()
-      try Client.shared?.startCrashHandler()
-    } catch let error {
-      Global.log.error(error)
-    }
+    
+    SentrySDK.start { options in
+            options.dsn = Credential.valueForKey(keyName: "SENTRY_DSN")
+        }
     
     Global.log.logAppDetails()
 

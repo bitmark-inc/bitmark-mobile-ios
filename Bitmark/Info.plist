@@ -4,8 +4,6 @@
 <dict>
 	<key>AppCredentials</key>
 	<dict>
-		<key>SENTRY_DSN</key>
-		<string>https://92d49f612d5f4cd89427cef0cd39794f@sentry.io/1494841</string>
 		<key>API_SERVER_URL</key>
 		<string>https://api.bitmark.com</string>
 		<key>BITMARK_API_TOKEN</key>
@@ -24,6 +22,8 @@
 		<string>https://profiles.bitmark.com</string>
 		<key>REGISTRY_SERVER_URL</key>
 		<string>https://registry.bitmark.com</string>
+		<key>SENTRY_DSN</key>
+		<string>https://92d49f612d5f4cd89427cef0cd39794f@o142150.ingest.sentry.io/1494841</string>
 		<key>ZERO_ADDRESS</key>
 		<string>a3ezwdYVEVrHwszQrYzDTCAZwUD3yKtNsCq9YhEu97bPaGAKy1</string>
 	</dict>
@@ -44,7 +44,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.60.2</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

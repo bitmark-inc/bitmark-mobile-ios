@@ -1606,7 +1606,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Bitmark/BitmarkRegistry.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_TEAM = Z5CE7A3A7N;
 				INFOPLIST_FILE = "$(SRCROOT)/Bitmark/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1617,13 +1617,14 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Bitmark/Helpers/Encryption/libsodium",
 				);
+				MARKETING_VERSION = 1.60.4;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Development";
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/Bitmark/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1635,7 +1636,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bitmark/BitmarkRegistry.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 74;
+				CURRENT_PROJECT_VERSION = 75;
 				DEVELOPMENT_TEAM = Z5CE7A3A7N;
 				INFOPLIST_FILE = "$(SRCROOT)/Bitmark/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1646,13 +1647,14 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Bitmark/Helpers/Encryption/libsodium",
 				);
+				MARKETING_VERSION = 1.60.4;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bitmark.registry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry Distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "Bitmark Registry AppStore";
 				SWIFT_INCLUDE_PATHS = "$(inherited) $(PODS_ROOT)/TweetNacl/Sources $(PROJECT_DIR)/Bitmark/Helpers/Encryption/libsodium";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
